@@ -18,6 +18,11 @@ public class ListSerializer extends StdSerializer<List<?>> {
 
     @Override
     public void serialize(List<?> value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
-        serializers.defaultSerializeValue(value.toJavaList(), gen);
+        gen.writeStartObject();
+        gen.writeFieldName("@class");
+        gen.writeString(List.class.getCanonicalName());
+        gen.writeFieldName("@data");
+        gen.writeObject(value.toJavaList());
+        gen.writeEndObject();
     }
 }

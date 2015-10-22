@@ -1,7 +1,6 @@
 package javaslang.jackson.datatype;
 
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
@@ -13,19 +12,19 @@ public class ListDeserializer extends StdDeserializer<List<?>> {
 
     private static final long serialVersionUID = 1L;
 
+    private final BaseDeserializer deserializer = new BaseDeserializer();
+
     protected ListDeserializer(JavaType valueType) {
         super(valueType);
     }
 
     @Override
     public List<?> deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
-        List<Object> list = List.empty();
-        p.nextToken();
-        while (p.getCurrentToken() != JsonToken.END_ARRAY) {
-            list = list.append(p.getIntValue());
-            p.nextToken();
+        try {
+            return List.ofAll((java.util.List<?>) deserializer.deserialize(p, ctxt));
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            return null;
         }
-        p.nextToken();
-        return list;
     }
 }
