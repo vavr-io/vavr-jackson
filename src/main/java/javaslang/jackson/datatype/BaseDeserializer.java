@@ -3,9 +3,12 @@ package javaslang.jackson.datatype;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,19 +17,25 @@ public class BaseDeserializer {
     private final static String CLASS_KEY = "@class";
     private final static String DATA_KEY = "@data";
 
-    public Object deserialize(JsonParser jp, DeserializationContext ctxt)
+    private final DeserializationContext ctx;
+
+    BaseDeserializer(DeserializationContext ctx) {
+        this.ctx = ctx;
+    }
+
+    public Object deserialize(JsonParser jp, JavaType expectedType)
             throws IOException, ClassNotFoundException {
         switch (jp.getCurrentToken()) {
             case START_OBJECT:
-                return _deserializeObject(jp, ctxt);
+                return _deserializeObject(jp, expectedType);
             case START_ARRAY:
-                return _deserializeArray(jp, ctxt);
+                return _deserializeArray(jp, expectedType);
             default:
-                return _deserializeScalar(jp, ctxt);
+                return _deserializeScalar(jp, expectedType);
         }
     }
 
-    protected Object _deserializeObject(JsonParser jp, DeserializationContext ctxt)
+    protected Object _deserializeObject(JsonParser jp, JavaType expectedType)
             throws IOException, ClassNotFoundException {
         Class<?> expectedClass = null;
         while (jp.nextToken() != JsonToken.END_OBJECT) {
@@ -41,7 +50,7 @@ public class BaseDeserializer {
                 }
             }
             if (DATA_KEY.equals(name)) {
-                return deserialize(jp, ctxt);  // TODO
+                return deserialize(jp, expectedType);  // TODO
             }
 
 //            switch (t) {
@@ -98,55 +107,75 @@ public class BaseDeserializer {
         return null;
     }
 
-    protected List<?> _deserializeArray(JsonParser jp, DeserializationContext ctxt)
+    protected List<?> _deserializeArray(JsonParser jp, JavaType expectedType)
             throws IOException, ClassNotFoundException {
         JsonToken t;
         List<Object> result = new ArrayList<>();
         while ((t = jp.nextToken()) != JsonToken.END_ARRAY) {
             switch (t) {
                 case START_ARRAY:
-                    result.add(_deserializeArray(jp, ctxt));
+                    result.add(_deserializeArray(jp, expectedType));
                     break;
                 case START_OBJECT:
-                    result.add(_deserializeObject(jp, ctxt));
+                    result.add(_deserializeObject(jp, expectedType));
                     break;
                 default:
-                    result.add(_deserializeScalar(jp, ctxt));
+                    result.add(_deserializeScalar(jp, expectedType.containedType(0)));
             }
         }
         return result;
     }
 
-    protected Object _deserializeScalar(JsonParser jp, DeserializationContext ctxt)
+    protected Object _deserializeScalar(JsonParser jp, JavaType expectedType)
             throws IOException {
         switch (jp.getCurrentToken()) {
             case VALUE_EMBEDDED_OBJECT:
-                throw ctxt.mappingException(BaseDeserializer.class);
+                throw ctx.mappingException(this.getClass());
             case VALUE_FALSE:
+                checkType(expectedType, Boolean.class);
                 return Boolean.FALSE;
             case VALUE_TRUE:
+                checkType(expectedType, Boolean.class);
                 return Boolean.TRUE;
             case VALUE_NULL:
                 return null;
             case VALUE_NUMBER_FLOAT:
                 if (jp.getNumberType() == JsonParser.NumberType.BIG_DECIMAL) {
+                    checkType(expectedType, BigDecimal.class);
                     return jp.getDecimalValue();
                 } else {
+                    checkType(expectedType, Float.class, Double.class);
                     return jp.getDoubleValue();
                 }
             case VALUE_NUMBER_INT:
                 switch (jp.getNumberType()) {
                     case LONG:
+                        checkType(expectedType, Long.class);
                         return jp.getLongValue();
                     case INT:
+                        checkType(expectedType, Integer.class);
                         return jp.getIntValue();
                     default:
+                        checkType(expectedType, BigInteger.class);
                         return jp.getBigIntegerValue();
                 }
             case VALUE_STRING:
+                checkType(expectedType, String.class);
                 return jp.getText();
             default:
-                throw ctxt.mappingException(BaseDeserializer.class);
+                throw ctx.mappingException(BaseDeserializer.class);
         }
+    }
+
+    private void checkType(JavaType expectedType, Class<?>... actualClasses) throws JsonMappingException {
+        if(expectedType == null || expectedType.getRawClass() == Object.class) {
+            return;
+        }
+        for (Class<?> actualClass : actualClasses) {
+            if(actualClass.isAssignableFrom(expectedType.getRawClass())) {
+                return;
+            }
+        }
+        throw ctx.mappingException(this.getClass());
     }
 }

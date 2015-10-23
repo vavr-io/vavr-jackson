@@ -1,5 +1,7 @@
 package javaslang.jackson.datatype;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import javaslang.collection.List;
 import org.junit.Assert;
@@ -18,13 +20,20 @@ public class ListTest extends BaseTest {
 
     @Test
     public void test2() throws IOException {
-        List<?> result = mapper().readValue("[\"!!\",2,3.0]", List.class);
+        List<?> result = mapper().readValue("[\"!!\",2,3.0]", new TypeReference<List<?>>() {});
+        Assert.assertEquals(result, List.of("!!", 2, 3.0));
+    }
+
+    @Test(expected = JsonMappingException.class)
+    public void test3() throws IOException {
+        List<Double> result = mapper().readValue("[\"!!\",2,3.0]", new TypeReference<List<Double>>() {});
         Assert.assertEquals(result, List.of("!!", 2, 3.0));
     }
 
     @Test
-    public void test3() throws IOException {
+    public void test4() throws IOException {
         List<?> result = mapper().readValue(genPlainJsonList(List.class, 1, 2, 3), List.class);
         Assert.assertEquals(result, List.of(1, 2, 3));
     }
+
 }
