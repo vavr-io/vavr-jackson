@@ -13,6 +13,9 @@
         <java.version>1.8</java.version>
         <maven.compiler.version>3.2</maven.compiler.version>
         <fasterxml.version>2.6.3</fasterxml.version>
+        <maven.coveralls.version>4.0.0</maven.coveralls.version>
+        <maven.jacoco.version>0.7.5.201505241946</maven.jacoco.version>
+        <maven.versions.version>2.1</maven.versions.version>
     </properties>
 
     <dependencies>
@@ -50,7 +53,44 @@
                     </compilerArgs>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>versions-maven-plugin</artifactId>
+                <version>${maven.versions.version}</version>
+            </plugin>
         </plugins>
     </build>
-
+    <profiles>
+        <!-- A profile for code coverage analysis in ci environments -->
+        <profile>
+            <id>ci</id>
+            <activation>
+                <property>
+                    <name>env.CI</name>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.jacoco</groupId>
+                        <artifactId>jacoco-maven-plugin</artifactId>
+                        <version>${maven.jacoco.version}</version>
+                        <executions>
+                            <execution>
+                                <id>prepare-agent</id>
+                                <goals>
+                                    <goal>prepare-agent</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.eluder.coveralls</groupId>
+                        <artifactId>coveralls-maven-plugin</artifactId>
+                        <version>${maven.coveralls.version}</version>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>

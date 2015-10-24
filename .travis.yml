@@ -1,6 +1,11 @@
 language: java
 jdk:
-  - oraclejdk8
+- oraclejdk8
+env:
+  global:
+  - secure: rnZw88ZrQoNrKAVsXBeqK/Dlbfw2BMl6gQY5/MUrgeoTPwMIsc+XjQuevBC/oLX56/R54f+NeqOIYXudyljGSSjSuh8q90jQ2VM8lKGsmvrqQ//rwagQpcJSEfobuWnr7zK/Sy0uc8vedCz3WP2ItzMiEIZzftFUuDSNeZhNr8hFM6NSNFDducHa37HcwPI+RKg/obh1uiIZlwkYWF1ezRLIkT0f003RzpTs1EDvvpvHivmCtXsrbToTf1jEHpurShNz6ceNX6KrH0NhfwhsH3EsgUuIEXGGdR8rd8TcDH0HrT79aGwmVu4SgxkxrX2lvLT6h3kYX5AlTILBLmK9sbCY9YMXDliKEvtHn5XPBy3sWsBNL7ZUOA+l+iW1dy4ZJT9lrCic2uMkmLYRdfRJ0sKRmxNrALgnbk7y5SgjtKEXADe0mh4+UXqsRMUSwn+H4TGFyPuyM9I2PPKZKCjxJ/Ps4jhsYlNSApNI5RXFD5PVI5jFMk8xuR7q0ubY6xCAK3Xrf2dRObFhD970zOLISdvSBI1xp5x9Xd6AIps35qhi1/903qRTn7j5/xVPcnkagx1XbVbOzwaChXhH0AtoB4Jt/N4G/6cck/MxlacyTLd+JmaQDM1TXHoInj9oQedSQATrckMkNW/fdNQHlkuIxefULceB+OlVKlI0lu9ZU2w=
 before_install:
-  - sudo apt-get update
-  - sudo apt-get install --only-upgrade -y oracle-java8-installer
+- sudo apt-get update
+- sudo apt-get install --only-upgrade -y oracle-java8-installer
+after_success:
+- mvn clean test jacoco:report coveralls:report
