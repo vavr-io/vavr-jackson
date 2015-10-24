@@ -4,9 +4,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class BaseTest {
 
-    protected ObjectMapper mapper() {
+    protected ObjectMapper mapper(boolean compact) {
         ObjectMapper mapper = new ObjectMapper();
-        mapper.registerModule(new JavaslangModule());
+        JavaslangModule.JavaslangModuleConfig cfg = new JavaslangModule.JavaslangModuleConfig();
+        cfg.setCompact(compact);
+        mapper.registerModule(new JavaslangModule(cfg));
         return mapper;
     }
 

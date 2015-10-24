@@ -8,7 +8,7 @@ import javaslang.collection.List;
 
 import java.io.IOException;
 
-public class ListDeserializer extends StdDeserializer<List<?>> {
+class ListDeserializer extends StdDeserializer<List<?>> {
 
     private static final long serialVersionUID = 1L;
 

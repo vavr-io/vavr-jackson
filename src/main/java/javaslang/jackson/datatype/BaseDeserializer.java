@@ -12,7 +12,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BaseDeserializer {
+class BaseDeserializer {
 
     private final static String CLASS_KEY = "@class";
     private final static String DATA_KEY = "@data";
@@ -37,20 +37,23 @@ public class BaseDeserializer {
 
     protected Object _deserializeObject(JsonParser jp, JavaType expectedType)
             throws IOException, ClassNotFoundException {
-        Class<?> expectedClass = null;
+        Object result = null;
         while (jp.nextToken() != JsonToken.END_OBJECT) {
             String name = jp.getCurrentName();
             JsonToken t = jp.nextToken();
             if (CLASS_KEY.equals(name)) {
                 if (t == JsonToken.VALUE_STRING) {
-                    expectedClass = Class.forName(jp.getText());
+                    Class<?> expectedClass = Class.forName(jp.getText());
+                    if (expectedType != null && expectedType.getRawClass() != expectedClass) {
+                        throw JsonMappingException.from(jp, "bad " + CLASS_KEY + " value"); // TODO
+                    }
                     continue;
                 } else {
                     throw JsonMappingException.from(jp, "bad " + CLASS_KEY + " value"); // TODO
                 }
             }
             if (DATA_KEY.equals(name)) {
-                return deserialize(jp, expectedType);  // TODO
+                result = deserialize(jp, expectedType);  // TODO
             }
 
 //            switch (t) {
@@ -104,7 +107,7 @@ public class BaseDeserializer {
 //                    throw ctxt.mappingException(JsonValueDeserializer.class);
 //            }
         }
-        return null;
+        return result;
     }
 
     protected List<?> _deserializeArray(JsonParser jp, JavaType expectedType)
