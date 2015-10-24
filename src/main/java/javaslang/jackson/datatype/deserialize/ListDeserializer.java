@@ -1,4 +1,4 @@
-package javaslang.jackson.datatype;
+package javaslang.jackson.datatype.deserialize;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;

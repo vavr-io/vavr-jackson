@@ -1,6 +1,8 @@
 package javaslang.jackson.datatype;
 
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import javaslang.jackson.datatype.deserialize.JavaslangDeserializers;
+import javaslang.jackson.datatype.serialize.JavaslangSerializers;
 
 public class JavaslangModule extends SimpleModule {
 

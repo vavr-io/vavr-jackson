@@ -15,25 +15,25 @@ public class ListTest extends BaseTest {
     public void test1() throws IOException {
         ObjectWriter writer = mapper(false).writer();
         String result = writer.writeValueAsString(List.of(1, 2.0, 3));
-        Assert.assertEquals(result, genPlainJsonList(List.class, 1, 2.0, 3));
+        Assert.assertEquals(genPlainJsonList(List.class, 1, 2.0, 3), result);
     }
 
     @Test
     public void test2() throws IOException {
         List<?> result = mapper(false).readValue("[\"!!\",2,3.0]", new TypeReference<List<?>>() {});
-        Assert.assertEquals(result, List.of("!!", 2, 3.0));
+        Assert.assertEquals(List.of("!!", 2, 3.0), result);
     }
 
     @Test(expected = JsonMappingException.class)
     public void test3() throws IOException {
         List<Double> result = mapper(false).readValue("[\"!!\",2,3.0]", new TypeReference<List<Double>>() {});
-        Assert.assertEquals(result, List.of("!!", 2, 3.0));
+        Assert.assertEquals(List.of("!!", 2, 3.0), result);
     }
 
     @Test
     public void test4() throws IOException {
         List<?> result = mapper(false).readValue(genPlainJsonList(List.class, 1, 2, 3), List.class);
-        Assert.assertEquals(result, List.of(1, 2, 3));
+        Assert.assertEquals(List.of(1, 2, 3), result);
     }
 
 }

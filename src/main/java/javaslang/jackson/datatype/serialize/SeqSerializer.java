@@ -1,4 +1,4 @@
-package javaslang.jackson.datatype;
+package javaslang.jackson.datatype.serialize;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JavaType;
