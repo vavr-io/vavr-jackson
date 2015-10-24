@@ -1,9 +1,6 @@
 package javaslang.jackson.datatype.serialize;
 
-import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import javaslang.*;
 
 import java.io.IOException;
@@ -12,20 +9,16 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-class TupleSerializer<T extends Tuple> extends StdSerializer<T> {
+class TupleSerializer<T extends Tuple> extends ValueSerializer<T> {
 
     private static final long serialVersionUID = 1L;
 
-    private final boolean compact;
-    private final Class<?> clz;
-
-    protected TupleSerializer(JavaType type, Class<?> clz, boolean compact) {
-        super(type);
-        this.compact = compact;
-        this.clz = clz;
+    TupleSerializer(JavaType type, Class<?> clz, boolean compact) {
+        super(type, clz, compact);
     }
 
-    private static HashMap<String, Object> conv(Tuple tuple) throws IOException {
+    @Override
+    Object toJavaObj(Tuple tuple) throws IOException {
         List<?> list;
         switch (tuple.arity()) {
             case 0: {
@@ -83,17 +76,4 @@ class TupleSerializer<T extends Tuple> extends StdSerializer<T> {
         return result;
     }
 
-    @Override
-    public void serialize(T value, JsonGenerator gen, SerializerProvider provider) throws IOException {
-        if (compact) {
-            gen.writeObject(conv(value));
-        } else {
-            gen.writeStartObject();
-            gen.writeFieldName("@class");
-            gen.writeString(clz.getCanonicalName());
-            gen.writeFieldName("@data");
-            gen.writeObject(conv(value));
-            gen.writeEndObject();
-        }
-    }
 }
