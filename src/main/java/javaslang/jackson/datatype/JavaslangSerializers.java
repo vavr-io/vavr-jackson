@@ -9,12 +9,18 @@ import javaslang.collection.List;
 
 public class JavaslangSerializers extends Serializers.Base {
 
+    private final boolean compact;
+
+    JavaslangSerializers(boolean compact) {
+        this.compact = compact;
+    }
+
     @Override
     public JsonSerializer<?> findSerializer(SerializationConfig config,
                                             JavaType type, BeanDescription beanDesc) {
 
         if (List.class.isAssignableFrom(type.getRawClass())) {
-            return new ListSerializer(type);
+            return new ListSerializer(type, compact);
         }
 
         return super.findSerializer(config, type, beanDesc);

@@ -168,11 +168,11 @@ public class BaseDeserializer {
     }
 
     private void checkType(JavaType expectedType, Class<?>... actualClasses) throws JsonMappingException {
-        if(expectedType == null || expectedType.getRawClass() == Object.class) {
+        if (expectedType == null || expectedType.getRawClass() == Object.class) {
             return;
         }
         for (Class<?> actualClass : actualClasses) {
-            if(actualClass.isAssignableFrom(expectedType.getRawClass())) {
+            if (actualClass.isAssignableFrom(expectedType.getRawClass())) {
                 return;
             }
         }

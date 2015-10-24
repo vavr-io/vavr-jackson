@@ -16,23 +16,23 @@ public class BaseTest {
 
     protected String genPlainJsonList(Class<?> clz, Object... list) {
         StringBuilder sb = new StringBuilder();
-        if(clz != null) {
+        if (clz != null) {
             sb.append("{\"@class\":\"").append(clz.getCanonicalName()).append("\",\"@data\":");
         }
         sb.append("[");
         for (int i = 0; i < list.length; i++) {
-            if(i > 0) {
+            if (i > 0) {
                 sb.append(",");
             }
             Object o = list[i];
-            if(o instanceof java.lang.String) {
+            if (o instanceof java.lang.String) {
                 sb.append("\"").append(o).append("\"");
             } else {
                 sb.append(o);
             }
         }
         sb.append("]");
-        if(clz != null) {
+        if (clz != null) {
             sb.append("}");
         }
         return sb.toString();
