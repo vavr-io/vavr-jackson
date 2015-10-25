@@ -47,7 +47,7 @@ class BaseDeserializer {
             if (CLASS_KEY.equals(name)) {
                 if (t == JsonToken.VALUE_STRING) {
                     Class<?> expectedClass = Class.forName(jp.getText());
-                    if (expectedType != null && expectedType.getRawClass() != expectedClass) {
+                    if (expectedType != null && !expectedClass.isAssignableFrom(expectedType.getRawClass())) {
                         throw JsonMappingException.from(jp, "bad " + CLASS_KEY + " value"); // TODO
                     }
                     continue;
@@ -65,8 +65,8 @@ class BaseDeserializer {
                     result.put(name, _deserializeArray(jp, expectedType.containedType(1)));
                     break;
                 case START_OBJECT:
-                    checkType(expectedType, Map.class);
-                    result.put(name, _deserializeArray(jp, expectedType.containedType(1)));
+                    checkType(expectedType, javaslang.collection.HashMap.class);
+                    result.put(name, _deserializeObject(jp, expectedType.containedType(1)));
                     break;
                 default:
                     result.put(name, _deserializeScalar(jp, expectedType.containedType(1)));
@@ -75,7 +75,7 @@ class BaseDeserializer {
         return result;
     }
 
-    protected List<?> _deserializeArray(JsonParser jp, JavaType expectedType)
+    protected Iterable<?> _deserializeArray(JsonParser jp, JavaType expectedType)
             throws IOException, ClassNotFoundException {
         checkType(expectedType, Seq.class);
         JsonToken t;
@@ -91,6 +91,9 @@ class BaseDeserializer {
                 default:
                     result.add(_deserializeScalar(jp, expectedType.containedType(0)));
             }
+        }
+        if(javaslang.collection.List.class.isAssignableFrom(expectedType.getRawClass())) {
+            return javaslang.collection.List.ofAll(result);
         }
         return result;
     }
