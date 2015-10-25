@@ -5,12 +5,15 @@ import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import javaslang.collection.Seq;
 
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 class BaseDeserializer {
 
@@ -37,7 +40,7 @@ class BaseDeserializer {
 
     protected Object _deserializeObject(JsonParser jp, JavaType expectedType)
             throws IOException, ClassNotFoundException {
-        Object result = null;
+        Map<Object, Object> result = new HashMap<>();
         while (jp.nextToken() != JsonToken.END_OBJECT) {
             String name = jp.getCurrentName();
             JsonToken t = jp.nextToken();
@@ -53,74 +56,37 @@ class BaseDeserializer {
                 }
             }
             if (DATA_KEY.equals(name)) {
-                result = deserialize(jp, expectedType);  // TODO
+                return deserialize(jp, expectedType);  // TODO
             }
 
-//            switch (t) {
-//                case START_ARRAY:
-//                    return _deserializeArray(jp, ctxt);
-//                case START_OBJECT:
-//                    return _deserializeObject(jp, ctxt);
-//                case VALUE_FALSE:
-//                    b.add(name, false);
-//                    break;
-//                case VALUE_TRUE:
-//                    b.add(name, true);
-//                    break;
-//                case VALUE_NULL:
-//                    b.addNull(name);
-//                    break;
-//                case VALUE_NUMBER_FLOAT:
-//                    if (jp.getNumberType() == JsonParser.NumberType.BIG_DECIMAL) {
-//                        b.add(name, jp.getDecimalValue());
-//                    } else {
-//                        b.add(name, jp.getDoubleValue());
-//                    }
-//                    break;
-//                case VALUE_NUMBER_INT:
-//                    // very cumbersome... but has to be done
-//                    switch (jp.getNumberType()) {
-//                        case LONG:
-//                            b.add(name, jp.getLongValue());
-//                            break;
-//                        case INT:
-//                            b.add(name, jp.getIntValue());
-//                            break;
-//                        default:
-//                            b.add(name, jp.getBigIntegerValue());
-//                    }
-//                    break;
-//                case VALUE_STRING:
-//                    b.add(name, jp.getText());
-//                    break;
-//                case VALUE_EMBEDDED_OBJECT: {
-//                    // 26-Nov-2014, tatu: As per [issue#5], should be able to support
-//                    //   binary data as Base64 embedded text
-//                    Object ob = jp.getEmbeddedObject();
-//                    if (ob instanceof byte[]) {
-//                        String b64 = ctxt.getBase64Variant().encode((byte[]) ob, false);
-//                        b.add(name, b64);
-//                        break;
-//                    }
-//                }
-//                default:
-//                    throw ctxt.mappingException(JsonValueDeserializer.class);
-//            }
+            switch (t) {
+                case START_ARRAY:
+                    checkType(expectedType, Seq.class);
+                    result.put(name, _deserializeArray(jp, expectedType.containedType(1)));
+                    break;
+                case START_OBJECT:
+                    checkType(expectedType, Map.class);
+                    result.put(name, _deserializeArray(jp, expectedType.containedType(1)));
+                    break;
+                default:
+                    result.put(name, _deserializeScalar(jp, expectedType.containedType(1)));
+            }
         }
         return result;
     }
 
     protected List<?> _deserializeArray(JsonParser jp, JavaType expectedType)
             throws IOException, ClassNotFoundException {
+        checkType(expectedType, Seq.class);
         JsonToken t;
         List<Object> result = new ArrayList<>();
         while ((t = jp.nextToken()) != JsonToken.END_ARRAY) {
             switch (t) {
                 case START_ARRAY:
-                    result.add(_deserializeArray(jp, expectedType));
+                    result.add(_deserializeArray(jp, expectedType.containedType(0)));
                     break;
                 case START_OBJECT:
-                    result.add(_deserializeObject(jp, expectedType));
+                    result.add(_deserializeObject(jp, expectedType.containedType(0)));
                     break;
                 default:
                     result.add(_deserializeScalar(jp, expectedType.containedType(0)));

@@ -25,8 +25,7 @@ class ListDeserializer extends StdDeserializer<List<?>> {
             final BaseDeserializer deserializer = new BaseDeserializer(ctxt);
             return List.ofAll((java.util.List<?>) deserializer.deserialize(p, javaType));
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            return null;
+            throw ctxt.mappingException(this.getClass());
         }
     }
 }
