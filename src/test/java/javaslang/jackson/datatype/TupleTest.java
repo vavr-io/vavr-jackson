@@ -20,7 +20,7 @@ public class TupleTest extends BaseTest {
         }
         sb.append("{");
         for (int i = 1; i <= objects.length; i++) {
-            if(i > 1) {
+            if (i > 1) {
                 sb.append(",");
             }
             sb.append("\"_").append(i).append("\":").append(writer.writeValueAsString(objects[i - 1]));
@@ -36,7 +36,8 @@ public class TupleTest extends BaseTest {
     public void test8() throws IOException {
         String result = mapper(false).writeValueAsString(Tuple.of(1, 2, 3, 4, 5, 6, 7, 8));
         Assert.assertEquals(makeJson(false, 1, 2, 3, 4, 5, 6, 7, 8), result);
-        Tuple8<?, ?, ?, ?, ?, ?, ?, ?> tuple = mapper(false).readValue(result, new TypeReference<Tuple8<?, ?, ?, ?, ?, ?, ?, ?>>() {});
+        Tuple8<?, ?, ?, ?, ?, ?, ?, ?> tuple = mapper(false).readValue(result, new TypeReference<Tuple8<?, ?, ?, ?, ?, ?, ?, ?>>() {
+        });
         Assert.assertEquals(Tuple.of(1, 2, 3, 4, 5, 6, 7, 8), tuple);
     }
 

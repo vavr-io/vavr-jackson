@@ -3,8 +3,7 @@ package javaslang.jackson.datatype.deserialize;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.deser.Deserializers;
 import javaslang.Tuple;
-import javaslang.collection.List;
-import javaslang.collection.Map;
+import javaslang.collection.*;
 
 public class JavaslangDeserializers extends Deserializers.Base {
 
@@ -18,8 +17,24 @@ public class JavaslangDeserializers extends Deserializers.Base {
         if (Tuple.class.isAssignableFrom(type.getRawClass())) {
             return new TupleDeserializer(type);
         }
+
+        if (Array.class.isAssignableFrom(type.getRawClass())) {
+            return new SeqDeserializer.AsArray(type);
+        }
         if (List.class.isAssignableFrom(type.getRawClass())) {
-            return new ListDeserializer(type);
+            return new SeqDeserializer.AsList(type);
+        }
+        if (Queue.class.isAssignableFrom(type.getRawClass())) {
+            return new SeqDeserializer.AsQueue(type);
+        }
+        if (Stack.class.isAssignableFrom(type.getRawClass())) {
+            return new SeqDeserializer.AsStack(type);
+        }
+        if (Stream.class.isAssignableFrom(type.getRawClass())) {
+            return new SeqDeserializer.AsStream(type);
+        }
+        if (Vector.class.isAssignableFrom(type.getRawClass())) {
+            return new SeqDeserializer.AsVector(type);
         }
         return null;
     }

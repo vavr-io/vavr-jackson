@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 import javaslang.collection.Seq;
 
 import java.io.IOException;
@@ -40,14 +41,15 @@ class BaseDeserializer {
 
     protected Object _deserializeObject(JsonParser jp, JavaType expectedType)
             throws IOException, ClassNotFoundException {
+        Class<?> expectedClass = null;
         Map<Object, Object> result = new HashMap<>();
         while (jp.nextToken() != JsonToken.END_OBJECT) {
             String name = jp.getCurrentName();
             JsonToken t = jp.nextToken();
             if (CLASS_KEY.equals(name)) {
                 if (t == JsonToken.VALUE_STRING) {
-                    Class<?> expectedClass = Class.forName(jp.getText());
-                    if (expectedType != null && !expectedClass.isAssignableFrom(expectedType.getRawClass())) {
+                    expectedClass = Class.forName(jp.getText());
+                    if (expectedType != null && !expectedType.getRawClass().isAssignableFrom(expectedClass)) {
                         throw JsonMappingException.from(jp, "bad " + CLASS_KEY + " value"); // TODO
                     }
                     continue;
@@ -56,7 +58,15 @@ class BaseDeserializer {
                 }
             }
             if (DATA_KEY.equals(name)) {
-                return deserialize(jp, expectedType);  // TODO
+                if(expectedClass != null) {
+                    if(expectedType != null  && expectedClass.isAssignableFrom(expectedType.getRawClass())) {
+                        return deserialize(jp, expectedType);  // TODO
+                    } else {
+                        return deserialize(jp, TypeFactory.defaultInstance().constructFromCanonical(expectedClass.getCanonicalName()));  // TODO
+                    }
+                } else {
+                    return deserialize(jp, expectedType);  // TODO
+                }
             }
 
             switch (t) {
@@ -65,7 +75,7 @@ class BaseDeserializer {
                     result.put(name, _deserializeArray(jp, expectedType.containedType(1)));
                     break;
                 case START_OBJECT:
-                    checkType(expectedType, javaslang.collection.HashMap.class);
+                    checkType(expectedType, javaslang.collection.HashMap.class, javaslang.Tuple.class);
                     result.put(name, _deserializeObject(jp, expectedType.containedType(1)));
                     break;
                 default:
@@ -81,19 +91,41 @@ class BaseDeserializer {
         JsonToken t;
         List<Object> result = new ArrayList<>();
         while ((t = jp.nextToken()) != JsonToken.END_ARRAY) {
+            if(t == null) {
+                return null;
+            }
             switch (t) {
                 case START_ARRAY:
                     result.add(_deserializeArray(jp, expectedType.containedType(0)));
+                    //jp.nextToken();
                     break;
                 case START_OBJECT:
                     result.add(_deserializeObject(jp, expectedType.containedType(0)));
+                    jp.nextToken();
                     break;
                 default:
-                    result.add(_deserializeScalar(jp, expectedType.containedType(0)));
+                    result.add(_deserializeScalar(jp, expectedType == null || expectedType.containedTypeCount() == 0 ? null : expectedType.containedType(0)));
             }
         }
-        if(javaslang.collection.List.class.isAssignableFrom(expectedType.getRawClass())) {
-            return javaslang.collection.List.ofAll(result);
+        if(expectedType != null) {
+            if(javaslang.collection.Array.class.isAssignableFrom(expectedType.getRawClass())) {
+                return javaslang.collection.Array.ofAll(result);
+            }
+            if(javaslang.collection.List.class.isAssignableFrom(expectedType.getRawClass())) {
+                return javaslang.collection.List.ofAll(result);
+            }
+            if(javaslang.collection.Queue.class.isAssignableFrom(expectedType.getRawClass())) {
+                return javaslang.collection.Queue.ofAll(result);
+            }
+            if(javaslang.collection.Stack.class.isAssignableFrom(expectedType.getRawClass())) {
+                return javaslang.collection.Stack.ofAll(result);
+            }
+            if(javaslang.collection.Stream.class.isAssignableFrom(expectedType.getRawClass())) {
+                return javaslang.collection.Stream.ofAll(result);
+            }
+            if(javaslang.collection.Vector.class.isAssignableFrom(expectedType.getRawClass())) {
+                return javaslang.collection.Vector.ofAll(result);
+            }
         }
         return result;
     }

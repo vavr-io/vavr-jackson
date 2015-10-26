@@ -1,8 +1,21 @@
 package javaslang.jackson.datatype;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import javaslang.collection.List;
+import javaslang.collection.Seq;
+import javaslang.collection.Stream;
 
 public class BaseTest {
+
+    private static Class<?> javaslangClass(Object o) {
+        if (o instanceof List.Cons) {
+            return List.class;
+        }
+        if (o instanceof Stream.Cons) {
+            return Stream.class;
+        }
+        return o.getClass();
+    }
 
     protected ObjectMapper mapper(boolean compact) {
         ObjectMapper mapper = new ObjectMapper();
@@ -12,11 +25,7 @@ public class BaseTest {
         return mapper;
     }
 
-    protected String genPlainJsonList(Object... list) {
-        return genPlainJsonList(null, list);
-    }
-
-    protected String genPlainJsonList(Class<?> clz, Object... list) {
+    protected String genJson(Class<?> clz, Object... list) {
         StringBuilder sb = new StringBuilder();
         if (clz != null) {
             sb.append("{\"@class\":\"").append(clz.getCanonicalName()).append("\",\"@data\":");
@@ -29,6 +38,8 @@ public class BaseTest {
             Object o = list[i];
             if (o instanceof java.lang.String) {
                 sb.append("\"").append(o).append("\"");
+            } else if (o instanceof javaslang.collection.Seq) {
+                sb.append(genJson(clz == null ? null : javaslangClass(o), ((Seq) o).toJavaList().toArray()));
             } else {
                 sb.append(o);
             }
