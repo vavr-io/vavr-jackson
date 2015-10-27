@@ -42,12 +42,7 @@ public abstract class TupleTest<T extends Tuple> extends BaseTest {
         T src = ofObjects(1, 2);
         String json = writer.writeValueAsString(src);
         Assert.assertEquals(genJsonTuple(null, 1, 2), json);
-        T dst1 = (T) mapper(false).readValue(json, clz());
-        Assert.assertEquals(src, dst1);
-        java.util.Map<?, ?> dst2 = (java.util.Map<?, ?>) mapper(false).readValue(json, Object.class);
-        Assert.assertEquals(dst2.get("_1"), 1);
-        if(arity() > 1) {
-            Assert.assertEquals(dst2.get("_2"), 2);
-        }
+        T dst = (T) mapper(false).readValue(json, clz());
+        Assert.assertEquals(src, dst);
     }
 }
