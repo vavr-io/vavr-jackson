@@ -58,15 +58,18 @@ class BaseDeserializer {
                 }
             }
             if (DATA_KEY.equals(name)) {
+                Object o;
                 if(expectedClass != null) {
                     if(expectedType != null  && expectedClass.isAssignableFrom(expectedType.getRawClass())) {
-                        return deserialize(jp, expectedType);  // TODO
+                        o = deserialize(jp, expectedType);  // TODO
                     } else {
-                        return deserialize(jp, TypeFactory.defaultInstance().constructFromCanonical(expectedClass.getCanonicalName()));  // TODO
+                        o = deserialize(jp, TypeFactory.defaultInstance().constructFromCanonical(expectedClass.getCanonicalName()));  // TODO
                     }
                 } else {
-                    return deserialize(jp, expectedType);  // TODO
+                    o = deserialize(jp, expectedType);  // TODO
                 }
+                jp.nextToken();
+                return o;
             }
 
             switch (t) {
@@ -91,17 +94,12 @@ class BaseDeserializer {
         JsonToken t;
         List<Object> result = new ArrayList<>();
         while ((t = jp.nextToken()) != JsonToken.END_ARRAY) {
-            if(t == null) {
-                return null;
-            }
             switch (t) {
                 case START_ARRAY:
                     result.add(_deserializeArray(jp, expectedType.containedType(0)));
-                    //jp.nextToken();
                     break;
                 case START_OBJECT:
                     result.add(_deserializeObject(jp, expectedType.containedType(0)));
-                    jp.nextToken();
                     break;
                 default:
                     result.add(_deserializeScalar(jp, expectedType == null || expectedType.containedTypeCount() == 0 ? null : expectedType.containedType(0)));
