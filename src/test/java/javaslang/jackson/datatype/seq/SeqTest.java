@@ -11,9 +11,9 @@ import java.util.Arrays;
 
 public abstract class SeqTest extends BaseTest {
 
-    protected abstract Class<?> clz();
+    abstract Class<?> clz();
 
-    protected abstract Seq<?> of(Object... objects);
+    abstract Seq<?> of(Object... objects);
 
     @Test
     public void test1() throws IOException {

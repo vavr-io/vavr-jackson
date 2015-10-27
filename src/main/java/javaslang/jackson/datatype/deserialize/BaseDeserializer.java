@@ -75,7 +75,7 @@ class BaseDeserializer {
                     result.put(name, _deserializeArray(jp, expectedType.containedType(1)));
                     break;
                 case START_OBJECT:
-                    checkType(expectedType, javaslang.collection.HashMap.class, javaslang.Tuple.class);
+                    checkType(expectedType, javaslang.collection.HashMap.class, javaslang.collection.TreeMap.class, javaslang.Tuple.class);
                     result.put(name, _deserializeObject(jp, expectedType.containedType(1)));
                     break;
                 default:

@@ -11,8 +11,11 @@ public class JavaslangDeserializers extends Deserializers.Base {
     public JsonDeserializer<?> findBeanDeserializer(JavaType type,
                                                     DeserializationConfig config,
                                                     BeanDescription beanDesc) throws JsonMappingException {
-        if (Map.class.isAssignableFrom(type.getRawClass())) {
-            return new MapDeserializer(type);
+        if (HashMap.class.isAssignableFrom(type.getRawClass())) {
+            return new MapDeserializer.AsHashMap(type);
+        }
+        if (TreeMap.class.isAssignableFrom(type.getRawClass())) {
+            return new MapDeserializer.AsTreeMap(type);
         }
         if (Tuple.class.isAssignableFrom(type.getRawClass())) {
             return new TupleDeserializer(type);
