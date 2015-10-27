@@ -20,7 +20,7 @@ public abstract class SeqTest extends BaseTest {
         ObjectWriter writer = mapper(false).writer();
         Seq<?> src = of(1, 2.0, of(3, 4));
         String json = writer.writeValueAsString(src);
-        Assert.assertEquals(genJson(clz(), 1, 2.0, of(3, 4)), json);
+        Assert.assertEquals(genJsonList(clz(), 1, 2.0, of(3, 4)), json);
         Seq<?> dst = (Seq<?>) mapper(false).readValue(json, clz());
         Assert.assertEquals(src, dst);
     }
@@ -30,7 +30,7 @@ public abstract class SeqTest extends BaseTest {
         ObjectWriter writer = mapper(true).writer();
         Seq<?> src = of(1, 2.0, of(3, 4));
         String json = writer.writeValueAsString(src);
-        Assert.assertEquals(genJson(null, 1, 2.0, of(3, 4)), json);
+        Assert.assertEquals(genJsonList(null, 1, 2.0, of(3, 4)), json);
         Seq<?> dst1 = (Seq<?>) mapper(false).readValue(json, clz());
         Assert.assertEquals(of(1, 2.0, Arrays.asList(3, 4)), dst1);
         java.util.List<?> dst2 = (java.util.List<?>) mapper(false).readValue(json, Object.class);
