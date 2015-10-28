@@ -45,10 +45,10 @@ class TupleDeserializer extends StdDeserializer<Tuple> {
                 case 8:
                     return Tuple.of(list.get("_1"), list.get("_2"), list.get("_3"), list.get("_4"), list.get("_5"), list.get("_6"), list.get("_7"), list.get("_8"));
                 default:
-                    throw ctxt.mappingException(this.getClass());
+                    throw ctxt.mappingException(javaType.getRawClass());
             }
         } catch (ClassNotFoundException e) {
-            throw ctxt.mappingException(this.getClass());
+            throw ctxt.mappingException(javaType.getRawClass());
         }
     }
 }

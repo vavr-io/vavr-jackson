@@ -27,6 +27,15 @@ public class BaseTest {
         return mapper;
     }
 
+    protected String crashJson(String json) {
+        int p = json.indexOf("\"@class\"");
+        if(p < 0) {
+            return json;
+        }
+        p = json.indexOf("\"", p + 8) + 1;
+        return json.substring(0, p) + "X" + json.substring(p);
+    }
+
     protected String genJsonObject(Class<?> clz, String content) {
         StringBuilder sb = new StringBuilder();
         if (clz != null) {

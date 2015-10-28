@@ -26,7 +26,7 @@ class CharSeqDeserializer extends StdDeserializer<CharSeq> {
             final BaseDeserializer deserializer = new BaseDeserializer(ctxt);
             return (CharSeq) deserializer.deserialize(p, javaType);
         } catch (ClassNotFoundException e) {
-            throw ctxt.mappingException(this.getClass());
+            throw ctxt.mappingException(javaType.getRawClass());
         }
     }
 }

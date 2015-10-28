@@ -1,5 +1,6 @@
 package javaslang.jackson.datatype.seq;
 
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import javaslang.collection.Seq;
 import javaslang.jackson.datatype.BaseTest;
@@ -33,6 +34,11 @@ public abstract class SeqTest extends BaseTest {
         Assert.assertEquals(genJsonList(null, 1, 2.0f, of(3, 4)), json);
         Seq<?> dst = (Seq<?>) mapper(false).readValue(json, clz());
         Assert.assertEquals(of(1, 2.0f, Arrays.asList(3, 4)), dst);
+    }
+
+    @Test(expected = JsonMappingException.class)
+    public void test3() throws IOException {
+        mapper(false).readValue(crashJson(genJsonList(clz(), 1, 2.0f, of(3, 4))), clz());
     }
 
 }

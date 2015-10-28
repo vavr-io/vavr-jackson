@@ -34,7 +34,7 @@ abstract class MapDeserializer extends StdDeserializer<Map<?,?>> {
                 return it((java.util.Map<?, ?>) obj);
             }
         } catch (ClassNotFoundException e) {
-            throw ctxt.mappingException(this.getClass());
+            throw ctxt.mappingException(javaType.getRawClass());
         }
     }
 

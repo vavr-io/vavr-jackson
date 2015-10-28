@@ -1,5 +1,6 @@
 package javaslang.jackson.datatype.tuples;
 
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import javaslang.Tuple;
 import javaslang.jackson.datatype.BaseTest;
@@ -44,5 +45,10 @@ public abstract class TupleTest<T extends Tuple> extends BaseTest {
         Assert.assertEquals(genJsonTuple(null, 1, 2), json);
         T dst = (T) mapper(false).readValue(json, clz());
         Assert.assertEquals(src, dst);
+    }
+
+    @Test(expected = JsonMappingException.class)
+    public void test3() throws IOException {
+        mapper(false).readValue(crashJson(genJsonTuple(clz(), 1, 2)), clz());
     }
 }
