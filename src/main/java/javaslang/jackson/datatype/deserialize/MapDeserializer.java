@@ -27,7 +27,12 @@ abstract class MapDeserializer extends StdDeserializer<Map<?,?>> {
     public Map<?,?> deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
         try {
             final BaseDeserializer deserializer = new BaseDeserializer(ctxt);
-            return it((java.util.Map<?,?>) deserializer.deserialize(p, javaType));
+            Object obj = deserializer.deserialize(p, javaType);
+            if(obj instanceof Map) {
+                return (Map<?, ?>) obj;
+            } else {
+                return it((java.util.Map<?, ?>) obj);
+            }
         } catch (ClassNotFoundException e) {
             throw ctxt.mappingException(this.getClass());
         }

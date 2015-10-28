@@ -6,12 +6,12 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.type.TypeFactory;
-import javaslang.collection.Seq;
+import javaslang.collection.*;
 
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -74,16 +74,29 @@ class BaseDeserializer {
 
             switch (t) {
                 case START_ARRAY:
-                    checkType(expectedType, Seq.class);
                     result.put(name, _deserializeArray(jp, expectedType.containedType(1)));
                     break;
                 case START_OBJECT:
-                    checkType(expectedType, javaslang.collection.HashMap.class, javaslang.collection.TreeMap.class, javaslang.Tuple.class);
                     result.put(name, _deserializeObject(jp, expectedType.containedType(1)));
                     break;
                 default:
                     result.put(name, _deserializeScalar(jp, expectedType.containedType(1)));
             }
+        }
+        if(expectedType != null) {
+            if(javaslang.collection.HashMap.class.isAssignableFrom(expectedType.getRawClass())) {
+                return fill(javaslang.collection.HashMap.empty(), result);
+            }
+            if(javaslang.collection.TreeMap.class.isAssignableFrom(expectedType.getRawClass())) {
+                return fill(javaslang.collection.TreeMap.empty((o1, o2) -> o1.toString().compareTo(o2.toString())), result);
+            }
+        }
+        return result;
+    }
+
+    private javaslang.collection.Map<Object, Object> fill(javaslang.collection.Map<Object, Object> result, Map<Object, Object> content) {
+        for (Map.Entry<Object, Object> e : content.entrySet()) {
+            result = result.put(e.getKey(), e.getValue());
         }
         return result;
     }
@@ -163,7 +176,7 @@ class BaseDeserializer {
                         if(expectedType != null && Long.class.isAssignableFrom(expectedType.getRawClass())) {
                             return jp.getLongValue();
                         }
-                        if(expectedType == null || Integer.class.isAssignableFrom(expectedType.getRawClass())) {
+                        if(expectedType == null || expectedType.getRawClass() == Object.class || Integer.class.isAssignableFrom(expectedType.getRawClass())) {
                             return jp.getIntValue();
                         }
                         throw ctx.mappingException(expectedType.getRawClass());
