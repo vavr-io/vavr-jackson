@@ -23,6 +23,9 @@ public class JavaslangSerializers extends Serializers.Base {
         if (Array.class.isAssignableFrom(type.getRawClass())) {
             return new SeqSerializer<Array<?>>(type, Array.class, compact);
         }
+        if (CharSeq.class.isAssignableFrom(type.getRawClass())) {
+            return new CharSeqSerializer(type, compact);
+        }
         if (List.class.isAssignableFrom(type.getRawClass())) {
             return new SeqSerializer<List<?>>(type, List.class, compact);
         }

@@ -185,8 +185,12 @@ class BaseDeserializer {
                         return jp.getBigIntegerValue();
                 }
             case VALUE_STRING:
-                checkType(expectedType, String.class);
-                return jp.getText();
+                checkType(expectedType, String.class, CharSeq.class);
+                if(expectedType != null && CharSeq.class.isAssignableFrom(expectedType.getRawClass())) {
+                    return CharSeq.of(jp.getText());
+                } else {
+                    return jp.getText();
+                }
             default:
                 throw ctx.mappingException(BaseDeserializer.class);
         }

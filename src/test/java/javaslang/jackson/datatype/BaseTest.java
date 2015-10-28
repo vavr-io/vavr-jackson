@@ -27,11 +27,20 @@ public class BaseTest {
         return mapper;
     }
 
-    protected String genJsonList(Class<?> clz, Object... list) {
+    protected String genJsonObject(Class<?> clz, String content) {
         StringBuilder sb = new StringBuilder();
         if (clz != null) {
             sb.append("{\"@class\":\"").append(clz.getCanonicalName()).append("\",\"@data\":");
         }
+        sb.append(content);
+        if (clz != null) {
+            sb.append("}");
+        }
+        return sb.toString();
+    }
+
+    protected String genJsonList(Class<?> clz, Object... list) {
+        StringBuilder sb = new StringBuilder();
         sb.append("[");
         for (int i = 0; i < list.length; i++) {
             if (i > 0) {
@@ -47,17 +56,11 @@ public class BaseTest {
             }
         }
         sb.append("]");
-        if (clz != null) {
-            sb.append("}");
-        }
-        return sb.toString();
+        return genJsonObject(clz, sb.toString());
     }
 
     protected String genJsonMap(Class<?> clz, java.util.Map<?, ?> map) {
         StringBuilder sb = new StringBuilder();
-        if (clz != null) {
-            sb.append("{\"@class\":\"").append(clz.getCanonicalName()).append("\",\"@data\":");
-        }
         sb.append("{");
         int i = 0;
         for (Map.Entry<?, ?> entry : map.entrySet()) {
@@ -76,9 +79,6 @@ public class BaseTest {
             i++;
         }
         sb.append("}");
-        if (clz != null) {
-            sb.append("}");
-        }
-        return sb.toString();
+        return genJsonObject(clz, sb.toString());
     }
 }
