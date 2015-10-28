@@ -152,7 +152,7 @@ class BaseDeserializer {
                     if(expectedType == null || Float.class.isAssignableFrom(expectedType.getRawClass())) {
                         return jp.getFloatValue();
                     }
-                    throw ctx.mappingException(this.getClass());
+                    throw ctx.mappingException(expectedType.getRawClass());
                 }
             case VALUE_NUMBER_INT:
                 switch (jp.getNumberType()) {
@@ -166,7 +166,7 @@ class BaseDeserializer {
                         if(expectedType == null || Integer.class.isAssignableFrom(expectedType.getRawClass())) {
                             return jp.getIntValue();
                         }
-                        throw ctx.mappingException(this.getClass());
+                        throw ctx.mappingException(expectedType.getRawClass());
                     default:
                         checkType(expectedType, BigInteger.class);
                         return jp.getBigIntegerValue();
@@ -188,6 +188,6 @@ class BaseDeserializer {
                 return;
             }
         }
-        throw ctx.mappingException(this.getClass());
+        throw ctx.mappingException(expectedType.getRawClass());
     }
 }

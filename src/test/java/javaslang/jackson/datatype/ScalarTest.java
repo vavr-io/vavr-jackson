@@ -1,13 +1,16 @@
 package javaslang.jackson.datatype;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import javaslang.collection.List;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.math.BigInteger;
 
 public class ScalarTest extends BaseTest {
+
     @Test
     public void test1() throws IOException {
         List<Integer> l1 = mapper(false).readValue("[1]", new TypeReference<List<Integer>>() {});
@@ -26,5 +29,17 @@ public class ScalarTest extends BaseTest {
         Assert.assertEquals(l7, List.of(24L));
         List<Long> l8 = mapper(false).readValue("[" + Long.MAX_VALUE + "]", new TypeReference<List<Long>>() {});
         Assert.assertEquals(l8, List.of(Long.MAX_VALUE));
+        List<BigInteger> l9 = mapper(false).readValue("[1234567890123456789012]", new TypeReference<List<BigInteger>>() {});
+        Assert.assertEquals(l9, List.of(new BigInteger("1234567890123456789012")));
+    }
+
+    @Test(expected = JsonMappingException.class)
+    public void test2() throws IOException {
+        mapper(false).readValue("[1.3]", new TypeReference<List<Integer>>() {});
+    }
+
+    @Test(expected = JsonMappingException.class)
+    public void test3() throws IOException {
+        mapper(false).readValue("[1]", new TypeReference<List<String>>() {});
     }
 }
