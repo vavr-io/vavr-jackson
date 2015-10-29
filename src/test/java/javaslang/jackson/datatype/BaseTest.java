@@ -21,7 +21,7 @@ public class BaseTest {
 
     protected ObjectMapper mapper(boolean compact) {
         ObjectMapper mapper = new ObjectMapper();
-        JavaslangModule.JavaslangModuleConfig cfg = new JavaslangModule.JavaslangModuleConfig();
+        JavaslangModule.Config cfg = new JavaslangModule.Config();
         cfg.setCompact(compact);
         mapper.registerModule(new JavaslangModule(cfg));
         return mapper;
