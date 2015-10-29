@@ -33,7 +33,7 @@ public abstract class SeqTest extends BaseTest {
         String json = writer.writeValueAsString(src);
         Assert.assertEquals(genJsonList(null, 1, null, 2.0f, of(3, 4)), json);
         Seq<?> dst = (Seq<?>) mapper(false).readValue(json, clz());
-        Assert.assertEquals(of(1, 2.0f, Arrays.asList(3, 4)), dst);
+        Assert.assertEquals(of(1, null, 2.0f, Arrays.asList(3, 4)), dst);
     }
 
     @Test(expected = JsonMappingException.class)
