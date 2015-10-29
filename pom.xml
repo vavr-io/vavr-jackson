@@ -3,14 +3,35 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.sonatype.oss</groupId>
+        <artifactId>oss-parent</artifactId>
+        <version>9</version>
+    </parent>
 
-    <groupId>com.javaslang.jackson</groupId>
+    <groupId>com.javaslang</groupId>
     <artifactId>jackson-datatype-javaslang</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>2.0.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+    <url>http://javaslang.com</url>
+    <scm>
+        <connection>scm:git:git://github.com/ruslansennov/jackson-datatype-javaslang.git</connection>
+        <developerConnection>scm:git:git@github.com:ruslansennov/jackson-datatype-javaslang.git</developerConnection>
+        <url>https://github.com/ruslansennov/jackson-datatype-javaslang/</url>
+    </scm>
+
+    <developers>
+        <developer>
+            <id>ruslansennov</id>
+            <name>Ruslan Sennov</name>
+            <email>ruslan.sennov@gmail.com</email>
+        </developer>
+    </developers>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
+        <javaslang.version>2.0.0-beta</javaslang.version>
         <maven.compiler.version>3.2</maven.compiler.version>
         <fasterxml.version>2.6.3</fasterxml.version>
         <maven.coveralls.version>4.0.0</maven.coveralls.version>
@@ -22,7 +43,7 @@
         <dependency>
             <groupId>com.javaslang</groupId>
             <artifactId>javaslang</artifactId>
-            <version>2.0.0-beta</version>
+            <version>${javaslang.version}</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
