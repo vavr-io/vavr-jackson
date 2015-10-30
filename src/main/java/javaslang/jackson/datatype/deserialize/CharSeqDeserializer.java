@@ -9,7 +9,7 @@ import javaslang.collection.CharSeq;
 
 import java.io.IOException;
 
-class CharSeqDeserializer extends StdDeserializer<CharSeq> {
+class CharSeqDeserializer extends BaseDeserializer<CharSeq> {
 
     private static final long serialVersionUID = 1L;
 
@@ -21,10 +21,9 @@ class CharSeqDeserializer extends StdDeserializer<CharSeq> {
     }
 
     @Override
-    public CharSeq deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException {
+    public CharSeq deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
         try {
-            final BaseDeserializer deserializer = new BaseDeserializer(ctxt);
-            return (CharSeq) deserializer.deserialize(p, javaType);
+            return (CharSeq) deserialize(p, javaType, ctxt);
         } catch (ClassNotFoundException e) {
             throw ctxt.mappingException(javaType.getRawClass());
         }

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import javaslang.collection.*;
 
@@ -16,30 +17,30 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-class BaseDeserializer {
+abstract class BaseDeserializer<T> extends StdDeserializer<T> {
+
+    private static final long serialVersionUID = 1L;
 
     private final static String CLASS_KEY = "@class";
     private final static String DATA_KEY = "@data";
 
-    private final DeserializationContext ctx;
-
-    BaseDeserializer(DeserializationContext ctx) {
-        this.ctx = ctx;
+    BaseDeserializer(JavaType valueType) {
+        super(valueType);
     }
 
-    public Object deserialize(JsonParser jp, JavaType expectedType)
+    public Object deserialize(JsonParser jp, JavaType expectedType, DeserializationContext ctx)
             throws IOException, ClassNotFoundException {
         switch (jp.getCurrentToken()) {
             case START_OBJECT:
-                return _deserializeObject(jp, expectedType);
+                return _deserializeObject(jp, expectedType, ctx);
             case START_ARRAY:
-                return _deserializeArray(jp, expectedType);
+                return _deserializeArray(jp, expectedType, ctx);
             default:
-                return _deserializeScalar(jp, expectedType);
+                return _deserializeScalar(jp, expectedType, ctx);
         }
     }
 
-    protected Object _deserializeObject(JsonParser jp, JavaType expectedType)
+    protected Object _deserializeObject(JsonParser jp, JavaType expectedType, DeserializationContext ctx)
             throws IOException, ClassNotFoundException {
         Class<?> expectedClass = null;
         Map<Object, Object> result = new HashMap<>();
@@ -61,12 +62,12 @@ class BaseDeserializer {
                 Object o;
                 if(expectedClass != null) {
                     if(expectedType != null  && expectedClass.isAssignableFrom(expectedType.getRawClass())) {
-                        o = deserialize(jp, expectedType);  // TODO
+                        o = deserialize(jp, expectedType, ctx);  // TODO
                     } else {
-                        o = deserialize(jp, TypeFactory.defaultInstance().constructFromCanonical(expectedClass.getCanonicalName()));  // TODO
+                        o = deserialize(jp, TypeFactory.defaultInstance().constructFromCanonical(expectedClass.getCanonicalName()), ctx);  // TODO
                     }
                 } else {
-                    o = deserialize(jp, expectedType);  // TODO
+                    o = deserialize(jp, expectedType, ctx);  // TODO
                 }
                 jp.nextToken();
                 return o;
@@ -74,13 +75,13 @@ class BaseDeserializer {
 
             switch (t) {
                 case START_ARRAY:
-                    result.put(name, _deserializeArray(jp, expectedType.containedType(1)));
+                    result.put(name, _deserializeArray(jp, expectedType.containedType(1), ctx));
                     break;
                 case START_OBJECT:
-                    result.put(name, _deserializeObject(jp, expectedType.containedType(1)));
+                    result.put(name, _deserializeObject(jp, expectedType.containedType(1), ctx));
                     break;
                 default:
-                    result.put(name, _deserializeScalar(jp, expectedType.containedType(1)));
+                    result.put(name, _deserializeScalar(jp, expectedType.containedType(1), ctx));
             }
         }
         if(expectedType != null) {
@@ -101,21 +102,21 @@ class BaseDeserializer {
         return result;
     }
 
-    protected Iterable<?> _deserializeArray(JsonParser jp, JavaType expectedType)
+    protected Iterable<?> _deserializeArray(JsonParser jp, JavaType expectedType, DeserializationContext ctx)
             throws IOException, ClassNotFoundException {
-        checkType(expectedType, Seq.class);
+        checkType(ctx, expectedType, Seq.class);
         JsonToken t;
         List<Object> result = new ArrayList<>();
         while ((t = jp.nextToken()) != JsonToken.END_ARRAY) {
             switch (t) {
                 case START_ARRAY:
-                    result.add(_deserializeArray(jp, expectedType.containedType(0)));
+                    result.add(_deserializeArray(jp, expectedType.containedType(0), ctx));
                     break;
                 case START_OBJECT:
-                    result.add(_deserializeObject(jp, expectedType.containedType(0)));
+                    result.add(_deserializeObject(jp, expectedType.containedType(0), ctx));
                     break;
                 default:
-                    result.add(_deserializeScalar(jp, expectedType == null || expectedType.containedTypeCount() == 0 ? null : expectedType.containedType(0)));
+                    result.add(_deserializeScalar(jp, expectedType == null || expectedType.containedTypeCount() == 0 ? null : expectedType.containedType(0), ctx));
             }
         }
         if(expectedType != null) {
@@ -141,22 +142,22 @@ class BaseDeserializer {
         return result;
     }
 
-    protected Object _deserializeScalar(JsonParser jp, JavaType expectedType)
+    protected Object _deserializeScalar(JsonParser jp, JavaType expectedType, DeserializationContext ctx)
             throws IOException {
         switch (jp.getCurrentToken()) {
             case VALUE_EMBEDDED_OBJECT:
                 throw ctx.mappingException(this.getClass());
             case VALUE_FALSE:
-                checkType(expectedType, Boolean.class);
+                checkType(ctx, expectedType, Boolean.class);
                 return Boolean.FALSE;
             case VALUE_TRUE:
-                checkType(expectedType, Boolean.class);
+                checkType(ctx, expectedType, Boolean.class);
                 return Boolean.TRUE;
             case VALUE_NULL:
                 return null;
             case VALUE_NUMBER_FLOAT:
                 if (jp.getNumberType() == JsonParser.NumberType.BIG_DECIMAL) {
-                    checkType(expectedType, BigDecimal.class);
+                    checkType(ctx, expectedType, BigDecimal.class);
                     return jp.getDecimalValue();
                 } else {
                     if(expectedType != null && Double.class.isAssignableFrom(expectedType.getRawClass())) {
@@ -170,7 +171,7 @@ class BaseDeserializer {
             case VALUE_NUMBER_INT:
                 switch (jp.getNumberType()) {
                     case LONG:
-                        checkType(expectedType, Long.class);
+                        checkType(ctx, expectedType, Long.class);
                         return jp.getLongValue();
                     case INT:
                         if(expectedType != null && Long.class.isAssignableFrom(expectedType.getRawClass())) {
@@ -181,11 +182,11 @@ class BaseDeserializer {
                         }
                         throw ctx.mappingException(expectedType.getRawClass());
                     default:
-                        checkType(expectedType, BigInteger.class);
+                        checkType(ctx, expectedType, BigInteger.class);
                         return jp.getBigIntegerValue();
                 }
             case VALUE_STRING:
-                checkType(expectedType, String.class, CharSeq.class);
+                checkType(ctx, expectedType, String.class, CharSeq.class);
                 if(expectedType != null && CharSeq.class.isAssignableFrom(expectedType.getRawClass())) {
                     return CharSeq.of(jp.getText());
                 } else {
@@ -196,7 +197,7 @@ class BaseDeserializer {
         }
     }
 
-    private void checkType(JavaType expectedType, Class<?>... actualClasses) throws JsonMappingException {
+    private void checkType(DeserializationContext ctx, JavaType expectedType, Class<?>... actualClasses) throws JsonMappingException {
         if (expectedType == null || expectedType.getRawClass() == Object.class) {
             return;
         }
