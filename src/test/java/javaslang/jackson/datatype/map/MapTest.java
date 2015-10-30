@@ -10,7 +10,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.util.HashMap;
 
 public abstract class MapTest extends BaseTest {
 
@@ -20,13 +19,16 @@ public abstract class MapTest extends BaseTest {
 
     @Test
     public void test1() throws IOException {
-        ObjectWriter writer = mapper(false).writer();
-        String result = writer.writeValueAsString(emptyMap().put(Tuple.of(1, 2), List.of(3, 4)));
-        java.util.Map<Object, Object> jsmap = new HashMap<>();
-        jsmap.put("(1, 2)", List.of(3, 4));
-        Assert.assertEquals(genJsonMap(clz(), jsmap), result);
-        Map<?, ?> map = (Map<?, ?>) mapper(false).readValue(result, clz());
-        Assert.assertEquals(emptyMap().put("(1, 2)", List.of(3, 4)), map);
+        Map<Object, Object> javaslangObject = emptyMap().put("1", 2);
+        java.util.Map<Object, Object> javaObject = new java.util.HashMap<>();
+        javaObject.put("1", 2);
+
+        String extendedJson = mapper(false).writer().writeValueAsString(javaslangObject);
+        String compactJson = mapper(true).writer().writeValueAsString(emptyMap().put("1", 2));
+
+        Assert.assertEquals(genJsonMap(clz(), javaObject), extendedJson);
+        Assert.assertEquals((Map<?, ?>) mapper(false).readValue(extendedJson, clz()), javaslangObject);
+        Assert.assertEquals(mapper(false).readValue(compactJson, java.util.HashMap.class), javaObject);
     }
 
     @Test(expected = JsonMappingException.class)
@@ -38,6 +40,6 @@ public abstract class MapTest extends BaseTest {
 
     @Test(expected = JsonMappingException.class)
     public void test3() throws IOException {
-        mapper(false).readValue(crashJson(genJsonMap(clz(), new HashMap<>())), clz());
+        mapper(false).readValue(crashJson(genJsonMap(clz(), new java.util.HashMap<>())), clz());
     }
 }

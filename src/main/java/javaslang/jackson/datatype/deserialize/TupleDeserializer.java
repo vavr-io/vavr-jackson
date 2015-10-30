@@ -9,7 +9,7 @@ import javaslang.Tuple;
 import java.io.IOException;
 import java.util.Map;
 
-class TupleDeserializer extends StdDeserializer<Tuple> {
+class TupleDeserializer extends BaseDeserializer<Tuple> {
 
     private static final long serialVersionUID = 1L;
 
@@ -23,8 +23,7 @@ class TupleDeserializer extends StdDeserializer<Tuple> {
     @Override
     public Tuple deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
         try {
-            final BaseDeserializer deserializer = new BaseDeserializer(ctxt);
-            Map<?, ?> list = (Map<?, ?>) deserializer.deserialize(p, javaType);
+            Map<?, ?> list = (Map<?, ?>) deserialize(p, javaType, ctxt);
             switch (list.size()) {
                 case 0:
                     return Tuple.empty();

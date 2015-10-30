@@ -10,7 +10,7 @@ import javaslang.collection.TreeMap;
 
 import java.io.IOException;
 
-abstract class MapDeserializer extends StdDeserializer<Map<?,?>> {
+abstract class MapDeserializer extends BaseDeserializer<Map<?,?>> {
 
     private static final long serialVersionUID = 1L;
 
@@ -26,8 +26,7 @@ abstract class MapDeserializer extends StdDeserializer<Map<?,?>> {
     @Override
     public Map<?,?> deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
         try {
-            final BaseDeserializer deserializer = new BaseDeserializer(ctxt);
-            Object obj = deserializer.deserialize(p, javaType);
+            Object obj = deserialize(p, javaType, ctxt);
             if(obj instanceof Map) {
                 return (Map<?, ?>) obj;
             } else {

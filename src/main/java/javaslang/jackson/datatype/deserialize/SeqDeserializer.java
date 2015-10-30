@@ -8,7 +8,7 @@ import javaslang.collection.*;
 
 import java.io.IOException;
 
-abstract class SeqDeserializer extends StdDeserializer<Seq<?>> {
+abstract class SeqDeserializer extends BaseDeserializer<Seq<?>> {
 
     private static final long serialVersionUID = 1L;
 
@@ -24,8 +24,7 @@ abstract class SeqDeserializer extends StdDeserializer<Seq<?>> {
     @Override
     public Seq<?> deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
         try {
-            final BaseDeserializer deserializer = new BaseDeserializer(ctxt);
-            return it((Iterable<?>) deserializer.deserialize(p, javaType));
+            return it((Iterable<?>) deserialize(p, javaType, ctxt));
         } catch (ClassNotFoundException e) {
             throw ctxt.mappingException(javaType.getRawClass());
         }
