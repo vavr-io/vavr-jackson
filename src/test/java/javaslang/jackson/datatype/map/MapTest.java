@@ -30,6 +30,13 @@ public abstract class MapTest extends BaseTest {
     }
 
     @Test(expected = JsonMappingException.class)
+    public void test2() throws IOException {
+        ObjectWriter writer = mapper(false).writer();
+        String json = writer.writeValueAsString(emptyMap().put(Tuple.of(1, 2), List.of(3, 4)));
+        mapper(false).readValue(json, Tuple.class);
+    }
+
+    @Test(expected = JsonMappingException.class)
     public void test3() throws IOException {
         mapper(false).readValue(crashJson(genJsonMap(clz(), new HashMap<>())), clz());
     }

@@ -50,7 +50,7 @@ class BaseDeserializer {
                 if (t == JsonToken.VALUE_STRING) {
                     expectedClass = Class.forName(jp.getText());
                     if (expectedType != null && !expectedType.getRawClass().isAssignableFrom(expectedClass)) {
-                        throw JsonMappingException.from(jp, "bad " + CLASS_KEY + " value"); // TODO
+                        throw ctx.mappingException(expectedType.getRawClass());
                     }
                     continue;
                 } else {
