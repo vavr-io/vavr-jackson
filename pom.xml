@@ -10,14 +10,14 @@
     </parent>
 
     <groupId>com.javaslang</groupId>
-    <artifactId>jackson-datatype-javaslang</artifactId>
+    <artifactId>javaslang-jackson</artifactId>
     <version>2.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
     <url>http://javaslang.com</url>
     <scm>
-        <connection>scm:git:git://github.com/ruslansennov/jackson-datatype-javaslang.git</connection>
-        <developerConnection>scm:git:git@github.com:ruslansennov/jackson-datatype-javaslang.git</developerConnection>
-        <url>https://github.com/ruslansennov/jackson-datatype-javaslang/</url>
+        <connection>scm:git:git://github.com/javaslang/javaslang-jackson.git</connection>
+        <developerConnection>scm:git:git@github.com/javaslang/javaslang-jackson.git</developerConnection>
+        <url>https://github.com/javaslang/javaslang-jackson</url>
     </scm>
 
     <developers>
