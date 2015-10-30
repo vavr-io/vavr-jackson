@@ -42,3 +42,20 @@ Ensure that your `~/.m2/settings.xml` contains the following:
     </profile>
 </profiles>
 ```
+
+### Gradle
+
+```groovy
+compile("com.javaslang:javaslang-jackson:2.0.0-SNAPSHOT")
+```
+
+Ensure you `build.gradle` contains the following:
+
+```groovy
+repositories {
+    mavenCentral()
+    maven {
+        url "https://oss.sonatype.org/content/repositories/snapshots"
+    }
+}
+```
