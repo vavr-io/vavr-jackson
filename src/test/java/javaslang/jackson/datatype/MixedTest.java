@@ -15,8 +15,8 @@ public class MixedTest extends BaseTest {
         Object src = HashMap.empty().put("key1", List.of(1, 2)).put("key2", List.of(3, 4));
         String extended = mapper(false).writer().writeValueAsString(src);
         String compact = mapper(true).writer().writeValueAsString(src);
-        Assert.assertEquals(mapper(false).readValue(extended, HashMap.class), src);
-        Assert.assertEquals(mapper(false).readValue(compact, new TypeReference<HashMap<?, List<?>>>() {}), src);
+        Assert.assertEquals(mapper().readValue(extended, HashMap.class), src);
+        Assert.assertEquals(mapper().readValue(compact, new TypeReference<HashMap<?, List<?>>>() {}), src);
     }
 
     @Test
@@ -24,8 +24,8 @@ public class MixedTest extends BaseTest {
         Object src = List.of(HashMap.empty().put("key1", 1), HashMap.empty().put("key2", 2));
         String extended = mapper(false).writer().writeValueAsString(src);
         String compact = mapper(true).writer().writeValueAsString(src);
-        Assert.assertEquals(mapper(false).readValue(extended, List.class), src);
-        Assert.assertEquals(mapper(false).readValue(compact, new TypeReference<List<HashMap<?, ?>>>() {}), src);
+        Assert.assertEquals(mapper().readValue(extended, List.class), src);
+        Assert.assertEquals(mapper().readValue(compact, new TypeReference<List<HashMap<?, ?>>>() {}), src);
     }
 
     @Test
@@ -33,8 +33,8 @@ public class MixedTest extends BaseTest {
         java.util.Map<String, String> javaHMap = new java.util.HashMap<>();
         javaHMap.put("1", "2");
         List<?> src = List.of(javaHMap);
-        List<?> extendedRestored = mapper(false).readValue(mapper(false).writer().writeValueAsString(src), List.class);
-        List<?> compactRestored = mapper(false).readValue(mapper(true).writer().writeValueAsString(src), List.class);
+        List<?> extendedRestored = mapper().readValue(mapper(false).writer().writeValueAsString(src), List.class);
+        List<?> compactRestored = mapper().readValue(mapper(true).writer().writeValueAsString(src), List.class);
         Assert.assertEquals(extendedRestored, src);
         Assert.assertEquals(compactRestored, src);
     }

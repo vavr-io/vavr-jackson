@@ -16,7 +16,7 @@ public class CharSeqTest extends BaseTest {
         CharSeq src = CharSeq.of('a', 'b', 'c');
         String json = writer.writeValueAsString(src);
         Assert.assertEquals(genJsonObject(CharSeq.class, "\"abc\""), json);
-        CharSeq dst = mapper(false).readValue(json, CharSeq.class);
+        CharSeq dst = mapper().readValue(json, CharSeq.class);
         Assert.assertEquals(src, dst);
     }
 
@@ -26,12 +26,12 @@ public class CharSeqTest extends BaseTest {
         CharSeq src = CharSeq.of('a', 'b', 'c');
         String json = writer.writeValueAsString(src);
         Assert.assertEquals(genJsonObject(null, "\"abc\""), json);
-        CharSeq dst = mapper(false).readValue(json, CharSeq.class);
+        CharSeq dst = mapper().readValue(json, CharSeq.class);
         Assert.assertEquals(src, dst);
     }
 
     @Test(expected = JsonMappingException.class)
     public void test3() throws IOException {
-        mapper(false).readValue(crashJson(genJsonObject(CharSeq.class, "\"abc\"")), CharSeq.class);
+        mapper().readValue(crashJson(genJsonObject(CharSeq.class, "\"abc\"")), CharSeq.class);
     }
 }

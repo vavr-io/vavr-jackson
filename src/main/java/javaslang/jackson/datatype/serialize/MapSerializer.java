@@ -10,7 +10,7 @@ class MapSerializer<T extends Map<?, ?>> extends ValueSerializer<T> {
 
     private static final long serialVersionUID = 1L;
 
-    protected MapSerializer(JavaType type, Class<?> clz, boolean compact) {
+    MapSerializer(JavaType type, Class<?> clz, boolean compact) {
         super(type, clz, compact);
     }
 

@@ -3,7 +3,8 @@ package javaslang.jackson.datatype.deserialize;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.deser.Deserializers;
 import javaslang.Tuple;
-import javaslang.collection.*;
+import javaslang.collection.Map;
+import javaslang.collection.Seq;
 
 public class JavaslangDeserializers extends Deserializers.Base {
 

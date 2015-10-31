@@ -3,7 +3,6 @@ package javaslang.jackson.datatype.deserialize;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import javaslang.Tuple;
 
 import java.io.IOException;
@@ -15,7 +14,7 @@ class TupleDeserializer extends BaseDeserializer<Tuple> {
 
     private final JavaType javaType;
 
-    protected TupleDeserializer(JavaType valueType) {
+    TupleDeserializer(JavaType valueType) {
         super(valueType);
         this.javaType = valueType;
     }
@@ -23,7 +22,7 @@ class TupleDeserializer extends BaseDeserializer<Tuple> {
     @Override
     public Tuple deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
         try {
-            Map<?, ?> list = (Map<?, ?>) deserialize(p, javaType, ctxt);
+            Map<?, ?> list = (Map<?, ?>) _deserialize(p, javaType, ctxt);
             switch (list.size()) {
                 case 0:
                     return Tuple.empty();
