@@ -1,6 +1,7 @@
-# javaslang-jackson
 [![Build Status](https://travis-ci.org/javaslang/javaslang-jackson.svg?branch=master)](https://travis-ci.org/javaslang/javaslang-jackson)
 [![Coverage Status](https://coveralls.io/repos/javaslang/javaslang-jackson/badge.svg)](https://coveralls.io/github/javaslang/javaslang-jackson)
+
+# javaslang-jackson
 
 Jackson datatype module for [Javaslang](http://javaslang.com/) library
 
@@ -49,7 +50,7 @@ Ensure that your `~/.m2/settings.xml` contains the following:
 compile("com.javaslang:javaslang-jackson:2.0.0-SNAPSHOT")
 ```
 
-Ensure you `build.gradle` contains the following:
+Ensure that your `build.gradle` contains the following:
 
 ```groovy
 repositories {
