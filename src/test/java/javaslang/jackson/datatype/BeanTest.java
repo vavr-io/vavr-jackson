@@ -39,7 +39,7 @@ public class BeanTest extends BaseTest {
         src.value = List.of(1);
         String extended = mapper(false).writer().writeValueAsString(src);
         String compact = mapper(true).writer().writeValueAsString(src);
-        Assert.assertEquals(mapper(false).readValue(extended, BeanObject.class), src);
-        Assert.assertEquals(mapper(false).readValue(compact, BeanObject.class), src);
+        Assert.assertEquals(mapper().readValue(extended, BeanObject.class), src);
+        Assert.assertEquals(mapper().readValue(compact, BeanObject.class), src);
     }
 }

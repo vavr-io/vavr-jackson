@@ -7,12 +7,13 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.type.TypeFactory;
-import javaslang.collection.*;
+import javaslang.collection.CharSeq;
+import javaslang.collection.Seq;
 
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +29,7 @@ abstract class BaseDeserializer<T> extends StdDeserializer<T> {
         super(valueType);
     }
 
-    public Object deserialize(JsonParser jp, JavaType expectedType, DeserializationContext ctx)
+    Object _deserialize(JsonParser jp, JavaType expectedType, DeserializationContext ctx)
             throws IOException, ClassNotFoundException {
         switch (jp.getCurrentToken()) {
             case START_OBJECT:
@@ -40,7 +41,7 @@ abstract class BaseDeserializer<T> extends StdDeserializer<T> {
         }
     }
 
-    protected Object _deserializeObject(JsonParser jp, JavaType expectedType, DeserializationContext ctx)
+    private Object _deserializeObject(JsonParser jp, JavaType expectedType, DeserializationContext ctx)
             throws IOException, ClassNotFoundException {
         Class<?> expectedClass = null;
         Map<Object, Object> result = new HashMap<>();
@@ -48,26 +49,22 @@ abstract class BaseDeserializer<T> extends StdDeserializer<T> {
             String name = jp.getCurrentName();
             JsonToken t = jp.nextToken();
             if (CLASS_KEY.equals(name)) {
-                if (t == JsonToken.VALUE_STRING) {
-                    expectedClass = Class.forName(jp.getText());
-                    if (expectedType != null && !expectedType.getRawClass().isAssignableFrom(expectedClass)) {
-                        throw ctx.mappingException(expectedType.getRawClass());
-                    }
-                    continue;
-                } else {
-                    throw JsonMappingException.from(jp, "bad " + CLASS_KEY + " value"); // TODO
+                expectedClass = Class.forName(jp.getText());
+                if (expectedType != null && !expectedType.getRawClass().isAssignableFrom(expectedClass)) {
+                    throw ctx.mappingException(expectedType.getRawClass());
                 }
+                continue;
             }
             if (DATA_KEY.equals(name)) {
                 Object o;
                 if(expectedClass != null) {
                     if(expectedType != null  && expectedClass.isAssignableFrom(expectedType.getRawClass())) {
-                        o = deserialize(jp, expectedType, ctx);  // TODO
+                        o = _deserialize(jp, expectedType, ctx);  // TODO
                     } else {
-                        o = deserialize(jp, TypeFactory.defaultInstance().constructFromCanonical(expectedClass.getCanonicalName()), ctx);  // TODO
+                        o = _deserialize(jp, TypeFactory.defaultInstance().constructFromCanonical(expectedClass.getCanonicalName()), ctx);  // TODO
                     }
                 } else {
-                    o = deserialize(jp, expectedType, ctx);  // TODO
+                    o = _deserialize(jp, expectedType, ctx);  // TODO
                 }
                 jp.nextToken();
                 return o;
@@ -75,13 +72,13 @@ abstract class BaseDeserializer<T> extends StdDeserializer<T> {
 
             switch (t) {
                 case START_ARRAY:
-                    result.put(name, _deserializeArray(jp, expectedType.containedType(1), ctx));
+                    result.put(name, _deserializeArray(jp, containedType(expectedType, 1), ctx));
                     break;
                 case START_OBJECT:
-                    result.put(name, _deserializeObject(jp, expectedType.containedType(1), ctx));
+                    result.put(name, _deserializeObject(jp, containedType(expectedType, 1), ctx));
                     break;
                 default:
-                    result.put(name, _deserializeScalar(jp, expectedType == null || expectedType.containedTypeCount() < 2 ? null : expectedType.containedType(1), ctx));
+                    result.put(name, _deserializeScalar(jp, containedType(expectedType, 1), ctx));
             }
         }
         if(expectedType != null) {
@@ -95,14 +92,7 @@ abstract class BaseDeserializer<T> extends StdDeserializer<T> {
         return result;
     }
 
-    private javaslang.collection.Map<Object, Object> fill(javaslang.collection.Map<Object, Object> result, Map<Object, Object> content) {
-        for (Map.Entry<Object, Object> e : content.entrySet()) {
-            result = result.put(e.getKey(), e.getValue());
-        }
-        return result;
-    }
-
-    protected Iterable<?> _deserializeArray(JsonParser jp, JavaType expectedType, DeserializationContext ctx)
+    private Iterable<?> _deserializeArray(JsonParser jp, JavaType expectedType, DeserializationContext ctx)
             throws IOException, ClassNotFoundException {
         checkType(ctx, expectedType, Seq.class);
         JsonToken t;
@@ -110,13 +100,13 @@ abstract class BaseDeserializer<T> extends StdDeserializer<T> {
         while ((t = jp.nextToken()) != JsonToken.END_ARRAY) {
             switch (t) {
                 case START_ARRAY:
-                    result.add(_deserializeArray(jp, expectedType.containedType(0), ctx));
+                    result.add(_deserializeArray(jp, containedType(expectedType, 0), ctx));
                     break;
                 case START_OBJECT:
-                    result.add(_deserializeObject(jp, expectedType.containedType(0), ctx));
+                    result.add(_deserializeObject(jp, containedType(expectedType, 0), ctx));
                     break;
                 default:
-                    result.add(_deserializeScalar(jp, expectedType == null || expectedType.containedTypeCount() == 0 ? null : expectedType.containedType(0), ctx));
+                    result.add(_deserializeScalar(jp, containedType(expectedType, 0), ctx));
             }
         }
         if(expectedType != null) {
@@ -142,7 +132,7 @@ abstract class BaseDeserializer<T> extends StdDeserializer<T> {
         return result;
     }
 
-    protected Object _deserializeScalar(JsonParser jp, JavaType expectedType, DeserializationContext ctx)
+    private Object _deserializeScalar(JsonParser jp, JavaType expectedType, DeserializationContext ctx)
             throws IOException {
         switch (jp.getCurrentToken()) {
             case VALUE_EMBEDDED_OBJECT:
@@ -197,7 +187,22 @@ abstract class BaseDeserializer<T> extends StdDeserializer<T> {
         }
     }
 
-    private void checkType(DeserializationContext ctx, JavaType expectedType, Class<?>... actualClasses) throws JsonMappingException {
+    private static JavaType containedType(JavaType holder, int index) {
+        if(holder == null || holder.containedTypeCount() < index) {
+            return null;
+        } else {
+            return holder.containedType(index);
+        }
+    }
+
+    private static javaslang.collection.Map<Object, Object> fill(javaslang.collection.Map<Object, Object> result, Map<Object, Object> content) {
+        for (Map.Entry<Object, Object> e : content.entrySet()) {
+            result = result.put(e.getKey(), e.getValue());
+        }
+        return result;
+    }
+
+    private static void checkType(DeserializationContext ctx, JavaType expectedType, Class<?>... actualClasses) throws JsonMappingException {
         if (expectedType == null || expectedType.getRawClass() == Object.class) {
             return;
         }

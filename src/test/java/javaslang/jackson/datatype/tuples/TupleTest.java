@@ -32,7 +32,7 @@ public abstract class TupleTest<T extends Tuple> extends BaseTest {
         T src = ofObjects(1, 17);
         String json = mapper(false).writeValueAsString(src);
         Assert.assertEquals(genJsonTuple(clz(), 1, 17), json);
-        T dst = (T) mapper(false).readValue(json, clz());
+        T dst = (T) mapper().readValue(json, clz());
         Assert.assertEquals(src, dst);
     }
 
@@ -43,12 +43,12 @@ public abstract class TupleTest<T extends Tuple> extends BaseTest {
         T src = ofObjects(1, 2);
         String json = writer.writeValueAsString(src);
         Assert.assertEquals(genJsonTuple(null, 1, 2), json);
-        T dst = (T) mapper(false).readValue(json, clz());
+        T dst = (T) mapper().readValue(json, clz());
         Assert.assertEquals(src, dst);
     }
 
     @Test(expected = JsonMappingException.class)
     public void test3() throws IOException {
-        mapper(false).readValue(crashJson(genJsonTuple(clz(), 1, 2)), clz());
+        mapper().readValue(crashJson(genJsonTuple(clz(), 1, 2)), clz());
     }
 }

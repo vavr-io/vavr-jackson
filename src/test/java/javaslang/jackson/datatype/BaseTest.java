@@ -19,6 +19,12 @@ public class BaseTest {
         return o.getClass();
     }
 
+    protected ObjectMapper mapper() {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaslangModule());
+        return mapper;
+    }
+
     protected ObjectMapper mapper(boolean compact) {
         ObjectMapper mapper = new ObjectMapper();
         JavaslangModule.Config cfg = new JavaslangModule.Config();
