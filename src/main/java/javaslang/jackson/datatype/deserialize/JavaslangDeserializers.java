@@ -20,9 +20,6 @@ public class JavaslangDeserializers extends Deserializers.Base {
         if (Seq.class.isAssignableFrom(type.getRawClass())) {
             return new SeqDeserializer(type);
         }
-        if (CharSeq.class.isAssignableFrom(type.getRawClass())) {
-            return new CharSeqDeserializer(type);
-        }
         return null;
     }
 }
