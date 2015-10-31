@@ -81,7 +81,7 @@ abstract class BaseDeserializer<T> extends StdDeserializer<T> {
                     result.put(name, _deserializeObject(jp, expectedType.containedType(1), ctx));
                     break;
                 default:
-                    result.put(name, _deserializeScalar(jp, expectedType.containedType(1), ctx));
+                    result.put(name, _deserializeScalar(jp, expectedType == null || expectedType.containedTypeCount() < 2 ? null : expectedType.containedType(1), ctx));
             }
         }
         if(expectedType != null) {

@@ -28,4 +28,15 @@ public class MixedTest extends BaseTest {
         Assert.assertEquals(mapper(false).readValue(compact, new TypeReference<List<HashMap<?, ?>>>() {}), src);
     }
 
+    @Test
+    public void test3() throws IOException {
+        java.util.Map<String, String> javaHMap = new java.util.HashMap<>();
+        javaHMap.put("1", "2");
+        List<?> src = List.of(javaHMap);
+        List<?> extendedRestored = mapper(false).readValue(mapper(false).writer().writeValueAsString(src), List.class);
+        List<?> compactRestored = mapper(false).readValue(mapper(true).writer().writeValueAsString(src), List.class);
+        Assert.assertEquals(extendedRestored, src);
+        Assert.assertEquals(compactRestored, src);
+    }
+
 }
