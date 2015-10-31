@@ -11,36 +11,14 @@ public class JavaslangDeserializers extends Deserializers.Base {
     public JsonDeserializer<?> findBeanDeserializer(JavaType type,
                                                     DeserializationConfig config,
                                                     BeanDescription beanDesc) throws JsonMappingException {
-        if (HashMap.class.isAssignableFrom(type.getRawClass())) {
-            return new MapDeserializer.AsHashMap(type);
-        }
-        if (TreeMap.class.isAssignableFrom(type.getRawClass())) {
-            return new MapDeserializer.AsTreeMap(type);
+        if (Map.class.isAssignableFrom(type.getRawClass())) {
+            return new MapDeserializer(type);
         }
         if (Tuple.class.isAssignableFrom(type.getRawClass())) {
             return new TupleDeserializer(type);
         }
-
-        if (Array.class.isAssignableFrom(type.getRawClass())) {
-            return new SeqDeserializer.AsArray(type);
-        }
-        if (CharSeq.class.isAssignableFrom(type.getRawClass())) {
-            return new CharSeqDeserializer(type);
-        }
-        if (List.class.isAssignableFrom(type.getRawClass())) {
-            return new SeqDeserializer.AsList(type);
-        }
-        if (Queue.class.isAssignableFrom(type.getRawClass())) {
-            return new SeqDeserializer.AsQueue(type);
-        }
-        if (Stack.class.isAssignableFrom(type.getRawClass())) {
-            return new SeqDeserializer.AsStack(type);
-        }
-        if (Stream.class.isAssignableFrom(type.getRawClass())) {
-            return new SeqDeserializer.AsStream(type);
-        }
-        if (Vector.class.isAssignableFrom(type.getRawClass())) {
-            return new SeqDeserializer.AsVector(type);
+        if (Seq.class.isAssignableFrom(type.getRawClass())) {
+            return new SeqDeserializer(type);
         }
         return null;
     }

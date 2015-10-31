@@ -1,4 +1,4 @@
-# jackson-datatype-javaslang
+# javaslang-jackson
 [![Build Status](https://travis-ci.org/javaslang/javaslang-jackson.svg?branch=master)](https://travis-ci.org/javaslang/javaslang-jackson)
 [![Coverage Status](https://coveralls.io/repos/javaslang/javaslang-jackson/badge.svg)](https://coveralls.io/github/javaslang/javaslang-jackson)
 
