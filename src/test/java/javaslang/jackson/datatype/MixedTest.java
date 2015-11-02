@@ -2,6 +2,7 @@ package javaslang.jackson.datatype;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import javaslang.Value;
 import javaslang.collection.HashMap;
 import javaslang.collection.List;
 import org.junit.Assert;
@@ -50,5 +51,15 @@ public class MixedTest extends BaseTest {
         Assert.assertEquals(mapper().readValue("[{\"@data\":1}]", new TypeReference<List<Integer>>() {}), List.of(1));
     }
 
+    @Test
+    public void test6() throws IOException {
+        String json = mapper(false).writer().writeValueAsString(List.of(List.of(1)));
+        Assert.assertEquals(List.of(List.of(1)), mapper().readValue(json, Value.class));
+    }
 
+    @Test(expected = JsonMappingException.class)
+    public void test7() throws IOException {
+        String json = mapper(false).writer().writeValueAsString(List.of(List.of(1)));
+        Assert.assertEquals(List.of(List.of(1)), mapper().readValue(crashJson(json), Value.class));
+    }
 }

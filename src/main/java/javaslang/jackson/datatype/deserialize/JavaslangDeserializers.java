@@ -3,6 +3,7 @@ package javaslang.jackson.datatype.deserialize;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.deser.Deserializers;
 import javaslang.Tuple;
+import javaslang.Value;
 import javaslang.collection.Map;
 import javaslang.collection.Seq;
 
@@ -20,6 +21,9 @@ public class JavaslangDeserializers extends Deserializers.Base {
         }
         if (Seq.class.isAssignableFrom(type.getRawClass())) {
             return new SeqDeserializer(type);
+        }
+        if (Value.class.isAssignableFrom(type.getRawClass())) {
+            return new ValueDeserializer(type);
         }
         return null;
     }
