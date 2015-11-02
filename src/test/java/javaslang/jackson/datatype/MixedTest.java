@@ -54,6 +54,12 @@ public class MixedTest extends BaseTest {
     @Test
     public void test6() throws IOException {
         String json = mapper(false).writer().writeValueAsString(List.of(List.of(1)));
-        Object restored = mapper().readValue(json, Value.class);
+        Assert.assertEquals(List.of(List.of(1)), mapper().readValue(json, Value.class));
+    }
+
+    @Test(expected = JsonMappingException.class)
+    public void test7() throws IOException {
+        String json = mapper(false).writer().writeValueAsString(List.of(List.of(1)));
+        Assert.assertEquals(List.of(List.of(1)), mapper().readValue(crashJson(json), Value.class));
     }
 }
