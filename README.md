@@ -9,7 +9,7 @@ Jackson datatype module for [Javaslang](http://javaslang.com/) library
 
 ### Registering module
 Just register a new instance of <code>JavaslangModule</code>
-```
+```java
 ObjectMapper mapper = new ObjectMapper();
 mapper.registerModule(new JavaslangModule());
 ```
@@ -17,9 +17,9 @@ mapper.registerModule(new JavaslangModule());
 ```java
 String json = mapper.writer().writeValueAsString(List.of(List.of(1)));
 // = [[1]]
-Object restoredObject1 = mapper.readValue(json, List.class);
+Object restored1 = mapper.readValue(json, List.class);
 // = List(java.util.ArrayList(1))
-Object restoredObject2 = mapper.readValue(json, new TypeReference<List<List<?>>>() {});
+Object restored2 = mapper.readValue(json, new TypeReference<List<List<?>>>() {});
 // = List(List(1))
 ```
 ### Extended serialization/deserialization
@@ -35,7 +35,7 @@ String json = mapper.writer().writeValueAsString(List.of(List.of(1)));
 //              {"@class":"javaslang.collection.List","@data":[1]}
 //            ]
 //   }
-Object restoredObject = mapper.readValue(json, List.class);
+Object restored = mapper.readValue(json, Value.class);
 // = List(List(1))
 ```
 ## Using Developer Versions
