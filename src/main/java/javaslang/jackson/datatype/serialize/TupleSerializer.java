@@ -21,10 +21,6 @@ class TupleSerializer<T extends Tuple> extends ValueSerializer<T> {
     Object toJavaObj(Tuple tuple) throws IOException {
         List<?> list;
         switch (tuple.arity()) {
-            case 0: {
-                list = Collections.emptyList();
-                break;
-            }
             case 1: {
                 final Tuple1<?> t = (Tuple1<?>) tuple;
                 list = Collections.singletonList(t._1);
@@ -66,7 +62,8 @@ class TupleSerializer<T extends Tuple> extends ValueSerializer<T> {
                 break;
             }
             default: {
-                throw new IOException();
+                list = Collections.emptyList();
+                break;
             }
         }
         HashMap<String, Object> result = new HashMap<>();

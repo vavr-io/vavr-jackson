@@ -3,6 +3,7 @@ package javaslang.jackson.datatype.deserialize;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
@@ -146,7 +147,8 @@ abstract class BaseDeserializer<T> extends StdDeserializer<T> {
             case VALUE_NULL:
                 return null;
             case VALUE_NUMBER_FLOAT:
-                if (jp.getNumberType() == JsonParser.NumberType.BIG_DECIMAL) {
+                boolean useBigDec = ctx.getConfig().isEnabled(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS);
+                if (useBigDec || jp.getNumberType() == JsonParser.NumberType.BIG_DECIMAL) {
                     checkType(ctx, expectedType, BigDecimal.class);
                     return jp.getDecimalValue();
                 } else {
