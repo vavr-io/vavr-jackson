@@ -24,9 +24,9 @@ public class JavaslangModule extends SimpleModule {
     }
 
     public static class Config {
-        private boolean compact = false;
+        private boolean compact = true;
 
-        public void setCompact(boolean compact) {
+        public void setCompactMode(boolean compact) {
             this.compact = compact;
         }
     }

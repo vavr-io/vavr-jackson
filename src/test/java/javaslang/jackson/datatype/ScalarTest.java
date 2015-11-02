@@ -1,12 +1,14 @@
 package javaslang.jackson.datatype;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import javaslang.collection.List;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 
 public class ScalarTest extends BaseTest {
@@ -23,6 +25,8 @@ public class ScalarTest extends BaseTest {
         Assert.assertEquals(l4, List.of(2.4f));
         List<Double> l5 = mapper(false).readValue("[2.4]", new TypeReference<List<Double>>() {});
         Assert.assertEquals(l5, List.of(2.4));
+        List<BigDecimal> l5d = mapper(false).enable(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS).readValue("[2.4]", new TypeReference<List<BigDecimal>>() {});
+        Assert.assertEquals(l5d, List.of(BigDecimal.valueOf(2.4)));
         List<String> l6 = mapper(false).readValue("[\"1\"]", new TypeReference<List<String>>() {});
         Assert.assertEquals(l6, List.of("1"));
         List<Long> l7 = mapper(false).readValue("[24]", new TypeReference<List<Long>>() {});

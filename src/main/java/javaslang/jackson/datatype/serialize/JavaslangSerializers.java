@@ -26,14 +26,11 @@ public class JavaslangSerializers extends Serializers.Base {
         if (CharSeq.class.isAssignableFrom(type.getRawClass())) {
             return new CharSeqSerializer(type, compact);
         }
-        if (List.class.isAssignableFrom(type.getRawClass())) {
+        if (List.class.isAssignableFrom(type.getRawClass()) || Stack.class.isAssignableFrom(type.getRawClass())) {
             return new SeqSerializer<List<?>>(type, List.class, compact);
         }
         if (Queue.class.isAssignableFrom(type.getRawClass())) {
             return new SeqSerializer<Queue<?>>(type, Queue.class, compact);
-        }
-        if (Stack.class.isAssignableFrom(type.getRawClass())) {
-            return new SeqSerializer<Stack<?>>(type, Stack.class, compact);
         }
         if (Stream.class.isAssignableFrom(type.getRawClass())) {
             return new SeqSerializer<Stream<?>>(type, Stream.class, compact);
