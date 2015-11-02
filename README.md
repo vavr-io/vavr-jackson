@@ -5,6 +5,39 @@
 
 Jackson datatype module for [Javaslang](http://javaslang.com/) library
 
+## Usage
+
+### Registering module
+Just register a new instance of <code>JavaslangModule</code>
+```
+ObjectMapper mapper = new ObjectMapper();
+mapper.registerModule(new JavaslangModule());
+```
+### Standard serialization/deserialization
+```java
+String json = mapper.writer().writeValueAsString(List.of(List.of(1)));
+// = [[1]]
+Object restoredObject1 = mapper.readValue(json, List.class);
+// = List(java.util.ArrayList(1))
+Object restoredObject2 = mapper.readValue(json, new TypeReference<List<List<?>>>() {});
+// = List(List(1))
+```
+### Extended serialization/deserialization
+```java
+JavaslangModule.Config cfg = new JavaslangModule.Config();
+cfg.setCompactMode(false);
+ObjectMapper mapper = new ObjectMapper();
+mapper.registerModule(new JavaslangModule(cfg));
+
+String json = mapper.writer().writeValueAsString(List.of(List.of(1)));
+// = {"@class":"javaslang.collection.List",
+//    "@data":[
+//              {"@class":"javaslang.collection.List","@data":[1]}
+//            ]
+//   }
+Object restoredObject = mapper.readValue(json, List.class);
+// = List(List(1))
+```
 ## Using Developer Versions
 
 Developer versions can be found [here](https://oss.sonatype.org/content/repositories/snapshots/com/javaslang/javaslang-jackson).
