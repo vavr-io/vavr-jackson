@@ -15,7 +15,10 @@ import javaslang.collection.Set;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 abstract class BaseDeserializer<T> extends StdDeserializer<T> {
 
@@ -136,7 +139,7 @@ abstract class BaseDeserializer<T> extends StdDeserializer<T> {
                     throw ctx.mappingException(expectedType.getRawClass());
                 }
                 JavaType generic = expectedType.containedType(0);
-                if(!(Comparable.class.isAssignableFrom(generic.getRawClass()))) {
+                if(generic.getRawClass() == Object.class || !Comparable.class.isAssignableFrom(generic.getRawClass())) {
                     throw ctx.mappingException(expectedType.getRawClass());
                 }
                 return javaslang.collection.TreeSet.ofAll((o1, o2) -> ((Comparable) o1).compareTo(o2), result); // TODO
