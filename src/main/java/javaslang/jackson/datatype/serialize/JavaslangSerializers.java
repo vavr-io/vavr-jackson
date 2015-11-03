@@ -39,6 +39,13 @@ public class JavaslangSerializers extends Serializers.Base {
             return new SeqSerializer<Vector<?>>(type, Vector.class, compact);
         }
 
+        if (HashSet.class.isAssignableFrom(type.getRawClass())) {
+            return new SetSerializer<HashSet<?>>(type, HashSet.class, compact);
+        }
+        if (TreeSet.class.isAssignableFrom(type.getRawClass())) {
+            return new SetSerializer<TreeSet<?>>(type, TreeSet.class, compact);
+        }
+
         if (HashMap.class.isAssignableFrom(type.getRawClass())) {
             return new MapSerializer<HashMap<?, ?>>(type, HashMap.class, compact);
         }

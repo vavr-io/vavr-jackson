@@ -61,14 +61,7 @@ public class BaseTest {
             if (i > 0) {
                 sb.append(",");
             }
-            Object o = list[i];
-            if (o instanceof java.lang.String) {
-                sb.append("\"").append(o).append("\"");
-            } else if (o instanceof javaslang.collection.Seq) {
-                sb.append(genJsonList(clz == null ? null : javaslangClass(o), ((Seq) o).toJavaList().toArray()));
-            } else {
-                sb.append(o);
-            }
+            appendObj(sb, clz, list[i]);
         }
         sb.append("]");
         return genJsonObject(clz, sb.toString());
@@ -83,17 +76,20 @@ public class BaseTest {
                 sb.append(",");
             }
             sb.append("\"").append(entry.getKey().toString()).append("\":");
-            Object o = entry.getValue();
-            if (o instanceof java.lang.String) {
-                sb.append("\"").append(o).append("\"");
-            } else if (o instanceof javaslang.collection.Seq) {
-                sb.append(genJsonList(clz == null ? null : javaslangClass(o), ((Seq) o).toJavaList().toArray()));
-            } else {
-                sb.append(o);
-            }
+            appendObj(sb, clz, entry.getValue());
             i++;
         }
         sb.append("}");
         return genJsonObject(clz, sb.toString());
+    }
+
+    private void appendObj(StringBuilder sb, Class<?> clz, Object o) {
+        if (o instanceof java.lang.String) {
+            sb.append("\"").append(o).append("\"");
+        } else if (o instanceof javaslang.collection.Seq) {
+            sb.append(genJsonList(clz == null ? null : javaslangClass(o), ((Seq) o).toJavaList().toArray()));
+        } else {
+            sb.append(o);
+        }
     }
 }

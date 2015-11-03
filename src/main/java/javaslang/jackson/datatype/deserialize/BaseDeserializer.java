@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import javaslang.collection.CharSeq;
 import javaslang.collection.Seq;
+import javaslang.collection.Set;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -93,9 +94,10 @@ abstract class BaseDeserializer<T> extends StdDeserializer<T> {
         return result;
     }
 
+    @SuppressWarnings("unchecked")
     private Iterable<?> _deserializeArray(JsonParser jp, JavaType expectedType, DeserializationContext ctx)
             throws IOException, ClassNotFoundException {
-        checkType(ctx, expectedType, Seq.class);
+        checkType(ctx, expectedType, Seq.class, Set.class);
         JsonToken t;
         List<Object> result = new ArrayList<>();
         while ((t = jp.nextToken()) != JsonToken.END_ARRAY) {
@@ -128,6 +130,19 @@ abstract class BaseDeserializer<T> extends StdDeserializer<T> {
             }
             if(javaslang.collection.Vector.class.isAssignableFrom(expectedType.getRawClass())) {
                 return javaslang.collection.Vector.ofAll(result);
+            }
+            if(javaslang.collection.HashSet.class.isAssignableFrom(expectedType.getRawClass())) {
+                return javaslang.collection.HashSet.ofAll(result);
+            }
+            if(javaslang.collection.TreeSet.class.isAssignableFrom(expectedType.getRawClass())) {
+                if(expectedType.containedTypeCount() == 0) {
+                    throw ctx.mappingException(expectedType.getRawClass());
+                }
+                JavaType generic = expectedType.containedType(0);
+                if(generic.getRawClass() == Object.class || !Comparable.class.isAssignableFrom(generic.getRawClass())) {
+                    throw ctx.mappingException(expectedType.getRawClass());
+                }
+                return javaslang.collection.TreeSet.ofAll((o1, o2) -> ((Comparable) o1).compareTo(o2), result); // TODO
             }
         }
         return result;

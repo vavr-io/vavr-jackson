@@ -6,6 +6,7 @@ import javaslang.Tuple;
 import javaslang.Value;
 import javaslang.collection.Map;
 import javaslang.collection.Seq;
+import javaslang.collection.Set;
 
 public class JavaslangDeserializers extends Deserializers.Base {
 
@@ -21,6 +22,9 @@ public class JavaslangDeserializers extends Deserializers.Base {
         }
         if (Seq.class.isAssignableFrom(type.getRawClass())) {
             return new SeqDeserializer(type);
+        }
+        if (Set.class.isAssignableFrom(type.getRawClass())) {
+            return new SetDeserializer(type);
         }
         if (Value.class.isAssignableFrom(type.getRawClass())) {
             return new ValueDeserializer(type);
