@@ -21,29 +21,29 @@ public class JavaslangSerializers extends Serializers.Base {
                                             JavaType type, BeanDescription beanDesc) {
 
         if (Array.class.isAssignableFrom(type.getRawClass())) {
-            return new TraversableSerializer<Array<?>>(type, Array.class, compact);
+            return new SeqSerializer<Array<?>>(type, Array.class, compact);
         }
         if (CharSeq.class.isAssignableFrom(type.getRawClass())) {
             return new CharSeqSerializer(type, compact);
         }
         if (List.class.isAssignableFrom(type.getRawClass()) || Stack.class.isAssignableFrom(type.getRawClass())) {
-            return new TraversableSerializer<List<?>>(type, List.class, compact);
+            return new SeqSerializer<List<?>>(type, List.class, compact);
         }
         if (Queue.class.isAssignableFrom(type.getRawClass())) {
-            return new TraversableSerializer<Queue<?>>(type, Queue.class, compact);
+            return new SeqSerializer<Queue<?>>(type, Queue.class, compact);
         }
         if (Stream.class.isAssignableFrom(type.getRawClass())) {
-            return new TraversableSerializer<Stream<?>>(type, Stream.class, compact);
+            return new SeqSerializer<Stream<?>>(type, Stream.class, compact);
         }
         if (Vector.class.isAssignableFrom(type.getRawClass())) {
-            return new TraversableSerializer<Vector<?>>(type, Vector.class, compact);
+            return new SeqSerializer<Vector<?>>(type, Vector.class, compact);
         }
 
         if (HashSet.class.isAssignableFrom(type.getRawClass())) {
-            return new TraversableSerializer<HashSet<?>>(type, HashSet.class, compact);
+            return new SetSerializer<HashSet<?>>(type, HashSet.class, compact);
         }
         if (TreeSet.class.isAssignableFrom(type.getRawClass())) {
-            return new TraversableSerializer<TreeSet<?>>(type, TreeSet.class, compact);
+            return new SetSerializer<TreeSet<?>>(type, TreeSet.class, compact);
         }
 
         if (HashMap.class.isAssignableFrom(type.getRawClass())) {

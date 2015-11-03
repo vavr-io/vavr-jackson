@@ -1,5 +1,6 @@
 package javaslang.jackson.datatype.set;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import javaslang.collection.Set;
@@ -13,15 +14,17 @@ public abstract class SetTest extends BaseTest {
 
     abstract Class<?> clz();
 
-    abstract Set<?> of(Object... objects);
+    abstract TypeReference<?> typeReference();
+
+    abstract Set<Integer> of(Integer... objects);
 
     @Test
     public void test1() throws IOException {
         ObjectWriter writer = mapper(false).writer();
-        Set<?> src = of(1, 2, 5);
+        Set<Integer> src = of(1, 2, 5);
         String json = writer.writeValueAsString(src);
         Assert.assertEquals(genJsonList(clz(), 1, 2, 5), json);
-        Set<?> dst = (Set<?>) mapper().readValue(json, clz());
+        Set<Integer> dst = mapper().readValue(json, typeReference());
         Assert.assertEquals(src, dst);
     }
 
@@ -31,13 +34,13 @@ public abstract class SetTest extends BaseTest {
         Set<?> src = of(1, 2, 5);
         String json = writer.writeValueAsString(src);
         Assert.assertEquals(genJsonList(null, 1, 2, 5), json);
-        Set<?> dst = (Set<?>) mapper().readValue(json, clz());
+        Set<Integer> dst = mapper().readValue(json, typeReference());
         Assert.assertEquals(of(1, 2, 5), dst);
     }
 
     @Test(expected = JsonMappingException.class)
     public void test3() throws IOException {
-        mapper().readValue(crashJson(genJsonList(clz(), 1, 2, 5)), clz());
+        mapper().readValue(crashJson(genJsonList(clz(), 1, 2, 5)), typeReference());
     }
 
 }

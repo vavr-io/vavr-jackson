@@ -9,15 +9,13 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import javaslang.collection.CharSeq;
-import javaslang.collection.Traversable;
+import javaslang.collection.Seq;
+import javaslang.collection.Set;
 
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 abstract class BaseDeserializer<T> extends StdDeserializer<T> {
 
@@ -96,7 +94,7 @@ abstract class BaseDeserializer<T> extends StdDeserializer<T> {
     @SuppressWarnings("unchecked")
     private Iterable<?> _deserializeArray(JsonParser jp, JavaType expectedType, DeserializationContext ctx)
             throws IOException, ClassNotFoundException {
-        checkType(ctx, expectedType, Traversable.class);
+        checkType(ctx, expectedType, Seq.class, Set.class);
         JsonToken t;
         List<Object> result = new ArrayList<>();
         while ((t = jp.nextToken()) != JsonToken.END_ARRAY) {
@@ -134,7 +132,14 @@ abstract class BaseDeserializer<T> extends StdDeserializer<T> {
                 return javaslang.collection.HashSet.ofAll(result);
             }
             if(javaslang.collection.TreeSet.class.isAssignableFrom(expectedType.getRawClass())) {
-                return javaslang.collection.TreeSet.ofAll((o1, o2) -> ((Comparable<Object>) o1).compareTo(o2), result); // TODO
+                if(expectedType.containedTypeCount() == 0) {
+                    throw ctx.mappingException(expectedType.getRawClass());
+                }
+                JavaType generic = expectedType.containedType(0);
+                if(!(Comparable.class.isAssignableFrom(generic.getRawClass()))) {
+                    throw ctx.mappingException(expectedType.getRawClass());
+                }
+                return javaslang.collection.TreeSet.ofAll((o1, o2) -> ((Comparable) o1).compareTo(o2), result); // TODO
             }
         }
         return result;

@@ -1,5 +1,6 @@
 package javaslang.jackson.datatype.set;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import javaslang.collection.Set;
 import javaslang.collection.TreeSet;
 
@@ -11,9 +12,13 @@ public class TreeSetTest extends SetTest {
         return TreeSet.class;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
-    Set<?> of(Object... objects) {
-        return TreeSet.ofAll((o1, o2) -> ((Comparable<Object>) o1).compareTo(o2), Arrays.asList(objects));
+    TypeReference<?> typeReference() {
+        return new TypeReference<TreeSet<Integer>>() {};
+    }
+
+    @Override
+    Set<Integer> of(Integer... objects) {
+        return TreeSet.ofAll(Integer::compareTo, Arrays.asList(objects));
     }
 }

@@ -9,9 +9,8 @@ public class TreeMapTest extends MapTest {
         return TreeMap.class;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     <K, V> Map<K, V> emptyMap() {
-        return TreeMap.empty((o1, o2) -> ((Comparable<Object>) o1).compareTo(o2));
+        return TreeMap.empty((o1, o2) -> o1.toString().compareTo(o2.toString()));
     }
 }
