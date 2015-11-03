@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.deser.Deserializers;
 import javaslang.Tuple;
 import javaslang.Value;
 import javaslang.collection.Map;
-import javaslang.collection.Seq;
+import javaslang.collection.Traversable;
 
 public class JavaslangDeserializers extends Deserializers.Base {
 
@@ -19,8 +19,8 @@ public class JavaslangDeserializers extends Deserializers.Base {
         if (Tuple.class.isAssignableFrom(type.getRawClass())) {
             return new TupleDeserializer(type);
         }
-        if (Seq.class.isAssignableFrom(type.getRawClass())) {
-            return new SeqDeserializer(type);
+        if (Traversable.class.isAssignableFrom(type.getRawClass())) {
+            return new TraversableDeserializer(type);
         }
         if (Value.class.isAssignableFrom(type.getRawClass())) {
             return new ValueDeserializer(type);

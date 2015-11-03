@@ -9,7 +9,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import javaslang.collection.CharSeq;
-import javaslang.collection.Seq;
+import javaslang.collection.Traversable;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -93,9 +93,10 @@ abstract class BaseDeserializer<T> extends StdDeserializer<T> {
         return result;
     }
 
+    @SuppressWarnings("unchecked")
     private Iterable<?> _deserializeArray(JsonParser jp, JavaType expectedType, DeserializationContext ctx)
             throws IOException, ClassNotFoundException {
-        checkType(ctx, expectedType, Seq.class);
+        checkType(ctx, expectedType, Traversable.class);
         JsonToken t;
         List<Object> result = new ArrayList<>();
         while ((t = jp.nextToken()) != JsonToken.END_ARRAY) {
@@ -128,6 +129,12 @@ abstract class BaseDeserializer<T> extends StdDeserializer<T> {
             }
             if(javaslang.collection.Vector.class.isAssignableFrom(expectedType.getRawClass())) {
                 return javaslang.collection.Vector.ofAll(result);
+            }
+            if(javaslang.collection.HashSet.class.isAssignableFrom(expectedType.getRawClass())) {
+                return javaslang.collection.HashSet.ofAll(result);
+            }
+            if(javaslang.collection.TreeSet.class.isAssignableFrom(expectedType.getRawClass())) {
+                return javaslang.collection.TreeSet.ofAll((o1, o2) -> ((Comparable<Object>) o1).compareTo(o2), result); // TODO
             }
         }
         return result;

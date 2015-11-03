@@ -3,25 +3,25 @@ package javaslang.jackson.datatype.deserialize;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JavaType;
-import javaslang.collection.Seq;
+import javaslang.collection.Traversable;
 
 import java.io.IOException;
 
-class SeqDeserializer extends BaseDeserializer<Seq<?>> {
+class TraversableDeserializer extends BaseDeserializer<Traversable<?>> {
 
     private static final long serialVersionUID = 1L;
 
     private final JavaType javaType;
 
-    SeqDeserializer(JavaType valueType) {
+    TraversableDeserializer(JavaType valueType) {
         super(valueType);
         javaType = valueType;
     }
 
     @Override
-    public Seq<?> deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+    public Traversable<?> deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
         try {
-            return (Seq<?>) _deserialize(p, javaType, ctxt);
+            return (Traversable<?>) _deserialize(p, javaType, ctxt);
         } catch (ClassNotFoundException e) {
             throw ctxt.mappingException(javaType.getRawClass());
         }

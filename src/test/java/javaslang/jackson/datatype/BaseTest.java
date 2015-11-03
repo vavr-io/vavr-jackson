@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import javaslang.collection.List;
 import javaslang.collection.Seq;
 import javaslang.collection.Stream;
+import javaslang.collection.Traversable;
 
 import java.util.Map;
 
@@ -64,8 +65,8 @@ public class BaseTest {
             Object o = list[i];
             if (o instanceof java.lang.String) {
                 sb.append("\"").append(o).append("\"");
-            } else if (o instanceof javaslang.collection.Seq) {
-                sb.append(genJsonList(clz == null ? null : javaslangClass(o), ((Seq) o).toJavaList().toArray()));
+            } else if (o instanceof javaslang.collection.Traversable) {
+                sb.append(genJsonList(clz == null ? null : javaslangClass(o), ((Traversable) o).toJavaList().toArray()));
             } else {
                 sb.append(o);
             }

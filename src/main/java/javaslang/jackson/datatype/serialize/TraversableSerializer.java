@@ -1,15 +1,15 @@
 package javaslang.jackson.datatype.serialize;
 
 import com.fasterxml.jackson.databind.JavaType;
-import javaslang.collection.Seq;
+import javaslang.collection.Traversable;
 
 import java.io.IOException;
 
-class SeqSerializer<T extends Seq<?>> extends ValueSerializer<T> {
+class TraversableSerializer<T extends Traversable<?>> extends ValueSerializer<T> {
 
     private static final long serialVersionUID = 1L;
 
-    SeqSerializer(JavaType type, Class<?> clz, boolean compact) {
+    TraversableSerializer(JavaType type, Class<?> clz, boolean compact) {
         super(type, clz, compact);
     }
 
