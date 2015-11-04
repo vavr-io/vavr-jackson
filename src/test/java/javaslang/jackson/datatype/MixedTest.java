@@ -39,4 +39,18 @@ public class MixedTest extends BaseTest {
     public void test4() throws IOException {
         mapper().readValue("[\"s\"]", new TypeReference<List<Integer>>() {});
     }
+
+    @Test
+    public void test5() throws IOException {
+        Object src = List.of(List.of(1));
+        String json = mapper().writer().writeValueAsString(src);
+        Assert.assertEquals(mapper().readValue(json, new TypeReference<List<List<?>>>() {}), src);
+    }
+
+    @Test
+    public void test6() throws IOException {
+        Object src = HashMap.empty().put("1", HashMap.empty().put("X", "Y"));
+        String json = mapper().writer().writeValueAsString(src);
+        Assert.assertEquals(mapper().readValue(json, new TypeReference<HashMap<?, HashMap<?, ?>>>() {}), src);
+    }
 }
