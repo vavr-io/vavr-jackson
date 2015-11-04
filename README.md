@@ -13,29 +13,13 @@ Just register a new instance of <code>JavaslangModule</code>
 ObjectMapper mapper = new ObjectMapper();
 mapper.registerModule(new JavaslangModule());
 ```
-### Standard serialization/deserialization
+### Serialization/deserialization
 ```java
 String json = mapper.writer().writeValueAsString(List.of(List.of(1)));
 // = [[1]]
 Object restored1 = mapper.readValue(json, List.class);
 // = List(java.util.ArrayList(1))
 Object restored2 = mapper.readValue(json, new TypeReference<List<List<?>>>() {});
-// = List(List(1))
-```
-### Extended serialization/deserialization
-```java
-JavaslangModule.Config cfg = new JavaslangModule.Config();
-cfg.setCompactMode(false);
-ObjectMapper mapper = new ObjectMapper();
-mapper.registerModule(new JavaslangModule(cfg));
-
-String json = mapper.writer().writeValueAsString(List.of(List.of(1)));
-// = {"@class":"javaslang.collection.List",
-//    "@data":[
-//              {"@class":"javaslang.collection.List","@data":[1]}
-//            ]
-//   }
-Object restored = mapper.readValue(json, Value.class);
 // = List(List(1))
 ```
 ## Using Developer Versions
