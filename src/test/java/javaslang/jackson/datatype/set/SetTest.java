@@ -20,27 +20,11 @@ public abstract class SetTest extends BaseTest {
 
     @Test
     public void test1() throws IOException {
-        ObjectWriter writer = mapper(false).writer();
+        ObjectWriter writer = mapper().writer();
         Set<Integer> src = of(1, 2, 5);
         String json = writer.writeValueAsString(src);
-        Assert.assertEquals(genJsonList(clz(), 1, 2, 5), json);
+        Assert.assertEquals(genJsonList(1, 2, 5), json);
         Set<Integer> dst = mapper().readValue(json, typeReference());
         Assert.assertEquals(src, dst);
     }
-
-    @Test
-    public void test2() throws IOException {
-        ObjectWriter writer = mapper(true).writer();
-        Set<?> src = of(1, 2, 5);
-        String json = writer.writeValueAsString(src);
-        Assert.assertEquals(genJsonList(null, 1, 2, 5), json);
-        Set<Integer> dst = mapper().readValue(json, typeReference());
-        Assert.assertEquals(of(1, 2, 5), dst);
-    }
-
-    @Test(expected = JsonMappingException.class)
-    public void test3() throws IOException {
-        mapper().readValue(crashJson(genJsonList(clz(), 1, 2, 5)), typeReference());
-    }
-
 }

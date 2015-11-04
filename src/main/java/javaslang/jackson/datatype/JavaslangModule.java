@@ -7,27 +7,10 @@ import javaslang.jackson.datatype.serialize.JavaslangSerializers;
 public class JavaslangModule extends SimpleModule {
 
     private static final long serialVersionUID = 1L;
-    private final Config cfg;
-
-    public JavaslangModule() {
-        this(new Config());
-    }
-
-    public JavaslangModule(Config cfg) {
-        this.cfg = cfg;
-    }
 
     @Override
     public void setupModule(SetupContext context) {
-        context.addSerializers(new JavaslangSerializers(cfg.compact));
+        context.addSerializers(new JavaslangSerializers());
         context.addDeserializers(new JavaslangDeserializers());
-    }
-
-    public static class Config {
-        private boolean compact = true;
-
-        public void setCompactMode(boolean compact) {
-            this.compact = compact;
-        }
     }
 }
