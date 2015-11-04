@@ -25,49 +25,20 @@ public class BaseTest {
         return mapper;
     }
 
-    protected ObjectMapper mapper(boolean compact) {
-        ObjectMapper mapper = new ObjectMapper();
-        JavaslangModule.Config cfg = new JavaslangModule.Config();
-        cfg.setCompactMode(compact);
-        mapper.registerModule(new JavaslangModule(cfg));
-        return mapper;
-    }
-
-    protected String crashJson(String json) {
-        int p = json.indexOf("\"@class\"");
-        if(p < 0) {
-            return json;
-        }
-        p = json.indexOf("\"", p + 8) + 1;
-        return json.substring(0, p) + "X" + json.substring(p);
-    }
-
-    protected String genJsonObject(Class<?> clz, String content) {
-        StringBuilder sb = new StringBuilder();
-        if (clz != null) {
-            sb.append("{\"@class\":\"").append(clz.getCanonicalName()).append("\",\"@data\":");
-        }
-        sb.append(content);
-        if (clz != null) {
-            sb.append("}");
-        }
-        return sb.toString();
-    }
-
-    protected String genJsonList(Class<?> clz, Object... list) {
+    protected String genJsonList(Object... list) {
         StringBuilder sb = new StringBuilder();
         sb.append("[");
         for (int i = 0; i < list.length; i++) {
             if (i > 0) {
                 sb.append(",");
             }
-            appendObj(sb, clz, list[i]);
+            appendObj(sb, list[i]);
         }
         sb.append("]");
-        return genJsonObject(clz, sb.toString());
+        return sb.toString();
     }
 
-    protected String genJsonMap(Class<?> clz, java.util.Map<?, ?> map) {
+    protected String genJsonMap(java.util.Map<?, ?> map) {
         StringBuilder sb = new StringBuilder();
         sb.append("{");
         int i = 0;
@@ -76,18 +47,18 @@ public class BaseTest {
                 sb.append(",");
             }
             sb.append("\"").append(entry.getKey().toString()).append("\":");
-            appendObj(sb, clz, entry.getValue());
+            appendObj(sb, entry.getValue());
             i++;
         }
         sb.append("}");
-        return genJsonObject(clz, sb.toString());
+        return sb.toString();
     }
 
-    private void appendObj(StringBuilder sb, Class<?> clz, Object o) {
+    private void appendObj(StringBuilder sb, Object o) {
         if (o instanceof java.lang.String) {
             sb.append("\"").append(o).append("\"");
         } else if (o instanceof javaslang.collection.Seq) {
-            sb.append(genJsonList(clz == null ? null : javaslangClass(o), ((Seq) o).toJavaList().toArray()));
+            sb.append(genJsonList(((Seq) o).toJavaList().toArray()));
         } else {
             sb.append(o);
         }

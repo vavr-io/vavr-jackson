@@ -13,8 +13,8 @@ class TupleSerializer<T extends Tuple> extends ValueSerializer<T> {
 
     private static final long serialVersionUID = 1L;
 
-    TupleSerializer(JavaType type, Class<?> clz, boolean compact) {
-        super(type, clz, compact);
+    TupleSerializer(JavaType type, Class<?> clz) {
+        super(type, clz);
     }
 
     @Override

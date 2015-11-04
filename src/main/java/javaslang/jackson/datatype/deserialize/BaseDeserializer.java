@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
-import com.fasterxml.jackson.databind.type.TypeFactory;
 import javaslang.Tuple;
 import javaslang.Value;
 import javaslang.collection.CharSeq;
@@ -22,9 +21,6 @@ import java.util.Map;
 abstract class BaseDeserializer<T> extends StdDeserializer<T> {
 
     private static final long serialVersionUID = 1L;
-
-    private final static String CLASS_KEY = "@class";
-    private final static String DATA_KEY = "@data";
 
     BaseDeserializer(JavaType valueType) {
         super(valueType);
@@ -46,37 +42,13 @@ abstract class BaseDeserializer<T> extends StdDeserializer<T> {
             throws IOException, ClassNotFoundException {
         // TODO (hotfix)
         if(expectedType != null && !Value.class.isAssignableFrom(expectedType.getRawClass()) && !Tuple.class.isAssignableFrom(expectedType.getRawClass())) {
-            try {
-                JsonDeserializer<?> des = ctx.findRootValueDeserializer(expectedType);
-                return des.deserialize(jp, ctx);
-            } catch (Exception ignore) {}
+            JsonDeserializer<?> des = ctx.findRootValueDeserializer(expectedType);
+            return des.deserialize(jp, ctx);
         }
-        Class<?> expectedClass = null;
         Map<Object, Object> result = new HashMap<>();
         while (jp.nextToken() != JsonToken.END_OBJECT) {
             String name = jp.getCurrentName();
             JsonToken t = jp.nextToken();
-            if (CLASS_KEY.equals(name)) {
-                expectedClass = Class.forName(jp.getText());
-                if (expectedType != null && !expectedType.getRawClass().isAssignableFrom(expectedClass)) {
-                    throw ctx.mappingException(expectedType.getRawClass());
-                }
-                continue;
-            }
-            if (DATA_KEY.equals(name)) {
-                Object o;
-                if(expectedClass != null) {
-                    if(expectedType != null  && expectedClass.isAssignableFrom(expectedType.getRawClass())) {
-                        o = _deserialize(jp, expectedType, ctx);  // TODO
-                    } else {
-                        o = _deserialize(jp, TypeFactory.defaultInstance().constructFromCanonical(expectedClass.getCanonicalName()), ctx);  // TODO
-                    }
-                } else {
-                    o = _deserialize(jp, expectedType, ctx);  // TODO
-                }
-                jp.nextToken();
-                return o;
-            }
 
             switch (t) {
                 case START_ARRAY:

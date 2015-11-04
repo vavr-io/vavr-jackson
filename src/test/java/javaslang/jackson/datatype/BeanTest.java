@@ -37,10 +37,8 @@ public class BeanTest extends BaseTest {
         BeanObject src = new BeanObject();
         src.scalar = "s";
         src.value = List.of(1);
-        String extended = mapper(false).writer().writeValueAsString(src);
-        String compact = mapper(true).writer().writeValueAsString(src);
-        Assert.assertEquals(mapper().readValue(extended, BeanObject.class), src);
-        Assert.assertEquals(mapper().readValue(compact, BeanObject.class), src);
+        String json = mapper().writer().writeValueAsString(src);
+        Assert.assertEquals(mapper().readValue(json, BeanObject.class), src);
     }
 
     static class ComplexInnerClass {
@@ -144,21 +142,14 @@ public class BeanTest extends BaseTest {
                 new ComplexInnerClass(12, List.of("Data3", "Data4", "Data5"))
         ));
 
-        String extended = mapper(false).writeValueAsString(src);
-        String compact = mapper(true).writeValueAsString(src);
+        String json = mapper().writeValueAsString(src);
 
-        ComplexBeanObject objectFromExtendedString = mapper().readValue(extended, ComplexBeanObject.class);
-        objectFromExtendedString.getValues().forEach(innerClass -> {
-            Assert.assertTrue("Instance of ComplexInnerClass",innerClass instanceof ComplexInnerClass);
+        ComplexBeanObject restored = mapper().readValue(json, ComplexBeanObject.class);
+        restored.getValues().forEach(innerClass -> {
+            Assert.assertTrue("Instance of ComplexInnerClass", innerClass instanceof ComplexInnerClass);
         });
 
-        ComplexBeanObject objectFromCompactString = mapper().readValue(compact, ComplexBeanObject.class);
-        objectFromCompactString.getValues().forEach(innerClass -> {
-            Assert.assertTrue("Instance of ComplexInnerClass",innerClass instanceof ComplexInnerClass);
-        });
-
-        Assert.assertEquals(objectFromExtendedString, src);
-        Assert.assertEquals(objectFromCompactString, src);
+        Assert.assertEquals(restored, src);
     }
 
 }

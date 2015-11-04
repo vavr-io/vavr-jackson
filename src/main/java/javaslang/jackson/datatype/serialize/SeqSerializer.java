@@ -9,8 +9,8 @@ class SeqSerializer<T extends Seq<?>> extends ValueSerializer<T> {
 
     private static final long serialVersionUID = 1L;
 
-    SeqSerializer(JavaType type, Class<?> clz, boolean compact) {
-        super(type, clz, compact);
+    SeqSerializer(JavaType type, Class<?> clz) {
+        super(type, clz);
     }
 
     @Override

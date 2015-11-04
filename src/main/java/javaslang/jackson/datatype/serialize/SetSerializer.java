@@ -9,8 +9,8 @@ class SetSerializer<T extends Set<?>> extends ValueSerializer<T> {
 
     private static final long serialVersionUID = 1L;
 
-    SetSerializer(JavaType type, Class<?> clz, boolean compact) {
-        super(type, clz, compact);
+    SetSerializer(JavaType type, Class<?> clz) {
+        super(type, clz);
     }
 
     @Override

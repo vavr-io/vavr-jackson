@@ -26,9 +26,6 @@ public class JavaslangDeserializers extends Deserializers.Base {
         if (Set.class.isAssignableFrom(type.getRawClass())) {
             return new SetDeserializer(type);
         }
-        if (Value.class.isAssignableFrom(type.getRawClass())) {
-            return new ValueDeserializer(type);
-        }
         return null;
     }
 }
