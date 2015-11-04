@@ -20,10 +20,6 @@ class MapDeserializer extends BaseDeserializer<Map<?,?>> {
 
     @Override
     public Map<?,?> deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
-        try {
-            return (Map<?, ?>) _deserialize(p, javaType, ctxt);
-        } catch (ClassNotFoundException e) {
-            throw ctxt.mappingException(javaType.getRawClass());
-        }
+        return (Map<?, ?>) _deserialize(p, javaType, ctxt);
     }
 }

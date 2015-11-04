@@ -20,10 +20,6 @@ class SeqDeserializer extends BaseDeserializer<Seq<?>> {
 
     @Override
     public Seq<?> deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
-        try {
-            return (Seq<?>) _deserialize(p, javaType, ctxt);
-        } catch (ClassNotFoundException e) {
-            throw ctxt.mappingException(javaType.getRawClass());
-        }
+        return (Seq<?>) _deserialize(p, javaType, ctxt);
     }
 }

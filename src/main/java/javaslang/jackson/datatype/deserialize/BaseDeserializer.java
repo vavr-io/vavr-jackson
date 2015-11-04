@@ -27,7 +27,7 @@ abstract class BaseDeserializer<T> extends StdDeserializer<T> {
     }
 
     Object _deserialize(JsonParser jp, JavaType expectedType, DeserializationContext ctx)
-            throws IOException, ClassNotFoundException {
+            throws IOException {
         switch (jp.getCurrentToken()) {
             case START_OBJECT:
                 return _deserializeObject(jp, expectedType, ctx);
@@ -39,7 +39,7 @@ abstract class BaseDeserializer<T> extends StdDeserializer<T> {
     }
 
     private Object _deserializeObject(JsonParser jp, JavaType expectedType, DeserializationContext ctx)
-            throws IOException, ClassNotFoundException {
+            throws IOException {
         // TODO (hotfix)
         if(expectedType != null && !Value.class.isAssignableFrom(expectedType.getRawClass()) && !Tuple.class.isAssignableFrom(expectedType.getRawClass())) {
             JsonDeserializer<?> des = ctx.findRootValueDeserializer(expectedType);
@@ -74,7 +74,7 @@ abstract class BaseDeserializer<T> extends StdDeserializer<T> {
 
     @SuppressWarnings("unchecked")
     private Iterable<?> _deserializeArray(JsonParser jp, JavaType expectedType, DeserializationContext ctx)
-            throws IOException, ClassNotFoundException {
+            throws IOException {
         checkType(ctx, expectedType, Seq.class, Set.class);
         JsonToken t;
         List<Object> result = new ArrayList<>();

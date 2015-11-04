@@ -20,10 +20,6 @@ class SetDeserializer extends BaseDeserializer<Set<?>> {
 
     @Override
     public Set<?> deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
-        try {
-            return (Set<?>) _deserialize(p, javaType, ctxt);
-        } catch (ClassNotFoundException e) {
-            throw ctxt.mappingException(javaType.getRawClass());
-        }
+        return (Set<?>) _deserialize(p, javaType, ctxt);
     }
 }
