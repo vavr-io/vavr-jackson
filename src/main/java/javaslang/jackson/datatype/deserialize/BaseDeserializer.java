@@ -2,12 +2,11 @@ package javaslang.jackson.datatype.deserialize;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.type.TypeFactory;
+import javaslang.Tuple;
+import javaslang.Value;
 import javaslang.collection.CharSeq;
 import javaslang.collection.Seq;
 import javaslang.collection.Set;
@@ -45,6 +44,13 @@ abstract class BaseDeserializer<T> extends StdDeserializer<T> {
 
     private Object _deserializeObject(JsonParser jp, JavaType expectedType, DeserializationContext ctx)
             throws IOException, ClassNotFoundException {
+        // TODO (hotfix)
+        if(expectedType != null && !Value.class.isAssignableFrom(expectedType.getRawClass()) && !Tuple.class.isAssignableFrom(expectedType.getRawClass())) {
+            try {
+                JsonDeserializer<?> des = ctx.findRootValueDeserializer(expectedType);
+                return des.deserialize(jp, ctx);
+            } catch (Exception ignore) {}
+        }
         Class<?> expectedClass = null;
         Map<Object, Object> result = new HashMap<>();
         while (jp.nextToken() != JsonToken.END_OBJECT) {
