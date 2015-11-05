@@ -62,11 +62,15 @@ abstract class BaseDeserializer<T> extends StdDeserializer<T> {
             }
         }
         if(expectedType != null) {
-            if(javaslang.collection.HashMap.class.isAssignableFrom(expectedType.getRawClass())) {
+            if(javaslang.collection.Map.class.isAssignableFrom(expectedType.getRawClass())) {
+                if (javaslang.collection.HashMap.class.isAssignableFrom(expectedType.getRawClass())) {
+                    return fill(javaslang.collection.HashMap.empty(), result);
+                }
+                if (javaslang.collection.TreeMap.class.isAssignableFrom(expectedType.getRawClass())) {
+                    return fill(javaslang.collection.TreeMap.empty((o1, o2) -> o1.toString().compareTo(o2.toString())), result);
+                }
+                // default deserialization {...} -> Map
                 return fill(javaslang.collection.HashMap.empty(), result);
-            }
-            if(javaslang.collection.TreeMap.class.isAssignableFrom(expectedType.getRawClass())) {
-                return fill(javaslang.collection.TreeMap.empty((o1, o2) -> o1.toString().compareTo(o2.toString())), result);
             }
         }
         return result;
@@ -91,36 +95,44 @@ abstract class BaseDeserializer<T> extends StdDeserializer<T> {
             }
         }
         if(expectedType != null) {
-            if(javaslang.collection.Array.class.isAssignableFrom(expectedType.getRawClass())) {
-                return javaslang.collection.Array.ofAll(result);
-            }
-            if(javaslang.collection.List.class.isAssignableFrom(expectedType.getRawClass())) {
+            if(javaslang.collection.Seq.class.isAssignableFrom(expectedType.getRawClass())) {
+                if (javaslang.collection.Array.class.isAssignableFrom(expectedType.getRawClass())) {
+                    return javaslang.collection.Array.ofAll(result);
+                }
+                if (javaslang.collection.List.class.isAssignableFrom(expectedType.getRawClass())) {
+                    return javaslang.collection.List.ofAll(result);
+                }
+                if (javaslang.collection.Queue.class.isAssignableFrom(expectedType.getRawClass())) {
+                    return javaslang.collection.Queue.ofAll(result);
+                }
+                if (javaslang.collection.Stack.class.isAssignableFrom(expectedType.getRawClass())) {
+                    return javaslang.collection.Stack.ofAll(result);
+                }
+                if (javaslang.collection.Stream.class.isAssignableFrom(expectedType.getRawClass())) {
+                    return javaslang.collection.Stream.ofAll(result);
+                }
+                if (javaslang.collection.Vector.class.isAssignableFrom(expectedType.getRawClass())) {
+                    return javaslang.collection.Vector.ofAll(result);
+                }
+                // default deserialization [...] -> Seq
                 return javaslang.collection.List.ofAll(result);
             }
-            if(javaslang.collection.Queue.class.isAssignableFrom(expectedType.getRawClass())) {
-                return javaslang.collection.Queue.ofAll(result);
-            }
-            if(javaslang.collection.Stack.class.isAssignableFrom(expectedType.getRawClass())) {
-                return javaslang.collection.Stack.ofAll(result);
-            }
-            if(javaslang.collection.Stream.class.isAssignableFrom(expectedType.getRawClass())) {
-                return javaslang.collection.Stream.ofAll(result);
-            }
-            if(javaslang.collection.Vector.class.isAssignableFrom(expectedType.getRawClass())) {
-                return javaslang.collection.Vector.ofAll(result);
-            }
-            if(javaslang.collection.HashSet.class.isAssignableFrom(expectedType.getRawClass())) {
+            if(javaslang.collection.Set.class.isAssignableFrom(expectedType.getRawClass())) {
+                if(javaslang.collection.HashSet.class.isAssignableFrom(expectedType.getRawClass())) {
+                    return javaslang.collection.HashSet.ofAll(result);
+                }
+                if(javaslang.collection.TreeSet.class.isAssignableFrom(expectedType.getRawClass())) {
+                    if(expectedType.containedTypeCount() == 0) {
+                        throw ctx.mappingException(expectedType.getRawClass());
+                    }
+                    JavaType generic = expectedType.containedType(0);
+                    if(generic.getRawClass() == Object.class || !Comparable.class.isAssignableFrom(generic.getRawClass())) {
+                        throw ctx.mappingException(expectedType.getRawClass());
+                    }
+                    return javaslang.collection.TreeSet.ofAll((o1, o2) -> ((Comparable) o1).compareTo(o2), result); // TODO
+                }
+                // default deserialization [...] -> Set
                 return javaslang.collection.HashSet.ofAll(result);
-            }
-            if(javaslang.collection.TreeSet.class.isAssignableFrom(expectedType.getRawClass())) {
-                if(expectedType.containedTypeCount() == 0) {
-                    throw ctx.mappingException(expectedType.getRawClass());
-                }
-                JavaType generic = expectedType.containedType(0);
-                if(generic.getRawClass() == Object.class || !Comparable.class.isAssignableFrom(generic.getRawClass())) {
-                    throw ctx.mappingException(expectedType.getRawClass());
-                }
-                return javaslang.collection.TreeSet.ofAll((o1, o2) -> ((Comparable) o1).compareTo(o2), result); // TODO
             }
         }
         return result;
