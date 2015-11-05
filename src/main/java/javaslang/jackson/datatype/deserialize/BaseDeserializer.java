@@ -79,7 +79,7 @@ abstract class BaseDeserializer<T> extends StdDeserializer<T> {
     @SuppressWarnings("unchecked")
     private Iterable<?> _deserializeArray(JsonParser jp, JavaType expectedType, DeserializationContext ctx)
             throws IOException {
-        checkType(ctx, expectedType, Seq.class, Set.class);
+        checkType(ctx, expectedType, Iterable.class);
         JsonToken t;
         List<Object> result = new ArrayList<>();
         while ((t = jp.nextToken()) != JsonToken.END_ARRAY) {
@@ -141,8 +141,6 @@ abstract class BaseDeserializer<T> extends StdDeserializer<T> {
     private Object _deserializeScalar(JsonParser jp, JavaType expectedType, DeserializationContext ctx)
             throws IOException {
         switch (jp.getCurrentToken()) {
-            case VALUE_EMBEDDED_OBJECT:
-                throw ctx.mappingException(this.getClass());
             case VALUE_FALSE:
                 checkType(ctx, expectedType, Boolean.class);
                 return Boolean.FALSE;
