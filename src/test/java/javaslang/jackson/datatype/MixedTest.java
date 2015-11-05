@@ -9,6 +9,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 public class MixedTest extends BaseTest {
 
@@ -52,5 +53,13 @@ public class MixedTest extends BaseTest {
         Object src = HashMap.empty().put("1", HashMap.empty().put("X", "Y"));
         String json = mapper().writer().writeValueAsString(src);
         Assert.assertEquals(mapper().readValue(json, new TypeReference<HashMap<?, HashMap<?, ?>>>() {}), src);
+    }
+
+    @Test
+    public void test7() throws IOException {
+        Object src = List.of(Arrays.asList(1, 2));
+        String json = mapper().writer().writeValueAsString(src);
+        Assert.assertEquals(mapper().readValue(json, List.class), src);
+        Assert.assertEquals(mapper().readValue(json, new TypeReference<List<java.util.List<?>>>() {}), src);
     }
 }
