@@ -5,16 +5,16 @@ import javaslang.collection.Seq;
 
 import java.io.IOException;
 
-class SeqSerializer<T extends Seq<?>> extends ValueSerializer<T> {
+class SeqSerializer extends ValueSerializer<Seq<?>> {
 
     private static final long serialVersionUID = 1L;
 
-    SeqSerializer(JavaType type, Class<?> clz) {
-        super(type, clz);
+    SeqSerializer(JavaType type) {
+        super(type);
     }
 
     @Override
-    Object toJavaObj(T value) throws IOException {
+    Object toJavaObj(Seq<?> value) throws IOException {
         return value.toJavaList();
     }
 

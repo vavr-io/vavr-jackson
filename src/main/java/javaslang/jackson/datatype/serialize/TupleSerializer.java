@@ -9,12 +9,12 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-class TupleSerializer<T extends Tuple> extends ValueSerializer<T> {
+class TupleSerializer extends ValueSerializer<Tuple> {
 
     private static final long serialVersionUID = 1L;
 
-    TupleSerializer(JavaType type, Class<?> clz) {
-        super(type, clz);
+    TupleSerializer(JavaType type) {
+        super(type);
     }
 
     @Override
