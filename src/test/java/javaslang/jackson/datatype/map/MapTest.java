@@ -1,10 +1,6 @@
 package javaslang.jackson.datatype.map;
 
 import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectWriter;
-import javaslang.Tuple;
-import javaslang.collection.List;
 import javaslang.collection.Map;
 import javaslang.jackson.datatype.BaseTest;
 import org.junit.Assert;

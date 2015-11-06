@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.JavaType;
 import javaslang.Tuple;
 
 import java.io.IOException;
-import java.util.Map;
+import java.util.List;
 
 class TupleDeserializer extends BaseDeserializer<Tuple> {
 
@@ -21,26 +21,26 @@ class TupleDeserializer extends BaseDeserializer<Tuple> {
 
     @Override
     public Tuple deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
-        Map<?, ?> list = (Map<?, ?>) _deserialize(p, javaType, ctxt);
+        List<?> list = (List<?>) _deserialize(p, ctxt.constructType(List.class), ctxt);
         switch (list.size()) {
             case 0:
                 return Tuple.empty();
             case 1:
-                return Tuple.of(list.get("_1"));
+                return Tuple.of(list.get(0));
             case 2:
-                return Tuple.of(list.get("_1"), list.get("_2"));
+                return Tuple.of(list.get(0), list.get(1));
             case 3:
-                return Tuple.of(list.get("_1"), list.get("_2"), list.get("_3"));
+                return Tuple.of(list.get(0), list.get(1), list.get(2));
             case 4:
-                return Tuple.of(list.get("_1"), list.get("_2"), list.get("_3"), list.get("_4"));
+                return Tuple.of(list.get(0), list.get(1), list.get(2), list.get(3));
             case 5:
-                return Tuple.of(list.get("_1"), list.get("_2"), list.get("_3"), list.get("_4"), list.get("_5"));
+                return Tuple.of(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4));
             case 6:
-                return Tuple.of(list.get("_1"), list.get("_2"), list.get("_3"), list.get("_4"), list.get("_5"), list.get("_6"));
+                return Tuple.of(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4), list.get(5));
             case 7:
-                return Tuple.of(list.get("_1"), list.get("_2"), list.get("_3"), list.get("_4"), list.get("_5"), list.get("_6"), list.get("_7"));
+                return Tuple.of(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4), list.get(5), list.get(6));
             case 8:
-                return Tuple.of(list.get("_1"), list.get("_2"), list.get("_3"), list.get("_4"), list.get("_5"), list.get("_6"), list.get("_7"), list.get("_8"));
+                return Tuple.of(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4), list.get(5), list.get(6), list.get(7));
             default:
                 throw ctxt.mappingException(javaType.getRawClass());
         }
