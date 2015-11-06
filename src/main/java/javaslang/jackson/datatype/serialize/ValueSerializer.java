@@ -11,11 +11,8 @@ abstract class ValueSerializer<T> extends StdSerializer<T> {
 
     private static final long serialVersionUID = 1L;
 
-    private final Class<?> clz;
-
-    ValueSerializer(JavaType type, Class<?> clz) {
+    ValueSerializer(JavaType type) {
         super(type);
-        this.clz = clz;
     }
 
     abstract Object toJavaObj(T value) throws IOException;

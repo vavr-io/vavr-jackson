@@ -5,16 +5,16 @@ import javaslang.collection.Set;
 
 import java.io.IOException;
 
-class SetSerializer<T extends Set<?>> extends ValueSerializer<T> {
+class SetSerializer extends ValueSerializer<Set<?>> {
 
     private static final long serialVersionUID = 1L;
 
-    SetSerializer(JavaType type, Class<?> clz) {
-        super(type, clz);
+    SetSerializer(JavaType type) {
+        super(type);
     }
 
     @Override
-    Object toJavaObj(T value) throws IOException {
+    Object toJavaObj(Set<?> value) throws IOException {
         return value.toJavaList();
     }
 

@@ -10,7 +10,7 @@ class CharSeqSerializer extends ValueSerializer<CharSeq> {
     private static final long serialVersionUID = 1L;
 
     CharSeqSerializer(JavaType type) {
-        super(type, CharSeq.class);
+        super(type);
     }
 
     @Override
