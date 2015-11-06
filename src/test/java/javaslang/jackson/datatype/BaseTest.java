@@ -9,16 +9,6 @@ import java.util.Map;
 
 public class BaseTest {
 
-    private static Class<?> javaslangClass(Object o) {
-        if (o instanceof List.Cons) {
-            return List.class;
-        }
-        if (o instanceof Stream.Cons) {
-            return Stream.class;
-        }
-        return o.getClass();
-    }
-
     protected ObjectMapper mapper() {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaslangModule());

@@ -1,7 +1,6 @@
 package javaslang.jackson.datatype.set;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import javaslang.collection.Set;
 import javaslang.jackson.datatype.BaseTest;

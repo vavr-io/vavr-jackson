@@ -1,14 +1,12 @@
 package javaslang.jackson.datatype.tuples;
 
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectWriter;
 import javaslang.Tuple;
 import javaslang.jackson.datatype.BaseTest;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.ArrayList;
 
 public abstract class TupleTest<T extends Tuple> extends BaseTest {
 
@@ -19,11 +17,11 @@ public abstract class TupleTest<T extends Tuple> extends BaseTest {
     abstract T ofObjects(Object head, Object tail);
 
     String genJsonTuple(Object head, Object tail) {
-        java.util.Map<Object, Object> map = new HashMap<>();
-        for (int i = 1; i <= arity(); i++) {
-            map.put("_" + i, i == 1 ? head : tail);
+        java.util.List<Object> map = new ArrayList<>();
+        for (int i = 0; i < arity(); i++) {
+            map.add(i == 0 ? head : tail);
         }
-        return genJsonMap(map);
+        return genJsonList(map.toArray());
     }
 
     @SuppressWarnings("unchecked")

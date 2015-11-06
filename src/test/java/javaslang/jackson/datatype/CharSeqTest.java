@@ -1,6 +1,5 @@
 package javaslang.jackson.datatype;
 
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import javaslang.collection.CharSeq;
 import org.junit.Assert;

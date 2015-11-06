@@ -20,7 +20,7 @@ public class TupleXTest extends BaseTest {
 
     @Test(expected = JsonMappingException.class)
     public void test9() throws IOException {
-        String wrongJson = "{\"_1\":1,\"_2\":2,\"_3\":2,\"_4\":2,\"_5\":2,\"_6\":2,\"_7\":2,\"_8\":2,\"_9\":2}";
+        String wrongJson = "[1, 2, 3, 4, 5, 6, 7, 8, 9]";
         mapper().readValue(wrongJson, Tuple.class);
     }
 }

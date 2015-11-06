@@ -2,7 +2,6 @@ package javaslang.jackson.datatype;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import javaslang.Value;
 import javaslang.collection.HashMap;
 import javaslang.collection.List;
 import org.junit.Assert;

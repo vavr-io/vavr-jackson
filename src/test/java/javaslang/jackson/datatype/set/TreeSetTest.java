@@ -34,4 +34,15 @@ public class TreeSetTest extends SetTest {
     public void testGeneric2() throws IOException {
         mapper().readValue("[1, 2]", new TypeReference<TreeSet<Object>>() {});
     }
+
+    static class Incomparable {
+        private int i = 0;
+        int getI() { return i; }
+        void setI(int i) { this.i = i; }
+    }
+
+    @Test(expected = JsonMappingException.class)
+    public void testGeneric3() throws IOException {
+        mapper().readValue("[{\"i\":1}, {\"i\":2}]", new TypeReference<TreeSet<Incomparable>>() {});
+    }
 }
