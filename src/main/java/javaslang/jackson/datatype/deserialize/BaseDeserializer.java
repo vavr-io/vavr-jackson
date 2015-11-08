@@ -171,7 +171,7 @@ abstract class BaseDeserializer<T> extends StdDeserializer<T> {
                     return jp.getText();
                 }
             default:
-                throw ctx.mappingException(BaseDeserializer.class);
+                throw ctx.mappingException("Embedded objects are not supported");
         }
     }
 
