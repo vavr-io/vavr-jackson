@@ -1,5 +1,6 @@
 package javaslang.jackson.datatype.tuples;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import javaslang.Tuple;
 import javaslang.jackson.datatype.BaseTest;
 import org.junit.Assert;
@@ -32,5 +33,29 @@ public abstract class TupleTest<T extends Tuple> extends BaseTest {
         Assert.assertEquals(genJsonTuple(1, 17), json);
         T dst = (T) mapper().readValue(json, clz());
         Assert.assertEquals(src, dst);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    public void test2() throws IOException {
+        ObjectMapper mapper = mapper().addMixIn(clz(), WrapperObject.class);
+        T src = ofObjects(1, 17);
+        String plainJson = mapper().writeValueAsString(src);
+        String wrappedJson = mapper.writeValueAsString(src);
+        Assert.assertEquals(wrappedJson, wrapToObject(clz().getName(), plainJson));
+        T restored = (T) mapper.readValue(wrappedJson, clz());
+        Assert.assertEquals(src, restored);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    public void test3() throws IOException {
+        ObjectMapper mapper = mapper().addMixIn(clz(), WrapperArray.class);
+        T src = ofObjects(1, 17);
+        String plainJson = mapper().writeValueAsString(src);
+        String wrappedJson = mapper.writeValueAsString(src);
+        Assert.assertEquals(wrappedJson, wrapToArray(clz().getName(), plainJson));
+        T restored = (T) mapper.readValue(wrappedJson, clz());
+        Assert.assertEquals(src, restored);
     }
 }

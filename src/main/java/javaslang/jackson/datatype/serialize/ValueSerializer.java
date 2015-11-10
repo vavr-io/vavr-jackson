@@ -3,6 +3,7 @@ package javaslang.jackson.datatype.serialize;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
 import java.io.IOException;
@@ -21,4 +22,13 @@ abstract class ValueSerializer<T> extends StdSerializer<T> {
     public void serialize(T value, JsonGenerator gen, SerializerProvider provider) throws IOException {
         gen.writeObject(toJavaObj(value));
     }
+
+    @Override
+    public void serializeWithType(T value, JsonGenerator gen, SerializerProvider serializers,
+                                  TypeSerializer typeSer) throws IOException {
+        typeSer.writeTypePrefixForScalar(value, gen);
+        serialize(value, gen, serializers);
+        typeSer.writeTypeSuffixForScalar(value, gen);
+    }
+
 }

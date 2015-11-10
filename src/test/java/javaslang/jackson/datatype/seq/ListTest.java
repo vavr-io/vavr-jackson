@@ -16,6 +16,11 @@ public class ListTest extends SeqTest {
     }
 
     @Override
+    protected Class<?> implClz() {
+        return List.Cons.class;
+    }
+
+    @Override
     protected Seq<?> of(Object... objects) {
         return List.ofAll(Arrays.asList(objects));
     }

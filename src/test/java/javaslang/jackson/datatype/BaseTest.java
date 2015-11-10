@@ -1,18 +1,33 @@
 package javaslang.jackson.datatype;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import javaslang.collection.List;
 import javaslang.collection.Seq;
-import javaslang.collection.Stream;
 
 import java.util.Map;
 
 public class BaseTest {
 
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.WRAPPER_OBJECT)
+    public interface WrapperObject {
+    }
+
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.WRAPPER_ARRAY)
+    public interface WrapperArray {
+    }
+
     protected ObjectMapper mapper() {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaslangModule());
         return mapper;
+    }
+
+    protected String wrapToArray(String as, String json) {
+        return "[\"" + as + "\"," + json + "]";
+    }
+
+    protected String wrapToObject(String as, String json) {
+        return "{\"" + as + "\":" + json + "}";
     }
 
     protected String genJsonList(Object... list) {

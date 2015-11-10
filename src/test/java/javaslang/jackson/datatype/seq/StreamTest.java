@@ -12,6 +12,11 @@ public class StreamTest extends SeqTest {
     }
 
     @Override
+    protected Class<?> implClz() {
+        return Stream.Cons.class;
+    }
+
+    @Override
     protected Seq<?> of(Object... objects) {
         return Stream.ofAll(Arrays.asList(objects));
     }

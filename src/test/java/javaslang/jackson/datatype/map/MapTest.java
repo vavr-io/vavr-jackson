@@ -1,6 +1,7 @@
 package javaslang.jackson.datatype.map;
 
 import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import javaslang.collection.Map;
 import javaslang.jackson.datatype.BaseTest;
 import org.junit.Assert;
@@ -25,6 +26,27 @@ public abstract class MapTest extends BaseTest {
 
         Map<?, ?> restored = (Map<?, ?>) mapper().readValue(json, clz());
         Assert.assertEquals(restored, javaslangObject);
+    }
+    @Test
+    public void test2() throws IOException {
+        ObjectMapper mapper = mapper().addMixIn(clz(), WrapperObject.class);
+        Map<?, ?> src = emptyMap().put("1", 2);
+        String plainJson = mapper().writeValueAsString(src);
+        String wrappedJson = mapper.writeValueAsString(src);
+        Assert.assertEquals(wrappedJson, wrapToObject(clz().getName(), plainJson));
+        Map<?, ?> restored = (Map<?, ?>) mapper.readValue(wrappedJson, clz());
+        Assert.assertEquals(src, restored);
+    }
+
+    @Test
+    public void test3() throws IOException {
+        ObjectMapper mapper = mapper().addMixIn(clz(), WrapperArray.class);
+        Map<?, ?> src = emptyMap().put("1", 2);
+        String plainJson = mapper().writeValueAsString(src);
+        String wrappedJson = mapper.writeValueAsString(src);
+        Assert.assertEquals(wrappedJson, wrapToArray(clz().getName(), plainJson));
+        Map<?, ?> restored = (Map<?, ?>) mapper.readValue(wrappedJson, clz());
+        Assert.assertEquals(src, restored);
     }
 
     @Test(expected = JsonParseException.class)

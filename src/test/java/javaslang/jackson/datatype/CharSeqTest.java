@@ -1,5 +1,6 @@
 package javaslang.jackson.datatype;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import javaslang.collection.CharSeq;
 import org.junit.Assert;
@@ -17,5 +18,27 @@ public class CharSeqTest extends BaseTest {
         Assert.assertEquals("\"abc\"", json);
         CharSeq dst = mapper().readValue(json, CharSeq.class);
         Assert.assertEquals(src, dst);
+    }
+
+    @Test
+    public void test2() throws IOException {
+        ObjectMapper mapper = mapper().addMixIn(CharSeq.class, WrapperObject.class);
+        CharSeq src = CharSeq.of('a', 'b', 'c');
+        String plainJson = mapper().writeValueAsString(src);
+        String wrappedJson = mapper.writeValueAsString(src);
+        Assert.assertEquals(wrappedJson, wrapToObject(CharSeq.class.getName(), plainJson));
+        CharSeq restored = mapper.readValue(wrappedJson, CharSeq.class);
+        Assert.assertEquals(src, restored);
+    }
+
+    @Test
+    public void test3() throws IOException {
+        ObjectMapper mapper = mapper().addMixIn(CharSeq.class, WrapperArray.class);
+        CharSeq src = CharSeq.of('a', 'b', 'c');
+        String plainJson = mapper().writeValueAsString(src);
+        String wrappedJson = mapper.writeValueAsString(src);
+        Assert.assertEquals(wrappedJson, wrapToArray(CharSeq.class.getName(), plainJson));
+        CharSeq restored = mapper.readValue(wrappedJson, CharSeq.class);
+        Assert.assertEquals(src, restored);
     }
 }
