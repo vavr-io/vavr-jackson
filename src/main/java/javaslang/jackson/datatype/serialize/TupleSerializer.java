@@ -3,7 +3,6 @@ package javaslang.jackson.datatype.serialize;
 import com.fasterxml.jackson.databind.JavaType;
 import javaslang.*;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 
@@ -16,7 +15,7 @@ class TupleSerializer extends ValueSerializer<Tuple> {
     }
 
     @Override
-    Object toJavaObj(Tuple tuple) throws IOException {
+    Object toJavaObj(Tuple tuple) {
         switch (tuple.arity()) {
             case 1: {
                 final Tuple1<?> t = (Tuple1<?>) tuple;

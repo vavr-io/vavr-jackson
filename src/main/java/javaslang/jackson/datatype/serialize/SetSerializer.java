@@ -3,8 +3,6 @@ package javaslang.jackson.datatype.serialize;
 import com.fasterxml.jackson.databind.JavaType;
 import javaslang.collection.Set;
 
-import java.io.IOException;
-
 class SetSerializer extends ValueSerializer<Set<?>> {
 
     private static final long serialVersionUID = 1L;
@@ -14,7 +12,7 @@ class SetSerializer extends ValueSerializer<Set<?>> {
     }
 
     @Override
-    Object toJavaObj(Set<?> value) throws IOException {
+    Object toJavaObj(Set<?> value) {
         return value.toJavaList();
     }
 
