@@ -9,11 +9,11 @@ import java.util.Map;
 public class BaseTest {
 
     @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.WRAPPER_OBJECT)
-    public interface WrapperObject {
+    protected interface WrapperObject {
     }
 
     @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.WRAPPER_ARRAY)
-    public interface WrapperArray {
+    protected interface WrapperArray {
     }
 
     protected ObjectMapper mapper() {
