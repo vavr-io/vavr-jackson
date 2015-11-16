@@ -46,6 +46,8 @@
         <fasterxml.version>2.6.3</fasterxml.version>
         <maven.coveralls.version>4.0.0</maven.coveralls.version>
         <maven.jacoco.version>0.7.5.201505241946</maven.jacoco.version>
+        <maven.gpg.version>1.5</maven.gpg.version>
+        <maven.release.version>2.5.1</maven.release.version>
         <maven.versions.version>2.1</maven.versions.version>
     </properties>
 
@@ -91,6 +93,22 @@
                 <version>${maven.versions.version}</version>
             </plugin>
         </plugins>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-release-plugin</artifactId>
+                    <version>${maven.release.version}</version>
+                    <configuration>
+                        <!-- Circumvent maven-gpg-plugin bug -->
+                        <mavenExecutorId>forked-path</mavenExecutorId>
+                        <useReleaseProfile>false</useReleaseProfile>
+                        <!-- Honor arguments passed via command line -->
+                        <arguments>${arguments} -Psonatype-oss-release</arguments>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
     </build>
     <profiles>
         <!-- A profile for code coverage analysis in ci environments -->
@@ -118,6 +136,35 @@
                                 <phase>test</phase>
                                 <goals>
                                     <goal>report</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <!-- A profile for gpg-signing .jars when releasing -->
+        <profile>
+            <id>release-sign-artifacts</id>
+            <activation>
+                <property>
+                    <!-- Automatically set to true on mvn release:perform -->
+                    <name>performRelease</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>${maven.gpg.version}</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
                                 </goals>
                             </execution>
                         </executions>
