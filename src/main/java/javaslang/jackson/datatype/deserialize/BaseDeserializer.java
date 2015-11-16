@@ -128,7 +128,7 @@ abstract class BaseDeserializer<T> extends StdDeserializer<T> {
                 if(generic.getRawClass() == Object.class || !Comparable.class.isAssignableFrom(generic.getRawClass())) {
                     throw ctx.mappingException(expectedType.getRawClass());
                 }
-                return javaslang.collection.TreeSet.ofAll((o1, o2) -> ((Comparable) o1).compareTo(o2), result); // TODO
+                return javaslang.collection.TreeSet.ofAll((o1, o2) -> ((Comparable) o1).compareTo(o2), result);
             } else {
                 // default deserialization [...] -> Set
                 return javaslang.collection.HashSet.ofAll(result);

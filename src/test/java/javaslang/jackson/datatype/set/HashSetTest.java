@@ -28,6 +28,6 @@ public class HashSetTest extends SetTest {
 
     @Test
     public void testDefaultDeserialization() throws IOException {
-        Assert.assertEquals(mapper().readValue("[1]", Set.class), HashSet.empty().add(1)); // TODO: HashSet.of(1)
+        Assert.assertEquals(mapper().readValue("[1]", Set.class), HashSet.of(1));
     }
 }

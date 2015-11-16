@@ -133,13 +133,13 @@ public class BeanTest extends BaseTest {
     public void test2() throws IOException {
         ComplexInnerClass innerSrc = new ComplexInnerClass();
         innerSrc.setScalar(10);
-        innerSrc.setValues(List.of("Data1", "Data2", "Data3"));
+        innerSrc.setValues(List.ofAll("Data1", "Data2", "Data3"));
 
         ComplexBeanObject src = new ComplexBeanObject();
         src.setScalar("Data Scalar");
-        src.setValues(List.of(
-                new ComplexInnerClass(10, List.of("Data1", "Data2", "Data3")),
-                new ComplexInnerClass(12, List.of("Data3", "Data4", "Data5"))
+        src.setValues(List.ofAll(
+                new ComplexInnerClass(10, List.ofAll("Data1", "Data2", "Data3")),
+                new ComplexInnerClass(12, List.ofAll("Data3", "Data4", "Data5"))
         ));
 
         String json = mapper().writeValueAsString(src);

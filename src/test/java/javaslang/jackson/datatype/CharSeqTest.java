@@ -13,7 +13,7 @@ public class CharSeqTest extends BaseTest {
     @Test
     public void test1() throws IOException {
         ObjectWriter writer = mapper().writer();
-        CharSeq src = CharSeq.of('a', 'b', 'c');
+        CharSeq src = CharSeq.of("abc");
         String json = writer.writeValueAsString(src);
         Assert.assertEquals("\"abc\"", json);
         CharSeq dst = mapper().readValue(json, CharSeq.class);
@@ -23,7 +23,7 @@ public class CharSeqTest extends BaseTest {
     @Test
     public void test2() throws IOException {
         ObjectMapper mapper = mapper().addMixIn(CharSeq.class, WrapperObject.class);
-        CharSeq src = CharSeq.of('a', 'b', 'c');
+        CharSeq src = CharSeq.of("abc");
         String plainJson = mapper().writeValueAsString(src);
         String wrappedJson = mapper.writeValueAsString(src);
         Assert.assertEquals(wrappedJson, wrapToObject(CharSeq.class.getName(), plainJson));
@@ -34,7 +34,7 @@ public class CharSeqTest extends BaseTest {
     @Test
     public void test3() throws IOException {
         ObjectMapper mapper = mapper().addMixIn(CharSeq.class, WrapperArray.class);
-        CharSeq src = CharSeq.of('a', 'b', 'c');
+        CharSeq src = CharSeq.of("abc");
         String plainJson = mapper().writeValueAsString(src);
         String wrappedJson = mapper.writeValueAsString(src);
         Assert.assertEquals(wrappedJson, wrapToArray(CharSeq.class.getName(), plainJson));
