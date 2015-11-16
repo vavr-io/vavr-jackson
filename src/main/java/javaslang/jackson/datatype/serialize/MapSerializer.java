@@ -30,8 +30,8 @@ class MapSerializer extends ValueSerializer<Map<?, ?>> {
 
     @Override
     Object toJavaObj(Map<?, ?> value) {
-        HashMap<String, Object> result = new HashMap<>();
-        value.forEach(e -> result.put(e.key().toString(), e.value()));
+        final HashMap<String, Object> result = new HashMap<>();
+        value.forEach(e -> result.put(e._1.toString(), e._2));
         return result;
     }
 }
