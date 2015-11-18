@@ -1,6 +1,7 @@
-package javaslang.jackson.datatype;
+package javaslang.jackson.datatype.bean;
 
 import javaslang.collection.List;
+import javaslang.jackson.datatype.BaseTest;
 import org.junit.Assert;
 import org.junit.Test;
 

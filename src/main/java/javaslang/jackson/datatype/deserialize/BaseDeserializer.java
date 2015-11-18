@@ -71,10 +71,12 @@ abstract class BaseDeserializer<T> extends StdDeserializer<T> {
         }
         if (TreeMap.class.isAssignableFrom(expectedType.getRawClass())) {
             return fill(TreeMap.empty((o1, o2) -> o1.toString().compareTo(o2.toString())), result);
-        } else {
-            // default deserialization [...] -> Map
-            return fill(HashMap.empty(), result);
         }
+        if (LinkedHashMap.class.isAssignableFrom(expectedType.getRawClass())) {
+            return fill(LinkedHashMap.empty(), result);
+        }
+        // default deserialization [...] -> Map
+        return fill(HashMap.empty(), result);
     }
 
     @SuppressWarnings("unchecked")
@@ -129,10 +131,12 @@ abstract class BaseDeserializer<T> extends StdDeserializer<T> {
                     throw ctx.mappingException(expectedType.getRawClass());
                 }
                 return javaslang.collection.TreeSet.ofAll((o1, o2) -> ((Comparable) o1).compareTo(o2), result);
-            } else {
-                // default deserialization [...] -> Set
-                return javaslang.collection.HashSet.ofAll(result);
             }
+            if(javaslang.collection.LinkedHashSet.class.isAssignableFrom(expectedType.getRawClass())) {
+                return javaslang.collection.LinkedHashSet.ofAll(result);
+            }
+            // default deserialization [...] -> Set
+            return javaslang.collection.HashSet.ofAll(result);
         }
     }
 
