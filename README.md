@@ -1,11 +1,29 @@
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.javaslang/javaslang-jackson/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.javaslang/javaslang-jackson)
 [![Build Status](https://travis-ci.org/javaslang/javaslang-jackson.svg?branch=master)](https://travis-ci.org/javaslang/javaslang-jackson)
 [![Coverage Status](https://codecov.io/github/javaslang/javaslang-jackson/coverage.svg?branch=master)](https://codecov.io/github/javaslang/javaslang-jackson?branch=master)
+[![Gitter Chat](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/javaslang/javaslang)
 
 # javaslang-jackson
 
 Jackson datatype module for [Javaslang](http://javaslang.com/) library
 
 ## Usage
+
+### Maven
+
+```xml
+<dependency>
+  <groupId>com.javaslang</groupId>
+  <artifactId>javaslang-jackson</artifactId>
+  <version>2.0.0-RC1</version>
+</dependency>
+```
+
+### Gradle
+
+```groovy
+compile("com.javaslang:javaslang-jackson:2.0.0-RC1")
+```
 
 ### Registering module
 Just register a new instance of <code>JavaslangModule</code>
