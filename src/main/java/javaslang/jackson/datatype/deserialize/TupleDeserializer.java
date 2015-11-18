@@ -33,7 +33,7 @@ class TupleDeserializer extends BaseDeserializer<Tuple> implements ContextualDes
     private final JavaType[] subTypes;
 
     TupleDeserializer(JavaType javaType) {
-        this(javaType, null);
+        this(javaType, new JavaType[0]);
     }
 
     TupleDeserializer(JavaType valueType, JavaType[] subTypes) {
@@ -48,28 +48,42 @@ class TupleDeserializer extends BaseDeserializer<Tuple> implements ContextualDes
         for(int index = 0; p.nextToken() != JsonToken.END_ARRAY; index++) {
             list.add(_deserialize(p, getSubType(index), ctxt));
         }
+        final Tuple result;
         switch (list.size()) {
             case 0:
-                return Tuple.empty();
+                result = Tuple.empty();
+                break;
             case 1:
-                return Tuple.of(list.get(0));
+                result = Tuple.of(list.get(0));
+                break;
             case 2:
-                return Tuple.of(list.get(0), list.get(1));
+                result = Tuple.of(list.get(0), list.get(1));
+                break;
             case 3:
-                return Tuple.of(list.get(0), list.get(1), list.get(2));
+                result = Tuple.of(list.get(0), list.get(1), list.get(2));
+                break;
             case 4:
-                return Tuple.of(list.get(0), list.get(1), list.get(2), list.get(3));
+                result = Tuple.of(list.get(0), list.get(1), list.get(2), list.get(3));
+                break;
             case 5:
-                return Tuple.of(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4));
+                result = Tuple.of(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4));
+                break;
             case 6:
-                return Tuple.of(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4), list.get(5));
+                result = Tuple.of(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4), list.get(5));
+                break;
             case 7:
-                return Tuple.of(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4), list.get(5), list.get(6));
+                result = Tuple.of(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4), list.get(5), list.get(6));
+                break;
             case 8:
-                return Tuple.of(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4), list.get(5), list.get(6), list.get(7));
+                result = Tuple.of(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4), list.get(5), list.get(6), list.get(7));
+                break;
             default:
                 throw ctxt.mappingException(javaType.getRawClass());
         }
+        if(!result.getClass().isAssignableFrom(javaType.getRawClass())) {
+            throw ctxt.mappingException(javaType.getRawClass());
+        }
+        return result;
     }
 
     @Override
@@ -83,6 +97,6 @@ class TupleDeserializer extends BaseDeserializer<Tuple> implements ContextualDes
     }
 
     private JavaType getSubType(int index) {
-        return subTypes == null || subTypes.length <= index ? null : subTypes[index];
+        return subTypes.length <= index ? null : subTypes[index];
     }
 }
