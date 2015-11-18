@@ -17,6 +17,8 @@ import java.io.Serializable;
 
 public class ComplexClass implements Serializable {
 
+    private static final long serialVersionUID = 6119682094978738461L;
+
     private HashMap<String, ComplexInnerClass> complexInnerClassHashMap;
     private TreeMap<Integer, ComplexInnerClass> complexInnerClassTreeMap;
     private Array<ComplexInnerClass> complexInnerClasses;
@@ -56,6 +58,7 @@ public class ComplexClass implements Serializable {
         this.complexInnerClassTuple2 = complexInnerClassTuple2;
     }
 
+    @SuppressWarnings("unchecked")
     public static ComplexClass build() {
         return new ComplexClass(
                 HashMap.of(Tuple.of("42", ComplexInnerClass.build())),
@@ -69,22 +72,6 @@ public class ComplexClass implements Serializable {
                 HashSet.ofAll(ComplexInnerClass.build(), ComplexInnerClass.buildAnother()),
                 TreeSet.ofAll(ComplexInnerClass.build(), ComplexInnerClass.buildAnother()),
                 Tuple.of("42", ComplexInnerClass.build())
-        );
-    }
-
-    public static ComplexClass buildEmpty() {
-        return new ComplexClass(
-                HashMap.empty(),
-                TreeMap.empty(),
-                Array.empty(),
-                List.empty(),
-                Queue.empty(),
-                Stack.empty(),
-                Stream.empty(),
-                Vector.empty(),
-                HashSet.empty(),
-                TreeSet.empty(),
-                Tuple.of("42", null)
         );
     }
 
@@ -223,7 +210,10 @@ public class ComplexClass implements Serializable {
         return result;
     }
 
-    public static class ComplexInnerClass implements Comparable, Serializable {
+    public static class ComplexInnerClass implements Comparable<ComplexInnerClass>, Serializable {
+
+        private static final long serialVersionUID = 9052404750897385370L;
+
         private int intField;
         private long longField;
         private double doubleField;
@@ -360,7 +350,7 @@ public class ComplexClass implements Serializable {
          * @return Always return 0
          */
         @Override
-        public int compareTo(final Object o) {
+        public int compareTo(ComplexInnerClass o) {
             return 0;
         }
 
@@ -399,5 +389,7 @@ public class ComplexClass implements Serializable {
             result = 31 * result + (stringField != null ? stringField.hashCode() : 0);
             return result;
         }
+
+
     }
 }
