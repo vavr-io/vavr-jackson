@@ -22,16 +22,15 @@ public class ComplexBeanTest extends BaseTest {
         Assert.assertEquals(fromJson.getComplexInnerClassQueue(), src.getComplexInnerClassQueue());
         Assert.assertEquals(fromJson.getComplexInnerClassStack(), src.getComplexInnerClassStack());
         Assert.assertEquals(fromJson.getComplexInnerClassStream(), src.getComplexInnerClassStream());
+        Assert.assertEquals(fromJson.getComplexInnerClassVector(), src.getComplexInnerClassVector());
+        Assert.assertEquals(fromJson.getComplexInnerClassTuple2(), src.getComplexInnerClassTuple2());
         Assert.assertEquals(fromJson.getComplexInnerClassTreeSet(), src.getComplexInnerClassTreeSet());
 
-        // Throw Exception. Problem on Tuple2 (Maybe affected to other Tuple)
-        // java.lang.ClassCastException: java.util.LinkedHashMap cannot be cast to javaslang.jackson.datatype.bean.ComplexClass$ComplexInnerClass
-        //final ComplexClass.ComplexInnerClass srcInnerClassFromTuple2 = src.getComplexInnerClassTuple2()._2;
-        //final ComplexClass.ComplexInnerClass fromJsonInnerClassFromTuple2 = fromJson.getComplexInnerClassTuple2()._2;
-        //Assert.assertEquals(srcInnerClassFromTuple2, fromJsonInnerClassFromTuple2);
+        final ComplexClass.ComplexInnerClass srcInnerClassFromTuple2 = src.getComplexInnerClassTuple2()._2;
+        final ComplexClass.ComplexInnerClass fromJsonInnerClassFromTuple2 = fromJson.getComplexInnerClassTuple2()._2;
+        Assert.assertEquals(srcInnerClassFromTuple2, fromJsonInnerClassFromTuple2);
 
-
-        //Will Failed because of Tuple2 Problem
+        //Will Failed because of non-string keys
         //Assert.assertEquals(fromJson.getComplexInnerClassTreeMap(), src.getComplexInnerClassTreeMap());
 
     }
