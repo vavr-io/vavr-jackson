@@ -16,27 +16,38 @@
 package javaslang.jackson.datatype.deserialize;
 
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.databind.deser.ContextualDeserializer;
 import javaslang.Tuple;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
-class TupleDeserializer extends BaseDeserializer<Tuple> {
+class TupleDeserializer extends BaseDeserializer<Tuple> implements ContextualDeserializer {
 
     private static final long serialVersionUID = 1L;
 
     private final JavaType javaType;
+    private final JavaType[] subTypes;
 
-    TupleDeserializer(JavaType valueType) {
+    TupleDeserializer(JavaType javaType) {
+        this(javaType, null);
+    }
+
+    TupleDeserializer(JavaType valueType, JavaType[] subTypes) {
         super(valueType);
         this.javaType = valueType;
+        this.subTypes = subTypes;
     }
 
     @Override
     public Tuple deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
-        List<?> list = (List<?>) _deserialize(p, ctxt.constructType(List.class), ctxt);
+        List<Object> list = new ArrayList<>();
+        for(int index = 0; p.nextToken() != JsonToken.END_ARRAY; index++) {
+            list.add(_deserialize(p, getSubType(index), ctxt));
+        }
         switch (list.size()) {
             case 0:
                 return Tuple.empty();
@@ -59,5 +70,19 @@ class TupleDeserializer extends BaseDeserializer<Tuple> {
             default:
                 throw ctxt.mappingException(javaType.getRawClass());
         }
+    }
+
+    @Override
+    public JsonDeserializer<?> createContextual(DeserializationContext ctxt, BeanProperty property) throws JsonMappingException {
+        int genericsNum = javaType.containedTypeCount();
+        JavaType[] subTypes = new JavaType[genericsNum];
+        for (int i = 0; i < genericsNum; i++) {
+            subTypes[i] = javaType.containedType(i);
+        }
+        return new TupleDeserializer(javaType, subTypes);
+    }
+
+    private JavaType getSubType(int index) {
+        return subTypes == null || subTypes.length <= index ? null : subTypes[index];
     }
 }
