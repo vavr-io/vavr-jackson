@@ -31,8 +31,8 @@ public abstract class TupleTest<T extends Tuple> extends BaseTest {
         T src = ofObjects(1, 17);
         String json = mapper().writeValueAsString(src);
         Assert.assertEquals(genJsonTuple(1, 17), json);
-        T dst = (T) mapper().readValue(json, clz());
-        Assert.assertEquals(src, dst);
+        Assert.assertEquals(src, mapper().readValue(json, clz()));
+        Assert.assertEquals(src, mapper().readValue(json, Tuple.class));
     }
 
     @SuppressWarnings("unchecked")
