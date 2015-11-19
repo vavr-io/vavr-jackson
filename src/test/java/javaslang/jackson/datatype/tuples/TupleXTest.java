@@ -18,6 +18,7 @@ public class TupleXTest extends BaseTest {
         Tuple0 tuple0 = Tuple0.instance();
         String json = mapper().writer().writeValueAsString(tuple0);
         Assert.assertEquals(mapper().readValue(json, Tuple0.class), tuple0);
+        Assert.assertEquals(mapper().readValue(json, Tuple.class), tuple0);
     }
 
     @Test(expected = JsonMappingException.class)

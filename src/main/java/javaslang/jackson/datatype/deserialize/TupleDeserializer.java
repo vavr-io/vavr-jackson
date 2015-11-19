@@ -80,7 +80,7 @@ class TupleDeserializer extends BaseDeserializer<Tuple> implements ContextualDes
             default:
                 throw ctxt.mappingException(javaType.getRawClass());
         }
-        if(!result.getClass().isAssignableFrom(javaType.getRawClass())) {
+        if(!javaType.getRawClass().isAssignableFrom(result.getClass())) {
             throw ctxt.mappingException(javaType.getRawClass());
         }
         return result;
