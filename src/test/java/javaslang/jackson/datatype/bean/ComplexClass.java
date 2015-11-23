@@ -2,16 +2,7 @@ package javaslang.jackson.datatype.bean;
 
 import javaslang.Tuple;
 import javaslang.Tuple2;
-import javaslang.collection.Array;
-import javaslang.collection.HashMap;
-import javaslang.collection.HashSet;
-import javaslang.collection.List;
-import javaslang.collection.Queue;
-import javaslang.collection.Stack;
-import javaslang.collection.Stream;
-import javaslang.collection.TreeMap;
-import javaslang.collection.TreeSet;
-import javaslang.collection.Vector;
+import javaslang.collection.*;
 import javaslang.control.Option;
 
 import java.io.Serializable;
