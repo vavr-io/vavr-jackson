@@ -194,7 +194,7 @@ abstract class BaseDeserializer<T> extends StdDeserializer<T> {
         }
     }
 
-    private static JavaType containedType(JavaType holder, int index) {
+    static JavaType containedType(JavaType holder, int index) {
         if(holder.containedTypeCount() < index) {
             return null;
         } else {
