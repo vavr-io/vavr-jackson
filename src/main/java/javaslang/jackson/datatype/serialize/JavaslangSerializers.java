@@ -20,6 +20,7 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializationConfig;
 import com.fasterxml.jackson.databind.ser.Serializers;
+import javaslang.Lazy;
 import javaslang.Tuple;
 import javaslang.collection.CharSeq;
 import javaslang.collection.Map;
@@ -34,6 +35,9 @@ public class JavaslangSerializers extends Serializers.Base {
                                             JavaType type, BeanDescription beanDesc) {
 
         Class<?> raw = type.getRawClass();
+        if (Lazy.class.isAssignableFrom(raw)) {
+            return new LazySerializer(type);
+        }
         if (Option.class.isAssignableFrom(raw)) {
             return new OptionSerializer(type);
         }

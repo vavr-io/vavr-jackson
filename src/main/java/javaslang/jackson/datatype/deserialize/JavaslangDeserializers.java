@@ -17,6 +17,7 @@ package javaslang.jackson.datatype.deserialize;
 
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.deser.Deserializers;
+import javaslang.Lazy;
 import javaslang.Tuple;
 import javaslang.collection.Map;
 import javaslang.collection.Seq;
@@ -29,19 +30,23 @@ public class JavaslangDeserializers extends Deserializers.Base {
     public JsonDeserializer<?> findBeanDeserializer(JavaType type,
                                                     DeserializationConfig config,
                                                     BeanDescription beanDesc) throws JsonMappingException {
-        if (Option.class.isAssignableFrom(type.getRawClass())) {
+        Class<?> raw = type.getRawClass();
+        if (Lazy.class.isAssignableFrom(raw)) {
+            return new LazyDeserializer(type);
+        }
+        if (Option.class.isAssignableFrom(raw)) {
             return new OptionDeserializer(type);
         }
-        if (Map.class.isAssignableFrom(type.getRawClass())) {
+        if (Map.class.isAssignableFrom(raw)) {
             return new MapDeserializer(type);
         }
-        if (Tuple.class.isAssignableFrom(type.getRawClass())) {
+        if (Tuple.class.isAssignableFrom(raw)) {
             return new TupleDeserializer(type);
         }
-        if (Seq.class.isAssignableFrom(type.getRawClass())) {
+        if (Seq.class.isAssignableFrom(raw)) {
             return new SeqDeserializer(type);
         }
-        if (Set.class.isAssignableFrom(type.getRawClass())) {
+        if (Set.class.isAssignableFrom(raw)) {
             return new SetDeserializer(type);
         }
         return null;

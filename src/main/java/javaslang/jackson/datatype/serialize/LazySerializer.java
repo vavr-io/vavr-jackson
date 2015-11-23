@@ -16,19 +16,18 @@
 package javaslang.jackson.datatype.serialize;
 
 import com.fasterxml.jackson.databind.JavaType;
-import javaslang.Tuple;
+import javaslang.Lazy;
 
-class TupleSerializer extends ValueSerializer<Tuple> {
+class LazySerializer extends ValueSerializer<Lazy<?>> {
 
     private static final long serialVersionUID = 1L;
 
-    TupleSerializer(JavaType type) {
+    LazySerializer(JavaType type) {
         super(type);
     }
 
     @Override
-    Object toJavaObj(Tuple tuple) {
-        return tuple.toSeq().toJavaList();
+    Object toJavaObj(Lazy<?> value) {
+        return value.isEmpty() ? null : value.get();
     }
-
 }

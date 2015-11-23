@@ -1,27 +1,27 @@
 package javaslang.jackson.datatype;
 
-import javaslang.control.Option;
+import javaslang.Lazy;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.IOException;
 
-public class OptionTest extends BaseTest {
+public class LazyTest extends BaseTest {
     @Test
     public void test1() throws IOException {
-        Option<?> src = Option.of(1);
+        Lazy<?> src = Lazy.of(() -> 1);
         String json = mapper().writer().writeValueAsString(src);
         Assert.assertEquals("1", json);
-        Option<?> restored = mapper().readValue(json, Option.class);
+        Lazy<?> restored = mapper().readValue(json, Lazy.class);
         Assert.assertEquals(src, restored);
     }
 
     @Test
     public void test2() throws IOException {
-        Option<?> src = Option.none();
+        Lazy<?> src = Lazy.empty();
         String json = mapper().writer().writeValueAsString(src);
         Assert.assertEquals("null", json);
-        Option<?> restored = mapper().readValue(json, Option.class);
-        Assert.assertEquals(src, restored);
+        Lazy<?> restored = mapper().readValue(json, Lazy.class);
+        Assert.assertTrue(restored.isEmpty());
     }
 }

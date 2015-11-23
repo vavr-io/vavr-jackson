@@ -18,29 +18,29 @@ package javaslang.jackson.datatype.deserialize;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JavaType;
-import javaslang.control.Option;
+import javaslang.Lazy;
 
 import java.io.IOException;
 
-class OptionDeserializer extends BaseDeserializer<Option<?>> {
+class LazyDeserializer extends BaseDeserializer<Lazy<?>> {
 
     private static final long serialVersionUID = 1L;
 
     private final JavaType javaType;
 
-    OptionDeserializer(JavaType valueType) {
+    LazyDeserializer(JavaType valueType) {
         super(valueType);
         this.javaType = valueType;
     }
 
     @Override
-    public Option<?> deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+    public Lazy<?> deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
         Object obj = _deserialize(p, containedType(javaType, 0), ctxt);
-        return Option.of(obj);
+        return Lazy.of(() -> obj);
     }
 
     @Override
-    public Option<?> getNullValue(DeserializationContext ctxt) {
-        return Option.none();
+    public Lazy<?> getNullValue(DeserializationContext ctxt) {
+        return Lazy.empty();
     }
 }
