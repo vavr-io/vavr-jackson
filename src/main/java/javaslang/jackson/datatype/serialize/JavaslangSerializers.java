@@ -25,6 +25,7 @@ import javaslang.collection.CharSeq;
 import javaslang.collection.Map;
 import javaslang.collection.Seq;
 import javaslang.collection.Set;
+import javaslang.control.Option;
 
 public class JavaslangSerializers extends Serializers.Base {
 
@@ -33,6 +34,9 @@ public class JavaslangSerializers extends Serializers.Base {
                                             JavaType type, BeanDescription beanDesc) {
 
         Class<?> raw = type.getRawClass();
+        if (Option.class.isAssignableFrom(raw)) {
+            return new OptionSerializer(type);
+        }
         if (CharSeq.class.isAssignableFrom(raw)) {
             return new CharSeqSerializer(type);
         }

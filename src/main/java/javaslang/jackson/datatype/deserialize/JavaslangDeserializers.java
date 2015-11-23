@@ -21,6 +21,7 @@ import javaslang.Tuple;
 import javaslang.collection.Map;
 import javaslang.collection.Seq;
 import javaslang.collection.Set;
+import javaslang.control.Option;
 
 public class JavaslangDeserializers extends Deserializers.Base {
 
@@ -28,6 +29,9 @@ public class JavaslangDeserializers extends Deserializers.Base {
     public JsonDeserializer<?> findBeanDeserializer(JavaType type,
                                                     DeserializationConfig config,
                                                     BeanDescription beanDesc) throws JsonMappingException {
+        if (Option.class.isAssignableFrom(type.getRawClass())) {
+            return new OptionDeserializer(type);
+        }
         if (Map.class.isAssignableFrom(type.getRawClass())) {
             return new MapDeserializer(type);
         }

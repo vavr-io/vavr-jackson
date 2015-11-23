@@ -12,6 +12,7 @@ import javaslang.collection.Stream;
 import javaslang.collection.TreeMap;
 import javaslang.collection.TreeSet;
 import javaslang.collection.Vector;
+import javaslang.control.Option;
 
 import java.io.Serializable;
 
@@ -30,6 +31,8 @@ public class ComplexClass implements Serializable {
     private HashSet<ComplexInnerClass> complexInnerClassHashSet;
     private TreeSet<ComplexInnerClass> complexInnerClassTreeSet;
     private Tuple2<String, ComplexInnerClass> complexInnerClassTuple2;
+    private Option<Integer> opt1;
+    private Option<Integer> opt2;
 
     public ComplexClass() {
     }
@@ -44,7 +47,9 @@ public class ComplexClass implements Serializable {
                         final Vector<ComplexInnerClass> complexInnerClassVector,
                         final HashSet<ComplexInnerClass> complexInnerClassHashSet,
                         final TreeSet<ComplexInnerClass> complexInnerClassTreeSet,
-                        final Tuple2<String, ComplexInnerClass> complexInnerClassTuple2) {
+                        final Tuple2<String, ComplexInnerClass> complexInnerClassTuple2,
+                        final Option<Integer> opt1,
+                        final Option<Integer> opt2) {
         this.complexInnerClassHashMap = complexInnerClassHashMap;
         this.complexInnerClassTreeMap = complexInnerClassTreeMap;
         this.complexInnerClasses = complexInnerClasses;
@@ -56,6 +61,8 @@ public class ComplexClass implements Serializable {
         this.complexInnerClassHashSet = complexInnerClassHashSet;
         this.complexInnerClassTreeSet = complexInnerClassTreeSet;
         this.complexInnerClassTuple2 = complexInnerClassTuple2;
+        this.opt1 = opt1;
+        this.opt2 = opt2;
     }
 
     @SuppressWarnings("unchecked")
@@ -71,7 +78,8 @@ public class ComplexClass implements Serializable {
                 Vector.ofAll(ComplexInnerClass.build(), ComplexInnerClass.buildAnother()),
                 HashSet.ofAll(ComplexInnerClass.build(), ComplexInnerClass.buildAnother()),
                 TreeSet.ofAll(ComplexInnerClass.build(), ComplexInnerClass.buildAnother()),
-                Tuple.of("42", ComplexInnerClass.build())
+                Tuple.of("42", ComplexInnerClass.build()),
+                Option.of(42), Option.none()
         );
     }
 
@@ -163,6 +171,22 @@ public class ComplexClass implements Serializable {
         this.complexInnerClassTuple2 = complexInnerClassTuple2;
     }
 
+    public void setOpt1(Option<Integer> opt1) {
+        this.opt1 = opt1;
+    }
+
+    public Option<Integer> getOpt1() {
+        return opt1;
+    }
+
+    public void setOpt2(Option<Integer> opt2) {
+        this.opt2 = opt2;
+    }
+
+    public Option<Integer> getOpt2() {
+        return opt2;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -190,7 +214,10 @@ public class ComplexClass implements Serializable {
             return false;
         if (complexInnerClassTreeSet != null ? !complexInnerClassTreeSet.equals(that.complexInnerClassTreeSet) : that.complexInnerClassTreeSet != null)
             return false;
-        return !(complexInnerClassTuple2 != null ? !complexInnerClassTuple2.equals(that.complexInnerClassTuple2) : that.complexInnerClassTuple2 != null);
+        if (complexInnerClassTuple2 != null ? !complexInnerClassTuple2.equals(that.complexInnerClassTuple2) : that.complexInnerClassTuple2 != null)
+            return false;
+        if (opt1 != null ? !opt1.equals(that.opt1) : that.opt1 != null) return false;
+        return !(opt2 != null ? !opt2.equals(that.opt2) : that.opt2 != null);
 
     }
 
@@ -207,6 +234,8 @@ public class ComplexClass implements Serializable {
         result = 31 * result + (complexInnerClassHashSet != null ? complexInnerClassHashSet.hashCode() : 0);
         result = 31 * result + (complexInnerClassTreeSet != null ? complexInnerClassTreeSet.hashCode() : 0);
         result = 31 * result + (complexInnerClassTuple2 != null ? complexInnerClassTuple2.hashCode() : 0);
+        result = 31 * result + (opt1 != null ? opt1.hashCode() : 0);
+        result = 31 * result + (opt2 != null ? opt2.hashCode() : 0);
         return result;
     }
 
