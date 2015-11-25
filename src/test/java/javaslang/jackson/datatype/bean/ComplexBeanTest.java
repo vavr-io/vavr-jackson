@@ -24,6 +24,8 @@ public class ComplexBeanTest extends BaseTest {
         Assert.assertEquals(fromJson.getComplexInnerClassStream(), src.getComplexInnerClassStream());
         Assert.assertEquals(fromJson.getComplexInnerClassVector(), src.getComplexInnerClassVector());
         Assert.assertEquals(fromJson.getComplexInnerClassTuple2(), src.getComplexInnerClassTuple2());
+        Assert.assertEquals(fromJson.getComplexInnerClassTreeMap(), src.getComplexInnerClassTreeMap());
+        Assert.assertEquals(fromJson.getComplexInnerClassHashMap(), src.getComplexInnerClassHashMap());
         Assert.assertEquals(fromJson.getOpt1(), src.getOpt1());
         Assert.assertEquals(fromJson.getOpt2(), src.getOpt2());
         Assert.assertEquals(fromJson.getComplexInnerClassTreeSet(), src.getComplexInnerClassTreeSet());
@@ -31,9 +33,6 @@ public class ComplexBeanTest extends BaseTest {
         final ComplexClass.ComplexInnerClass srcInnerClassFromTuple2 = src.getComplexInnerClassTuple2()._2;
         final ComplexClass.ComplexInnerClass fromJsonInnerClassFromTuple2 = fromJson.getComplexInnerClassTuple2()._2;
         Assert.assertEquals(srcInnerClassFromTuple2, fromJsonInnerClassFromTuple2);
-
-        //Will Failed because of non-string keys
-        //Assert.assertEquals(fromJson.getComplexInnerClassTreeMap(), src.getComplexInnerClassTreeMap());
 
     }
 
