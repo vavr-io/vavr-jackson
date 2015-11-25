@@ -16,43 +16,44 @@
 package javaslang.jackson.datatype.deserialize;
 
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.*;
-import com.fasterxml.jackson.databind.deser.ContextualDeserializer;
-import javaslang.Tuple;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import javaslang.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-class TupleDeserializer extends BaseDeserializer<Tuple> implements ContextualDeserializer {
+class TupleDeserializer extends ValueDeserializer<Tuple> {
 
     private static final long serialVersionUID = 1L;
 
     private final JavaType javaType;
-    private final JavaType[] subTypes;
 
-    TupleDeserializer(JavaType javaType) {
-        this(javaType, new JavaType[0]);
-    }
-
-    TupleDeserializer(JavaType valueType, JavaType[] subTypes) {
-        super(valueType);
+    TupleDeserializer(JavaType valueType) {
+        super(valueType, arity(valueType));
         this.javaType = valueType;
-        this.subTypes = subTypes;
     }
 
     @Override
-    public Tuple deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+    public Tuple deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException {
         List<Object> list = new ArrayList<>();
-        for(int index = 0; p.nextToken() != JsonToken.END_ARRAY; index++) {
-            list.add(_deserialize(p, getSubType(index), ctxt));
+        int ptr = 0;
+        while (p.nextToken() != JsonToken.END_ARRAY) {
+            if (ptr >= deserializersCount()) {
+                throw ctxt.mappingException(javaType.getRawClass());
+            }
+            list.add(deserializer(ptr++).deserialize(p, ctxt));
         }
+        return create(list, ctxt);
+    }
+
+    private Tuple create(List<Object> list, DeserializationContext ctxt) throws JsonMappingException {
         final Tuple result;
         switch (list.size()) {
-            case 0:
-                result = Tuple.empty();
-                break;
             case 1:
                 result = Tuple.of(list.get(0));
                 break;
@@ -78,7 +79,7 @@ class TupleDeserializer extends BaseDeserializer<Tuple> implements ContextualDes
                 result = Tuple.of(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4), list.get(5), list.get(6), list.get(7));
                 break;
             default:
-                throw ctxt.mappingException(javaType.getRawClass());
+                result = Tuple.empty();
         }
         if(!javaType.getRawClass().isAssignableFrom(result.getClass())) {
             throw ctxt.mappingException(javaType.getRawClass());
@@ -86,17 +87,26 @@ class TupleDeserializer extends BaseDeserializer<Tuple> implements ContextualDes
         return result;
     }
 
-    @Override
-    public JsonDeserializer<?> createContextual(DeserializationContext ctxt, BeanProperty property) throws JsonMappingException {
-        int genericsNum = javaType.containedTypeCount();
-        JavaType[] subTypes = new JavaType[genericsNum];
-        for (int i = 0; i < genericsNum; i++) {
-            subTypes[i] = javaType.containedType(i);
+    private static int arity(JavaType valueType) {
+        Class<?> clz = valueType.getRawClass();
+        if (clz == Tuple0.class) {
+            return 0;
+        } else if (clz == Tuple1.class) {
+            return 1;
+        } else if (clz == Tuple2.class) {
+            return 2;
+        } else if (clz == Tuple3.class) {
+            return 3;
+        } else if (clz == Tuple4.class) {
+            return 4;
+        } else if (clz == Tuple5.class) {
+            return 5;
+        } else if (clz == Tuple6.class) {
+            return 6;
+        } else if (clz == Tuple7.class) {
+            return 7;
+        } else {
+            return 8;
         }
-        return new TupleDeserializer(javaType, subTypes);
-    }
-
-    private JavaType getSubType(int index) {
-        return subTypes.length <= index ? null : subTypes[index];
     }
 }

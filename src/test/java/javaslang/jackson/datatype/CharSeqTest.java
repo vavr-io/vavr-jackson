@@ -1,5 +1,6 @@
 package javaslang.jackson.datatype;
 
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import javaslang.collection.CharSeq;
@@ -40,5 +41,10 @@ public class CharSeqTest extends BaseTest {
         Assert.assertEquals(wrappedJson, wrapToArray(CharSeq.class.getName(), plainJson));
         CharSeq restored = mapper.readValue(wrappedJson, CharSeq.class);
         Assert.assertEquals(src, restored);
+    }
+
+    @Test(expected = JsonMappingException.class)
+    public void test4() throws IOException {
+        mapper().readValue("42", CharSeq.class);
     }
 }

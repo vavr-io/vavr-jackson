@@ -1,12 +1,7 @@
 package javaslang.jackson.datatype;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.util.RawValue;
 import javaslang.collection.List;
 import org.junit.Assert;
 import org.junit.Test;
@@ -41,29 +36,13 @@ public class ScalarTest extends BaseTest {
         Assert.assertEquals(l9, List.of(new BigInteger("1234567890123456789012")));
     }
 
-    @Test(expected = JsonMappingException.class)
+    @Test
     public void test2() throws IOException {
-        mapper().readValue("[1.3]", new TypeReference<List<Integer>>() {});
-    }
-
-    @Test(expected = JsonMappingException.class)
-    public void test3() throws IOException {
-        mapper().readValue("[1]", new TypeReference<List<String>>() {});
+        Assert.assertEquals(mapper().readValue("[1.3]", new TypeReference<List<Integer>>() {}), List.of(1));
     }
 
     @Test
-    public void test4() throws JsonProcessingException {
-        JsonNodeFactory factory = new JsonNodeFactory(true);
-        ArrayNode arrNode = factory.arrayNode();
-        arrNode.add(factory.numberNode(BigDecimal.TEN));
-        Assert.assertEquals(mapper().treeToValue(arrNode, List.class), List.of(BigDecimal.TEN));
-    }
-
-    @Test(expected = JsonMappingException.class)
-    public void test5() throws JsonProcessingException {
-        JsonNodeFactory factory = new JsonNodeFactory(true);
-        ArrayNode arrNode = factory.arrayNode();
-        arrNode.add(factory.rawValueNode(new RawValue("kekeke")));
-        mapper().treeToValue(arrNode, List.class);
+    public void test3() throws IOException {
+        Assert.assertEquals(mapper().readValue("[1]", new TypeReference<List<String>>() {}), List.of("1"));
     }
 }
