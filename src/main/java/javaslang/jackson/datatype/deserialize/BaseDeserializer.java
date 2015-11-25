@@ -19,11 +19,14 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
+import com.fasterxml.jackson.databind.type.MapLikeType;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 import javaslang.collection.*;
 
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.Comparator;
 
 abstract class BaseDeserializer<T> extends StdDeserializer<T> {
 
@@ -45,6 +48,7 @@ abstract class BaseDeserializer<T> extends StdDeserializer<T> {
         }
     }
 
+    @SuppressWarnings("unchecked")
     private Object _deserializeObject(JsonParser jp, JavaType expectedType, DeserializationContext ctx)
             throws IOException {
         if(expectedType == null) {
@@ -54,23 +58,33 @@ abstract class BaseDeserializer<T> extends StdDeserializer<T> {
             JsonDeserializer<?> des = ctx.findRootValueDeserializer(expectedType);
             return des.deserialize(jp, ctx);
         }
-        java.util.Map<Object, Object> result = new java.util.HashMap<>();
+        final java.util.Map<Object, Object> result = new java.util.HashMap<>();
+        final MapLikeType mapLikeType = mapLike(expectedType);
+        final KeyDeserializer keyDeserializer = ctx.findKeyDeserializer(mapLikeType.getKeyType(), null);
         while (jp.nextToken() != JsonToken.END_OBJECT) {
             String name = jp.getCurrentName();
+            Object key = keyDeserializer == null ? name : keyDeserializer.deserializeKey(name, ctx);
             JsonToken t = jp.nextToken();
             switch (t) {
                 case START_ARRAY:
-                    result.put(name, _deserializeArray(jp, containedType(expectedType, 1), ctx));
+                    result.put(key, _deserializeArray(jp, containedType(expectedType, 1), ctx));
                     break;
                 case START_OBJECT:
-                    result.put(name, _deserializeObject(jp, containedType(expectedType, 1), ctx));
+                    result.put(key, _deserializeObject(jp, containedType(expectedType, 1), ctx));
                     break;
                 default:
-                    result.put(name, _deserializeScalar(jp, containedType(expectedType, 1), ctx));
+                    result.put(key, _deserializeScalar(jp, containedType(expectedType, 1), ctx));
             }
         }
         if (TreeMap.class.isAssignableFrom(expectedType.getRawClass())) {
-            return fill(TreeMap.empty((o1, o2) -> o1.toString().compareTo(o2.toString())), result);
+            final JavaType keyType = mapLikeType.getKeyType();
+            Comparator<Object> c;
+            if(keyType.getRawClass().isAssignableFrom(Comparable.class)) {
+                c = (o1, o2) -> ((Comparable)o1).compareTo(o2);
+            } else {
+                c = (o1, o2) -> o1.toString().compareTo(o2.toString());
+            }
+            return fill(TreeMap.empty(c), result);
         }
         if (LinkedHashMap.class.isAssignableFrom(expectedType.getRawClass())) {
             return fill(LinkedHashMap.empty(), result);
@@ -192,6 +206,13 @@ abstract class BaseDeserializer<T> extends StdDeserializer<T> {
             default:
                 throw ctx.mappingException("Embedded objects are not supported");
         }
+    }
+
+
+    private MapLikeType mapLike(JavaType type) {
+        JavaType keyType = type.containedTypeCount() > 0 ? type.containedType(0) : TypeFactory.unknownType();
+        JavaType valueType = type.containedTypeCount() > 1 ? type.containedType(1) : TypeFactory.unknownType();
+        return TypeFactory.defaultInstance().constructMapLikeType(type.getRawClass(), keyType, valueType);
     }
 
     static JavaType containedType(JavaType holder, int index) {
