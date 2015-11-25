@@ -15,26 +15,43 @@
  */
 package javaslang.jackson.datatype.deserialize;
 
-import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import javaslang.collection.Seq;
 
-import java.io.IOException;
+import java.util.List;
 
-class SeqDeserializer extends BaseDeserializer<Seq<?>> {
+class SeqDeserializer extends ArrayDeserializer<Seq<?>> {
 
     private static final long serialVersionUID = 1L;
 
     private final JavaType javaType;
 
     SeqDeserializer(JavaType valueType) {
-        super(valueType);
+        super(valueType, 1);
         javaType = valueType;
     }
 
     @Override
-    public Seq<?> deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
-        return (Seq<?>) _deserialize(p, javaType, ctxt);
+    Seq<?> create(List<Object> result, DeserializationContext ctxt) throws JsonMappingException {
+        if (javaslang.collection.Array.class.isAssignableFrom(javaType.getRawClass())) {
+            return javaslang.collection.Array.ofAll(result);
+        }
+        if (javaslang.collection.Queue.class.isAssignableFrom(javaType.getRawClass())) {
+            return javaslang.collection.Queue.ofAll(result);
+        }
+        if (javaslang.collection.Stack.class.isAssignableFrom(javaType.getRawClass())) {
+            return javaslang.collection.Stack.ofAll(result);
+        }
+        if (javaslang.collection.Stream.class.isAssignableFrom(javaType.getRawClass())) {
+            return javaslang.collection.Stream.ofAll(result);
+        }
+        if (javaslang.collection.Vector.class.isAssignableFrom(javaType.getRawClass())) {
+            return javaslang.collection.Vector.ofAll(result);
+        }
+        // default deserialization [...] -> Seq
+        return javaslang.collection.List.ofAll(result);
     }
+
 }

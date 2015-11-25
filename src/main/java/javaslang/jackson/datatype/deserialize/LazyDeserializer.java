@@ -22,20 +22,17 @@ import javaslang.Lazy;
 
 import java.io.IOException;
 
-class LazyDeserializer extends BaseDeserializer<Lazy<?>> {
+class LazyDeserializer extends ValueDeserializer<Lazy<?>> {
 
     private static final long serialVersionUID = 1L;
 
-    private final JavaType javaType;
-
     LazyDeserializer(JavaType valueType) {
-        super(valueType);
-        this.javaType = valueType;
+        super(valueType, 1);
     }
 
     @Override
     public Lazy<?> deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
-        Object obj = _deserialize(p, containedType(javaType, 0), ctxt);
+        Object obj = deserializer(0).deserialize(p, ctxt);
         return Lazy.of(() -> obj);
     }
 

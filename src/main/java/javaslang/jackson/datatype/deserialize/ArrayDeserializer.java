@@ -16,28 +16,33 @@
 package javaslang.jackson.datatype.deserialize;
 
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JavaType;
-import javaslang.control.Option;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonMappingException;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-class OptionDeserializer extends ValueDeserializer<Option<?>> {
+abstract class ArrayDeserializer<T> extends ValueDeserializer<T> {
 
     private static final long serialVersionUID = 1L;
 
-    OptionDeserializer(JavaType valueType) {
-        super(valueType, 1);
+    ArrayDeserializer(JavaType valueType, int typeCount) {
+        super(valueType, typeCount);
     }
 
-    @Override
-    public Option<?> deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
-        Object obj = deserializer(0).deserialize(p, ctxt);
-        return Option.of(obj);
-    }
+    abstract T create(List<Object> list, DeserializationContext ctxt) throws JsonMappingException;
 
     @Override
-    public Option<?> getNullValue(DeserializationContext ctxt) {
-        return Option.none();
+    public T deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+        JsonDeserializer<?> deserializer = deserializer(0);
+        List<Object> list = new ArrayList<>();
+        while (p.nextToken() != JsonToken.END_ARRAY) {
+            list.add(deserializer.deserialize(p, ctxt));
+        }
+        return create(list, ctxt);
     }
 }

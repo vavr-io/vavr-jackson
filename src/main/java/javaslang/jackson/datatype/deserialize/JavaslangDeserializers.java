@@ -19,6 +19,7 @@ import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.deser.Deserializers;
 import javaslang.Lazy;
 import javaslang.Tuple;
+import javaslang.collection.CharSeq;
 import javaslang.collection.Map;
 import javaslang.collection.Seq;
 import javaslang.collection.Set;
@@ -31,6 +32,9 @@ public class JavaslangDeserializers extends Deserializers.Base {
                                                     DeserializationConfig config,
                                                     BeanDescription beanDesc) throws JsonMappingException {
         Class<?> raw = type.getRawClass();
+        if (CharSeq.class.isAssignableFrom(raw)) {
+            return new CharSeqDeserializer(type);
+        }
         if (Lazy.class.isAssignableFrom(raw)) {
             return new LazyDeserializer(type);
         }

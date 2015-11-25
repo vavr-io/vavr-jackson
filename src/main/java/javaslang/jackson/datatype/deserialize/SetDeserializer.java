@@ -15,26 +15,41 @@
  */
 package javaslang.jackson.datatype.deserialize;
 
-import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import javaslang.collection.Set;
 
-import java.io.IOException;
+import java.util.List;
 
-class SetDeserializer extends BaseDeserializer<Set<?>> {
+class SetDeserializer extends ArrayDeserializer<Set<?>> {
 
     private static final long serialVersionUID = 1L;
 
     private final JavaType javaType;
 
     SetDeserializer(JavaType valueType) {
-        super(valueType);
+        super(valueType, 1);
         javaType = valueType;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    public Set<?> deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
-        return (Set<?>) _deserialize(p, javaType, ctxt);
+    Set<?> create(List<Object> result, DeserializationContext ctx) throws JsonMappingException {
+        if(javaslang.collection.TreeSet.class.isAssignableFrom(javaType.getRawClass())) {
+            if(javaType.containedTypeCount() == 0) {
+                throw ctx.mappingException(javaType.getRawClass());
+            }
+            JavaType generic = javaType.containedType(0);
+            if(generic.getRawClass() == Object.class || !Comparable.class.isAssignableFrom(generic.getRawClass())) {
+                throw ctx.mappingException(javaType.getRawClass());
+            }
+            return javaslang.collection.TreeSet.ofAll((o1, o2) -> ((Comparable) o1).compareTo(o2), result);
+        }
+        if(javaslang.collection.LinkedHashSet.class.isAssignableFrom(javaType.getRawClass())) {
+            return javaslang.collection.LinkedHashSet.ofAll(result);
+        }
+        // default deserialization [...] -> Set
+        return javaslang.collection.HashSet.ofAll(result);
     }
 }

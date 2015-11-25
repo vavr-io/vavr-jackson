@@ -22,9 +22,9 @@ public abstract class SeqTest extends BaseTest {
     @Test
     public void test1() throws IOException {
         ObjectWriter writer = mapper().writer();
-        Seq<?> src = of(1, null, 2.0f, "s");
+        Seq<?> src = of(1, null, 2.0, "s");
         String json = writer.writeValueAsString(src);
-        Assert.assertEquals(genJsonList(1, null, 2.0f, "s"), json);
+        Assert.assertEquals(genJsonList(1, null, 2.0, "s"), json);
         Seq<?> dst = (Seq<?>) mapper().readValue(json, clz());
         Assert.assertEquals(src, dst);
     }
