@@ -54,9 +54,6 @@ class TupleDeserializer extends ValueDeserializer<Tuple> {
     private Tuple create(List<Object> list, DeserializationContext ctxt) throws JsonMappingException {
         final Tuple result;
         switch (list.size()) {
-            case 0:
-                result = Tuple.empty();
-                break;
             case 1:
                 result = Tuple.of(list.get(0));
                 break;
@@ -82,7 +79,7 @@ class TupleDeserializer extends ValueDeserializer<Tuple> {
                 result = Tuple.of(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4), list.get(5), list.get(6), list.get(7));
                 break;
             default:
-                throw ctxt.mappingException(javaType.getRawClass());
+                result = Tuple.empty();
         }
         if(!javaType.getRawClass().isAssignableFrom(result.getClass())) {
             throw ctxt.mappingException(javaType.getRawClass());
