@@ -18,7 +18,7 @@ public class LazyTest extends BaseTest {
 
     @Test
     public void test2() throws IOException {
-        Lazy<?> src = Lazy.empty();
+        Lazy<?> src = Lazy.undefined();
         String json = mapper().writer().writeValueAsString(src);
         Assert.assertEquals("null", json);
         Lazy<?> restored = mapper().readValue(json, Lazy.class);
