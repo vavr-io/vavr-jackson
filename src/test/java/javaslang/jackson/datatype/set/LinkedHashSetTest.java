@@ -28,6 +28,6 @@ public class LinkedHashSetTest extends SetTest {
 
     @Test
     public void testKeepOrder() throws IOException {
-        Assert.assertEquals(mapper().readValue("[3, 2, 1]", LinkedHashSet.class), LinkedHashSet.ofAll(3, 2, 1));
+        Assert.assertEquals(mapper().readValue("[3, 2, 1]", LinkedHashSet.class), LinkedHashSet.of(3, 2, 1));
     }
 }

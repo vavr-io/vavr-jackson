@@ -61,14 +61,14 @@ public class ComplexClass implements Serializable {
         return new ComplexClass(
                 HashMap.of(Tuple.of("42", ComplexInnerClass.build())),
                 TreeMap.of(Tuple.of(42, ComplexInnerClass.buildAnother())),
-                Array.ofAll(ComplexInnerClass.build(), ComplexInnerClass.buildAnother()),
-                List.ofAll(ComplexInnerClass.build(), ComplexInnerClass.buildAnother()),
-                Queue.ofAll(ComplexInnerClass.build(), ComplexInnerClass.buildAnother()),
-                Stack.ofAll(ComplexInnerClass.build(), ComplexInnerClass.buildAnother()),
-                Stream.ofAll(ComplexInnerClass.build(), ComplexInnerClass.buildAnother()),
-                Vector.ofAll(ComplexInnerClass.build(), ComplexInnerClass.buildAnother()),
-                HashSet.ofAll(ComplexInnerClass.build(), ComplexInnerClass.buildAnother()),
-                TreeSet.ofAll(ComplexInnerClass.build(), ComplexInnerClass.buildAnother()),
+                Array.of(ComplexInnerClass.build(), ComplexInnerClass.buildAnother()),
+                List.of(ComplexInnerClass.build(), ComplexInnerClass.buildAnother()),
+                Queue.of(ComplexInnerClass.build(), ComplexInnerClass.buildAnother()),
+                Stack.of(ComplexInnerClass.build(), ComplexInnerClass.buildAnother()),
+                Stream.of(ComplexInnerClass.build(), ComplexInnerClass.buildAnother()),
+                Vector.of(ComplexInnerClass.build(), ComplexInnerClass.buildAnother()),
+                HashSet.of(ComplexInnerClass.build(), ComplexInnerClass.buildAnother()),
+                TreeSet.of(ComplexInnerClass.build(), ComplexInnerClass.buildAnother()),
                 Tuple.of("42", ComplexInnerClass.build()),
                 Option.of(42), Option.none()
         );
