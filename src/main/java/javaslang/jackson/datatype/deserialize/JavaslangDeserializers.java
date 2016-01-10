@@ -24,6 +24,7 @@ import javaslang.collection.Map;
 import javaslang.collection.Seq;
 import javaslang.collection.Set;
 import javaslang.control.Option;
+import javaslang.λ;
 
 public class JavaslangDeserializers extends Deserializers.Base {
 
@@ -53,6 +54,11 @@ public class JavaslangDeserializers extends Deserializers.Base {
         if (Set.class.isAssignableFrom(raw)) {
             return new SetDeserializer(type);
         }
+
+        if (λ.class.isAssignableFrom(raw)) {
+            return new SerializableDeserializer<>(type);
+        }
+
         return null;
     }
 }

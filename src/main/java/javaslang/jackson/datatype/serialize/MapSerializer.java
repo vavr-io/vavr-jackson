@@ -18,6 +18,7 @@ package javaslang.jackson.datatype.serialize;
 import com.fasterxml.jackson.databind.JavaType;
 import javaslang.collection.Map;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 class MapSerializer extends ValueSerializer<Map<?, ?>> {
@@ -29,7 +30,7 @@ class MapSerializer extends ValueSerializer<Map<?, ?>> {
     }
 
     @Override
-    Object toJavaObj(Map<?, ?> value) {
+    Object toJavaObj(Map<?, ?> value) throws IOException {
         final HashMap<Object, Object> result = new HashMap<>();
         value.forEach(e -> result.put(e._1, e._2));
         return result;

@@ -18,6 +18,8 @@ package javaslang.jackson.datatype.serialize;
 import com.fasterxml.jackson.databind.JavaType;
 import javaslang.Lazy;
 
+import java.io.IOException;
+
 class LazySerializer extends ValueSerializer<Lazy<?>> {
 
     private static final long serialVersionUID = 1L;
@@ -27,7 +29,7 @@ class LazySerializer extends ValueSerializer<Lazy<?>> {
     }
 
     @Override
-    Object toJavaObj(Lazy<?> value) {
+    Object toJavaObj(Lazy<?> value) throws IOException {
         return value.isEmpty() ? null : value.get();
     }
 }

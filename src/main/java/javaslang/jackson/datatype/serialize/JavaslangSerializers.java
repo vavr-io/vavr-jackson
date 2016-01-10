@@ -27,6 +27,7 @@ import javaslang.collection.Map;
 import javaslang.collection.Seq;
 import javaslang.collection.Set;
 import javaslang.control.Option;
+import javaslang.λ;
 
 public class JavaslangSerializers extends Serializers.Base {
 
@@ -55,6 +56,10 @@ public class JavaslangSerializers extends Serializers.Base {
         }
         if (Tuple.class.isAssignableFrom(raw)) {
             return new TupleSerializer(type);
+        }
+
+        if (λ.class.isAssignableFrom(raw)) {
+            return new SerializableSerializer<>(type);
         }
 
         return super.findSerializer(config, type, beanDesc);
