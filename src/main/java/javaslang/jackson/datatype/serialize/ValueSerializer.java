@@ -31,7 +31,7 @@ abstract class ValueSerializer<T> extends StdSerializer<T> {
         super(type);
     }
 
-    abstract Object toJavaObj(T value);
+    abstract Object toJavaObj(T value) throws IOException;
 
     @Override
     public void serialize(T value, JsonGenerator gen, SerializerProvider provider) throws IOException {

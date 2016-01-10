@@ -18,6 +18,8 @@ package javaslang.jackson.datatype.serialize;
 import com.fasterxml.jackson.databind.JavaType;
 import javaslang.control.Option;
 
+import java.io.IOException;
+
 class OptionSerializer extends ValueSerializer<Option<?>> {
 
     private static final long serialVersionUID = 1L;
@@ -27,7 +29,7 @@ class OptionSerializer extends ValueSerializer<Option<?>> {
     }
 
     @Override
-    Object toJavaObj(Option<?> value) {
+    Object toJavaObj(Option<?> value) throws IOException {
         return value.isEmpty() ? null : value.get();
     }
 }

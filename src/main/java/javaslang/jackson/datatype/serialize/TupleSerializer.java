@@ -18,6 +18,8 @@ package javaslang.jackson.datatype.serialize;
 import com.fasterxml.jackson.databind.JavaType;
 import javaslang.Tuple;
 
+import java.io.IOException;
+
 class TupleSerializer extends ValueSerializer<Tuple> {
 
     private static final long serialVersionUID = 1L;
@@ -27,7 +29,7 @@ class TupleSerializer extends ValueSerializer<Tuple> {
     }
 
     @Override
-    Object toJavaObj(Tuple tuple) {
+    Object toJavaObj(Tuple tuple) throws IOException {
         return tuple.toSeq().toJavaList();
     }
 
