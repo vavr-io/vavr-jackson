@@ -71,13 +71,13 @@ class MapDeserializer extends StdDeserializer<Map<?,?>> implements ResolvableDes
             result.add(Tuple.of(key, valueDeserializer.deserialize(p, ctxt)));
         }
         if (TreeMap.class.isAssignableFrom(handledType())) {
-            return TreeMap.ofAll(keyComparator, result);
+            return TreeMap.ofEntries(keyComparator, result);
         }
         if (LinkedHashMap.class.isAssignableFrom(handledType())) {
-            return LinkedHashMap.ofAll(result);
+            return LinkedHashMap.ofEntries(result);
         }
         // default deserialization [...] -> Map
-        return HashMap.ofAll(result);
+        return HashMap.ofEntries(result);
     }
 
     private static MapLikeType mapLike(JavaType type, DeserializationContext ctxt) {
