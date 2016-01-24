@@ -30,6 +30,6 @@ class LazySerializer extends ValueSerializer<Lazy<?>> {
 
     @Override
     Object toJavaObj(Lazy<?> value) throws IOException {
-        return value.isEmpty() ? null : value.get();
+        return value.get();
     }
 }
