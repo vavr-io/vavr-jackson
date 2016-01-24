@@ -18,10 +18,10 @@ public class LazyTest extends BaseTest {
 
     @Test
     public void test2() throws IOException {
-        Lazy<?> src = Lazy.undefined();
+        Lazy<?> src = Lazy.of(() -> null);
         String json = mapper().writer().writeValueAsString(src);
         Assert.assertEquals("null", json);
         Lazy<?> restored = mapper().readValue(json, Lazy.class);
-        Assert.assertTrue(restored.isEmpty());
+        Assert.assertEquals(src, restored);
     }
 }

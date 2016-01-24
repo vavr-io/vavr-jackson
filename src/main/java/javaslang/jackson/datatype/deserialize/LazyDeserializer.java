@@ -38,6 +38,6 @@ class LazyDeserializer extends ValueDeserializer<Lazy<?>> {
 
     @Override
     public Lazy<?> getNullValue(DeserializationContext ctxt) {
-        return Lazy.undefined();
+        return Lazy.of(() -> null);
     }
 }
