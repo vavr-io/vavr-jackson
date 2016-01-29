@@ -23,6 +23,7 @@ import javaslang.collection.CharSeq;
 import javaslang.collection.Map;
 import javaslang.collection.Seq;
 import javaslang.collection.Set;
+import javaslang.control.Either;
 import javaslang.control.Option;
 import javaslang.λ;
 
@@ -41,6 +42,9 @@ public class JavaslangDeserializers extends Deserializers.Base {
         }
         if (Option.class.isAssignableFrom(raw)) {
             return new OptionDeserializer(type);
+        }
+        if (Either.class.isAssignableFrom(raw)) {
+            return new EitherDeserializer(type);
         }
         if (Map.class.isAssignableFrom(raw)) {
             return new MapDeserializer(type);

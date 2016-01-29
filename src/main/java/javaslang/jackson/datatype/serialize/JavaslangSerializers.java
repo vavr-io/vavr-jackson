@@ -26,6 +26,7 @@ import javaslang.collection.CharSeq;
 import javaslang.collection.Map;
 import javaslang.collection.Seq;
 import javaslang.collection.Set;
+import javaslang.control.Either;
 import javaslang.control.Option;
 import javaslang.λ;
 
@@ -41,6 +42,9 @@ public class JavaslangSerializers extends Serializers.Base {
         }
         if (Option.class.isAssignableFrom(raw)) {
             return new OptionSerializer(type);
+        }
+        if (Either.class.isAssignableFrom(raw)) {
+            return new EitherSerializer(type);
         }
         if (CharSeq.class.isAssignableFrom(raw)) {
             return new CharSeqSerializer(type);
