@@ -46,6 +46,9 @@ class EitherDeserializer extends ValueDeserializer<Either<?, ?>> {
             }
             list.add(deserializer(typeCounter++).deserialize(p, ctxt));
         }
+        if (list.size() != 2) {
+            throw ctxt.mappingException(javaType.getRawClass());
+        }
         Object leftValue = list.get(0);
         Object rightValue = list.get(1);
         return leftValue != null ? Either.left(leftValue) : Either.right(rightValue);
