@@ -42,7 +42,7 @@ Object restored2 = mapper.readValue(json, new TypeReference<List<List<?>>>() {})
 ```
 ## Using Developer Versions
 
-Developer versions can be found [here](https://oss.sonatype.org/content/repositories/snapshots/com/javaslang/javaslang-jackson).
+Developer versions can be found [here](https://oss.sonatype.org/content/repositories/snapshots/io/javaslang/javaslang-jackson).
 
 ### Maven
 
