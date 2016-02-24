@@ -48,7 +48,7 @@ Developer versions can be found [here](https://oss.sonatype.org/content/reposito
 
 ```xml
 <dependency>
-  <groupId>com.javaslang</groupId>
+  <groupId>io.javaslang</groupId>
   <artifactId>javaslang-jackson</artifactId>
   <version>2.0.0-SNAPSHOT</version>
 </dependency>
@@ -82,7 +82,7 @@ Ensure that your `~/.m2/settings.xml` contains the following:
 ### Gradle
 
 ```groovy
-compile("com.javaslang:javaslang-jackson:2.0.0-SNAPSHOT")
+compile("io.javaslang:javaslang-jackson:2.0.0-SNAPSHOT")
 ```
 
 Ensure that your `build.gradle` contains the following:
