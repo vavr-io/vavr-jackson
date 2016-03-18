@@ -16,7 +16,6 @@ public class ComplexClass implements Serializable {
     private Array<ComplexInnerClass> complexInnerClasses;
     private List<ComplexInnerClass> complexInnerClassList;
     private Queue<ComplexInnerClass> complexInnerClassQueue;
-    private Stack<ComplexInnerClass> complexInnerClassStack;
     private Stream<ComplexInnerClass> complexInnerClassStream;
     private Vector<ComplexInnerClass> complexInnerClassVector;
     private HashSet<ComplexInnerClass> complexInnerClassHashSet;
@@ -33,7 +32,6 @@ public class ComplexClass implements Serializable {
                         final Array<ComplexInnerClass> complexInnerClasses,
                         final List<ComplexInnerClass> complexInnerClassList,
                         final Queue<ComplexInnerClass> complexInnerClassQueue,
-                        final Stack<ComplexInnerClass> complexInnerClassStack,
                         final Stream<ComplexInnerClass> complexInnerClassStream,
                         final Vector<ComplexInnerClass> complexInnerClassVector,
                         final HashSet<ComplexInnerClass> complexInnerClassHashSet,
@@ -46,7 +44,6 @@ public class ComplexClass implements Serializable {
         this.complexInnerClasses = complexInnerClasses;
         this.complexInnerClassList = complexInnerClassList;
         this.complexInnerClassQueue = complexInnerClassQueue;
-        this.complexInnerClassStack = complexInnerClassStack;
         this.complexInnerClassStream = complexInnerClassStream;
         this.complexInnerClassVector = complexInnerClassVector;
         this.complexInnerClassHashSet = complexInnerClassHashSet;
@@ -64,7 +61,6 @@ public class ComplexClass implements Serializable {
                 Array.of(ComplexInnerClass.build(), ComplexInnerClass.buildAnother()),
                 List.of(ComplexInnerClass.build(), ComplexInnerClass.buildAnother()),
                 Queue.of(ComplexInnerClass.build(), ComplexInnerClass.buildAnother()),
-                List.of(ComplexInnerClass.build(), ComplexInnerClass.buildAnother()),
                 Stream.of(ComplexInnerClass.build(), ComplexInnerClass.buildAnother()),
                 Vector.of(ComplexInnerClass.build(), ComplexInnerClass.buildAnother()),
                 HashSet.of(ComplexInnerClass.build(), ComplexInnerClass.buildAnother()),
@@ -112,14 +108,6 @@ public class ComplexClass implements Serializable {
 
     public void setComplexInnerClassQueue(final Queue<ComplexInnerClass> complexInnerClassQueue) {
         this.complexInnerClassQueue = complexInnerClassQueue;
-    }
-
-    public Stack<ComplexInnerClass> getComplexInnerClassStack() {
-        return complexInnerClassStack;
-    }
-
-    public void setComplexInnerClassStack(final Stack<ComplexInnerClass> complexInnerClassStack) {
-        this.complexInnerClassStack = complexInnerClassStack;
     }
 
     public Stream<ComplexInnerClass> getComplexInnerClassStream() {
@@ -195,8 +183,6 @@ public class ComplexClass implements Serializable {
             return false;
         if (complexInnerClassQueue != null ? !complexInnerClassQueue.equals(that.complexInnerClassQueue) : that.complexInnerClassQueue != null)
             return false;
-        if (complexInnerClassStack != null ? !complexInnerClassStack.equals(that.complexInnerClassStack) : that.complexInnerClassStack != null)
-            return false;
         if (complexInnerClassStream != null ? !complexInnerClassStream.equals(that.complexInnerClassStream) : that.complexInnerClassStream != null)
             return false;
         if (complexInnerClassVector != null ? !complexInnerClassVector.equals(that.complexInnerClassVector) : that.complexInnerClassVector != null)
@@ -219,7 +205,6 @@ public class ComplexClass implements Serializable {
         result = 31 * result + (complexInnerClasses != null ? complexInnerClasses.hashCode() : 0);
         result = 31 * result + (complexInnerClassList != null ? complexInnerClassList.hashCode() : 0);
         result = 31 * result + (complexInnerClassQueue != null ? complexInnerClassQueue.hashCode() : 0);
-        result = 31 * result + (complexInnerClassStack != null ? complexInnerClassStack.hashCode() : 0);
         result = 31 * result + (complexInnerClassStream != null ? complexInnerClassStream.hashCode() : 0);
         result = 31 * result + (complexInnerClassVector != null ? complexInnerClassVector.hashCode() : 0);
         result = 31 * result + (complexInnerClassHashSet != null ? complexInnerClassHashSet.hashCode() : 0);
