@@ -19,10 +19,7 @@ import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.deser.Deserializers;
 import javaslang.Lazy;
 import javaslang.Tuple;
-import javaslang.collection.CharSeq;
-import javaslang.collection.Map;
-import javaslang.collection.Seq;
-import javaslang.collection.Set;
+import javaslang.collection.*;
 import javaslang.control.Either;
 import javaslang.control.Option;
 import javaslang.λ;
@@ -53,6 +50,9 @@ public class JavaslangDeserializers extends Deserializers.Base {
             return new TupleDeserializer(type);
         }
         if (Seq.class.isAssignableFrom(raw)) {
+            return new SeqDeserializer(type);
+        }
+        if (Stack.class.isAssignableFrom(raw)) { // TODO remove when Javaslang will be fixed
             return new SeqDeserializer(type);
         }
         if (Set.class.isAssignableFrom(raw)) {

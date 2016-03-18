@@ -64,7 +64,7 @@ public class ComplexClass implements Serializable {
                 Array.of(ComplexInnerClass.build(), ComplexInnerClass.buildAnother()),
                 List.of(ComplexInnerClass.build(), ComplexInnerClass.buildAnother()),
                 Queue.of(ComplexInnerClass.build(), ComplexInnerClass.buildAnother()),
-                Stack.of(ComplexInnerClass.build(), ComplexInnerClass.buildAnother()),
+                List.of(ComplexInnerClass.build(), ComplexInnerClass.buildAnother()),
                 Stream.of(ComplexInnerClass.build(), ComplexInnerClass.buildAnother()),
                 Vector.of(ComplexInnerClass.build(), ComplexInnerClass.buildAnother()),
                 HashSet.of(ComplexInnerClass.build(), ComplexInnerClass.buildAnother()),

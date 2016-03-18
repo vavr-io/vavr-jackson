@@ -13,8 +13,8 @@ public abstract class SeqTest extends BaseTest {
 
     abstract Class<?> clz();
 
-    protected Class<?> implClz() {
-        return clz();
+    protected String implClzName() {
+        return clz().getName();
     }
 
     abstract Seq<?> of(Object... objects);
@@ -35,7 +35,7 @@ public abstract class SeqTest extends BaseTest {
         Seq<?> src = of(1);
         String plainJson = mapper().writeValueAsString(src);
         String wrappedJson = mapper.writeValueAsString(src);
-        Assert.assertEquals(wrappedJson, wrapToObject(implClz().getName(), plainJson));
+        Assert.assertEquals(wrappedJson, wrapToObject(implClzName(), plainJson));
         Seq<?> restored = (Seq<?>) mapper.readValue(wrappedJson, clz());
         Assert.assertEquals(src, restored);
     }
@@ -46,7 +46,7 @@ public abstract class SeqTest extends BaseTest {
         Seq<?> src = of(1);
         String plainJson = mapper().writeValueAsString(src);
         String wrappedJson = mapper.writeValueAsString(src);
-        Assert.assertEquals(wrappedJson, wrapToArray(implClz().getName(), plainJson));
+        Assert.assertEquals(wrappedJson, wrapToArray(implClzName(), plainJson));
         Seq<?> restored = (Seq<?>) mapper.readValue(wrappedJson, clz());
         Assert.assertEquals(src, restored);
     }
