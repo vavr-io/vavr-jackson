@@ -12,8 +12,8 @@ public class StreamTest extends SeqTest {
     }
 
     @Override
-    protected Class<?> implClz() {
-        return Stream.Cons.class;
+    protected String implClzName() {
+        return "javaslang.collection.StreamModule$ConsImpl";
     }
 
     @Override

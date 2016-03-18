@@ -16,8 +16,8 @@ public class ListTest extends SeqTest {
     }
 
     @Override
-    protected Class<?> implClz() {
-        return List.Cons.class;
+    protected String implClzName() {
+        return List.Cons.class.getName();
     }
 
     @Override
