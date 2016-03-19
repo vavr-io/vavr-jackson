@@ -20,7 +20,6 @@ public class ComplexBeanTest extends BaseTest {
         Assert.assertEquals(fromJson.getComplexInnerClassHashSet(), src.getComplexInnerClassHashSet());
         Assert.assertEquals(fromJson.getComplexInnerClassList(), src.getComplexInnerClassList());
         Assert.assertEquals(fromJson.getComplexInnerClassQueue(), src.getComplexInnerClassQueue());
-        Assert.assertEquals(fromJson.getComplexInnerClassStack(), src.getComplexInnerClassStack());
         Assert.assertEquals(fromJson.getComplexInnerClassStream(), src.getComplexInnerClassStream());
         Assert.assertEquals(fromJson.getComplexInnerClassVector(), src.getComplexInnerClassVector());
         Assert.assertEquals(fromJson.getComplexInnerClassTuple2(), src.getComplexInnerClassTuple2());

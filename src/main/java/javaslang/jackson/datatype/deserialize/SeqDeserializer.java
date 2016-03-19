@@ -41,9 +41,6 @@ class SeqDeserializer extends ArrayDeserializer<Seq<?>> {
         if (javaslang.collection.Queue.class.isAssignableFrom(javaType.getRawClass())) {
             return javaslang.collection.Queue.ofAll(result);
         }
-        if (javaslang.collection.Stack.class.isAssignableFrom(javaType.getRawClass())) {
-            return javaslang.collection.List.ofAll(result);
-        }
         if (javaslang.collection.Stream.class.isAssignableFrom(javaType.getRawClass())) {
             return javaslang.collection.Stream.ofAll(result);
         }

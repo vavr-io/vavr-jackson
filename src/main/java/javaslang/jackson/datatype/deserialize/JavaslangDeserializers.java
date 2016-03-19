@@ -52,9 +52,6 @@ public class JavaslangDeserializers extends Deserializers.Base {
         if (Seq.class.isAssignableFrom(raw)) {
             return new SeqDeserializer(type);
         }
-        if (Stack.class.isAssignableFrom(raw)) { // TODO remove when Javaslang will be fixed
-            return new SeqDeserializer(type);
-        }
         if (Set.class.isAssignableFrom(raw)) {
             return new SetDeserializer(type);
         }
