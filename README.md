@@ -1,4 +1,4 @@
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.javaslang/javaslang-jackson/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.javaslang/javaslang-jackson)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.javaslang/javaslang-jackson/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.javaslang/javaslang-jackson)
 [![Build Status](https://travis-ci.org/javaslang/javaslang-jackson.svg?branch=master)](https://travis-ci.org/javaslang/javaslang-jackson)
 [![Coverage Status](https://codecov.io/github/javaslang/javaslang-jackson/coverage.svg?branch=master)](https://codecov.io/github/javaslang/javaslang-jackson?branch=master)
 [![Gitter Chat](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/javaslang/javaslang)
