@@ -5,7 +5,7 @@
 
 # javaslang-jackson
 
-Jackson datatype module for [Javaslang](http://javaslang.com/) library
+Jackson datatype module for [Javaslang](http://javaslang.io/) library
 
 ## Usage
 
