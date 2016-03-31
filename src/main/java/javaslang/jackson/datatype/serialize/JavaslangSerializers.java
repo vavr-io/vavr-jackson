@@ -22,10 +22,7 @@ import com.fasterxml.jackson.databind.SerializationConfig;
 import com.fasterxml.jackson.databind.ser.Serializers;
 import javaslang.Lazy;
 import javaslang.Tuple;
-import javaslang.collection.CharSeq;
-import javaslang.collection.Map;
-import javaslang.collection.Seq;
-import javaslang.collection.Set;
+import javaslang.collection.*;
 import javaslang.control.Either;
 import javaslang.control.Option;
 import javaslang.λ;
@@ -57,6 +54,9 @@ public class JavaslangSerializers extends Serializers.Base {
         }
         if (Map.class.isAssignableFrom(raw)) {
             return new MapSerializer(type);
+        }
+        if (Multimap.class.isAssignableFrom(raw)) {
+            return new MultimapSerializer(type);
         }
         if (Tuple.class.isAssignableFrom(raw)) {
             return new TupleSerializer(type);
