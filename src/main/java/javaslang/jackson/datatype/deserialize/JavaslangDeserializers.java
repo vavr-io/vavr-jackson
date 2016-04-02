@@ -46,6 +46,9 @@ public class JavaslangDeserializers extends Deserializers.Base {
         if (Map.class.isAssignableFrom(raw)) {
             return new MapDeserializer(type);
         }
+        if (Multimap.class.isAssignableFrom(raw)) {
+            return new MultimapDeserializer(type);
+        }
         if (Tuple.class.isAssignableFrom(raw)) {
             return new TupleDeserializer(type);
         }
