@@ -27,6 +27,7 @@ public abstract class MapTest extends BaseTest {
         Map<?, ?> restored = (Map<?, ?>) mapper().readValue(json, clz());
         Assert.assertEquals(restored, javaslangObject);
     }
+
     @Test
     public void test2() throws IOException {
         ObjectMapper mapper = mapper().addMixIn(clz(), WrapperObject.class);

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javaslang.collection.Seq;
 
+import java.util.Collection;
 import java.util.Map;
 
 public class BaseTest {
@@ -52,7 +53,21 @@ public class BaseTest {
                 sb.append(",");
             }
             sb.append("\"").append(entry.getKey().toString()).append("\":");
-            appendObj(sb, entry.getValue());
+            Object value = entry.getValue();
+            if(value instanceof Collection) {
+                sb.append("[");
+                int j = 0;
+                for (Object v: ((Collection) value)) {
+                    if (j > 0) {
+                        sb.append(",");
+                    }
+                    appendObj(sb, v);
+                    j++;
+                }
+                sb.append("]");
+            } else {
+                appendObj(sb, value);
+            }
             i++;
         }
         sb.append("}");

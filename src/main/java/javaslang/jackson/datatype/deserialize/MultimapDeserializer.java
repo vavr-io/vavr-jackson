@@ -19,39 +19,52 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.type.CollectionType;
 import javaslang.Tuple;
 import javaslang.Tuple2;
-import javaslang.collection.HashMap;
-import javaslang.collection.LinkedHashMap;
-import javaslang.collection.Map;
-import javaslang.collection.TreeMap;
+import javaslang.collection.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
-class MapDeserializer extends MaplikeDeserializer<Map<?,?>> {
+class MultimapDeserializer extends MaplikeDeserializer<Multimap<?,?>> {
 
     private static final long serialVersionUID = 1L;
 
-    MapDeserializer(JavaType valueType) {
+    private JsonDeserializer<?> containerDeserializer;
+
+    MultimapDeserializer(JavaType valueType) {
         super(valueType);
     }
 
     @Override
-    public Map<?,?> deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+    public void resolve(DeserializationContext ctxt) throws JsonMappingException {
+        super.resolve(ctxt);
+        JavaType containerType = CollectionType.construct(ArrayList.class, mapLikeType.getContentType());
+        containerDeserializer = ctxt.findContextualValueDeserializer(containerType, null);
+    }
+
+    @Override
+    public Multimap<?,?> deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
         final java.util.List<Tuple2<Object, Object>> result = new java.util.ArrayList<>();
         while (p.nextToken() != JsonToken.END_OBJECT) {
             String name = p.getCurrentName();
             Object key = keyDeserializer.deserializeKey(name, ctxt);
             p.nextToken();
-            result.add(Tuple.of(key, valueDeserializer.deserialize(p, ctxt)));
+            ArrayList<?> list = (ArrayList<?>) containerDeserializer.deserialize(p, ctxt);
+            for (Object elem : list) {
+                result.add(Tuple.of(key, elem));
+            }
         }
-        if (TreeMap.class.isAssignableFrom(handledType())) {
-            return TreeMap.ofEntries(keyComparator, result);
+        if (TreeMultimap.class.isAssignableFrom(handledType())) {
+            return TreeMultimap.withSeq().ofEntries(keyComparator, result);
         }
-        if (LinkedHashMap.class.isAssignableFrom(handledType())) {
-            return LinkedHashMap.ofEntries(result);
+        if (LinkedHashMultimap.class.isAssignableFrom(handledType())) {
+            return LinkedHashMultimap.withSeq().ofEntries(result);
         }
         // default deserialization [...] -> Map
-        return HashMap.ofEntries(result);
+        return HashMultimap.withSeq().ofEntries(result);
     }
 }
