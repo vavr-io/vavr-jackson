@@ -13,6 +13,8 @@ public class ComplexClass implements Serializable {
 
     private HashMap<String, ComplexInnerClass> complexInnerClassHashMap;
     private TreeMap<Integer, ComplexInnerClass> complexInnerClassTreeMap;
+    private HashMultimap<String, ComplexInnerClass> complexInnerClassHashMultimap;
+    private TreeMultimap<Integer, ComplexInnerClass> complexInnerClassTreeMultimap;
     private Array<ComplexInnerClass> complexInnerClasses;
     private List<ComplexInnerClass> complexInnerClassList;
     private Queue<ComplexInnerClass> complexInnerClassQueue;
@@ -29,6 +31,8 @@ public class ComplexClass implements Serializable {
 
     public ComplexClass(final HashMap<String, ComplexInnerClass> complexInnerClassHashMap,
                         final TreeMap<Integer, ComplexInnerClass> complexInnerClassTreeMap,
+                        final HashMultimap<String, ComplexInnerClass> complexInnerClassHashMultimap,
+                        final TreeMultimap<Integer, ComplexInnerClass> complexInnerClassTreeMultimap,
                         final Array<ComplexInnerClass> complexInnerClasses,
                         final List<ComplexInnerClass> complexInnerClassList,
                         final Queue<ComplexInnerClass> complexInnerClassQueue,
@@ -41,6 +45,8 @@ public class ComplexClass implements Serializable {
                         final Option<Integer> opt2) {
         this.complexInnerClassHashMap = complexInnerClassHashMap;
         this.complexInnerClassTreeMap = complexInnerClassTreeMap;
+        this.complexInnerClassHashMultimap = complexInnerClassHashMultimap;
+        this.complexInnerClassTreeMultimap = complexInnerClassTreeMultimap;
         this.complexInnerClasses = complexInnerClasses;
         this.complexInnerClassList = complexInnerClassList;
         this.complexInnerClassQueue = complexInnerClassQueue;
@@ -58,6 +64,8 @@ public class ComplexClass implements Serializable {
         return new ComplexClass(
                 HashMap.of(Tuple.of("42", ComplexInnerClass.build())),
                 TreeMap.of(Tuple.of(42, ComplexInnerClass.buildAnother())),
+                HashMultimap.withSeq().of(Tuple.of("42", ComplexInnerClass.build())),
+                TreeMultimap.withSeq().of(Tuple.of(42, ComplexInnerClass.buildAnother())),
                 Array.of(ComplexInnerClass.build(), ComplexInnerClass.buildAnother()),
                 List.of(ComplexInnerClass.build(), ComplexInnerClass.buildAnother()),
                 Queue.of(ComplexInnerClass.build(), ComplexInnerClass.buildAnother()),
@@ -68,6 +76,22 @@ public class ComplexClass implements Serializable {
                 Tuple.of("42", ComplexInnerClass.build()),
                 Option.of(42), Option.none()
         );
+    }
+
+    public HashMultimap<String, ComplexInnerClass> getComplexInnerClassHashMultimap() {
+        return complexInnerClassHashMultimap;
+    }
+
+    public void setComplexInnerClassHashMultimap(final HashMultimap<String, ComplexInnerClass> complexInnerClassHashMultimap) {
+        this.complexInnerClassHashMultimap = complexInnerClassHashMultimap;
+    }
+
+    public TreeMultimap<Integer, ComplexInnerClass> getComplexInnerClassTreeMultimap() {
+        return complexInnerClassTreeMultimap;
+    }
+
+    public void setComplexInnerClassTreeMultimap(final TreeMultimap<Integer, ComplexInnerClass> complexInnerClassHashMultimap) {
+        this.complexInnerClassTreeMultimap = complexInnerClassHashMultimap;
     }
 
     public HashMap<String, ComplexInnerClass> getComplexInnerClassHashMap() {
@@ -177,6 +201,10 @@ public class ComplexClass implements Serializable {
             return false;
         if (complexInnerClassTreeMap != null ? !complexInnerClassTreeMap.equals(that.complexInnerClassTreeMap) : that.complexInnerClassTreeMap != null)
             return false;
+        if (complexInnerClassHashMultimap != null ? !complexInnerClassHashMultimap.equals(that.complexInnerClassHashMultimap) : that.complexInnerClassHashMultimap != null)
+            return false;
+        if (complexInnerClassTreeMultimap != null ? !complexInnerClassTreeMultimap.equals(that.complexInnerClassTreeMultimap) : that.complexInnerClassTreeMultimap != null)
+            return false;
         if (complexInnerClasses != null ? !complexInnerClasses.equals(that.complexInnerClasses) : that.complexInnerClasses != null)
             return false;
         if (complexInnerClassList != null ? !complexInnerClassList.equals(that.complexInnerClassList) : that.complexInnerClassList != null)
@@ -202,6 +230,8 @@ public class ComplexClass implements Serializable {
     public int hashCode() {
         int result = complexInnerClassHashMap != null ? complexInnerClassHashMap.hashCode() : 0;
         result = 31 * result + (complexInnerClassTreeMap != null ? complexInnerClassTreeMap.hashCode() : 0);
+        result = 31 * result + (complexInnerClassHashMultimap != null ? complexInnerClassHashMultimap.hashCode() : 0);
+        result = 31 * result + (complexInnerClassTreeMultimap != null ? complexInnerClassTreeMultimap.hashCode() : 0);
         result = 31 * result + (complexInnerClasses != null ? complexInnerClasses.hashCode() : 0);
         result = 31 * result + (complexInnerClassList != null ? complexInnerClassList.hashCode() : 0);
         result = 31 * result + (complexInnerClassQueue != null ? complexInnerClassQueue.hashCode() : 0);
