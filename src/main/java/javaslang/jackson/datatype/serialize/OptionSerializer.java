@@ -15,7 +15,9 @@
  */
 package javaslang.jackson.datatype.serialize;
 
+import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.SerializerProvider;
 import javaslang.control.Option;
 
 import java.io.IOException;
@@ -30,6 +32,11 @@ class OptionSerializer extends ValueSerializer<Option<?>> {
 
     @Override
     Object toJavaObj(Option<?> value) throws IOException {
-        return value.isEmpty() ? null : value.get();
+        return value.get();
+    }
+
+    @Override
+    public boolean isEmpty(SerializerProvider provider, Option<?> value) {
+        return value.isEmpty();
     }
 }
