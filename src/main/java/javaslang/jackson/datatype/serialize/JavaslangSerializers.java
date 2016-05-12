@@ -46,6 +46,9 @@ public class JavaslangSerializers extends Serializers.Base {
         if (CharSeq.class.isAssignableFrom(raw)) {
             return new CharSeqSerializer(type);
         }
+        if (PriorityQueue.class.isAssignableFrom(raw)) {
+            return new PriorityQueueSerializer(type);
+        }
         if (Seq.class.isAssignableFrom(raw)) {
             return new SeqSerializer(type);
         }
