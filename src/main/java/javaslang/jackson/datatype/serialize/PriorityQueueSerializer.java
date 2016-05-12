@@ -1,5 +1,5 @@
 /**
- * Copyright 2015 The Javaslang Authors
+ * Copyright 2016 The Javaslang Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,26 +16,20 @@
 package javaslang.jackson.datatype.serialize;
 
 import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import javaslang.control.Option;
+import javaslang.collection.PriorityQueue;
 
 import java.io.IOException;
 
-class OptionSerializer extends ValueSerializer<Option<?>> {
+class PriorityQueueSerializer extends ValueSerializer<PriorityQueue<?>> {
 
     private static final long serialVersionUID = 1L;
 
-    OptionSerializer(JavaType type) {
+    PriorityQueueSerializer(JavaType type) {
         super(type);
     }
 
     @Override
-    Object toJavaObj(Option<?> value) throws IOException {
-        return value.get();
-    }
-
-    @Override
-    public boolean isEmpty(SerializerProvider provider, Option<?> value) {
-        return value.isEmpty();
+    Object toJavaObj(PriorityQueue<?> value) throws IOException {
+        return value.toJavaList();
     }
 }

@@ -34,6 +34,9 @@ public class JavaslangDeserializers extends Deserializers.Base {
         if (CharSeq.class.isAssignableFrom(raw)) {
             return new CharSeqDeserializer(type);
         }
+        if (PriorityQueue.class.isAssignableFrom(raw)) {
+            return new PriorityQueueDeserializer(type);
+        }
         if (Lazy.class.isAssignableFrom(raw)) {
             return new LazyDeserializer(type);
         }
