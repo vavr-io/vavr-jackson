@@ -47,13 +47,13 @@ public class JavaslangSerializers extends Serializers.Base {
             return new CharSeqSerializer(type);
         }
         if (PriorityQueue.class.isAssignableFrom(raw)) {
-            return new PriorityQueueSerializer(type);
+            return new ArraySerializer<>(type);
         }
         if (Seq.class.isAssignableFrom(raw)) {
-            return new SeqSerializer(type);
+            return new ArraySerializer<>(type);
         }
         if (Set.class.isAssignableFrom(raw)) {
-            return new SetSerializer(type);
+            return new ArraySerializer<>(type);
         }
         if (Map.class.isAssignableFrom(raw)) {
             return new MapSerializer(type);
