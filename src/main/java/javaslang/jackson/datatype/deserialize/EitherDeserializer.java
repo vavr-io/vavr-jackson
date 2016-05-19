@@ -49,9 +49,17 @@ class EitherDeserializer extends ValueDeserializer<Either<?, ?>> {
         if (list.size() != 2) {
             throw ctxt.mappingException(javaType.getRawClass());
         }
-        Object leftValue = list.get(0);
-        Object rightValue = list.get(1);
-        return leftValue != null ? Either.left(leftValue) : Either.right(rightValue);
+        Object eitherType = list.get(0);
+        if (eitherType instanceof String) {
+            String eitherTypeString = (String) eitherType;
+            if ("left".equals(eitherTypeString)) {
+                return Either.left(list.get(1));
+            }
+            if ("right".equals(eitherTypeString)) {
+                return Either.right(list.get(1));
+            }
+        }
+        throw ctxt.mappingException(javaType.getRawClass());
     }
 
 
