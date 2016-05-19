@@ -31,6 +31,10 @@ class EitherSerializer extends ValueSerializer<Either<?, ?>> {
 
     @Override
     Object toJavaObj(Either<?, ?> value) throws IOException {
-        return Arrays.asList(value.left().toJavaOptional().orElse(null), value.right().toJavaOptional().orElse(null));
+        if (value.isLeft()) {
+            return Arrays.asList("left", value.left().get());
+        } else {
+            return Arrays.asList("right", value.right().get());
+        }
     }
 }

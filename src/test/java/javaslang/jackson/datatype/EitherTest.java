@@ -39,4 +39,16 @@ public class EitherTest extends BaseTest {
         mapper().readValue(json, Either.class);
     }
 
+    @Test(expected = JsonMappingException.class)
+    public void test5() throws IOException {
+        String json = "[\"lEft\", 42]";
+        mapper().readValue(json, Either.class);
+    }
+
+    @Test(expected = JsonMappingException.class)
+    public void test6() throws IOException {
+        String json = "[42, 42]";
+        mapper().readValue(json, Either.class);
+    }
+
 }
