@@ -1,6 +1,10 @@
 package javaslang.jackson.datatype;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import javaslang.collection.HashSet;
+import javaslang.collection.List;
+import javaslang.collection.Set;
 import javaslang.control.Either;
 import org.junit.Assert;
 import org.junit.Test;
@@ -51,4 +55,21 @@ public class EitherTest extends BaseTest {
         mapper().readValue(json, Either.class);
     }
 
+    @SuppressWarnings("unchecked")
+    @Test
+    public void test7() throws IOException {
+        Either<List<Integer>, Set<Double>> either = Either.left(List.of(42));
+        String json = mapper().writer().writeValueAsString(either);
+        Either<List<Integer>, Set<Double>> restored = mapper().readValue(json, new TypeReference<Either<List<Integer>, Set<Double>>>() {});
+        Assert.assertEquals(either, restored);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    public void test8() throws IOException {
+        Either<List<Integer>, Set<Double>> either = Either.right(HashSet.of(42.0));
+        String json = mapper().writer().writeValueAsString(either);
+        Either<List<Integer>, Set<Double>> restored = mapper().readValue(json, new TypeReference<Either<List<Integer>, Set<Double>>>() {});
+        Assert.assertEquals(either, restored);
+    }
 }
