@@ -19,6 +19,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.JsonDeserializer;
 import javaslang.control.Either;
 
 import java.io.IOException;
@@ -30,6 +31,7 @@ class EitherDeserializer extends ValueDeserializer<Either<?, ?>> {
     private static final long serialVersionUID = 1L;
 
     private final JavaType javaType;
+    private JsonDeserializer<?> stringDeserializer;
 
     EitherDeserializer(JavaType valueType) {
         super(valueType, 2);
@@ -38,28 +40,41 @@ class EitherDeserializer extends ValueDeserializer<Either<?, ?>> {
 
     @Override
     public Either<?, ?> deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
-        List<Object> list = new ArrayList<>();
-        int typeCounter = 0;
+        boolean right = false;
+        Object value = null;
+        int cnt = 0;
+        if (stringDeserializer == null) {
+            stringDeserializer = ctxt.findContextualValueDeserializer(ctxt.constructType(String.class), null);
+        }
         while (p.nextToken() != JsonToken.END_ARRAY) {
-            if (typeCounter >= deserializersCount()) {
-                throw ctxt.mappingException(javaType.getRawClass());
+            cnt++;
+            switch (cnt) {
+                case 1:
+                    String def = (String) stringDeserializer.deserialize(p, ctxt);
+                    if ("right".equals(def)) {
+                        right = true;
+                    } else if ("left".equals(def)) {
+                        right = false;
+                    } else {
+                        throw ctxt.mappingException(javaType.getRawClass());
+                    }
+                    break;
+                case 2:
+                    if(right) {
+                        value = deserializer(1).deserialize(p, ctxt);
+                    } else {
+                        value = deserializer(0).deserialize(p, ctxt);
+                    }
+                    break;
+                default:
+                    throw ctxt.mappingException(javaType.getRawClass());
             }
-            list.add(deserializer(typeCounter++).deserialize(p, ctxt));
         }
-        if (list.size() != 2) {
-            throw ctxt.mappingException(javaType.getRawClass());
+        if(right) {
+            return Either.right(value);
+        } else {
+            return Either.left(value);
         }
-        Object eitherType = list.get(0);
-        if (eitherType instanceof String) {
-            String eitherTypeString = (String) eitherType;
-            if ("left".equals(eitherTypeString)) {
-                return Either.left(list.get(1));
-            }
-            if ("right".equals(eitherTypeString)) {
-                return Either.right(list.get(1));
-            }
-        }
-        throw ctxt.mappingException(javaType.getRawClass());
     }
 
 
