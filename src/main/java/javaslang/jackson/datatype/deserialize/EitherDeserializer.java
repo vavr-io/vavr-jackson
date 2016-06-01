@@ -51,7 +51,13 @@ class EitherDeserializer extends ValueDeserializer<Either<?, ?>> {
             switch (cnt) {
                 case 1:
                     String def = (String) stringDeserializer.deserialize(p, ctxt);
-                    right = "right".equals(def);
+                    if ("right".equals(def)) {
+                        right = true;
+                    } else if ("left".equals(def)) {
+                        right = false;
+                    } else {
+                        throw ctxt.mappingException(javaType.getRawClass());
+                    }
                     break;
                 case 2:
                     if(right) {
