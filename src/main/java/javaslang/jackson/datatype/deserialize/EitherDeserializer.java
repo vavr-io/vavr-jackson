@@ -20,11 +20,10 @@ import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import javaslang.control.Either;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 class EitherDeserializer extends ValueDeserializer<Either<?, ?>> {
 
@@ -43,9 +42,6 @@ class EitherDeserializer extends ValueDeserializer<Either<?, ?>> {
         boolean right = false;
         Object value = null;
         int cnt = 0;
-        if (stringDeserializer == null) {
-            stringDeserializer = ctxt.findContextualValueDeserializer(ctxt.constructType(String.class), null);
-        }
         while (p.nextToken() != JsonToken.END_ARRAY) {
             cnt++;
             switch (cnt) {
@@ -60,22 +56,27 @@ class EitherDeserializer extends ValueDeserializer<Either<?, ?>> {
                     }
                     break;
                 case 2:
-                    if(right) {
+                    if (right) {
                         value = deserializer(1).deserialize(p, ctxt);
                     } else {
                         value = deserializer(0).deserialize(p, ctxt);
                     }
                     break;
-                default:
-                    throw ctxt.mappingException(javaType.getRawClass());
             }
         }
-        if(right) {
+        if (cnt != 2) {
+            throw ctxt.mappingException(javaType.getRawClass());
+        }
+        if (right) {
             return Either.right(value);
         } else {
             return Either.left(value);
         }
     }
 
-
+    @Override
+    public void resolve(DeserializationContext ctxt) throws JsonMappingException {
+        super.resolve(ctxt);
+        stringDeserializer = ctxt.findContextualValueDeserializer(ctxt.constructType(String.class), null);
+    }
 }

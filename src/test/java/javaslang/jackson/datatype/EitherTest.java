@@ -33,13 +33,13 @@ public class EitherTest extends BaseTest {
 
     @Test(expected = JsonMappingException.class)
     public void test3() throws IOException {
-        String json = "[\"test\", 2, 3]";
+        String json = "[\"right\", 2, 3]";
         mapper().readValue(json, Either.class);
     }
 
     @Test(expected = JsonMappingException.class)
     public void test4() throws IOException {
-        String json = "[\"test\"]";
+        String json = "[\"right\"]";
         mapper().readValue(json, Either.class);
     }
 

@@ -81,7 +81,7 @@ class TupleDeserializer extends ValueDeserializer<Tuple> {
             default:
                 result = Tuple.empty();
         }
-        if(!javaType.getRawClass().isAssignableFrom(result.getClass())) {
+        if (!javaType.getRawClass().isAssignableFrom(result.getClass())) {
             throw ctxt.mappingException(javaType.getRawClass());
         }
         return result;
