@@ -41,7 +41,7 @@ class CharSeqDeserializer extends StdDeserializer<CharSeq> implements Resolvable
     @Override
     public CharSeq deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
         Object obj = deserializer.deserialize(p, ctxt);
-        if(obj instanceof String) {
+        if (obj instanceof String) {
             return CharSeq.of((String) obj);
         } else {
             throw ctxt.wrongTokenException(p, JsonToken.VALUE_STRING, "CharSeq can only be deserialized from String");

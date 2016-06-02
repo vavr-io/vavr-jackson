@@ -24,8 +24,6 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import javaslang.control.Either;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 class EitherDeserializer extends ValueDeserializer<Either<?, ?>> {
 
@@ -58,7 +56,7 @@ class EitherDeserializer extends ValueDeserializer<Either<?, ?>> {
                     }
                     break;
                 case 2:
-                    if(right) {
+                    if (right) {
                         value = deserializer(1).deserialize(p, ctxt);
                     } else {
                         value = deserializer(0).deserialize(p, ctxt);
@@ -69,7 +67,7 @@ class EitherDeserializer extends ValueDeserializer<Either<?, ?>> {
         if (cnt != 2) {
             throw ctxt.mappingException(javaType.getRawClass());
         }
-        if(right) {
+        if (right) {
             return Either.right(value);
         } else {
             return Either.left(value);

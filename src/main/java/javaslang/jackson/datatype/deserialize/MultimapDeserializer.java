@@ -24,12 +24,15 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.type.CollectionType;
 import javaslang.Tuple;
 import javaslang.Tuple2;
-import javaslang.collection.*;
+import javaslang.collection.HashMultimap;
+import javaslang.collection.LinkedHashMultimap;
+import javaslang.collection.Multimap;
+import javaslang.collection.TreeMultimap;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
-class MultimapDeserializer extends MaplikeDeserializer<Multimap<?,?>> {
+class MultimapDeserializer extends MaplikeDeserializer<Multimap<?, ?>> {
 
     private static final long serialVersionUID = 1L;
 
@@ -47,7 +50,7 @@ class MultimapDeserializer extends MaplikeDeserializer<Multimap<?,?>> {
     }
 
     @Override
-    public Multimap<?,?> deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+    public Multimap<?, ?> deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
         final java.util.List<Tuple2<Object, Object>> result = new java.util.ArrayList<>();
         while (p.nextToken() != JsonToken.END_OBJECT) {
             String name = p.getCurrentName();

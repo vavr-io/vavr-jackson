@@ -28,7 +28,7 @@ import javaslang.collection.TreeMap;
 
 import java.io.IOException;
 
-class MapDeserializer extends MaplikeDeserializer<Map<?,?>> {
+class MapDeserializer extends MaplikeDeserializer<Map<?, ?>> {
 
     private static final long serialVersionUID = 1L;
 
@@ -37,7 +37,7 @@ class MapDeserializer extends MaplikeDeserializer<Map<?,?>> {
     }
 
     @Override
-    public Map<?,?> deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+    public Map<?, ?> deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
         final java.util.List<Tuple2<Object, Object>> result = new java.util.ArrayList<>();
         while (p.nextToken() != JsonToken.END_OBJECT) {
             String name = p.getCurrentName();
