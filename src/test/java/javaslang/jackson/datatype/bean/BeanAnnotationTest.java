@@ -3,8 +3,8 @@ package javaslang.jackson.datatype.bean;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import javaslang.control.Option;
 import javaslang.jackson.datatype.BaseTest;
+import org.junit.Assert;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 public class BeanAnnotationTest extends BaseTest {
 
@@ -34,16 +34,17 @@ public class BeanAnnotationTest extends BaseTest {
     public void test1() throws Exception {
         BeanObjectOptional bean = new BeanObjectOptional(Option.of(SOME));
         String json = mapper().writer().writeValueAsString(bean);
+        Assert.assertTrue(json.contains(SOME));
 
-        assertTrue(json.contains(SOME));
     }
 
     @Test
     public void test2() throws Exception {
         BeanObjectOptional bean = new BeanObjectOptional();
         String json = mapper().writer().writeValueAsString(bean);
-
-        assertEquals(EMPTY_JSON, json);
+        Assert.assertEquals(EMPTY_JSON, json);
+        BeanObjectOptional restored = mapper().readValue(EMPTY_JSON, BeanObjectOptional.class);
+        Assert.assertEquals(bean.field, restored.field);
     }
 
 }

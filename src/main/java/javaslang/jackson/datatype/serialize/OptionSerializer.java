@@ -20,6 +20,8 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import javaslang.control.Option;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
 
 class OptionSerializer extends ValueSerializer<Option<?>> {
 
@@ -31,7 +33,11 @@ class OptionSerializer extends ValueSerializer<Option<?>> {
 
     @Override
     Object toJavaObj(Option<?> value) throws IOException {
-        return value.get();
+        if (value.isDefined()) {
+            return Arrays.asList("defined", value.get());
+        } else {
+            return Collections.singleton("undefined");
+        }
     }
 
     @Override

@@ -35,11 +35,7 @@ abstract class ValueSerializer<T> extends StdSerializer<T> {
 
     @Override
     public void serialize(T value, JsonGenerator gen, SerializerProvider provider) throws IOException {
-        if (isEmpty(provider, value)) {
-            provider.defaultSerializeNull(gen);
-        } else {
-            gen.writeObject(toJavaObj(value));
-        }
+        gen.writeObject(toJavaObj(value));
     }
 
     @Override
