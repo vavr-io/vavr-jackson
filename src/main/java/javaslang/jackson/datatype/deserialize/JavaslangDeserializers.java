@@ -22,9 +22,16 @@ import javaslang.Tuple;
 import javaslang.collection.*;
 import javaslang.control.Either;
 import javaslang.control.Option;
+import javaslang.jackson.datatype.JavaslangModule;
 import javaslang.λ;
 
 public class JavaslangDeserializers extends Deserializers.Base {
+
+    private final JavaslangModule.Options options;
+
+    public JavaslangDeserializers(JavaslangModule.Options options) {
+        this.options = options;
+    }
 
     @Override
     public JsonDeserializer<?> findBeanDeserializer(JavaType type,
@@ -41,7 +48,7 @@ public class JavaslangDeserializers extends Deserializers.Base {
             return new LazyDeserializer(type);
         }
         if (Option.class.isAssignableFrom(raw)) {
-            return new OptionDeserializer(type);
+            return new OptionDeserializer(type, options.plainOption());
         }
         if (Either.class.isAssignableFrom(raw)) {
             return new EitherDeserializer(type);

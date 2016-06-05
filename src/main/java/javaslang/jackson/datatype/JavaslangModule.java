@@ -23,9 +23,33 @@ public class JavaslangModule extends SimpleModule {
 
     private static final long serialVersionUID = 1L;
 
+    public static class Options {
+
+        private boolean plainOption = true;
+
+        public Options plainOption(boolean value) {
+            plainOption = value;
+            return this;
+        }
+
+        public boolean plainOption() {
+            return plainOption;
+        }
+    }
+
+    private final Options options;
+
+    public JavaslangModule() {
+        this(new Options());
+    }
+
+    public JavaslangModule(Options options) {
+        this.options = options;
+    }
+
     @Override
     public void setupModule(SetupContext context) {
-        context.addSerializers(new JavaslangSerializers());
-        context.addDeserializers(new JavaslangDeserializers());
+        context.addSerializers(new JavaslangSerializers(options));
+        context.addDeserializers(new JavaslangDeserializers(options));
     }
 }

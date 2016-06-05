@@ -27,16 +27,19 @@ class OptionSerializer extends ValueSerializer<Option<?>> {
 
     private static final long serialVersionUID = 1L;
 
-    OptionSerializer(JavaType type) {
+    private final boolean plainMode;
+
+    OptionSerializer(JavaType type, boolean plainMode) {
         super(type);
+        this.plainMode = plainMode;
     }
 
     @Override
     Object toJavaObj(Option<?> value) throws IOException {
         if (value.isDefined()) {
-            return Arrays.asList("defined", value.get());
+            return plainMode ? value.get() : Arrays.asList("defined", value.get());
         } else {
-            return Collections.singleton("undefined");
+            return plainMode ? null : Collections.singleton("undefined");
         }
     }
 
