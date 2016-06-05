@@ -23,6 +23,12 @@ public class BaseTest {
         return mapper;
     }
 
+    protected ObjectMapper mapper(JavaslangModule.Options opts) {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaslangModule(opts));
+        return mapper;
+    }
+
     protected String wrapToArray(String as, String json) {
         return "[\"" + as + "\"," + json + "]";
     }

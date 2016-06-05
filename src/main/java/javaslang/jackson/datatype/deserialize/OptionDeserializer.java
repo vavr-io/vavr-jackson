@@ -30,15 +30,21 @@ class OptionDeserializer extends ValueDeserializer<Option<?>> {
     private static final long serialVersionUID = 1L;
 
     private final JavaType javaType;
+    private final boolean plainMode;
     private JsonDeserializer<?> stringDeserializer;
 
-    OptionDeserializer(JavaType valueType) {
+    OptionDeserializer(JavaType valueType, boolean plainMode) {
         super(valueType, 1);
         this.javaType = valueType;
+        this.plainMode = plainMode;
     }
 
     @Override
     public Option<?> deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+        if (plainMode) {
+            Object obj = deserializer(0).deserialize(p, ctxt);
+            return Option.of(obj);
+        }
         boolean defined = false;
         Object value = null;
         int cnt = 0;
@@ -77,5 +83,10 @@ class OptionDeserializer extends ValueDeserializer<Option<?>> {
     public void resolve(DeserializationContext ctxt) throws JsonMappingException {
         super.resolve(ctxt);
         stringDeserializer = ctxt.findContextualValueDeserializer(ctxt.constructType(String.class), null);
+    }
+
+    @Override
+    public Option<?> getNullValue(DeserializationContext ctxt) throws JsonMappingException {
+        return Option.none();
     }
 }

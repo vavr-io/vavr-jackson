@@ -25,9 +25,16 @@ import javaslang.Tuple;
 import javaslang.collection.*;
 import javaslang.control.Either;
 import javaslang.control.Option;
+import javaslang.jackson.datatype.JavaslangModule;
 import javaslang.λ;
 
 public class JavaslangSerializers extends Serializers.Base {
+
+    private final JavaslangModule.Options options;
+
+    public JavaslangSerializers(JavaslangModule.Options options) {
+        this.options = options;
+    }
 
     @Override
     public JsonSerializer<?> findSerializer(SerializationConfig config,
@@ -38,7 +45,7 @@ public class JavaslangSerializers extends Serializers.Base {
             return new LazySerializer(type);
         }
         if (Option.class.isAssignableFrom(raw)) {
-            return new OptionSerializer(type);
+            return new OptionSerializer(type, options.plainOption());
         }
         if (Either.class.isAssignableFrom(raw)) {
             return new EitherSerializer(type);
