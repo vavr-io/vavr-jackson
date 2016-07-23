@@ -26,6 +26,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.fasterxml.jackson.core.JsonToken.END_ARRAY;
+import static com.fasterxml.jackson.core.JsonToken.VALUE_NULL;
+
 abstract class ArrayDeserializer<T> extends ValueDeserializer<T> {
 
     private static final long serialVersionUID = 1L;
@@ -40,15 +43,8 @@ abstract class ArrayDeserializer<T> extends ValueDeserializer<T> {
     public T deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
         JsonDeserializer<?> deserializer = deserializer(0);
         List<Object> list = new ArrayList<>();
-
-        JsonToken jsonToken;
-        while ((jsonToken = p.nextToken()) != JsonToken.END_ARRAY) {
-            Object value;
-            if (jsonToken == JsonToken.VALUE_NULL) {
-                value = deserializer.getNullValue(ctxt);
-            } else {
-                value = deserializer.deserialize(p, ctxt);
-            }
+        for (JsonToken jsonToken = p.nextToken(); jsonToken != END_ARRAY; jsonToken = p.nextToken()) {
+            Object value = (jsonToken != VALUE_NULL) ? deserializer.deserialize(p, ctxt) : deserializer.getNullValue(ctxt);
             list.add(value);
         }
         return create(list, ctxt);

@@ -37,6 +37,9 @@ import javaslang.Tuple5;
 import javaslang.Tuple6;
 import javaslang.Tuple7;
 
+import static com.fasterxml.jackson.core.JsonToken.END_ARRAY;
+import static com.fasterxml.jackson.core.JsonToken.VALUE_NULL;
+
 class TupleDeserializer extends ValueDeserializer<Tuple> {
 
     private static final long serialVersionUID = 1L;
@@ -53,18 +56,12 @@ class TupleDeserializer extends ValueDeserializer<Tuple> {
         List<Object> list = new ArrayList<>();
         int ptr = 0;
 
-        JsonToken jsonToken;
-        while ((jsonToken = p.nextToken()) != JsonToken.END_ARRAY) {
+        for (JsonToken jsonToken = p.nextToken(); jsonToken != END_ARRAY; jsonToken = p.nextToken()) {
             if (ptr >= deserializersCount()) {
                 throw ctxt.mappingException(javaType.getRawClass());
             }
-            Object value;
             JsonDeserializer<?> deserializer = deserializer(ptr++);
-            if (jsonToken == JsonToken.VALUE_NULL) {
-                value = deserializer.getNullValue(ctxt);
-            } else {
-                value = deserializer.deserialize(p, ctxt);
-            }
+            Object value = (jsonToken != VALUE_NULL) ? deserializer.deserialize(p, ctxt) : deserializer.getNullValue(ctxt);
             list.add(value);
         }
         return create(list, ctxt);

@@ -26,6 +26,9 @@ import java.io.IOException;
 
 import javaslang.control.Either;
 
+import static com.fasterxml.jackson.core.JsonToken.END_ARRAY;
+import static com.fasterxml.jackson.core.JsonToken.VALUE_NULL;
+
 class EitherDeserializer extends ValueDeserializer<Either<?, ?>> {
 
     private static final long serialVersionUID = 1L;
@@ -44,8 +47,7 @@ class EitherDeserializer extends ValueDeserializer<Either<?, ?>> {
         Object value = null;
         int cnt = 0;
 
-        JsonToken jsonToken;
-        while ((jsonToken = p.nextToken()) != JsonToken.END_ARRAY) {
+        for (JsonToken jsonToken = p.nextToken(); jsonToken != END_ARRAY; jsonToken = p.nextToken()) {
             cnt++;
             switch (cnt) {
                 case 1:
@@ -59,28 +61,15 @@ class EitherDeserializer extends ValueDeserializer<Either<?, ?>> {
                     }
                     break;
                 case 2:
-                    JsonDeserializer<?> deserializer;
-                    if (right) {
-                        deserializer = deserializer(1);
-                    } else {
-                        deserializer = deserializer(0);
-                    }
-                    if (jsonToken == JsonToken.VALUE_NULL) {
-                        value = deserializer.getNullValue(ctxt);
-                    } else {
-                        value = deserializer.deserialize(p, ctxt);
-                    }
+                    JsonDeserializer<?> deserializer = right ? deserializer(1) : deserializer(0);
+                    value = (jsonToken != VALUE_NULL) ? deserializer.deserialize(p, ctxt) : deserializer.getNullValue(ctxt);
                     break;
             }
         }
         if (cnt != 2) {
             throw ctxt.mappingException(javaType.getRawClass());
         }
-        if (right) {
-            return Either.right(value);
-        } else {
-            return Either.left(value);
-        }
+        return right ? Either.right(value) : Either.left(value);
     }
 
     @Override
