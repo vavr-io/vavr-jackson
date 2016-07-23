@@ -2,14 +2,21 @@ package javaslang.jackson.datatype;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import javaslang.collection.HashSet;
-import javaslang.collection.List;
-import javaslang.collection.Set;
-import javaslang.control.Either;
+
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.IOException;
+
+import javaslang.Tuple;
+import javaslang.collection.HashSet;
+import javaslang.collection.List;
+import javaslang.collection.Set;
+import javaslang.control.Either;
+import javaslang.control.Option;
+
+import static javaslang.control.Option.none;
+import static javaslang.control.Option.some;
 
 public class EitherTest extends BaseTest {
 
@@ -72,4 +79,16 @@ public class EitherTest extends BaseTest {
         Either<List<Integer>, Set<Double>> restored = mapper().readValue(json, new TypeReference<Either<List<Integer>, Set<Double>>>() {});
         Assert.assertEquals(either, restored);
     }
+
+    @Test
+    public void testWithOption() throws IOException {
+        TypeReference<Either<Option<String>, Option<String>>> typeReference = new TypeReference<Either<Option<String>, Option<String>>>() {};
+        verifySerialization(typeReference, List.of(
+                Tuple.of(Either.left(none()), genJsonList("left", null)),
+                Tuple.of(Either.right(none()), genJsonList("right", null)),
+                Tuple.of(Either.left(some("value")), genJsonList("left", "value")),
+                Tuple.of(Either.right(some("value")), genJsonList("right", "value"))
+        ));
+    }
+
 }

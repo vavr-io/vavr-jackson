@@ -20,12 +20,22 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import javaslang.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javaslang.Tuple;
+import javaslang.Tuple0;
+import javaslang.Tuple1;
+import javaslang.Tuple2;
+import javaslang.Tuple3;
+import javaslang.Tuple4;
+import javaslang.Tuple5;
+import javaslang.Tuple6;
+import javaslang.Tuple7;
 
 class TupleDeserializer extends ValueDeserializer<Tuple> {
 
@@ -42,11 +52,20 @@ class TupleDeserializer extends ValueDeserializer<Tuple> {
     public Tuple deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException {
         List<Object> list = new ArrayList<>();
         int ptr = 0;
-        while (p.nextToken() != JsonToken.END_ARRAY) {
+
+        JsonToken jsonToken;
+        while ((jsonToken = p.nextToken()) != JsonToken.END_ARRAY) {
             if (ptr >= deserializersCount()) {
                 throw ctxt.mappingException(javaType.getRawClass());
             }
-            list.add(deserializer(ptr++).deserialize(p, ctxt));
+            Object value;
+            JsonDeserializer<?> deserializer = deserializer(ptr++);
+            if (jsonToken == JsonToken.VALUE_NULL) {
+                value = deserializer.getNullValue(ctxt);
+            } else {
+                value = deserializer.deserialize(p, ctxt);
+            }
+            list.add(value);
         }
         return create(list, ctxt);
     }

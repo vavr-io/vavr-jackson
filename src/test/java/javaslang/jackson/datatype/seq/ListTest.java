@@ -1,18 +1,27 @@
 package javaslang.jackson.datatype.seq;
 
-import javaslang.collection.List;
-import javaslang.collection.Seq;
+import com.fasterxml.jackson.core.type.TypeReference;
+
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.util.Arrays;
 
+import javaslang.collection.List;
+import javaslang.collection.Seq;
+import javaslang.control.Option;
+
 public class ListTest extends SeqTest {
 
     @Override
     protected Class<?> clz() {
         return List.class;
+    }
+
+    @Override
+    protected TypeReference<List<Option<String>>> typeReferenceWithOption() {
+        return new TypeReference<List<Option<String>>>() {};
     }
 
     @Override

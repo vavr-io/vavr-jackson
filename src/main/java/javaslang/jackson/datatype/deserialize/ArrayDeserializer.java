@@ -40,8 +40,16 @@ abstract class ArrayDeserializer<T> extends ValueDeserializer<T> {
     public T deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
         JsonDeserializer<?> deserializer = deserializer(0);
         List<Object> list = new ArrayList<>();
-        while (p.nextToken() != JsonToken.END_ARRAY) {
-            list.add(deserializer.deserialize(p, ctxt));
+
+        JsonToken jsonToken;
+        while ((jsonToken = p.nextToken()) != JsonToken.END_ARRAY) {
+            Object value;
+            if (jsonToken == JsonToken.VALUE_NULL) {
+                value = deserializer.getNullValue(ctxt);
+            } else {
+                value = deserializer.deserialize(p, ctxt);
+            }
+            list.add(value);
         }
         return create(list, ctxt);
     }
