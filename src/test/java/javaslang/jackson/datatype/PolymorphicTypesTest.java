@@ -19,7 +19,10 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import javaslang.Tuple2;
 import javaslang.collection.List;
+import javaslang.collection.Map;
+import javaslang.control.Either;
 import javaslang.control.Option;
 import org.junit.Assert;
 import org.junit.Test;
@@ -59,5 +62,37 @@ public class PolymorphicTypesTest {
         Assert.assertTrue(i.get(0) instanceof A);
         Assert.assertTrue(i.get(1) instanceof B);
     }
+
+    @Test
+    public void deserializeMap() throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaslangModule());
+
+        Map<String, I> i = mapper.readerFor(new TypeReference<Map<String, I>>(){}).readValue("{\"a\":{\"type\":\"a\"},\"b\":{\"type\":\"b\"}}");
+        Assert.assertTrue(i.nonEmpty());
+        Assert.assertTrue(i.get("a").get() instanceof A);
+        Assert.assertTrue(i.get("b").get() instanceof B);
+    }
+
+    @Test
+    public void deserializeEither() throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaslangModule());
+
+        Either<I, I> i = mapper.readerFor(new TypeReference<Either<I, I>>(){}).readValue("[\"left\",{\"type\":\"b\"}]");
+        Assert.assertTrue(i.isLeft());
+        Assert.assertTrue(i.getLeft() instanceof B);
+    }
+
+    @Test
+    public void deserializeTuple2() throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaslangModule());
+
+        Tuple2<I, I> i = mapper.readerFor(new TypeReference<Tuple2<I, I>>(){}).readValue("[{\"type\":\"a\"},{\"type\":\"b\"}]");
+        Assert.assertTrue(i._1 instanceof A);
+        Assert.assertTrue(i._2 instanceof B);
+    }
+
 
 }

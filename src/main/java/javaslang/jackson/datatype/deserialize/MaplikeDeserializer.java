@@ -50,7 +50,7 @@ abstract class MaplikeDeserializer<T> extends StdDeserializer<T> implements Reso
             keyComparator = (o1, o2) -> o1.toString().compareTo(o2.toString());
         }
         keyDeserializer = ctxt.findKeyDeserializer(keyType, null);
-        valueDeserializer = ctxt.findContextualValueDeserializer(mapLikeType.getContentType(), null);
+        valueDeserializer = ctxt.findRootValueDeserializer(mapLikeType.getContentType());
     }
 
     private static MapLikeType mapLike(JavaType type, DeserializationContext ctxt) {
