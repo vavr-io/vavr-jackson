@@ -50,4 +50,11 @@ public abstract class SeqTest extends BaseTest {
         Seq<?> restored = (Seq<?>) mapper.readValue(wrappedJson, clz());
         Assert.assertEquals(src, restored);
     }
+
+    @Test
+    public void test4() throws IOException {
+        ObjectMapper mapper = mapper();
+        Seq<?> restored = (Seq<?>) mapper.readValue("null", clz());
+        Assert.assertTrue(restored.isEmpty());
+    }
 }

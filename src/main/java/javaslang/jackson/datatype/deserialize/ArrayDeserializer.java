@@ -36,6 +36,8 @@ abstract class ArrayDeserializer<T> extends ValueDeserializer<T> {
 
     abstract T create(List<Object> list, DeserializationContext ctxt) throws JsonMappingException;
 
+    abstract T emptyValue();
+
     @Override
     public T deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
         JsonDeserializer<?> deserializer = deserializer(0);
@@ -44,5 +46,25 @@ abstract class ArrayDeserializer<T> extends ValueDeserializer<T> {
             list.add(deserializer.deserialize(p, ctxt));
         }
         return create(list, ctxt);
+    }
+
+    @Override
+    public T getNullValue(DeserializationContext ctxt) throws JsonMappingException {
+        return emptyValue();
+    }
+
+    @Override
+    public T getNullValue() {
+        return emptyValue();
+    }
+
+    @Override
+    public T getEmptyValue(DeserializationContext ctxt) throws JsonMappingException {
+        return emptyValue();
+    }
+
+    @Override
+    public T getEmptyValue() {
+        return emptyValue();
     }
 }

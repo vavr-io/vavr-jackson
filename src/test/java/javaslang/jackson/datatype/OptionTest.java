@@ -70,4 +70,11 @@ public class OptionTest extends BaseTest {
         mapper(opts).readValue(json, Option.class);
     }
 
+    @Test
+    public void test8() throws IOException {
+        String json = "null";
+        Option<?> option = mapper(opts).readValue(json, Option.class);
+        Assert.assertTrue(option.isEmpty());
+    }
+
 }

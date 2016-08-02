@@ -18,6 +18,7 @@ package javaslang.jackson.datatype.deserialize;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import javaslang.collection.HashSet;
 import javaslang.collection.Set;
 
 import java.util.List;
@@ -50,6 +51,11 @@ class SetDeserializer extends ArrayDeserializer<Set<?>> {
             return javaslang.collection.LinkedHashSet.ofAll(result);
         }
         // default deserialization [...] -> Set
-        return javaslang.collection.HashSet.ofAll(result);
+        return HashSet.ofAll(result);
+    }
+
+    @Override
+    Set<?> emptyValue() {
+        return HashSet.empty();
     }
 }
