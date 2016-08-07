@@ -2,27 +2,40 @@ package javaslang.jackson.datatype.set;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import javaslang.collection.Set;
-import javaslang.collection.TreeSet;
+
 import org.junit.Test;
 
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.Comparator;
+
+import javaslang.collection.List;
+import javaslang.collection.Set;
+import javaslang.collection.TreeSet;
+import javaslang.control.Option;
 
 public class TreeSetTest extends SetTest {
     @Override
-    Class<?> clz() {
+    protected Class<?> clz() {
         return TreeSet.class;
     }
 
     @Override
-    TypeReference<?> typeReference() {
-        return new TypeReference<TreeSet<Integer>>() {};
+    protected TypeReference<TreeSet<Integer>> typeReference() {
+        return new TypeReference<TreeSet<Integer>>() {
+        };
     }
 
     @Override
-    Set<Integer> of(Integer... objects) {
-        return TreeSet.ofAll(Integer::compareTo, Arrays.asList(objects));
+    protected TypeReference<TreeSet<Option<String>>> typeReferenceWithOption() {
+        return new TypeReference<TreeSet<Option<String>>>() {
+        };
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    protected Set<?> of(Object... objects) {
+        List<Comparable<Object>> comparables = List.of(objects).map(value -> (Comparable<Object>) value);
+        return TreeSet.ofAll(Comparator.naturalOrder(), comparables);
     }
 
     @Test(expected = JsonMappingException.class)
@@ -33,6 +46,11 @@ public class TreeSetTest extends SetTest {
     @Test(expected = JsonMappingException.class)
     public void testGeneric2() throws IOException {
         mapper().readValue("[1, 2]", new TypeReference<TreeSet<Object>>() {});
+    }
+
+    @Override
+    public void testWithOption() throws IOException {
+        // there is nothing to test, because Option is not Comparable and we cannot deserialize a TreeSet<Option<? extends Comparable<?>>
     }
 
     static class Incomparable {
