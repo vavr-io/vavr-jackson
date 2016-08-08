@@ -54,17 +54,7 @@ abstract class ArrayDeserializer<T> extends ValueDeserializer<T> {
     }
 
     @Override
-    public T getNullValue() {
-        return emptyValue();
-    }
-
-    @Override
     public T getEmptyValue(DeserializationContext ctxt) throws JsonMappingException {
-        return emptyValue();
-    }
-
-    @Override
-    public T getEmptyValue() {
         return emptyValue();
     }
 }
