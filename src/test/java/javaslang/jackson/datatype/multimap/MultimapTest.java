@@ -1,7 +1,7 @@
 package javaslang.jackson.datatype.multimap;
 
-import javaslang.collection.Multimap;
-import javaslang.jackson.datatype.BaseTest;
+import com.fasterxml.jackson.core.type.TypeReference;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -10,11 +10,21 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javaslang.Tuple;
+import javaslang.collection.HashMap;
+import javaslang.collection.Multimap;
+import javaslang.control.Option;
+import javaslang.jackson.datatype.BaseTest;
+
+import static java.util.Arrays.asList;
+
 public abstract class MultimapTest extends BaseTest {
 
     abstract Class<?> clz();
 
     abstract <K, V> Multimap<K, V> emptyMap();
+
+    protected abstract TypeReference<? extends Multimap<String, Option<Integer>>> typeReferenceWithOption();
 
     @Test
     public void test1() throws IOException {
@@ -31,4 +41,13 @@ public abstract class MultimapTest extends BaseTest {
         Multimap<?, ?> restored = (Multimap<?, ?>) mapper().readValue(json, clz());
         Assert.assertEquals(restored, javaslangObject);
     }
+
+    @Test
+    public void testWithOption() throws Exception {
+        Multimap<String, Option<Integer>> multimap = this.<String, Option<Integer>>emptyMap().put("1", Option.some(1)).put("1", Option.none());
+        String json = genJsonMap(HashMap.of("1", asList(1, null)).toJavaMap());
+
+        verifySerialization(typeReferenceWithOption(), javaslang.collection.List.of(Tuple.of(multimap, json)));
+    }
+
 }

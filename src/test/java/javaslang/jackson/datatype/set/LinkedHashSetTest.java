@@ -1,28 +1,36 @@
 package javaslang.jackson.datatype.set;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import javaslang.collection.LinkedHashSet;
-import javaslang.collection.Set;
+
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.util.Arrays;
 
+import javaslang.collection.LinkedHashSet;
+import javaslang.collection.Set;
+import javaslang.control.Option;
+
 public class LinkedHashSetTest extends SetTest {
 
     @Override
-    Class<?> clz() {
+    protected Class<?> clz() {
         return LinkedHashSet.class;
     }
 
     @Override
-    TypeReference<?> typeReference() {
+    protected TypeReference<LinkedHashSet<Integer>> typeReference() {
         return new TypeReference<LinkedHashSet<Integer>>() {};
     }
 
     @Override
-    Set<Integer> of(Integer... objects) {
+    protected TypeReference<LinkedHashSet<Option<String>>> typeReferenceWithOption() {
+        return new TypeReference<LinkedHashSet<Option<String>>>() {};
+    }
+
+    @Override
+    protected Set<?> of(Object... objects) {
         return LinkedHashSet.ofAll(Arrays.asList(objects));
     }
 

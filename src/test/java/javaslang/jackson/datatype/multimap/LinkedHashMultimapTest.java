@@ -1,12 +1,16 @@
 package javaslang.jackson.datatype.multimap;
 
-import javaslang.collection.LinkedHashMultimap;
-import javaslang.collection.Multimap;
+import com.fasterxml.jackson.core.type.TypeReference;
+
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.util.Collections;
+
+import javaslang.collection.LinkedHashMultimap;
+import javaslang.collection.Multimap;
+import javaslang.control.Option;
 
 public class LinkedHashMultimapTest extends MultimapTest {
     @Override
@@ -17,6 +21,11 @@ public class LinkedHashMultimapTest extends MultimapTest {
     @Override
     <K, V> Multimap<K, V> emptyMap() {
         return LinkedHashMultimap.withSeq().empty();
+    }
+
+    @Override
+    protected TypeReference<LinkedHashMultimap<String, Option<Integer>>> typeReferenceWithOption() {
+        return new TypeReference<LinkedHashMultimap<String, Option<Integer>>>() {};
     }
 
     @Test

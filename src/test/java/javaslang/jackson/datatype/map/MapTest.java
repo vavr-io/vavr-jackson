@@ -1,19 +1,28 @@
 package javaslang.jackson.datatype.map;
 
 import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import javaslang.collection.Map;
-import javaslang.jackson.datatype.BaseTest;
+
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.IOException;
+
+import javaslang.Tuple;
+import javaslang.collection.HashMap;
+import javaslang.collection.List;
+import javaslang.collection.Map;
+import javaslang.control.Option;
+import javaslang.jackson.datatype.BaseTest;
 
 public abstract class MapTest extends BaseTest {
 
     abstract Class<?> clz();
 
     abstract <K, V> Map<K, V> emptyMap();
+
+    protected abstract TypeReference<? extends Map<String, Option<Integer>>> typeReferenceWithOption();
 
     @Test
     public void test1() throws IOException {
@@ -53,5 +62,13 @@ public abstract class MapTest extends BaseTest {
     @Test(expected = JsonParseException.class)
     public void test4() throws IOException {
         mapper().readValue("{1: 1}", clz());
+    }
+
+    @Test
+    public void testWithOption() throws Exception {
+        verifySerialization(typeReferenceWithOption(), List.of(
+                Tuple.of(emptyMap().put("1", Option.some(1)), genJsonMap(HashMap.of("1", 1).toJavaMap())),
+                Tuple.of(emptyMap().put("1", Option.none()), genJsonMap(HashMap.of("1", null).toJavaMap()))
+        ));
     }
 }

@@ -1,22 +1,30 @@
 package javaslang.jackson.datatype.tuples;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+
 import javaslang.Tuple;
 import javaslang.Tuple1;
+import javaslang.control.Option;
 
 public class Tuple1Test extends TupleTest<Tuple1<?>> {
 
     @Override
-    Class<?> clz() {
+    protected Class<?> clz() {
         return Tuple1.class;
     }
 
     @Override
-    int arity() {
+    protected int arity() {
         return 1;
     }
 
     @Override
-    Tuple1<?> ofObjects(Object head, Object tail) {
+    protected Tuple1<?> ofObjects(Object head, Object tail) {
         return Tuple.of(head);
+    }
+
+    @Override
+    protected TypeReference<Tuple1<Option<String>>> typeReferenceWithOption() {
+        return new TypeReference<Tuple1<Option<String>>>() {};
     }
 }
