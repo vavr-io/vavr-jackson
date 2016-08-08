@@ -55,7 +55,7 @@ class SetDeserializer extends ArrayDeserializer<Set<?>> {
     }
 
     @Override
-    Set<?> emptyValue() {
+    Set<?> emptyValue(DeserializationContext ctxt) {
         return HashSet.empty();
     }
 }

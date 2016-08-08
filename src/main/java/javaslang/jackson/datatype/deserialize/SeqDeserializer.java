@@ -24,6 +24,7 @@ import javaslang.collection.Seq;
 import javaslang.collection.Stream;
 import javaslang.collection.Vector;
 
+import java.util.Collections;
 import java.util.List;
 
 class SeqDeserializer extends ArrayDeserializer<Seq<?>> {
@@ -56,21 +57,8 @@ class SeqDeserializer extends ArrayDeserializer<Seq<?>> {
     }
 
     @Override
-    Seq<?> emptyValue() {
-        if (Array.class.isAssignableFrom(javaType.getRawClass())) {
-            return Array.empty();
-        }
-        if (Queue.class.isAssignableFrom(javaType.getRawClass())) {
-            return Queue.empty();
-        }
-        if (Stream.class.isAssignableFrom(javaType.getRawClass())) {
-            return Stream.empty();
-        }
-        if (Vector.class.isAssignableFrom(javaType.getRawClass())) {
-            return Vector.empty();
-        }
-        // default deserialization [...] -> Seq
-        return javaslang.collection.List.empty();
+    Seq<?> emptyValue(DeserializationContext ctxt) throws JsonMappingException {
+        return create(Collections.emptyList(), ctxt);
     }
 
 }

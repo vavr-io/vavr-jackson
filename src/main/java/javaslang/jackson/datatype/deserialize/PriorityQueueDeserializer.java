@@ -47,7 +47,7 @@ class PriorityQueueDeserializer extends ArrayDeserializer<PriorityQueue<?>> {
     }
 
     @Override
-    PriorityQueue<?> emptyValue() {
+    PriorityQueue<?> emptyValue(DeserializationContext ctxt) {
         return PriorityQueue.empty();
     }
 }
