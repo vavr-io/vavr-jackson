@@ -30,10 +30,10 @@ import javaslang.λ;
 
 public class JavaslangSerializers extends Serializers.Base {
 
-    private final JavaslangModule.Options options;
+    private final JavaslangModule.Settings settings;
 
-    public JavaslangSerializers(JavaslangModule.Options options) {
-        this.options = options;
+    public JavaslangSerializers(JavaslangModule.Settings settings) {
+        this.settings = settings;
     }
 
     @Override
@@ -45,7 +45,7 @@ public class JavaslangSerializers extends Serializers.Base {
             return new LazySerializer(type);
         }
         if (Option.class.isAssignableFrom(raw)) {
-            return new OptionSerializer(type, options.plainOption());
+            return new OptionSerializer(type, settings.plainOption());
         }
         if (Either.class.isAssignableFrom(raw)) {
             return new EitherSerializer(type);
