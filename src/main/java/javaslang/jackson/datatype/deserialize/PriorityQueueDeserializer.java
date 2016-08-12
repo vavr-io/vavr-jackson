@@ -28,8 +28,8 @@ class PriorityQueueDeserializer extends ArrayDeserializer<PriorityQueue<?>> {
 
     private final JavaType javaType;
 
-    PriorityQueueDeserializer(JavaType valueType) {
-        super(valueType, 1);
+    PriorityQueueDeserializer(JavaType valueType, boolean deserializeNullAsEmptyCollection) {
+        super(valueType, 1, deserializeNullAsEmptyCollection);
         javaType = valueType;
     }
 
@@ -44,5 +44,10 @@ class PriorityQueueDeserializer extends ArrayDeserializer<PriorityQueue<?>> {
             throw ctxt.mappingException(javaType.getRawClass());
         }
         return PriorityQueue.ofAll((o1, o2) -> ((Comparable) o1).compareTo(o2), list);
+    }
+
+    @Override
+    PriorityQueue<?> emptyValue(DeserializationContext ctxt) {
+        return PriorityQueue.empty();
     }
 }
