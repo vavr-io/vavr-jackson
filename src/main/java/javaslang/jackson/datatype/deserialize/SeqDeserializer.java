@@ -33,8 +33,8 @@ class SeqDeserializer extends ArrayDeserializer<Seq<?>> {
 
     private final JavaType javaType;
 
-    SeqDeserializer(JavaType valueType) {
-        super(valueType, 1);
+    SeqDeserializer(JavaType valueType, boolean deserializeNullAsEmptyCollection) {
+        super(valueType, 1, deserializeNullAsEmptyCollection);
         javaType = valueType;
     }
 

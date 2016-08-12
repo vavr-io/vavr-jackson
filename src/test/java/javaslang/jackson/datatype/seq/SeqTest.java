@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 
+import javaslang.jackson.datatype.JavaslangModule;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -61,7 +62,9 @@ public abstract class SeqTest extends BaseTest {
 
     @Test
     public void test4() throws IOException {
-        ObjectMapper mapper = mapper();
+        JavaslangModule.Options opts = new JavaslangModule.Options();
+        opts.deserializeNullAsEmptyCollection(true);
+        ObjectMapper mapper = mapper(opts);
         Seq<?> restored = (Seq<?>) mapper.readValue("null", clz());
         Assert.assertTrue(restored.isEmpty());
     }

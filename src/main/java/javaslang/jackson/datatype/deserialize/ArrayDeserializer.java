@@ -33,8 +33,11 @@ abstract class ArrayDeserializer<T> extends ValueDeserializer<T> {
 
     private static final long serialVersionUID = 1L;
 
-    ArrayDeserializer(JavaType valueType, int typeCount) {
+    private final boolean deserializeNullAsEmptyCollection;
+
+    ArrayDeserializer(JavaType valueType, int typeCount, boolean deserializeNullAsEmptyCollection) {
         super(valueType, typeCount);
+        this.deserializeNullAsEmptyCollection = deserializeNullAsEmptyCollection;
     }
 
     abstract T create(List<Object> list, DeserializationContext ctxt) throws JsonMappingException;
@@ -54,7 +57,10 @@ abstract class ArrayDeserializer<T> extends ValueDeserializer<T> {
 
     @Override
     public T getNullValue(DeserializationContext ctxt) throws JsonMappingException {
-        return emptyValue(ctxt);
+        if (deserializeNullAsEmptyCollection) {
+            return emptyValue(ctxt);
+        }
+        return super.getNullValue(ctxt);
     }
 
     @Override

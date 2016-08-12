@@ -26,14 +26,24 @@ public class JavaslangModule extends SimpleModule {
     public static class Options {
 
         private boolean plainOption = true;
+        private boolean deserializeNullAsEmptyCollection = false;
 
         public Options plainOption(boolean value) {
             plainOption = value;
             return this;
         }
 
+        public Options deserializeNullAsEmptyCollection(boolean value) {
+            deserializeNullAsEmptyCollection = value;
+            return this;
+        }
+
         public boolean plainOption() {
             return plainOption;
+        }
+
+        public boolean deserializeNullAsEmptyCollection() {
+            return deserializeNullAsEmptyCollection;
         }
     }
 

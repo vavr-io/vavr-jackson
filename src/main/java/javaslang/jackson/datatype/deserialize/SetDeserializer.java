@@ -29,8 +29,8 @@ class SetDeserializer extends ArrayDeserializer<Set<?>> {
 
     private final JavaType javaType;
 
-    SetDeserializer(JavaType valueType) {
-        super(valueType, 1);
+    SetDeserializer(JavaType valueType, boolean deserializeNullAsEmptyCollection) {
+        super(valueType, 1, deserializeNullAsEmptyCollection);
         javaType = valueType;
     }
 

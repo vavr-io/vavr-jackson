@@ -28,8 +28,8 @@ class PriorityQueueDeserializer extends ArrayDeserializer<PriorityQueue<?>> {
 
     private final JavaType javaType;
 
-    PriorityQueueDeserializer(JavaType valueType) {
-        super(valueType, 1);
+    PriorityQueueDeserializer(JavaType valueType, boolean deserializeNullAsEmptyCollection) {
+        super(valueType, 1, deserializeNullAsEmptyCollection);
         javaType = valueType;
     }
 
