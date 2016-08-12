@@ -70,6 +70,13 @@ public abstract class SeqTest extends BaseTest {
     }
 
     @Test
+    public void test5() throws IOException {
+        ObjectMapper mapper = mapper();
+        Seq<?> restored = (Seq<?>) mapper.readValue("null", clz());
+        Assert.assertNull(restored);
+    }
+
+    @Test
     public void testWithOption() throws Exception {
         verifySerialization(typeReferenceWithOption(), List.of(
                 Tuple.of(of(Option.some("value")), genJsonList("value")),
