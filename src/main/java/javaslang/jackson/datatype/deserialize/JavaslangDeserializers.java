@@ -27,10 +27,10 @@ import javaslang.λ;
 
 public class JavaslangDeserializers extends Deserializers.Base {
 
-    private final JavaslangModule.Options options;
+    private final JavaslangModule.Settings settings;
 
-    public JavaslangDeserializers(JavaslangModule.Options options) {
-        this.options = options;
+    public JavaslangDeserializers(JavaslangModule.Settings settings) {
+        this.settings = settings;
     }
 
     @Override
@@ -42,13 +42,13 @@ public class JavaslangDeserializers extends Deserializers.Base {
             return new CharSeqDeserializer(type);
         }
         if (PriorityQueue.class.isAssignableFrom(raw)) {
-            return new PriorityQueueDeserializer(type, options.deserializeNullAsEmptyCollection());
+            return new PriorityQueueDeserializer(type, settings.deserializeNullAsEmptyCollection());
         }
         if (Lazy.class.isAssignableFrom(raw)) {
             return new LazyDeserializer(type);
         }
         if (Option.class.isAssignableFrom(raw)) {
-            return new OptionDeserializer(type, options.plainOption());
+            return new OptionDeserializer(type, settings.plainOption());
         }
         if (Either.class.isAssignableFrom(raw)) {
             return new EitherDeserializer(type);
@@ -63,10 +63,10 @@ public class JavaslangDeserializers extends Deserializers.Base {
             return new TupleDeserializer(type);
         }
         if (Seq.class.isAssignableFrom(raw)) {
-            return new SeqDeserializer(type, options.deserializeNullAsEmptyCollection());
+            return new SeqDeserializer(type, settings.deserializeNullAsEmptyCollection());
         }
         if (Set.class.isAssignableFrom(raw)) {
-            return new SetDeserializer(type, options.deserializeNullAsEmptyCollection());
+            return new SetDeserializer(type, settings.deserializeNullAsEmptyCollection());
         }
 
         if (λ.class.isAssignableFrom(raw)) {

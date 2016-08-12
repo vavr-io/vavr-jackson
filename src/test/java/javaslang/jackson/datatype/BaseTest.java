@@ -45,9 +45,9 @@ public class BaseTest {
         return mapper;
     }
 
-    protected ObjectMapper mapper(JavaslangModule.Options opts) {
+    protected ObjectMapper mapper(JavaslangModule.Settings settings) {
         ObjectMapper mapper = new ObjectMapper();
-        mapper.registerModule(new JavaslangModule(opts));
+        mapper.registerModule(new JavaslangModule(settings));
         return mapper;
     }
 

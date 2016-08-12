@@ -23,17 +23,17 @@ public class JavaslangModule extends SimpleModule {
 
     private static final long serialVersionUID = 1L;
 
-    public static class Options {
+    public static class Settings {
 
         private boolean plainOption = true;
         private boolean deserializeNullAsEmptyCollection = false;
 
-        public Options plainOption(boolean value) {
+        public Settings plainOption(boolean value) {
             plainOption = value;
             return this;
         }
 
-        public Options deserializeNullAsEmptyCollection(boolean value) {
+        public Settings deserializeNullAsEmptyCollection(boolean value) {
             deserializeNullAsEmptyCollection = value;
             return this;
         }
@@ -47,19 +47,19 @@ public class JavaslangModule extends SimpleModule {
         }
     }
 
-    private final Options options;
+    private final Settings settings;
 
     public JavaslangModule() {
-        this(new Options());
+        this(new Settings());
     }
 
-    public JavaslangModule(Options options) {
-        this.options = options;
+    public JavaslangModule(Settings settings) {
+        this.settings = settings;
     }
 
     @Override
     public void setupModule(SetupContext context) {
-        context.addSerializers(new JavaslangSerializers(options));
-        context.addDeserializers(new JavaslangDeserializers(options));
+        context.addSerializers(new JavaslangSerializers(settings));
+        context.addDeserializers(new JavaslangDeserializers(settings));
     }
 }

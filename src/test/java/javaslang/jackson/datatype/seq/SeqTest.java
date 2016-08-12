@@ -62,9 +62,9 @@ public abstract class SeqTest extends BaseTest {
 
     @Test
     public void test4() throws IOException {
-        JavaslangModule.Options opts = new JavaslangModule.Options();
-        opts.deserializeNullAsEmptyCollection(true);
-        ObjectMapper mapper = mapper(opts);
+        JavaslangModule.Settings settings = new JavaslangModule.Settings();
+        settings.deserializeNullAsEmptyCollection(true);
+        ObjectMapper mapper = mapper(settings);
         Seq<?> restored = (Seq<?>) mapper.readValue("null", clz());
         Assert.assertTrue(restored.isEmpty());
     }
