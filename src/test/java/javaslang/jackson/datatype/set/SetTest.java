@@ -58,6 +58,14 @@ public abstract class SetTest extends BaseTest {
     }
 
     @Test
+    public void test4() throws IOException {
+        ObjectMapper mapper = mapper();
+        Set<?> restored = mapper.readValue("[]", typeReference());
+        Assert.assertTrue(restored.isEmpty());
+        Assert.assertTrue(clz().isAssignableFrom(restored.getClass()));
+    }
+
+    @Test
     public void testWithOption() throws Exception {
         verifySerialization(typeReferenceWithOption(), List.of(
                 Tuple.of(of(Option.some("value")), genJsonList("value")),
