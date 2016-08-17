@@ -53,9 +53,4 @@ class SetDeserializer extends ArrayDeserializer<Set<?>> {
         // default deserialization [...] -> Set
         return HashSet.ofAll(result);
     }
-
-    @Override
-    Set<?> emptyValue(DeserializationContext ctxt) {
-        return HashSet.empty();
-    }
 }

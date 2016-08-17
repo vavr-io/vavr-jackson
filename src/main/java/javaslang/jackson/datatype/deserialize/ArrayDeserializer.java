@@ -21,9 +21,11 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import javaslang.collection.Seq;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static com.fasterxml.jackson.core.JsonToken.END_ARRAY;
@@ -42,8 +44,6 @@ abstract class ArrayDeserializer<T> extends ValueDeserializer<T> {
 
     abstract T create(List<Object> list, DeserializationContext ctxt) throws JsonMappingException;
 
-    abstract T emptyValue(DeserializationContext ctxt) throws JsonMappingException;
-
     @Override
     public T deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
         JsonDeserializer<?> deserializer = deserializer(0);
@@ -58,7 +58,7 @@ abstract class ArrayDeserializer<T> extends ValueDeserializer<T> {
     @Override
     public T getNullValue(DeserializationContext ctxt) throws JsonMappingException {
         if (deserializeNullAsEmptyCollection) {
-            return emptyValue(ctxt);
+            return create(Collections.emptyList(), ctxt);
         }
         return super.getNullValue(ctxt);
     }

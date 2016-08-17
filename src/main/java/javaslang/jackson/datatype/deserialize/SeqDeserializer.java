@@ -55,10 +55,4 @@ class SeqDeserializer extends ArrayDeserializer<Seq<?>> {
         // default deserialization [...] -> Seq
         return javaslang.collection.List.ofAll(result);
     }
-
-    @Override
-    Seq<?> emptyValue(DeserializationContext ctxt) throws JsonMappingException {
-        return create(Collections.emptyList(), ctxt);
-    }
-
 }
