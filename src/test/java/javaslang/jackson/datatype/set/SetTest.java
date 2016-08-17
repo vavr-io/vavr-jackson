@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 
+import javaslang.jackson.datatype.JavaslangModule;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -55,6 +56,30 @@ public abstract class SetTest extends BaseTest {
         Assert.assertEquals(wrappedJson, wrapToArray(clz().getName(), plainJson));
         Set<?> restored = mapper.readValue(wrappedJson, typeReference());
         Assert.assertEquals(src, restored);
+    }
+
+    @Test
+    public void test4() throws IOException {
+        JavaslangModule.Settings settings = new JavaslangModule.Settings();
+        settings.deserializeNullAsEmptyCollection(true);
+        ObjectMapper mapper = mapper(settings);
+        Set<?> restored = mapper.readValue("null", typeReference());
+        Assert.assertTrue(restored.isEmpty());
+    }
+
+    @Test
+    public void test5() throws IOException {
+        ObjectMapper mapper = mapper();
+        Set<?> restored = mapper.readValue("null", typeReference());
+        Assert.assertNull(restored);
+    }
+
+    @Test
+    public void test6() throws IOException {
+        ObjectMapper mapper = mapper();
+        Set<?> restored = mapper.readValue("[]", typeReference());
+        Assert.assertTrue(restored.isEmpty());
+        Assert.assertTrue(clz().isAssignableFrom(restored.getClass()));
     }
 
     @Test

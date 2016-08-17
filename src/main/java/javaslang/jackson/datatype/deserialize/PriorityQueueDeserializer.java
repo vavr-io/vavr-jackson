@@ -45,9 +45,4 @@ class PriorityQueueDeserializer extends ArrayDeserializer<PriorityQueue<?>> {
         }
         return PriorityQueue.ofAll((o1, o2) -> ((Comparable) o1).compareTo(o2), list);
     }
-
-    @Override
-    PriorityQueue<?> emptyValue(DeserializationContext ctxt) {
-        return PriorityQueue.empty();
-    }
 }
