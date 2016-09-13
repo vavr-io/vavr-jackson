@@ -3,15 +3,16 @@ package javaslang.jackson.datatype.set;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
+import javaslang.collection.*;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.util.Comparator;
+import java.util.Objects;
 
-import javaslang.collection.List;
-import javaslang.collection.Set;
-import javaslang.collection.TreeSet;
 import javaslang.control.Option;
+
+import static org.junit.Assert.assertEquals;
 
 public class TreeSetTest extends SetTest {
     @Override
@@ -36,6 +37,26 @@ public class TreeSetTest extends SetTest {
     protected Set<?> of(Object... objects) {
         List<Comparable<Object>> comparables = List.of(objects).map(value -> (Comparable<Object>) value);
         return TreeSet.ofAll(Comparator.naturalOrder(), comparables);
+    }
+
+    static class Clazz{
+        private SortedSet<Integer> set;
+        public SortedSet<Integer> getSet() {return set;}
+        public void setSet(SortedSet<Integer> set) {this.set = set;}
+        public boolean equals(Object o){
+            return Objects.equals(set, ((Clazz)o).set);
+        }
+        public int hashCode(){
+            return set.hashCode();
+        }
+    }
+
+    @Test
+    public void testDeserializeToSortedSet() throws IOException {
+        Clazz c = new Clazz();
+        c.setSet(TreeSet.of(1, 3, 5));
+        Clazz dc = mapper().readValue(mapper().writeValueAsString(c), Clazz.class);
+        assertEquals(c, dc);
     }
 
     @Test(expected = JsonMappingException.class)
