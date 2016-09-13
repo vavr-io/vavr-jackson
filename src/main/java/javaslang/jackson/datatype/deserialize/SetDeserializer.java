@@ -37,7 +37,7 @@ class SetDeserializer extends ArrayDeserializer<Set<?>> {
     @SuppressWarnings("unchecked")
     @Override
     Set<?> create(List<Object> result, DeserializationContext ctx) throws JsonMappingException {
-        if (javaslang.collection.TreeSet.class.isAssignableFrom(javaType.getRawClass())) {
+        if (javaslang.collection.SortedSet.class.isAssignableFrom(javaType.getRawClass())) {
             if (javaType.containedTypeCount() == 0) {
                 throw ctx.mappingException(javaType.getRawClass());
             }
