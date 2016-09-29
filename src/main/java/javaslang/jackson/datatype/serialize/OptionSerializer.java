@@ -17,9 +17,12 @@ package javaslang.jackson.datatype.serialize;
 
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.type.CollectionType;
+import com.fasterxml.jackson.databind.type.SimpleType;
 import javaslang.control.Option;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
@@ -39,7 +42,16 @@ class OptionSerializer extends ValueSerializer<Option<?>> {
         if (value.isDefined()) {
             return plainMode ? value.get() : Arrays.asList("defined", value.get());
         } else {
-            return plainMode ? null : Collections.singleton("undefined");
+            return plainMode ? null : Arrays.asList("undefined");
+        }
+    }
+
+    @Override
+    JavaType emulatedJavaType(JavaType type) {
+        if (plainMode) {
+            return type.containedType(0);
+        } else {
+            return CollectionType.construct(ArrayList.class, SimpleType.construct(Object.class));
         }
     }
 

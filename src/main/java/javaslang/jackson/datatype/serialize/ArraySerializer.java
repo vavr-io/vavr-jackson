@@ -16,9 +16,11 @@
 package javaslang.jackson.datatype.serialize;
 
 import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.type.CollectionType;
 import javaslang.Value;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 class ArraySerializer<T extends Value<?>> extends ValueSerializer<T> {
 
@@ -31,5 +33,10 @@ class ArraySerializer<T extends Value<?>> extends ValueSerializer<T> {
     @Override
     Object toJavaObj(T value) throws IOException {
         return value.toJavaList();
+    }
+
+    @Override
+    JavaType emulatedJavaType(JavaType type) {
+        return CollectionType.construct(ArrayList.class, type.containedType(0));
     }
 }

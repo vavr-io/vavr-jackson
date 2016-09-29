@@ -16,6 +16,7 @@
 package javaslang.jackson.datatype.serialize;
 
 import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.type.SimpleType;
 import javaslang.collection.CharSeq;
 
 import java.io.IOException;
@@ -23,6 +24,7 @@ import java.io.IOException;
 class CharSeqSerializer extends ValueSerializer<CharSeq> {
 
     private static final long serialVersionUID = 1L;
+    private static final JavaType emulated = SimpleType.construct(String.class);
 
     CharSeqSerializer(JavaType type) {
         super(type);
@@ -31,5 +33,10 @@ class CharSeqSerializer extends ValueSerializer<CharSeq> {
     @Override
     Object toJavaObj(CharSeq value) throws IOException {
         return value.toString();
+    }
+
+    @Override
+    JavaType emulatedJavaType(JavaType type) {
+        return emulated;
     }
 }

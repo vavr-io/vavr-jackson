@@ -33,4 +33,9 @@ class TupleSerializer extends ValueSerializer<Tuple> {
         return tuple.toSeq().toJavaList();
     }
 
+    @Override
+    JavaType emulatedJavaType(JavaType type) {
+        return null;
+    }
+
 }

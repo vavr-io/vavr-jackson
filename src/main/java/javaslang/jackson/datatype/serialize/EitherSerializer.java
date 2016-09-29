@@ -16,9 +16,12 @@
 package javaslang.jackson.datatype.serialize;
 
 import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.type.CollectionType;
+import com.fasterxml.jackson.databind.type.SimpleType;
 import javaslang.control.Either;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 class EitherSerializer extends ValueSerializer<Either<?, ?>> {
@@ -36,5 +39,10 @@ class EitherSerializer extends ValueSerializer<Either<?, ?>> {
         } else {
             return Arrays.asList("right", value.right().get());
         }
+    }
+
+    @Override
+    JavaType emulatedJavaType(JavaType type) {
+        return CollectionType.construct(ArrayList.class, SimpleType.construct(Object.class));
     }
 }
