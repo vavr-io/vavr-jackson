@@ -1,5 +1,7 @@
 package javaslang.jackson.datatype;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
@@ -91,4 +93,33 @@ public class EitherTest extends BaseTest {
         ));
     }
 
+    @JsonTypeInfo(
+            use = JsonTypeInfo.Id.NAME,
+            include = JsonTypeInfo.As.WRAPPER_OBJECT,
+            property = "type")
+    @JsonTypeName("card")
+    private static class TestSerialize {
+        public String type = "hello";
+    }
+
+    private static class Left {
+        public Either<TestSerialize, TestSerialize> f = Either.left(new TestSerialize());
+    }
+
+    private static class Right {
+        public Either<TestSerialize, TestSerialize> f = Either.right(new TestSerialize());
+    }
+
+    @Test
+    public void testJsonTypeInfo() throws IOException {
+        String javaUtilValue;
+        javaUtilValue = mapper().writeValueAsString(new Left());
+        Assert.assertEquals("{\"f\":[\"left\",{\"card\":{\"type\":\"hello\"}}]}", javaUtilValue);
+        Left restoredLeft = mapper().readValue(javaUtilValue, Left.class);
+        Assert.assertEquals("hello", restoredLeft.f.left().get().type);
+        javaUtilValue = mapper().writeValueAsString(new Right());
+        Assert.assertEquals("{\"f\":[\"right\",{\"card\":{\"type\":\"hello\"}}]}", javaUtilValue);
+        Right restoredRight = mapper().readValue(javaUtilValue, Right.class);
+        Assert.assertEquals("hello", restoredRight.f.right().get().type);
+    }
 }

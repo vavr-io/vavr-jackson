@@ -28,7 +28,7 @@ abstract class ValueSerializer<T> extends StdSerializer<T> {
 
     private static final long serialVersionUID = 1L;
 
-    private JavaType type;
+    JavaType type;
 
     ValueSerializer(JavaType type) {
         super(type);

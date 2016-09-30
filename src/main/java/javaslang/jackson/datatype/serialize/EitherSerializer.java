@@ -15,34 +15,50 @@
  */
 package javaslang.jackson.datatype.serialize;
 
+import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.type.CollectionType;
-import com.fasterxml.jackson.databind.type.SimpleType;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import javaslang.control.Either;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
 
-class EitherSerializer extends ValueSerializer<Either<?, ?>> {
+class EitherSerializer extends StdSerializer<Either<?, ?>> {
 
     private static final long serialVersionUID = 1L;
 
+    private final JavaType type;
+
     EitherSerializer(JavaType type) {
         super(type);
+        this.type = type;
     }
 
     @Override
-    Object toJavaObj(Either<?, ?> value) throws IOException {
+    public void serialize(Either<?, ?> value, JsonGenerator gen, SerializerProvider provider) throws IOException {
+        gen.writeStartArray();
+        Object val;
         if (value.isLeft()) {
-            return Arrays.asList("left", value.left().get());
+            gen.writeString("left");
+            write(value.left().get(), 0, gen, provider);
         } else {
-            return Arrays.asList("right", value.right().get());
+            gen.writeString("right");
+            write(value.right().get(), 1, gen, provider);
         }
+        gen.writeEndArray();
     }
 
-    @Override
-    JavaType emulatedJavaType(JavaType type) {
-        return CollectionType.construct(ArrayList.class, SimpleType.construct(Object.class));
+    private void write(Object val, int containedTypeIndex, JsonGenerator gen, SerializerProvider provider) throws IOException {
+        if (val != null) {
+            if (type.containedTypeCount() > containedTypeIndex) {
+                JsonSerializer<Object> ser = provider.findTypedValueSerializer(type.containedType(containedTypeIndex), true, null);
+                ser.serialize(val, gen, provider);
+            } else {
+                gen.writeObject(val);
+            }
+        } else {
+            gen.writeNull();
+        }
     }
 }

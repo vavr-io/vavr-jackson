@@ -53,16 +53,17 @@ public class ListTest extends SeqTest {
     private static class A {
         public List<TestSerialize> f = List.of(new TestSerialize());
     }
+
     private static class B {
         public java.util.List<TestSerialize> f = List.of(new TestSerialize()).toJavaList();
     }
 
     @Test
     public void testJsonTypeInfo() throws IOException {
-        String javaUtilValue = mapper().writeValueAsString(
-            new A());
-        Assert.assertEquals(
-            mapper().writeValueAsString(new B()), javaUtilValue);
+        String javaUtilValue = mapper().writeValueAsString(new A());
+        Assert.assertEquals(mapper().writeValueAsString(new B()), javaUtilValue);
+        A restored = mapper().readValue(javaUtilValue, A.class);
+        Assert.assertEquals("hello", restored.f.head().type);
     }
 
 }
