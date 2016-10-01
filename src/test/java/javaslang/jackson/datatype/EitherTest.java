@@ -82,6 +82,19 @@ public class EitherTest extends BaseTest {
         Assert.assertEquals(either, restored);
     }
 
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testNullSerialization() throws IOException {
+        Either<String, Integer> left = Either.left(null);
+        String leftJson = mapper().writer().writeValueAsString(left);
+        Either<String, Integer> restoredLeft = mapper().readValue(leftJson, Either.class);
+        Assert.assertEquals(left, restoredLeft);
+        Either<String, Integer> right = Either.left(null);
+        String rightJson = mapper().writer().writeValueAsString(right);
+        Either<String, Integer> restoredRight = mapper().readValue(rightJson, Either.class);
+        Assert.assertEquals(right, restoredRight);
+    }
+
     @Test
     public void testWithOption() throws IOException {
         TypeReference<Either<Option<String>, Option<String>>> typeReference = new TypeReference<Either<Option<String>, Option<String>>>() {};
