@@ -15,13 +15,13 @@
  */
 package javaslang.jackson.datatype.serialize;
 
+import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import javaslang.control.Option;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collections;
 
 class OptionSerializer extends ValueSerializer<Option<?>> {
 
@@ -34,13 +34,47 @@ class OptionSerializer extends ValueSerializer<Option<?>> {
         this.plainMode = plainMode;
     }
 
+
+    @Override
+    public void serialize(Option<?> value, JsonGenerator gen, SerializerProvider provider) throws IOException {
+        if (plainMode) {
+            super.serialize(value, gen, provider);
+        } else {
+            gen.writeStartArray();
+            if (value.isDefined()) {
+                gen.writeString("defined");
+                Object val = value.get();
+                if (val != null) {
+                    if (type.containedTypeCount() > 0) {
+                        JsonSerializer<Object> ser = provider.findTypedValueSerializer(type.containedType(0), true, null);
+                        ser.serialize(val, gen, provider);
+                    } else {
+                        gen.writeObject(val);
+                    }
+                } else {
+                    gen.writeNull();
+                }
+            } else {
+                gen.writeString("undefined");
+            }
+            gen.writeEndArray();
+        }
+    }
+
     @Override
     Object toJavaObj(Option<?> value) throws IOException {
+        // plain mode only
         if (value.isDefined()) {
-            return plainMode ? value.get() : Arrays.asList("defined", value.get());
+            return value.get();
         } else {
-            return plainMode ? null : Collections.singleton("undefined");
+            return null;
         }
+    }
+
+    @Override
+    JavaType emulatedJavaType(JavaType type) {
+        // plain mode only
+        return type.containedType(0);
     }
 
     @Override

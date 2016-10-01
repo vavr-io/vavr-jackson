@@ -1,5 +1,7 @@
 package javaslang.jackson.datatype;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
@@ -80,6 +82,19 @@ public class EitherTest extends BaseTest {
         Assert.assertEquals(either, restored);
     }
 
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testNullSerialization() throws IOException {
+        Either<String, Integer> left = Either.left(null);
+        String leftJson = mapper().writer().writeValueAsString(left);
+        Either<String, Integer> restoredLeft = mapper().readValue(leftJson, Either.class);
+        Assert.assertEquals(left, restoredLeft);
+        Either<String, Integer> right = Either.left(null);
+        String rightJson = mapper().writer().writeValueAsString(right);
+        Either<String, Integer> restoredRight = mapper().readValue(rightJson, Either.class);
+        Assert.assertEquals(right, restoredRight);
+    }
+
     @Test
     public void testWithOption() throws IOException {
         TypeReference<Either<Option<String>, Option<String>>> typeReference = new TypeReference<Either<Option<String>, Option<String>>>() {};
@@ -91,4 +106,33 @@ public class EitherTest extends BaseTest {
         ));
     }
 
+    @JsonTypeInfo(
+            use = JsonTypeInfo.Id.NAME,
+            include = JsonTypeInfo.As.WRAPPER_OBJECT,
+            property = "type")
+    @JsonTypeName("card")
+    private static class TestSerialize {
+        public String type = "hello";
+    }
+
+    private static class Left {
+        public Either<TestSerialize, TestSerialize> f = Either.left(new TestSerialize());
+    }
+
+    private static class Right {
+        public Either<TestSerialize, TestSerialize> f = Either.right(new TestSerialize());
+    }
+
+    @Test
+    public void testJsonTypeInfo() throws IOException {
+        String javaUtilValue;
+        javaUtilValue = mapper().writeValueAsString(new Left());
+        Assert.assertEquals("{\"f\":[\"left\",{\"card\":{\"type\":\"hello\"}}]}", javaUtilValue);
+        Left restoredLeft = mapper().readValue(javaUtilValue, Left.class);
+        Assert.assertEquals("hello", restoredLeft.f.left().get().type);
+        javaUtilValue = mapper().writeValueAsString(new Right());
+        Assert.assertEquals("{\"f\":[\"right\",{\"card\":{\"type\":\"hello\"}}]}", javaUtilValue);
+        Right restoredRight = mapper().readValue(javaUtilValue, Right.class);
+        Assert.assertEquals("hello", restoredRight.f.right().get().type);
+    }
 }

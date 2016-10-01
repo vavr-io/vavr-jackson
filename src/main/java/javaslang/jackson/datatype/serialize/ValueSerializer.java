@@ -28,11 +28,15 @@ abstract class ValueSerializer<T> extends StdSerializer<T> {
 
     private static final long serialVersionUID = 1L;
 
+    JavaType type;
+
     ValueSerializer(JavaType type) {
         super(type);
+        this.type = type;
     }
 
     abstract Object toJavaObj(T value) throws IOException;
+    abstract JavaType emulatedJavaType(JavaType type);
 
     @Override
     public void serialize(T value, JsonGenerator gen, SerializerProvider provider) throws IOException {
@@ -40,7 +44,12 @@ abstract class ValueSerializer<T> extends StdSerializer<T> {
         if (obj == null) {
             provider.getDefaultNullValueSerializer().serialize(null, gen, provider);
         } else {
-            final JsonSerializer<Object> ser = provider.findTypedValueSerializer(obj.getClass(), true, null);
+            JsonSerializer<Object> ser;
+            try {
+                ser = provider.findTypedValueSerializer(emulatedJavaType(type), true, null);
+            } catch (Exception ignore) {
+                ser = provider.findTypedValueSerializer(obj.getClass(), true, null);
+            }
             ser.serialize(obj, gen, provider);
         }
     }

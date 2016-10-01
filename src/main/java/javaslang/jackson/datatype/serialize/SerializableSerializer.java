@@ -16,6 +16,8 @@
 package javaslang.jackson.datatype.serialize;
 
 import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.type.ArrayType;
+import com.fasterxml.jackson.databind.type.SimpleType;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -35,6 +37,11 @@ class SerializableSerializer<T> extends ValueSerializer<T> {
         ObjectOutputStream stream = new ObjectOutputStream(buf);
         stream.writeObject(value);
         return buf.toByteArray();
+    }
+
+    @Override
+    JavaType emulatedJavaType(JavaType type) {
+        return ArrayType.construct(SimpleType.construct(byte.class), null, null);
     }
 
 }

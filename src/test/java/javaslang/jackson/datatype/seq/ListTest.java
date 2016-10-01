@@ -1,6 +1,8 @@
 package javaslang.jackson.datatype.seq;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -37,6 +39,31 @@ public class ListTest extends SeqTest {
     @Test
     public void testDefaultDeserialization() throws IOException {
         Assert.assertEquals(mapper().readValue("[1]", Seq.class), List.of(1));
+    }
+
+    @JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.WRAPPER_OBJECT,
+        property = "type")
+    @JsonTypeName("card")
+    private static class TestSerialize {
+        public String type = "hello";
+    }
+
+    private static class A {
+        public List<TestSerialize> f = List.of(new TestSerialize());
+    }
+
+    private static class B {
+        public java.util.List<TestSerialize> f = List.of(new TestSerialize()).toJavaList();
+    }
+
+    @Test
+    public void testJsonTypeInfo() throws IOException {
+        String javaUtilValue = mapper().writeValueAsString(new A());
+        Assert.assertEquals(mapper().writeValueAsString(new B()), javaUtilValue);
+        A restored = mapper().readValue(javaUtilValue, A.class);
+        Assert.assertEquals("hello", restored.f.head().type);
     }
 
 }

@@ -1,6 +1,9 @@
 package javaslang.jackson.datatype;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import javaslang.control.Option;
 import org.junit.Assert;
 import org.junit.Test;
@@ -76,6 +79,36 @@ public class OptionTest extends BaseTest {
         String json = "null";
         Option<?> option = mapper(optSettings).readValue(json, Option.class);
         Assert.assertTrue(option.isEmpty());
+    }
+
+    @JsonTypeInfo(
+            use = JsonTypeInfo.Id.NAME,
+            include = JsonTypeInfo.As.WRAPPER_OBJECT,
+            property = "type")
+    @JsonTypeName("card")
+    private static class TestSerialize {
+        public String type = "hello";
+    }
+
+    private static class A {
+        public Option<TestSerialize> f = Option.of(new TestSerialize());
+    }
+
+    @Test
+    public void testJsonTypeInfo1() throws IOException {
+        String javaUtilValue = mapper().writeValueAsString(new A());
+        Assert.assertEquals("{\"f\":{\"card\":{\"type\":\"hello\"}}}", javaUtilValue);
+        A restored = mapper().readValue(javaUtilValue, A.class);
+        Assert.assertEquals("hello", restored.f.get().type);
+    }
+
+    @Test
+    public void testJsonTypeInfo2() throws IOException {
+        ObjectMapper mapper = mapper(new JavaslangModule.Settings().plainOption(false));
+        String javaUtilValue = mapper.writeValueAsString(new A());
+        Assert.assertEquals("{\"f\":[\"defined\",{\"card\":{\"type\":\"hello\"}}]}", javaUtilValue);
+        A restored = mapper.readValue(javaUtilValue, A.class);
+        Assert.assertEquals("hello", restored.f.get().type);
     }
 
 }
