@@ -18,8 +18,13 @@ package javaslang.jackson.datatype.deserialize;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import javaslang.collection.Array;
+import javaslang.collection.Queue;
 import javaslang.collection.Seq;
+import javaslang.collection.Stream;
+import javaslang.collection.Vector;
 
+import java.util.Collections;
 import java.util.List;
 
 class SeqDeserializer extends ArrayDeserializer<Seq<?>> {
@@ -28,27 +33,26 @@ class SeqDeserializer extends ArrayDeserializer<Seq<?>> {
 
     private final JavaType javaType;
 
-    SeqDeserializer(JavaType valueType) {
-        super(valueType, 1);
+    SeqDeserializer(JavaType valueType, boolean deserializeNullAsEmptyCollection) {
+        super(valueType, 1, deserializeNullAsEmptyCollection);
         javaType = valueType;
     }
 
     @Override
     Seq<?> create(List<Object> result, DeserializationContext ctxt) throws JsonMappingException {
-        if (javaslang.collection.Array.class.isAssignableFrom(javaType.getRawClass())) {
-            return javaslang.collection.Array.ofAll(result);
+        if (Array.class.isAssignableFrom(javaType.getRawClass())) {
+            return Array.ofAll(result);
         }
-        if (javaslang.collection.Queue.class.isAssignableFrom(javaType.getRawClass())) {
-            return javaslang.collection.Queue.ofAll(result);
+        if (Queue.class.isAssignableFrom(javaType.getRawClass())) {
+            return Queue.ofAll(result);
         }
-        if (javaslang.collection.Stream.class.isAssignableFrom(javaType.getRawClass())) {
-            return javaslang.collection.Stream.ofAll(result);
+        if (Stream.class.isAssignableFrom(javaType.getRawClass())) {
+            return Stream.ofAll(result);
         }
-        if (javaslang.collection.Vector.class.isAssignableFrom(javaType.getRawClass())) {
-            return javaslang.collection.Vector.ofAll(result);
+        if (Vector.class.isAssignableFrom(javaType.getRawClass())) {
+            return Vector.ofAll(result);
         }
         // default deserialization [...] -> Seq
         return javaslang.collection.List.ofAll(result);
     }
-
 }

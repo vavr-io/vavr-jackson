@@ -1,11 +1,15 @@
 package javaslang.jackson.datatype.map;
 
-import javaslang.collection.HashMap;
-import javaslang.collection.Map;
+import com.fasterxml.jackson.core.type.TypeReference;
+
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.IOException;
+
+import javaslang.collection.HashMap;
+import javaslang.collection.Map;
+import javaslang.control.Option;
 
 public class HashMapTest extends MapTest {
     @Override
@@ -16,6 +20,11 @@ public class HashMapTest extends MapTest {
     @Override
     <K, V> Map<K, V> emptyMap() {
         return HashMap.empty();
+    }
+
+    @Override
+    protected TypeReference<HashMap<String, Option<Integer>>> typeReferenceWithOption() {
+        return new TypeReference<HashMap<String, Option<Integer>>>() {};
     }
 
     @Test

@@ -15,7 +15,10 @@
  */
 package javaslang.jackson.datatype.serialize;
 
+import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.SerializerProvider;
 import javaslang.control.Option;
 
 import java.io.IOException;
@@ -24,12 +27,58 @@ class OptionSerializer extends ValueSerializer<Option<?>> {
 
     private static final long serialVersionUID = 1L;
 
-    OptionSerializer(JavaType type) {
+    private final boolean plainMode;
+
+    OptionSerializer(JavaType type, boolean plainMode) {
         super(type);
+        this.plainMode = plainMode;
+    }
+
+
+    @Override
+    public void serialize(Option<?> value, JsonGenerator gen, SerializerProvider provider) throws IOException {
+        if (plainMode) {
+            super.serialize(value, gen, provider);
+        } else {
+            gen.writeStartArray();
+            if (value.isDefined()) {
+                gen.writeString("defined");
+                Object val = value.get();
+                if (val != null) {
+                    if (type.containedTypeCount() > 0) {
+                        JsonSerializer<Object> ser = provider.findTypedValueSerializer(type.containedType(0), true, null);
+                        ser.serialize(val, gen, provider);
+                    } else {
+                        gen.writeObject(val);
+                    }
+                } else {
+                    gen.writeNull();
+                }
+            } else {
+                gen.writeString("undefined");
+            }
+            gen.writeEndArray();
+        }
     }
 
     @Override
     Object toJavaObj(Option<?> value) throws IOException {
-        return value.isEmpty() ? null : value.get();
+        // plain mode only
+        if (value.isDefined()) {
+            return value.get();
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    JavaType emulatedJavaType(JavaType type) {
+        // plain mode only
+        return type.containedType(0);
+    }
+
+    @Override
+    public boolean isEmpty(SerializerProvider provider, Option<?> value) {
+        return value.isEmpty();
     }
 }

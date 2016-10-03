@@ -16,6 +16,7 @@
 package javaslang.jackson.datatype.serialize;
 
 import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.type.MapType;
 import javaslang.collection.Map;
 
 import java.io.IOException;
@@ -34,5 +35,10 @@ class MapSerializer extends ValueSerializer<Map<?, ?>> {
         final LinkedHashMap<Object, Object> result = new LinkedHashMap<>();
         value.forEach(e -> result.put(e._1, e._2));
         return result;
+    }
+
+    @Override
+    JavaType emulatedJavaType(JavaType type) {
+        return MapType.construct(LinkedHashMap.class, type.containedType(0), type.containedType(1));
     }
 }

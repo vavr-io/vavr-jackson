@@ -1,10 +1,19 @@
 package javaslang.jackson.datatype;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import javaslang.collection.Seq;
+import com.fasterxml.jackson.databind.ObjectWriter;
 
+import org.junit.Assert;
+
+import java.io.IOException;
+import java.util.Collection;
 import java.util.Map;
+
+import javaslang.Tuple2;
+import javaslang.collection.List;
+import javaslang.collection.Seq;
 
 public class BaseTest {
 
@@ -16,9 +25,29 @@ public class BaseTest {
     protected interface WrapperArray {
     }
 
+    protected void verifySerialization(TypeReference<?> typeReference, List<Tuple2<?, String>> testValues) throws IOException {
+        ObjectWriter writer = mapper().writerFor(typeReference);
+        for (Tuple2<?, String> testValue : testValues) {
+            Object src = testValue._1();
+            String expectedJson = testValue._2();
+
+            String json = writer.writeValueAsString(src);
+            Assert.assertEquals(expectedJson, json);
+
+            Object dst = mapper().readValue(json, typeReference);
+            Assert.assertEquals(src, dst);
+        }
+    }
+
     protected ObjectMapper mapper() {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaslangModule());
+        return mapper;
+    }
+
+    protected ObjectMapper mapper(JavaslangModule.Settings settings) {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaslangModule(settings));
         return mapper;
     }
 
@@ -52,7 +81,21 @@ public class BaseTest {
                 sb.append(",");
             }
             sb.append("\"").append(entry.getKey().toString()).append("\":");
-            appendObj(sb, entry.getValue());
+            Object value = entry.getValue();
+            if (value instanceof Collection) {
+                sb.append("[");
+                int j = 0;
+                for (Object v : ((Collection) value)) {
+                    if (j > 0) {
+                        sb.append(",");
+                    }
+                    appendObj(sb, v);
+                    j++;
+                }
+                sb.append("]");
+            } else {
+                appendObj(sb, value);
+            }
             i++;
         }
         sb.append("}");
