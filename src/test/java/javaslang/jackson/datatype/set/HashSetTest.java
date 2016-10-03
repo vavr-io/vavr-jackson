@@ -1,28 +1,36 @@
 package javaslang.jackson.datatype.set;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import javaslang.collection.HashSet;
-import javaslang.collection.Set;
+
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.util.Arrays;
 
+import javaslang.collection.HashSet;
+import javaslang.collection.Set;
+import javaslang.control.Option;
+
 public class HashSetTest extends SetTest {
 
     @Override
-    Class<?> clz() {
+    protected Class<?> clz() {
         return HashSet.class;
     }
 
     @Override
-    TypeReference<?> typeReference() {
+    protected TypeReference<HashSet<Integer>> typeReference() {
         return new TypeReference<HashSet<Integer>>() {};
     }
 
     @Override
-    Set<Integer> of(Integer... objects) {
+    protected TypeReference<HashSet<Option<String>>> typeReferenceWithOption() {
+        return new TypeReference<HashSet<Option<String>>>() {};
+    }
+
+    @Override
+    protected Set<?> of(Object... objects) {
         return HashSet.ofAll(Arrays.asList(objects));
     }
 

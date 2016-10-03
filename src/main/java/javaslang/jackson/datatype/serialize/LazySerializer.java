@@ -32,4 +32,9 @@ class LazySerializer extends ValueSerializer<Lazy<?>> {
     Object toJavaObj(Lazy<?> value) throws IOException {
         return value.get();
     }
+
+    @Override
+    JavaType emulatedJavaType(JavaType type) {
+        return type.containedType(0);
+    }
 }

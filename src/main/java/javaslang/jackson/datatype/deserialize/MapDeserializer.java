@@ -17,11 +17,8 @@ package javaslang.jackson.datatype.deserialize;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.*;
-import com.fasterxml.jackson.databind.deser.ResolvableDeserializer;
-import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
-import com.fasterxml.jackson.databind.type.MapLikeType;
-import com.fasterxml.jackson.databind.type.TypeFactory;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JavaType;
 import javaslang.Tuple;
 import javaslang.Tuple2;
 import javaslang.collection.HashMap;
@@ -30,39 +27,17 @@ import javaslang.collection.Map;
 import javaslang.collection.TreeMap;
 
 import java.io.IOException;
-import java.util.Comparator;
 
-class MapDeserializer extends StdDeserializer<Map<?,?>> implements ResolvableDeserializer {
+class MapDeserializer extends MaplikeDeserializer<Map<?, ?>> {
 
     private static final long serialVersionUID = 1L;
 
-    private final JavaType javaType;
-
-    private Comparator<Object> keyComparator;
-    private KeyDeserializer keyDeserializer;
-    private JsonDeserializer<?> valueDeserializer;
-
     MapDeserializer(JavaType valueType) {
         super(valueType);
-        this.javaType = valueType;
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public void resolve(DeserializationContext ctxt) throws JsonMappingException {
-        MapLikeType type = mapLike(javaType, ctxt);
-        JavaType keyType = type.getKeyType();
-        if(keyType.getRawClass().isAssignableFrom(Comparable.class)) {
-            keyComparator = (o1, o2) -> ((Comparable)o1).compareTo(o2);
-        } else {
-            keyComparator = (o1, o2) -> o1.toString().compareTo(o2.toString());
-        }
-        keyDeserializer = ctxt.findKeyDeserializer(keyType, null);
-        valueDeserializer = ctxt.findContextualValueDeserializer(type.getContentType(), null);
     }
 
     @Override
-    public Map<?,?> deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+    public Map<?, ?> deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
         final java.util.List<Tuple2<Object, Object>> result = new java.util.ArrayList<>();
         while (p.nextToken() != JsonToken.END_OBJECT) {
             String name = p.getCurrentName();
@@ -78,11 +53,5 @@ class MapDeserializer extends StdDeserializer<Map<?,?>> implements ResolvableDes
         }
         // default deserialization [...] -> Map
         return HashMap.ofEntries(result);
-    }
-
-    private static MapLikeType mapLike(JavaType type, DeserializationContext ctxt) {
-        JavaType keyType = type.containedTypeCount() > 0 ? type.containedType(0) : TypeFactory.unknownType();
-        JavaType valueType = type.containedTypeCount() > 1 ? type.containedType(1) : TypeFactory.unknownType();
-        return ctxt.getTypeFactory().constructMapLikeType(type.getRawClass(), keyType, valueType);
     }
 }

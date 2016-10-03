@@ -19,17 +19,22 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JavaType;
-import javaslang.control.Either;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonMappingException;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+
+import javaslang.control.Either;
+
+import static com.fasterxml.jackson.core.JsonToken.END_ARRAY;
+import static com.fasterxml.jackson.core.JsonToken.VALUE_NULL;
 
 class EitherDeserializer extends ValueDeserializer<Either<?, ?>> {
 
     private static final long serialVersionUID = 1L;
 
     private final JavaType javaType;
+    private JsonDeserializer<?> stringDeserializer;
 
     EitherDeserializer(JavaType valueType) {
         super(valueType, 2);
@@ -38,21 +43,38 @@ class EitherDeserializer extends ValueDeserializer<Either<?, ?>> {
 
     @Override
     public Either<?, ?> deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
-        List<Object> list = new ArrayList<>();
-        int typeCounter = 0;
-        while (p.nextToken() != JsonToken.END_ARRAY) {
-            if (typeCounter >= deserializersCount()) {
-                throw ctxt.mappingException(javaType.getRawClass());
+        boolean right = false;
+        Object value = null;
+        int cnt = 0;
+
+        for (JsonToken jsonToken = p.nextToken(); jsonToken != END_ARRAY; jsonToken = p.nextToken()) {
+            cnt++;
+            switch (cnt) {
+                case 1:
+                    String def = (String) stringDeserializer.deserialize(p, ctxt);
+                    if ("right".equals(def)) {
+                        right = true;
+                    } else if ("left".equals(def)) {
+                        right = false;
+                    } else {
+                        throw ctxt.mappingException(javaType.getRawClass());
+                    }
+                    break;
+                case 2:
+                    JsonDeserializer<?> deserializer = right ? deserializer(1) : deserializer(0);
+                    value = (jsonToken != VALUE_NULL) ? deserializer.deserialize(p, ctxt) : deserializer.getNullValue(ctxt);
+                    break;
             }
-            list.add(deserializer(typeCounter++).deserialize(p, ctxt));
         }
-        if (list.size() != 2) {
+        if (cnt != 2) {
             throw ctxt.mappingException(javaType.getRawClass());
         }
-        Object leftValue = list.get(0);
-        Object rightValue = list.get(1);
-        return leftValue != null ? Either.left(leftValue) : Either.right(rightValue);
+        return right ? Either.right(value) : Either.left(value);
     }
 
-
+    @Override
+    public void resolve(DeserializationContext ctxt) throws JsonMappingException {
+        super.resolve(ctxt);
+        stringDeserializer = ctxt.findContextualValueDeserializer(ctxt.constructType(String.class), null);
+    }
 }

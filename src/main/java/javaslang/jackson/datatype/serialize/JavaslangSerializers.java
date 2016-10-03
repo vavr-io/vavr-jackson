@@ -22,15 +22,19 @@ import com.fasterxml.jackson.databind.SerializationConfig;
 import com.fasterxml.jackson.databind.ser.Serializers;
 import javaslang.Lazy;
 import javaslang.Tuple;
-import javaslang.collection.CharSeq;
-import javaslang.collection.Map;
-import javaslang.collection.Seq;
-import javaslang.collection.Set;
+import javaslang.collection.*;
 import javaslang.control.Either;
 import javaslang.control.Option;
+import javaslang.jackson.datatype.JavaslangModule;
 import javaslang.λ;
 
 public class JavaslangSerializers extends Serializers.Base {
+
+    private final JavaslangModule.Settings settings;
+
+    public JavaslangSerializers(JavaslangModule.Settings settings) {
+        this.settings = settings;
+    }
 
     @Override
     public JsonSerializer<?> findSerializer(SerializationConfig config,
@@ -41,7 +45,7 @@ public class JavaslangSerializers extends Serializers.Base {
             return new LazySerializer(type);
         }
         if (Option.class.isAssignableFrom(raw)) {
-            return new OptionSerializer(type);
+            return new OptionSerializer(type, settings.useOptionInPlainFormat());
         }
         if (Either.class.isAssignableFrom(raw)) {
             return new EitherSerializer(type);
@@ -50,10 +54,10 @@ public class JavaslangSerializers extends Serializers.Base {
             return new CharSeqSerializer(type);
         }
         if (Seq.class.isAssignableFrom(raw)) {
-            return new SeqSerializer(type);
+            return new ArraySerializer<>(type);
         }
         if (Set.class.isAssignableFrom(raw)) {
-            return new SetSerializer(type);
+            return new ArraySerializer<>(type);
         }
         if (Map.class.isAssignableFrom(raw)) {
             return new MapSerializer(type);

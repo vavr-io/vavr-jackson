@@ -23,9 +23,43 @@ public class JavaslangModule extends SimpleModule {
 
     private static final long serialVersionUID = 1L;
 
+    public static class Settings {
+
+        private boolean plainOption = true;
+        private boolean deserializeNullAsEmptyCollection = false;
+
+        public Settings useOptionInPlainFormat(boolean value) {
+            plainOption = value;
+            return this;
+        }
+
+        public Settings deserializeNullAsEmptyCollection(boolean value) {
+            deserializeNullAsEmptyCollection = value;
+            return this;
+        }
+
+        public boolean useOptionInPlainFormat() {
+            return plainOption;
+        }
+
+        public boolean deserializeNullAsEmptyCollection() {
+            return deserializeNullAsEmptyCollection;
+        }
+    }
+
+    private final Settings settings;
+
+    public JavaslangModule() {
+        this(new Settings());
+    }
+
+    public JavaslangModule(Settings settings) {
+        this.settings = settings;
+    }
+
     @Override
     public void setupModule(SetupContext context) {
-        context.addSerializers(new JavaslangSerializers());
-        context.addDeserializers(new JavaslangDeserializers());
+        context.addSerializers(new JavaslangSerializers(settings));
+        context.addDeserializers(new JavaslangDeserializers(settings));
     }
 }

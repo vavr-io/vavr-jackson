@@ -16,7 +16,6 @@ public class ComplexBeanTest extends BaseTest {
         final ComplexClass fromJson = mapper().readValue(json, ComplexClass.class);
 
         Assert.assertEquals(fromJson.getComplexInnerClasses(), src.getComplexInnerClasses());
-        Assert.assertEquals(fromJson.getComplexInnerClassHashMap(), src.getComplexInnerClassHashMap());
         Assert.assertEquals(fromJson.getComplexInnerClassHashSet(), src.getComplexInnerClassHashSet());
         Assert.assertEquals(fromJson.getComplexInnerClassList(), src.getComplexInnerClassList());
         Assert.assertEquals(fromJson.getComplexInnerClassQueue(), src.getComplexInnerClassQueue());

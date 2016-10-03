@@ -1,5 +1,5 @@
 /**
- * Copyright 2015 The Javaslang Authors
+ * Copyright 2016 The Javaslang Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,21 +16,27 @@
 package javaslang.jackson.datatype.serialize;
 
 import com.fasterxml.jackson.databind.JavaType;
-import javaslang.collection.Seq;
+import com.fasterxml.jackson.databind.type.CollectionType;
+import javaslang.Value;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
-class SeqSerializer extends ValueSerializer<Seq<?>> {
+class ArraySerializer<T extends Value<?>> extends ValueSerializer<T> {
 
     private static final long serialVersionUID = 1L;
 
-    SeqSerializer(JavaType type) {
+    ArraySerializer(JavaType type) {
         super(type);
     }
 
     @Override
-    Object toJavaObj(Seq<?> value) throws IOException {
+    Object toJavaObj(T value) throws IOException {
         return value.toJavaList();
     }
 
+    @Override
+    JavaType emulatedJavaType(JavaType type) {
+        return CollectionType.construct(ArrayList.class, type.containedType(0));
+    }
 }
