@@ -28,7 +28,7 @@ public class JavaslangModule extends SimpleModule {
         private boolean plainOption = true;
         private boolean deserializeNullAsEmptyCollection = false;
 
-        public Settings plainOption(boolean value) {
+        public Settings useOptionInPlainFormat(boolean value) {
             plainOption = value;
             return this;
         }
@@ -38,7 +38,7 @@ public class JavaslangModule extends SimpleModule {
             return this;
         }
 
-        public boolean plainOption() {
+        public boolean useOptionInPlainFormat() {
             return plainOption;
         }
 

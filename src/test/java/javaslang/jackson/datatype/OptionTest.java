@@ -13,7 +13,7 @@ import java.io.IOException;
 public class OptionTest extends BaseTest {
 
     private static JavaslangModule.Settings optSettings =
-            new JavaslangModule.Settings().plainOption(false);
+            new JavaslangModule.Settings().useOptionInPlainFormat(false);
 
     @Test
     public void test1() throws IOException {
@@ -104,7 +104,7 @@ public class OptionTest extends BaseTest {
 
     @Test
     public void testJsonTypeInfo2() throws IOException {
-        ObjectMapper mapper = mapper(new JavaslangModule.Settings().plainOption(false));
+        ObjectMapper mapper = mapper(new JavaslangModule.Settings().useOptionInPlainFormat(false));
         String javaUtilValue = mapper.writeValueAsString(new A());
         Assert.assertEquals("{\"f\":[\"defined\",{\"card\":{\"type\":\"hello\"}}]}", javaUtilValue);
         A restored = mapper.readValue(javaUtilValue, A.class);
