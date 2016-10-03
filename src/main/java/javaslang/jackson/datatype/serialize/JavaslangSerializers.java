@@ -45,7 +45,7 @@ public class JavaslangSerializers extends Serializers.Base {
             return new LazySerializer(type);
         }
         if (Option.class.isAssignableFrom(raw)) {
-            return new OptionSerializer(type, settings.plainOption());
+            return new OptionSerializer(type, settings.useOptionInPlainFormat());
         }
         if (Either.class.isAssignableFrom(raw)) {
             return new EitherSerializer(type);

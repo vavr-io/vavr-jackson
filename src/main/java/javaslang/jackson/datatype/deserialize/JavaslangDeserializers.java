@@ -48,7 +48,7 @@ public class JavaslangDeserializers extends Deserializers.Base {
             return new LazyDeserializer(type);
         }
         if (Option.class.isAssignableFrom(raw)) {
-            return new OptionDeserializer(type, settings.plainOption());
+            return new OptionDeserializer(type, settings.useOptionInPlainFormat());
         }
         if (Either.class.isAssignableFrom(raw)) {
             return new EitherDeserializer(type);
