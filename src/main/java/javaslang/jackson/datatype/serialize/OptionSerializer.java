@@ -43,17 +43,7 @@ class OptionSerializer extends ValueSerializer<Option<?>> {
             gen.writeStartArray();
             if (value.isDefined()) {
                 gen.writeString("defined");
-                Object val = value.get();
-                if (val != null) {
-                    if (type.containedTypeCount() > 0) {
-                        JsonSerializer<Object> ser = provider.findTypedValueSerializer(type.containedType(0), true, null);
-                        ser.serialize(val, gen, provider);
-                    } else {
-                        gen.writeObject(val);
-                    }
-                } else {
-                    gen.writeNull();
-                }
+                super.serialize(value, gen, provider);
             } else {
                 gen.writeString("undefined");
             }

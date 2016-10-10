@@ -91,4 +91,18 @@ public abstract class SeqTest extends BaseTest {
                 Tuple.of(of(Option.none()), genJsonList((Object) null))
         ));
     }
+
+    public static class Parameterized<T> {
+        public Seq<T> value;
+        public Parameterized(Seq<T> value) {
+            this.value = value;
+        }
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    public void writeWrappedParameterizedSome() throws IOException {
+        Parameterized<Integer> object = new Parameterized<>((Seq<Integer>) of(1));
+        Assert.assertEquals("{\"value\":[1]}", mapper().writeValueAsString(object));
+    }
 }
