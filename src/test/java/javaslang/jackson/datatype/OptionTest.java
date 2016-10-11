@@ -104,11 +104,30 @@ public class OptionTest extends BaseTest {
 
     @Test
     public void testJsonTypeInfo2() throws IOException {
-        ObjectMapper mapper = mapper(new JavaslangModule.Settings().useOptionInPlainFormat(false));
+        ObjectMapper mapper = mapper(optSettings);
         String javaUtilValue = mapper.writeValueAsString(new A());
         Assert.assertEquals("{\"f\":[\"defined\",{\"card\":{\"type\":\"hello\"}}]}", javaUtilValue);
         A restored = mapper.readValue(javaUtilValue, A.class);
         Assert.assertEquals("hello", restored.f.get().type);
+    }
+
+    public static class Parameterized<T> {
+        public Option<T> value;
+        public Parameterized(Option<T> value) {
+            this.value = value;
+        }
+    }
+
+    @Test
+    public void writeWrappedParameterizedSome() throws IOException {
+        Parameterized<Integer> object = new Parameterized<>(Option.some(1));
+        Assert.assertEquals("{\"value\":[\"defined\",1]}", mapper(optSettings).writeValueAsString(object));
+    }
+
+    @Test
+    public void writeWrappedWildcardSome() throws IOException {
+        Parameterized<?> object = new Parameterized<>(Option.some(1));
+        Assert.assertEquals("{\"value\":[\"defined\",1]}", mapper(optSettings).writeValueAsString(object));
     }
 
 }
