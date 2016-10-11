@@ -39,5 +39,9 @@ public class OptionPlainTest extends BaseTest {
         Assert.assertEquals("{\"value\":1}", mapper().writeValueAsString(object));
     }
 
-
+    @Test
+    public void writeWrappedWildcardSome() throws IOException {
+        Parameterized<?> object = new Parameterized<>(Option.some(1));
+        Assert.assertEquals("{\"value\":1}", mapper().writeValueAsString(object));
+    }
 }

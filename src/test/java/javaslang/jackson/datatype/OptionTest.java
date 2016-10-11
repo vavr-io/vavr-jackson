@@ -124,4 +124,10 @@ public class OptionTest extends BaseTest {
         Assert.assertEquals("{\"value\":[\"defined\",1]}", mapper(optSettings).writeValueAsString(object));
     }
 
+    @Test
+    public void writeWrappedWildcardSome() throws IOException {
+        Parameterized<?> object = new Parameterized<>(Option.some(1));
+        Assert.assertEquals("{\"value\":[\"defined\",1]}", mapper(optSettings).writeValueAsString(object));
+    }
+
 }

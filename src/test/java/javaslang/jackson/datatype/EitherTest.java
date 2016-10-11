@@ -135,4 +135,24 @@ public class EitherTest extends BaseTest {
         Right restoredRight = mapper().readValue(javaUtilValue, Right.class);
         Assert.assertEquals("hello", restoredRight.f.right().get().type);
     }
+
+    public static class Parameterized<L, R> {
+        public Either<L, R> value;
+        public Parameterized(Either<L, R> value) {
+            this.value = value;
+        }
+    }
+
+    @Test
+    public void writeWrappedParameterizedSome() throws IOException {
+        Parameterized<Integer, String> object = new Parameterized<>(Either.left(1));
+        Assert.assertEquals("{\"value\":[\"left\",1]}", mapper().writeValueAsString(object));
+    }
+
+    @Test
+    public void writeWrappedWildcardSome() throws IOException {
+        Parameterized<?, ?> object = new Parameterized<>(Either.left(1));
+        Assert.assertEquals("{\"value\":[\"left\",1]}", mapper().writeValueAsString(object));
+    }
+
 }
