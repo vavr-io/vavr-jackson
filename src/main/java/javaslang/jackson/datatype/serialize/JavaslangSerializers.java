@@ -19,7 +19,9 @@ import com.fasterxml.jackson.databind.BeanDescription;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializationConfig;
+import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
 import com.fasterxml.jackson.databind.ser.Serializers;
+import com.fasterxml.jackson.databind.type.CollectionLikeType;
 import javaslang.Lazy;
 import javaslang.Tuple;
 import javaslang.collection.*;
@@ -56,12 +58,6 @@ public class JavaslangSerializers extends Serializers.Base {
         if (PriorityQueue.class.isAssignableFrom(raw)) {
             return new ArraySerializer<>(type);
         }
-        if (Seq.class.isAssignableFrom(raw)) {
-            return new ArraySerializer<>(type);
-        }
-        if (Set.class.isAssignableFrom(raw)) {
-            return new ArraySerializer<>(type);
-        }
         if (Map.class.isAssignableFrom(raw)) {
             return new MapSerializer(type);
         }
@@ -77,5 +73,19 @@ public class JavaslangSerializers extends Serializers.Base {
         }
 
         return super.findSerializer(config, type, beanDesc);
+    }
+
+    @Override
+    public JsonSerializer<?> findCollectionLikeSerializer(SerializationConfig config,
+                                                          CollectionLikeType type, BeanDescription beanDesc,
+                                                          TypeSerializer elementTypeSerializer, JsonSerializer<Object> elementValueSerializer) {
+        Class<?> raw = type.getRawClass();
+        if (Seq.class.isAssignableFrom(raw)) {
+            return new ArraySerializer<>(type);
+        }
+        if (Set.class.isAssignableFrom(raw)) {
+            return new ArraySerializer<>(type);
+        }
+        return super.findCollectionLikeSerializer(config, type, beanDesc, elementTypeSerializer, elementValueSerializer);
     }
 }

@@ -15,11 +15,12 @@ public class JavaslangTypeModifier extends TypeModifier {
         if (type.isReferenceType() || type.isContainerType()) {
             return type;
         }
-
         final Class<?> raw = type.getRawClass();
-        if (raw == List.class) {
-            return CollectionLikeType.construct(
-                raw, type.containedTypeOrUnknown(0));
+        if (Seq.class.isAssignableFrom(raw) && CharSeq.class != raw) {
+            return CollectionLikeType.construct(raw, type.containedTypeOrUnknown(0));
+        }
+        if (Set.class.isAssignableFrom(raw)) {
+            return CollectionLikeType.construct(raw, type.containedTypeOrUnknown(0));
         }
         return type;
     }
