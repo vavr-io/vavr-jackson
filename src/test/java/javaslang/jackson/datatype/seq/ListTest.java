@@ -104,25 +104,35 @@ public class ListTest extends SeqTest {
     private static class XmlSerializeJavaslang {
         @JacksonXmlElementWrapper(localName = "transitTypes")
         @JsonProperty("transitType")
-        public List<Integer> transitTypes = List.of(1, 2, 3);
+        public List<Integer> transitTypes;
+        public XmlSerializeJavaslang init() {
+            transitTypes = List.of(1, 2, 3);
+            return this;
+        }
     }
 
     @JacksonXmlRootElement(localName = "xmlSerialize")
     private static class XmlSerializeJavaUtil {
         @JacksonXmlElementWrapper(localName = "transitTypes")
         @JsonProperty("transitType")
-        public java.util.List<Integer> transitTypes = new java.util.ArrayList<>();
+        public java.util.List<Integer> transitTypes;
 
-        public XmlSerializeJavaUtil() {
+        public XmlSerializeJavaUtil init() {
+            transitTypes = new java.util.ArrayList<>();
             transitTypes.add(1);
             transitTypes.add(2);
             transitTypes.add(3);
+            return this;
         }
     }
 
     @Test
     public void testXmlSerialization() throws IOException {
-        String javaUtilValue = xmlMapper().writeValueAsString(new XmlSerializeJavaslang());
-        Assert.assertEquals(xmlMapper().writeValueAsString(new XmlSerializeJavaUtil()), javaUtilValue);
+        String javaUtilValue = xmlMapper().writeValueAsString(new XmlSerializeJavaslang().init());
+        Assert.assertEquals(xmlMapper().writeValueAsString(new XmlSerializeJavaUtil().init()), javaUtilValue);
+        XmlSerializeJavaUtil restored1 = xmlMapper().readValue(javaUtilValue, XmlSerializeJavaUtil.class);
+        Assert.assertEquals(restored1.transitTypes.size(), 3);
+        XmlSerializeJavaslang restored2 = xmlMapper().readValue(javaUtilValue, XmlSerializeJavaslang.class);
+        Assert.assertEquals(restored2.transitTypes.size(), 3);
     }
 }
