@@ -138,21 +138,28 @@ public class EitherTest extends BaseTest {
 
     public static class Parameterized<L, R> {
         public Either<L, R> value;
+        public Parameterized() {}
         public Parameterized(Either<L, R> value) {
             this.value = value;
         }
     }
 
     @Test
-    public void writeWrappedParameterizedSome() throws IOException {
+    public void testWrappedParameterizedSome() throws IOException {
+        String expected = "{\"value\":[\"left\",1]}";
         Parameterized<Integer, String> object = new Parameterized<>(Either.left(1));
-        Assert.assertEquals("{\"value\":[\"left\",1]}", mapper().writeValueAsString(object));
+        Assert.assertEquals(expected, mapper().writeValueAsString(object));
+        Parameterized<Integer, String> restored = mapper().readValue(expected, new TypeReference<Parameterized<Integer, String>>() {});
+        Assert.assertEquals(restored.value.left().get(), (Integer) 1);
     }
 
     @Test
-    public void writeWrappedWildcardSome() throws IOException {
+    public void testWrappedWildcardSome() throws IOException {
+        String expected = "{\"value\":[\"left\",1]}";
         Parameterized<?, ?> object = new Parameterized<>(Either.left(1));
-        Assert.assertEquals("{\"value\":[\"left\",1]}", mapper().writeValueAsString(object));
+        Assert.assertEquals(expected, mapper().writeValueAsString(object));
+        Parameterized<?, ?> restored = mapper().readValue(expected, Parameterized.class);
+        Assert.assertEquals(restored.value.left().get(), 1);
     }
 
 }

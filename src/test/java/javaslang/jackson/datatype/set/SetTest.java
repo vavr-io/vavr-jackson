@@ -150,4 +150,22 @@ public abstract class SetTest extends BaseTest {
         String javaUtilValue = xmlMapper().writeValueAsString(new XmlSerializeJavaslang());
         Assert.assertEquals(xmlMapper().writeValueAsString(new XmlSerializeJavaUtil()), javaUtilValue);
     }
+
+    public static class Parameterized<T> {
+        public Set<T> value;
+        public Parameterized() {}
+        public Parameterized(Set<T> value) {
+            this.value = value;
+        }
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    public void testWrappedParameterizedSome() throws IOException {
+        String expected = "{\"value\":[1]}";
+        Parameterized<Integer> object = new Parameterized<>((Set<Integer>) of(1));
+        Assert.assertEquals(expected, mapper().writeValueAsString(object));
+        Parameterized<Integer> restored = mapper().readValue(expected, new TypeReference<Parameterized<Integer>>() {});
+        Assert.assertEquals(restored.value.head(), (Integer) 1);
+    }
 }

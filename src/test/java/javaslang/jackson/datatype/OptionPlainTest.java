@@ -1,5 +1,6 @@
 package javaslang.jackson.datatype;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import javaslang.control.Option;
 import org.junit.Assert;
 import org.junit.Test;
@@ -28,20 +29,27 @@ public class OptionPlainTest extends BaseTest {
 
     public static class Parameterized<T> {
         public Option<T> value;
+        public Parameterized() {}
         public Parameterized(Option<T> value) {
             this.value = value;
         }
     }
 
     @Test
-    public void writeWrappedParameterizedSome() throws IOException {
+    public void testWrappedParameterizedSome() throws IOException {
+        String expected = "{\"value\":1}";
         Parameterized<Integer> object = new Parameterized<>(Option.some(1));
-        Assert.assertEquals("{\"value\":1}", mapper().writeValueAsString(object));
+        Assert.assertEquals(expected, mapper().writeValueAsString(object));
+        Parameterized<Integer> restored = mapper().readValue(expected, new TypeReference<Parameterized<Integer>>() {});
+        Assert.assertEquals(restored.value.get(), (Integer) 1);
     }
 
     @Test
-    public void writeWrappedWildcardSome() throws IOException {
+    public void testWrappedWildcardSome() throws IOException {
+        String expected = "{\"value\":1}";
         Parameterized<?> object = new Parameterized<>(Option.some(1));
-        Assert.assertEquals("{\"value\":1}", mapper().writeValueAsString(object));
+        Assert.assertEquals(expected, mapper().writeValueAsString(object));
+        Parameterized<?> restored = mapper().readValue(expected, Parameterized.class);
+        Assert.assertEquals(restored.value.get(), 1);
     }
 }

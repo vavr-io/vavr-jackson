@@ -50,4 +50,21 @@ public abstract class MultimapTest extends BaseTest {
         verifySerialization(typeReferenceWithOption(), javaslang.collection.List.of(Tuple.of(multimap, json)));
     }
 
+    public static class Parameterized<T1, T2> {
+        public Multimap<T1, T2> value;
+        public Parameterized() {}
+        public Parameterized(Multimap<T1, T2> value) {
+            this.value = value;
+        }
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    public void testWrappedParameterizedSome() throws IOException {
+        String expected = "{\"value\":{\"1\":[2]}}";
+        Parameterized<Integer, Integer> object = new Parameterized<>(this.<Integer, Integer>emptyMap().put(1, 2));
+        Assert.assertEquals(expected, mapper().writeValueAsString(object));
+        Parameterized<Integer, Integer> restored = mapper().readValue(expected, new TypeReference<Parameterized<Integer, Integer>>() {});
+        Assert.assertEquals(restored.value.get(1).get().head(), (Integer) 2);
+    }
 }
