@@ -94,6 +94,7 @@ public abstract class SeqTest extends BaseTest {
 
     public static class Parameterized<T> {
         public Seq<T> value;
+        public Parameterized() {}
         public Parameterized(Seq<T> value) {
             this.value = value;
         }
@@ -101,8 +102,11 @@ public abstract class SeqTest extends BaseTest {
 
     @Test
     @SuppressWarnings("unchecked")
-    public void writeWrappedParameterizedSome() throws IOException {
+    public void testWrappedParameterizedSome() throws IOException {
+        String expected = "{\"value\":[1]}";
         Parameterized<Integer> object = new Parameterized<>((Seq<Integer>) of(1));
-        Assert.assertEquals("{\"value\":[1]}", mapper().writeValueAsString(object));
+        Assert.assertEquals(expected, mapper().writeValueAsString(object));
+        Parameterized<Integer> restored = mapper().readValue(expected, new TypeReference<Parameterized<Integer>>() {});
+        Assert.assertEquals(restored.value.head(), (Integer) 1);
     }
 }

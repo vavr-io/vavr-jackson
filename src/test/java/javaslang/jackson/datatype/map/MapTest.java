@@ -71,4 +71,22 @@ public abstract class MapTest extends BaseTest {
                 Tuple.of(emptyMap().put("1", Option.none()), genJsonMap(HashMap.of("1", null).toJavaMap()))
         ));
     }
+
+    public static class Parameterized<T1, T2> {
+        public Map<T1, T2> value;
+        public Parameterized() {}
+        public Parameterized(Map<T1, T2> value) {
+            this.value = value;
+        }
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    public void testWrappedParameterizedSome() throws IOException {
+        String expected = "{\"value\":{\"1\":2}}";
+        Parameterized<Integer, Integer> object = new Parameterized<>(this.<Integer, Integer>emptyMap().put(1, 2));
+        Assert.assertEquals(expected, mapper().writeValueAsString(object));
+        Parameterized<Integer, Integer> restored = mapper().readValue(expected, new TypeReference<Parameterized<Integer, Integer>>() {});
+        Assert.assertEquals(restored.value.get(1).get(), (Integer) 2);
+    }
 }
