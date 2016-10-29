@@ -35,10 +35,12 @@ abstract class ArrayDeserializer<T> extends ValueDeserializer<T> {
 
     private static final long serialVersionUID = 1L;
 
+    private final JavaType valueType;
     private final boolean deserializeNullAsEmptyCollection;
 
     ArrayDeserializer(JavaType valueType, int typeCount, boolean deserializeNullAsEmptyCollection) {
         super(valueType, typeCount);
+        this.valueType = valueType;
         this.deserializeNullAsEmptyCollection = deserializeNullAsEmptyCollection;
     }
 
@@ -48,6 +50,9 @@ abstract class ArrayDeserializer<T> extends ValueDeserializer<T> {
     public T deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
         JsonDeserializer<?> deserializer = deserializer(0);
         List<Object> list = new ArrayList<>();
+        if (!p.isExpectedStartArrayToken()) {
+            throw ctxt.mappingException(valueType.getRawClass());
+        }
         for (JsonToken jsonToken = p.nextToken(); jsonToken != END_ARRAY; jsonToken = p.nextToken()) {
             Object value = (jsonToken != VALUE_NULL) ? deserializer.deserialize(p, ctxt) : deserializer.getNullValue(ctxt);
             list.add(value);

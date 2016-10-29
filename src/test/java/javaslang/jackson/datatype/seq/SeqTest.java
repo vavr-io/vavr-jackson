@@ -1,20 +1,25 @@
 package javaslang.jackson.datatype.seq;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
-
-import javaslang.jackson.datatype.JavaslangModule;
-import org.junit.Assert;
-import org.junit.Test;
-
-import java.io.IOException;
-
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import javaslang.Tuple;
 import javaslang.collection.List;
 import javaslang.collection.Seq;
 import javaslang.control.Option;
 import javaslang.jackson.datatype.BaseTest;
+import javaslang.jackson.datatype.JavaslangModule;
+import org.junit.Assert;
+import org.junit.Test;
+
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+import java.io.IOException;
+import java.util.Arrays;
 
 public abstract class SeqTest extends BaseTest {
 
@@ -90,6 +95,74 @@ public abstract class SeqTest extends BaseTest {
                 Tuple.of(of(Option.some("value")), genJsonList("value")),
                 Tuple.of(of(Option.none()), genJsonList((Object) null))
         ));
+    }
+
+    @XmlRootElement(name = "xmlSerialize")
+    private static class JaxbXmlSerializeJavaslang {
+        @XmlElementWrapper(name = "transitTypes")
+        @XmlElement(name = "transitType")
+        public Seq<Integer> transitTypes;
+
+        public JaxbXmlSerializeJavaslang init(Seq<Integer> slangSet) {
+            transitTypes = slangSet;
+            return this;
+        }
+    }
+
+    @XmlRootElement(name = "xmlSerialize")
+    private static class JaxbXmlSerializeJavaUtil {
+        @XmlElementWrapper(name = "transitTypes")
+        @XmlElement(name = "transitType")
+        public java.util.Collection<Integer> transitTypes;
+
+        public JaxbXmlSerializeJavaUtil init(java.util.Collection<Integer> javaSet) {
+            transitTypes = javaSet;
+            return this;
+        }
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    public void testJaxbXmlSerialization() throws IOException {
+        ObjectMapper mapper = xmlMapperJaxb();
+        String javaUtilValue = mapper.writeValueAsString(new JaxbXmlSerializeJavaslang().init((Seq<Integer>) of(1, 2, 3)));
+        Assert.assertEquals(mapper.writeValueAsString(new JaxbXmlSerializeJavaUtil().init(Arrays.asList(1, 2, 3))), javaUtilValue);
+        JaxbXmlSerializeJavaslang restored = mapper.readValue(javaUtilValue, JaxbXmlSerializeJavaslang.class);
+        Assert.assertEquals(restored.transitTypes.size(), 3);
+    }
+
+    @JacksonXmlRootElement(localName = "xmlSerialize")
+    private static class XmlSerializeJavaslang {
+        @JacksonXmlElementWrapper(localName = "transitTypes")
+        @JsonProperty("transitType")
+        public Seq<Integer> transitTypes;
+
+        public XmlSerializeJavaslang init(Seq<Integer> slangSet) {
+            transitTypes = slangSet;
+            return this;
+        }
+    }
+
+    @JacksonXmlRootElement(localName = "xmlSerialize")
+    private static class XmlSerializeJavaUtil {
+        @JacksonXmlElementWrapper(localName = "transitTypes")
+        @JsonProperty("transitType")
+        public java.util.Collection<Integer> transitTypes;
+
+        public XmlSerializeJavaUtil init(java.util.Collection<Integer> javaSet) {
+            transitTypes = javaSet;
+            return this;
+        }
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    public void testXmlSerialization() throws IOException {
+        ObjectMapper mapper = xmlMapper();
+        String javaUtilValue = mapper.writeValueAsString(new XmlSerializeJavaslang().init((Seq<Integer>) of(1, 2, 3)));
+        Assert.assertEquals(mapper.writeValueAsString(new XmlSerializeJavaUtil().init(Arrays.asList(1, 2, 3))), javaUtilValue);
+        XmlSerializeJavaslang restored = mapper.readValue(javaUtilValue, XmlSerializeJavaslang.class);
+        Assert.assertEquals(restored.transitTypes.size(), 3);
     }
 
     public static class Parameterized<T> {
