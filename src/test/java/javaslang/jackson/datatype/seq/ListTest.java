@@ -1,26 +1,16 @@
 package javaslang.jackson.datatype.seq;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-
+import com.fasterxml.jackson.core.type.TypeReference;
+import javaslang.collection.List;
+import javaslang.collection.Seq;
+import javaslang.control.Option;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.util.Arrays;
-
-import javaslang.collection.List;
-import javaslang.collection.Seq;
-import javaslang.control.Option;
 
 public class ListTest extends SeqTest {
 
@@ -74,65 +64,4 @@ public class ListTest extends SeqTest {
         Assert.assertEquals("hello", restored.f.head().type);
     }
 
-    @XmlRootElement(name = "xmlSerialize")
-    private static class JaxbXmlSerializeJavaslang {
-        @XmlElementWrapper(name = "transitTypes")
-        @XmlElement(name = "transitType")
-        public List<Integer> transitTypes = List.of(1, 2, 3);
-    }
-
-    @XmlRootElement(name = "xmlSerialize")
-    private static class JaxbXmlSerializeJavaUtil {
-        @XmlElementWrapper(name = "transitTypes")
-        @XmlElement(name = "transitType")
-        public java.util.List<Integer> transitTypes = new java.util.ArrayList<>();
-
-        public JaxbXmlSerializeJavaUtil() {
-            transitTypes.add(1);
-            transitTypes.add(2);
-            transitTypes.add(3);
-        }
-    }
-
-    @Test
-    public void testJaxbXmlSerialization() throws IOException {
-        String javaUtilValue = xmlMapperJaxb().writeValueAsString(new JaxbXmlSerializeJavaslang());
-        Assert.assertEquals(xmlMapperJaxb().writeValueAsString(new JaxbXmlSerializeJavaUtil()), javaUtilValue);
-    }
-
-    @JacksonXmlRootElement(localName = "xmlSerialize")
-    private static class XmlSerializeJavaslang {
-        @JacksonXmlElementWrapper(localName = "transitTypes")
-        @JsonProperty("transitType")
-        public List<Integer> transitTypes;
-        public XmlSerializeJavaslang init() {
-            transitTypes = List.of(1, 2, 3);
-            return this;
-        }
-    }
-
-    @JacksonXmlRootElement(localName = "xmlSerialize")
-    private static class XmlSerializeJavaUtil {
-        @JacksonXmlElementWrapper(localName = "transitTypes")
-        @JsonProperty("transitType")
-        public java.util.List<Integer> transitTypes;
-
-        public XmlSerializeJavaUtil init() {
-            transitTypes = new java.util.ArrayList<>();
-            transitTypes.add(1);
-            transitTypes.add(2);
-            transitTypes.add(3);
-            return this;
-        }
-    }
-
-    @Test
-    public void testXmlSerialization() throws IOException {
-        String javaUtilValue = xmlMapper().writeValueAsString(new XmlSerializeJavaslang().init());
-        Assert.assertEquals(xmlMapper().writeValueAsString(new XmlSerializeJavaUtil().init()), javaUtilValue);
-        XmlSerializeJavaUtil restored1 = xmlMapper().readValue(javaUtilValue, XmlSerializeJavaUtil.class);
-        Assert.assertEquals(restored1.transitTypes.size(), 3);
-        XmlSerializeJavaslang restored2 = xmlMapper().readValue(javaUtilValue, XmlSerializeJavaslang.class);
-        Assert.assertEquals(restored2.transitTypes.size(), 3);
-    }
 }

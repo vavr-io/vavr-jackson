@@ -1,10 +1,16 @@
 package javaslang.jackson.datatype.set;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import javaslang.Tuple;
+import javaslang.collection.List;
+import javaslang.collection.Set;
+import javaslang.control.Option;
+import javaslang.jackson.datatype.BaseTest;
 import javaslang.jackson.datatype.JavaslangModule;
 import org.junit.Assert;
 import org.junit.Test;
@@ -12,18 +18,8 @@ import org.junit.Test;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-
 import java.io.IOException;
-
-import javaslang.Tuple;
-import javaslang.collection.List;
-import javaslang.collection.Set;
-import javaslang.collection.HashSet;
-import javaslang.control.Option;
-import javaslang.jackson.datatype.BaseTest;
+import java.util.Arrays;
 
 public abstract class SetTest extends BaseTest {
 
@@ -103,52 +99,68 @@ public abstract class SetTest extends BaseTest {
     private static class JaxbXmlSerializeJavaslang {
         @XmlElementWrapper(name = "transitTypes")
         @XmlElement(name = "transitType")
-        public Set<Integer> transitTypes = HashSet.of(1, 2, 3);
+        public Set<Integer> transitTypes;
+
+        public JaxbXmlSerializeJavaslang init(Set<Integer> slangSet) {
+            transitTypes = slangSet;
+            return this;
+        }
     }
 
     @XmlRootElement(name = "xmlSerialize")
     private static class JaxbXmlSerializeJavaUtil {
         @XmlElementWrapper(name = "transitTypes")
         @XmlElement(name = "transitType")
-        public java.util.Set<Integer> transitTypes = new java.util.HashSet<>();
+        public java.util.Set<Integer> transitTypes;
 
-        public JaxbXmlSerializeJavaUtil() {
-            transitTypes.add(1);
-            transitTypes.add(2);
-            transitTypes.add(3);
+        public JaxbXmlSerializeJavaUtil init(java.util.Set<Integer> javaSet) {
+            transitTypes = javaSet;
+            return this;
         }
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     public void testJaxbXmlSerialization() throws IOException {
-        String javaUtilValue = xmlMapperJaxb().writeValueAsString(new JaxbXmlSerializeJavaslang());
-        Assert.assertEquals(xmlMapperJaxb().writeValueAsString(new JaxbXmlSerializeJavaUtil()), javaUtilValue);
+        ObjectMapper mapper = xmlMapperJaxb();
+        String javaUtilValue = mapper.writeValueAsString(new JaxbXmlSerializeJavaslang().init((Set<Integer>) of(1, 2, 3)));
+        Assert.assertEquals(mapper.writeValueAsString(new JaxbXmlSerializeJavaUtil().init(new java.util.HashSet<>(Arrays.asList(1, 2, 3)))), javaUtilValue);
+        JaxbXmlSerializeJavaslang restored = mapper.readValue(javaUtilValue, JaxbXmlSerializeJavaslang.class);
+        Assert.assertEquals(restored.transitTypes.size(), 3);
     }
 
     @JacksonXmlRootElement(localName = "xmlSerialize")
     private static class XmlSerializeJavaslang {
         @JacksonXmlElementWrapper(localName = "transitTypes")
         @JsonProperty("transitType")
-        public Set<Integer> transitTypes = HashSet.of(1, 2, 3);
+        public Set<Integer> transitTypes;
+
+        public XmlSerializeJavaslang init(Set<Integer> slangSet) {
+            transitTypes = slangSet;
+            return this;
+        }
     }
 
     @JacksonXmlRootElement(localName = "xmlSerialize")
     private static class XmlSerializeJavaUtil {
         @JacksonXmlElementWrapper(localName = "transitTypes")
         @JsonProperty("transitType")
-        public java.util.Set<Integer> transitTypes = new java.util.HashSet<>();
+        public java.util.Set<Integer> transitTypes;
 
-        public XmlSerializeJavaUtil() {
-            transitTypes.add(1);
-            transitTypes.add(2);
-            transitTypes.add(3);
+        public XmlSerializeJavaUtil init(java.util.Set<Integer> javaSet) {
+            transitTypes = javaSet;
+            return this;
         }
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     public void testXmlSerialization() throws IOException {
-        String javaUtilValue = xmlMapper().writeValueAsString(new XmlSerializeJavaslang());
-        Assert.assertEquals(xmlMapper().writeValueAsString(new XmlSerializeJavaUtil()), javaUtilValue);
+        ObjectMapper mapper = xmlMapper();
+        String javaUtilValue = mapper.writeValueAsString(new XmlSerializeJavaslang().init((Set<Integer>) of(1, 2, 3)));
+        Assert.assertEquals(mapper.writeValueAsString(new XmlSerializeJavaUtil().init(new java.util.HashSet<>(Arrays.asList(1, 2, 3)))), javaUtilValue);
+        XmlSerializeJavaslang restored = mapper.readValue(javaUtilValue, XmlSerializeJavaslang.class);
+        Assert.assertEquals(restored.transitTypes.size(), 3);
     }
 
     public static class Parameterized<T> {
