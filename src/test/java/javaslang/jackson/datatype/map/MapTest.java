@@ -1,20 +1,22 @@
 package javaslang.jackson.datatype.map;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import org.junit.Assert;
-import org.junit.Test;
-
-import java.io.IOException;
-
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import javaslang.Tuple;
 import javaslang.collection.HashMap;
 import javaslang.collection.List;
 import javaslang.collection.Map;
 import javaslang.control.Option;
 import javaslang.jackson.datatype.BaseTest;
+import org.junit.Assert;
+import org.junit.Test;
+
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import java.io.IOException;
 
 public abstract class MapTest extends BaseTest {
 
@@ -88,5 +90,79 @@ public abstract class MapTest extends BaseTest {
         Assert.assertEquals(expected, mapper().writeValueAsString(object));
         Parameterized<Integer, Integer> restored = mapper().readValue(expected, new TypeReference<Parameterized<Integer, Integer>>() {});
         Assert.assertEquals(restored.value.get(1).get(), (Integer) 2);
+    }
+
+    @XmlRootElement(name = "xmlSerialize")
+    private static class JaxbXmlSerializeJavaUtil {
+        @XmlElement(name = "transitType")
+        public java.util.Map<String, String> transitTypes;
+
+        public JaxbXmlSerializeJavaUtil init(java.util.Map<String, String> javaSet) {
+            transitTypes = javaSet;
+            return this;
+        }
+    }
+
+    @XmlRootElement(name = "xmlSerialize")
+    private static class JaxbXmlSerializeJavaslang {
+        @XmlElement(name = "transitType")
+        public Map<String, String> transitTypes;
+
+        public JaxbXmlSerializeJavaslang init(Map<String, String> javaSet) {
+            transitTypes = javaSet;
+            return this;
+        }
+    }
+
+    @Test
+    public void testJaxbXmlSerialization() throws IOException {
+        java.util.Map<String, String> javaInit = new java.util.HashMap<>();
+        javaInit.put("key1", "1");
+        javaInit.put("key2", "2");
+        Map<String, String> slangInit = this.<String, String>emptyMap().put("key1", "1").put("key2", "2");
+        ObjectMapper mapper = xmlMapperJaxb();
+        String javaJson = mapper.writeValueAsString(new JaxbXmlSerializeJavaUtil().init(javaInit));
+        String slangJson = mapper.writeValueAsString(new JaxbXmlSerializeJavaslang().init(slangInit));
+        Assert.assertEquals(javaJson, slangJson);
+        JaxbXmlSerializeJavaslang restored = mapper.readValue(slangJson, JaxbXmlSerializeJavaslang.class);
+        Assert.assertEquals(restored.transitTypes.get("key1").get(), "1");
+        Assert.assertEquals(restored.transitTypes.get("key2").get(), "2");
+    }
+
+    @JacksonXmlRootElement(localName = "xmlSerialize")
+    private static class XmlSerializeJavaUtil {
+        @JsonProperty("transitType")
+        public java.util.Map<String, String> transitTypes;
+
+        public XmlSerializeJavaUtil init(java.util.Map<String, String> javaSet) {
+            transitTypes = javaSet;
+            return this;
+        }
+    }
+
+    @JacksonXmlRootElement(localName = "xmlSerialize")
+    private static class XmlSerializeJavaslang {
+        @JsonProperty("transitType")
+        public Map<String, String> transitTypes;
+
+        public XmlSerializeJavaslang init(Map<String, String> javaSet) {
+            transitTypes = javaSet;
+            return this;
+        }
+    }
+
+    @Test
+    public void testXmlSerialization() throws IOException {
+        java.util.Map<String, String> javaInit = new java.util.HashMap<>();
+        javaInit.put("key1", "1");
+        javaInit.put("key2", "2");
+        Map<String, String> slangInit = this.<String, String>emptyMap().put("key1", "1").put("key2", "2");
+        ObjectMapper mapper = xmlMapper();
+        String javaJson = mapper.writeValueAsString(new XmlSerializeJavaUtil().init(javaInit));
+        String slangJson = mapper.writeValueAsString(new XmlSerializeJavaslang().init(slangInit));
+        Assert.assertEquals(javaJson, slangJson);
+        XmlSerializeJavaslang restored = mapper.readValue(slangJson, XmlSerializeJavaslang.class);
+        Assert.assertEquals(restored.transitTypes.get("key1").get(), "1");
+        Assert.assertEquals(restored.transitTypes.get("key2").get(), "2");
     }
 }
