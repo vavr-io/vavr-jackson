@@ -43,9 +43,6 @@ public class JavaslangDeserializers extends Deserializers.Base {
         if (CharSeq.class.isAssignableFrom(raw)) {
             return new CharSeqDeserializer(type);
         }
-        if (PriorityQueue.class.isAssignableFrom(raw)) {
-            return new PriorityQueueDeserializer(type, settings.deserializeNullAsEmptyCollection());
-        }
         if (Lazy.class.isAssignableFrom(raw)) {
             return new LazyDeserializer(type);
         }
@@ -83,6 +80,9 @@ public class JavaslangDeserializers extends Deserializers.Base {
         }
         if (Set.class.isAssignableFrom(raw)) {
             return new SetDeserializer(type, settings.deserializeNullAsEmptyCollection());
+        }
+        if (PriorityQueue.class.isAssignableFrom(raw)) {
+            return new PriorityQueueDeserializer(type, settings.deserializeNullAsEmptyCollection());
         }
         return super.findCollectionLikeDeserializer(type, config, beanDesc, elementTypeDeserializer, elementDeserializer);
     }

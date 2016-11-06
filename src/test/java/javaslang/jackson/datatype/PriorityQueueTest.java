@@ -1,13 +1,21 @@
 package javaslang.jackson.datatype;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import javaslang.collection.PriorityQueue;
 import org.junit.Assert;
 import org.junit.Test;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.IOException;
+import java.util.Arrays;
 
 public class PriorityQueueTest extends BaseTest {
 
@@ -42,4 +50,89 @@ public class PriorityQueueTest extends BaseTest {
         Assert.assertEquals(src, dst);
     }
 
+    @XmlRootElement(name = "xmlSerialize")
+    private static class JaxbXmlSerializeJavaslang {
+        @XmlElementWrapper(name = "transitTypes")
+        @XmlElement(name = "transitType")
+        public PriorityQueue<Integer> transitTypes;
+
+        public JaxbXmlSerializeJavaslang init(PriorityQueue<Integer> slangSet) {
+            transitTypes = slangSet;
+            return this;
+        }
+    }
+
+    @XmlRootElement(name = "xmlSerialize")
+    private static class JaxbXmlSerializeJavaUtil {
+        @XmlElementWrapper(name = "transitTypes")
+        @XmlElement(name = "transitType")
+        public java.util.Collection<Integer> transitTypes;
+
+        public JaxbXmlSerializeJavaUtil init(java.util.Collection<Integer> javaSet) {
+            transitTypes = javaSet;
+            return this;
+        }
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    public void testJaxbXmlSerialization() throws IOException {
+        ObjectMapper mapper = xmlMapperJaxb();
+        String javaUtilValue = mapper.writeValueAsString(new JaxbXmlSerializeJavaslang().init(PriorityQueue.of(1, 2, 3)));
+        Assert.assertEquals(mapper.writeValueAsString(new JaxbXmlSerializeJavaUtil().init(Arrays.asList(1, 2, 3))), javaUtilValue);
+        JaxbXmlSerializeJavaslang restored = mapper.readValue(javaUtilValue, JaxbXmlSerializeJavaslang.class);
+        Assert.assertEquals(restored.transitTypes.size(), 3);
+    }
+
+    @JacksonXmlRootElement(localName = "xmlSerialize")
+    private static class XmlSerializeJavaslang {
+        @JacksonXmlElementWrapper(localName = "transitTypes")
+        @JsonProperty("transitType")
+        public PriorityQueue<Integer> transitTypes;
+
+        public XmlSerializeJavaslang init(PriorityQueue<Integer> slangSet) {
+            transitTypes = slangSet;
+            return this;
+        }
+    }
+
+    @JacksonXmlRootElement(localName = "xmlSerialize")
+    private static class XmlSerializeJavaUtil {
+        @JacksonXmlElementWrapper(localName = "transitTypes")
+        @JsonProperty("transitType")
+        public java.util.Collection<Integer> transitTypes;
+
+        public XmlSerializeJavaUtil init(java.util.Collection<Integer> javaSet) {
+            transitTypes = javaSet;
+            return this;
+        }
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    public void testXmlSerialization() throws IOException {
+        ObjectMapper mapper = xmlMapper();
+        String javaUtilValue = mapper.writeValueAsString(new XmlSerializeJavaslang().init(PriorityQueue.of(1, 2, 3)));
+        Assert.assertEquals(mapper.writeValueAsString(new XmlSerializeJavaUtil().init(Arrays.asList(1, 2, 3))), javaUtilValue);
+        XmlSerializeJavaslang restored = mapper.readValue(javaUtilValue, XmlSerializeJavaslang.class);
+        Assert.assertEquals(restored.transitTypes.size(), 3);
+    }
+
+    public static class Parameterized<T> {
+        public PriorityQueue<T> value;
+        public Parameterized() {}
+        public Parameterized(PriorityQueue<T> value) {
+            this.value = value;
+        }
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    public void testWrappedParameterizedSome() throws IOException {
+        String expected = "{\"value\":[1]}";
+        Parameterized<Integer> object = new Parameterized<>(PriorityQueue.of(1));
+        Assert.assertEquals(expected, mapper().writeValueAsString(object));
+        Parameterized<Integer> restored = mapper().readValue(expected, new TypeReference<Parameterized<Integer>>() {});
+        Assert.assertEquals(restored.value.head(), (Integer) 1);
+    }
 }

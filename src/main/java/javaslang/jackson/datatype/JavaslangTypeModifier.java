@@ -22,6 +22,9 @@ public class JavaslangTypeModifier extends TypeModifier {
         if (Set.class.isAssignableFrom(raw)) {
             return CollectionLikeType.construct(raw, type.containedTypeOrUnknown(0));
         }
+        if (PriorityQueue.class.isAssignableFrom(raw)) {
+            return CollectionLikeType.construct(raw, type.containedTypeOrUnknown(0));
+        }
         return type;
     }
 }

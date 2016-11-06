@@ -55,9 +55,6 @@ public class JavaslangSerializers extends Serializers.Base {
         if (CharSeq.class.isAssignableFrom(raw)) {
             return new CharSeqSerializer(type);
         }
-        if (PriorityQueue.class.isAssignableFrom(raw)) {
-            return new ArraySerializer<>(type);
-        }
         if (Map.class.isAssignableFrom(raw)) {
             return new MapSerializer(type);
         }
@@ -84,6 +81,9 @@ public class JavaslangSerializers extends Serializers.Base {
             return new ArraySerializer<>(type);
         }
         if (Set.class.isAssignableFrom(raw)) {
+            return new ArraySerializer<>(type);
+        }
+        if (PriorityQueue.class.isAssignableFrom(raw)) {
             return new ArraySerializer<>(type);
         }
         return super.findCollectionLikeSerializer(config, type, beanDesc, elementTypeSerializer, elementValueSerializer);
