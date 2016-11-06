@@ -16,6 +16,7 @@
 package javaslang.jackson.datatype.serialize;
 
 import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.type.CollectionType;
 import javaslang.Value;
 
@@ -38,5 +39,10 @@ class ArraySerializer<T extends Value<?>> extends ValueSerializer<T> {
     @Override
     JavaType emulatedJavaType(JavaType type) {
         return CollectionType.construct(ArrayList.class, type.containedType(0));
+    }
+
+    @Override
+    public boolean isEmpty(SerializerProvider provider, T value) {
+        return value.isEmpty();
     }
 }

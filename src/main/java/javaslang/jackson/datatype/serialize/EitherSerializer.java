@@ -66,4 +66,9 @@ class EitherSerializer extends StdSerializer<Either<?, ?>> {
             gen.writeNull();
         }
     }
+
+    @Override
+    public boolean isEmpty(SerializerProvider provider, Either<?, ?> value) {
+        return value.isEmpty();
+    }
 }
