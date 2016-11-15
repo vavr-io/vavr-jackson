@@ -38,10 +38,7 @@ class SetDeserializer extends ArrayDeserializer<Set<?>> {
     @Override
     Set<?> create(List<Object> result, DeserializationContext ctx) throws JsonMappingException {
         if (javaslang.collection.SortedSet.class.isAssignableFrom(javaType.getRawClass())) {
-            if (javaType.containedTypeCount() == 0) {
-                throw ctx.mappingException(javaType.getRawClass());
-            }
-            JavaType generic = javaType.containedType(0);
+            JavaType generic = javaType.containedTypeOrUnknown(0);
             if (generic.getRawClass() == Object.class || !Comparable.class.isAssignableFrom(generic.getRawClass())) {
                 throw ctx.mappingException(javaType.getRawClass());
             }
