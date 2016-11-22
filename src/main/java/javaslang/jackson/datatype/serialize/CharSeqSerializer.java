@@ -16,6 +16,7 @@
 package javaslang.jackson.datatype.serialize;
 
 import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.type.SimpleType;
 import javaslang.collection.CharSeq;
 
@@ -38,5 +39,10 @@ class CharSeqSerializer extends ValueSerializer<CharSeq> {
     @Override
     JavaType emulatedJavaType(JavaType type) {
         return emulated;
+    }
+
+    @Override
+    public boolean isEmpty(SerializerProvider provider, CharSeq value) {
+        return value.isEmpty();
     }
 }

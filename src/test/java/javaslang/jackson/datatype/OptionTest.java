@@ -2,6 +2,7 @@ package javaslang.jackson.datatype;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javaslang.control.Option;
@@ -104,11 +105,37 @@ public class OptionTest extends BaseTest {
 
     @Test
     public void testJsonTypeInfo2() throws IOException {
-        ObjectMapper mapper = mapper(new JavaslangModule.Settings().useOptionInPlainFormat(false));
+        ObjectMapper mapper = mapper(optSettings);
         String javaUtilValue = mapper.writeValueAsString(new A());
         Assert.assertEquals("{\"f\":[\"defined\",{\"card\":{\"type\":\"hello\"}}]}", javaUtilValue);
         A restored = mapper.readValue(javaUtilValue, A.class);
         Assert.assertEquals("hello", restored.f.get().type);
+    }
+
+    public static class Parameterized<T> {
+        public Option<T> value;
+        public Parameterized() {}
+        public Parameterized(Option<T> value) {
+            this.value = value;
+        }
+    }
+
+    @Test
+    public void testWrappedParameterizedSome() throws IOException {
+        String expected = "{\"value\":[\"defined\",1]}";
+        Parameterized<Integer> object = new Parameterized<>(Option.some(1));
+        Assert.assertEquals(expected, mapper(optSettings).writeValueAsString(object));
+        Parameterized<Integer> restored = mapper(optSettings).readValue(expected, new TypeReference<Parameterized<Integer>>() {});
+        Assert.assertEquals(restored.value.get(), (Integer) 1);
+    }
+
+    @Test
+    public void testWrappedWildcardSome() throws IOException {
+        String expected = "{\"value\":[\"defined\",1]}";
+        Parameterized<?> object = new Parameterized<>(Option.some(1));
+        Assert.assertEquals(expected, mapper(optSettings).writeValueAsString(object));
+        Parameterized<?> restored = mapper(optSettings).readValue(expected, Parameterized.class);
+        Assert.assertEquals(restored.value.get(), 1);
     }
 
 }

@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.fasterxml.jackson.module.jaxb.JaxbAnnotationModule;
 
 import org.junit.Assert;
 
@@ -49,6 +51,19 @@ public class BaseTest {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaslangModule(settings));
         return mapper;
+    }
+
+    public XmlMapper xmlMapper() {
+        XmlMapper xmlMapper = new XmlMapper();
+        xmlMapper.registerModule(new JavaslangModule());
+        return xmlMapper;
+    }
+
+    public XmlMapper xmlMapperJaxb() {
+        XmlMapper xmlMapper = new XmlMapper();
+        xmlMapper.registerModule(new JaxbAnnotationModule());
+        xmlMapper.registerModule(new JavaslangModule());
+        return xmlMapper;
     }
 
     protected String wrapToArray(String as, String json) {

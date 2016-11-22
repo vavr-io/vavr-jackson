@@ -16,6 +16,7 @@
 package javaslang.jackson.datatype.serialize;
 
 import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.type.MapType;
 import javaslang.collection.Map;
 
@@ -40,5 +41,10 @@ class MapSerializer extends ValueSerializer<Map<?, ?>> {
     @Override
     JavaType emulatedJavaType(JavaType type) {
         return MapType.construct(LinkedHashMap.class, type.containedType(0), type.containedType(1));
+    }
+
+    @Override
+    public boolean isEmpty(SerializerProvider provider, Map<?, ?> value) {
+        return value.isEmpty();
     }
 }
