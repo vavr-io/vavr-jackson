@@ -17,6 +17,8 @@ package javaslang.jackson.datatype.deserialize;
 
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.deser.Deserializers;
+import com.fasterxml.jackson.databind.jsontype.TypeDeserializer;
+import com.fasterxml.jackson.databind.type.CollectionLikeType;
 import javaslang.Lazy;
 import javaslang.Tuple;
 import javaslang.collection.*;
@@ -56,17 +58,26 @@ public class JavaslangDeserializers extends Deserializers.Base {
         if (Tuple.class.isAssignableFrom(raw)) {
             return new TupleDeserializer(type);
         }
+        if (λ.class.isAssignableFrom(raw)) {
+            return new SerializableDeserializer<>(type);
+        }
+
+        return super.findBeanDeserializer(type, config, beanDesc);
+    }
+
+    @Override
+    public JsonDeserializer<?> findCollectionLikeDeserializer(CollectionLikeType type,
+                                                              DeserializationConfig config, BeanDescription beanDesc,
+                                                              TypeDeserializer elementTypeDeserializer, JsonDeserializer<?> elementDeserializer)
+            throws JsonMappingException
+    {
+        Class<?> raw = type.getRawClass();
         if (Seq.class.isAssignableFrom(raw)) {
             return new SeqDeserializer(type, settings.deserializeNullAsEmptyCollection());
         }
         if (Set.class.isAssignableFrom(raw)) {
             return new SetDeserializer(type, settings.deserializeNullAsEmptyCollection());
         }
-
-        if (λ.class.isAssignableFrom(raw)) {
-            return new SerializableDeserializer<>(type);
-        }
-
-        return null;
+        return super.findCollectionLikeDeserializer(type, config, beanDesc, elementTypeDeserializer, elementDeserializer);
     }
 }

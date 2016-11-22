@@ -46,7 +46,12 @@ abstract class ValueSerializer<T> extends StdSerializer<T> {
         } else {
             JsonSerializer<Object> ser;
             try {
-                ser = provider.findTypedValueSerializer(emulatedJavaType(type), true, null);
+                JavaType emulated = emulatedJavaType(type);
+                if (emulated.getRawClass() != Object.class) {
+                    ser = provider.findTypedValueSerializer(emulated, true, null);
+                } else {
+                    ser = provider.findTypedValueSerializer(obj.getClass(), true, null);
+                }
             } catch (Exception ignore) {
                 ser = provider.findTypedValueSerializer(obj.getClass(), true, null);
             }

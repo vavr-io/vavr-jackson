@@ -54,8 +54,8 @@ abstract class MaplikeDeserializer<T> extends StdDeserializer<T> implements Reso
     }
 
     private static MapLikeType mapLike(JavaType type, DeserializationContext ctxt) {
-        JavaType keyType = type.containedTypeCount() > 0 ? type.containedType(0) : TypeFactory.unknownType();
-        JavaType valueType = type.containedTypeCount() > 1 ? type.containedType(1) : TypeFactory.unknownType();
+        JavaType keyType = type.containedTypeOrUnknown(0);
+        JavaType valueType = type.containedTypeOrUnknown(1);
         return ctxt.getTypeFactory().constructMapLikeType(type.getRawClass(), keyType, valueType);
     }
 }

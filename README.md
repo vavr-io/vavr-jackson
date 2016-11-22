@@ -15,14 +15,14 @@ Jackson datatype module for [Javaslang](http://javaslang.io/) library
 <dependency>
   <groupId>io.javaslang</groupId>
   <artifactId>javaslang-jackson</artifactId>
-  <version>2.0.3</version>
+  <version>2.0.5</version>
 </dependency>
 ```
 
 ### Gradle
 
 ```groovy
-compile("io.javaslang:javaslang-jackson:2.0.3")
+compile("io.javaslang:javaslang-jackson:2.0.5")
 ```
 
 ### Registering module

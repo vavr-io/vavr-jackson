@@ -61,5 +61,6 @@ public class JavaslangModule extends SimpleModule {
     public void setupModule(SetupContext context) {
         context.addSerializers(new JavaslangSerializers(settings));
         context.addDeserializers(new JavaslangDeserializers(settings));
+        context.addTypeModifier(new JavaslangTypeModifier());
     }
 }

@@ -1,18 +1,16 @@
 package javaslang.jackson.datatype.seq;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-
+import com.fasterxml.jackson.core.type.TypeReference;
+import javaslang.collection.List;
+import javaslang.collection.Seq;
+import javaslang.control.Option;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.util.Arrays;
-
-import javaslang.collection.List;
-import javaslang.collection.Seq;
-import javaslang.control.Option;
 
 public class ListTest extends SeqTest {
 
