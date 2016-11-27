@@ -2,6 +2,7 @@ package javaslang.jackson.datatype.seq;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
@@ -87,6 +88,12 @@ public abstract class SeqTest extends BaseTest {
         Seq<?> restored = (Seq<?>) mapper.readValue("[]", clz());
         Assert.assertTrue(restored.isEmpty());
         Assert.assertTrue(clz().isAssignableFrom(restored.getClass()));
+    }
+
+    @Test(expected = JsonMappingException.class)
+    public void testExpectedStartArrayToken() throws IOException {
+        ObjectMapper mapper = mapper();
+        mapper.readValue("42", clz());
     }
 
     @Test

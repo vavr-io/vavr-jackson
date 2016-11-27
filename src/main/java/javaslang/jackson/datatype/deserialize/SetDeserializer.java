@@ -38,10 +38,7 @@ class SetDeserializer extends ArrayDeserializer<Set<?>> {
     @Override
     Set<?> create(List<Object> result, DeserializationContext ctx) throws JsonMappingException {
         if (javaslang.collection.SortedSet.class.isAssignableFrom(javaType.getRawClass())) {
-            JavaType generic = javaType.containedTypeOrUnknown(0);
-            if (generic.getRawClass() == Object.class || !Comparable.class.isAssignableFrom(generic.getRawClass())) {
-                throw ctx.mappingException(javaType.getRawClass());
-            }
+            checkContainedTypeIsComparable(ctx, javaType.containedTypeOrUnknown(0));
             return javaslang.collection.TreeSet.ofAll((o1, o2) -> ((Comparable) o1).compareTo(o2), result);
         }
         if (javaslang.collection.LinkedHashSet.class.isAssignableFrom(javaType.getRawClass())) {

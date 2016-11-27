@@ -36,10 +36,7 @@ class PriorityQueueDeserializer extends ArrayDeserializer<PriorityQueue<?>> {
     @SuppressWarnings("unchecked")
     @Override
     PriorityQueue<?> create(List<Object> list, DeserializationContext ctxt) throws JsonMappingException {
-        JavaType generic = javaType.containedTypeOrUnknown(0);
-        if (generic.getRawClass() == Object.class || !Comparable.class.isAssignableFrom(generic.getRawClass())) {
-            throw ctxt.mappingException(javaType.getRawClass());
-        }
+        checkContainedTypeIsComparable(ctxt, javaType.containedTypeOrUnknown(0));
         return PriorityQueue.ofAll((o1, o2) -> ((Comparable) o1).compareTo(o2), list);
     }
 }
