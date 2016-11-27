@@ -21,7 +21,6 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import javaslang.collection.Seq;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -66,5 +65,12 @@ abstract class ArrayDeserializer<T> extends ValueDeserializer<T> {
             return create(Collections.emptyList(), ctxt);
         }
         return super.getNullValue(ctxt);
+    }
+
+    static void checkContainedTypeIsComparable(DeserializationContext ctxt, JavaType type) throws JsonMappingException {
+        Class<?> clz = type.getRawClass();
+        if (clz == Object.class || !Comparable.class.isAssignableFrom(clz)) {
+            throw ctxt.mappingException(clz);
+        }
     }
 }
