@@ -26,8 +26,7 @@ import java.io.IOException;
 
 import javaslang.control.Either;
 
-import static com.fasterxml.jackson.core.JsonToken.END_ARRAY;
-import static com.fasterxml.jackson.core.JsonToken.VALUE_NULL;
+import static com.fasterxml.jackson.core.JsonToken.*;
 
 class EitherDeserializer extends ValueDeserializer<Either<?, ?>> {
 
@@ -43,33 +42,52 @@ class EitherDeserializer extends ValueDeserializer<Either<?, ?>> {
 
     @Override
     public Either<?, ?> deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
-        boolean right = false;
-        Object value = null;
-        int cnt = 0;
+        final JsonToken nextToken = p.getCurrentToken();
 
-        for (JsonToken jsonToken = p.nextToken(); jsonToken != END_ARRAY; jsonToken = p.nextToken()) {
-            cnt++;
-            switch (cnt) {
-                case 1:
-                    String def = (String) stringDeserializer.deserialize(p, ctxt);
-                    if ("right".equals(def)) {
-                        right = true;
-                    } else if ("left".equals(def)) {
-                        right = false;
-                    } else {
-                        throw ctxt.mappingException(javaType.getRawClass());
-                    }
-                    break;
-                case 2:
-                    JsonDeserializer<?> deserializer = right ? deserializer(1) : deserializer(0);
-                    value = (jsonToken != VALUE_NULL) ? deserializer.deserialize(p, ctxt) : deserializer.getNullValue(ctxt);
-                    break;
+        if (nextToken == START_ARRAY) {
+            boolean right = false;
+            Object value = null;
+            int cnt = 0;
+
+            for (JsonToken jsonToken = p.nextToken(); jsonToken != END_ARRAY; jsonToken = p.nextToken()) {
+                cnt++;
+                switch (cnt) {
+                    case 1:
+                        String def = (String) stringDeserializer.deserialize(p, ctxt);
+                        if ("right".equals(def) || "r".equals(def)) {
+                            right = true;
+                        } else if ("left".equals(def) || "l".equals(def)) {
+                            right = false;
+                        } else {
+                            throw ctxt.mappingException(javaType.getRawClass());
+                        }
+                        break;
+                    case 2:
+                        JsonDeserializer<?> deserializer = right ? deserializer(1) : deserializer(0);
+                        value = (jsonToken != VALUE_NULL) ? deserializer.deserialize(p, ctxt) : deserializer.getNullValue(ctxt);
+                        break;
+                }
             }
-        }
-        if (cnt != 2) {
+            if (cnt != 2) {
+                throw ctxt.mappingException(javaType.getRawClass());
+            }
+            return right ? Either.right(value) : Either.left(value);
+        } else if (nextToken == START_OBJECT) {
+            final String type = p.nextFieldName();
+            if ("r".equals(type)) {
+                final JsonDeserializer<?> deserializer = deserializer(1);
+                final Object value = p.nextToken() != VALUE_NULL ? deserializer.deserialize(p, ctxt) : deserializer.getNullValue(ctxt);
+                return Either.right(value);
+            } else if ("l".equals(type)) {
+                final JsonDeserializer<?> deserializer = deserializer(0);
+                final Object value = p.nextToken() != VALUE_NULL ? deserializer.deserialize(p, ctxt) : deserializer.getNullValue(ctxt);
+                return Either.left(value);
+            } else {
+                throw ctxt.mappingException(javaType.getRawClass());
+            }
+        } else {
             throw ctxt.mappingException(javaType.getRawClass());
         }
-        return right ? Either.right(value) : Either.left(value);
     }
 
     @Override
