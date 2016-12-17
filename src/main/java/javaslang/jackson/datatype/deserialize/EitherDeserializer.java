@@ -54,9 +54,9 @@ class EitherDeserializer extends ValueDeserializer<Either<?, ?>> {
                 switch (cnt) {
                     case 1:
                         String def = (String) stringDeserializer.deserialize(p, ctxt);
-                        if ("right".equals(def) || "r".equals(def)) {
+                        if (isRight(def)) {
                             right = true;
-                        } else if ("left".equals(def) || "l".equals(def)) {
+                        } else if (isLeft(def)) {
                             right = false;
                         } else {
                             throw ctxt.mappingException(javaType.getRawClass());
@@ -74,11 +74,11 @@ class EitherDeserializer extends ValueDeserializer<Either<?, ?>> {
             return right ? Either.right(value) : Either.left(value);
         } else if (nextToken == START_OBJECT) {
             final String type = p.nextFieldName();
-            if ("r".equals(type)) {
+            if (isRight(type)) {
                 final JsonDeserializer<?> deserializer = deserializer(1);
                 final Object value = p.nextToken() != VALUE_NULL ? deserializer.deserialize(p, ctxt) : deserializer.getNullValue(ctxt);
                 return Either.right(value);
-            } else if ("l".equals(type)) {
+            } else if (isLeft(type)) {
                 final JsonDeserializer<?> deserializer = deserializer(0);
                 final Object value = p.nextToken() != VALUE_NULL ? deserializer.deserialize(p, ctxt) : deserializer.getNullValue(ctxt);
                 return Either.left(value);
@@ -94,5 +94,13 @@ class EitherDeserializer extends ValueDeserializer<Either<?, ?>> {
     public void resolve(DeserializationContext ctxt) throws JsonMappingException {
         super.resolve(ctxt);
         stringDeserializer = ctxt.findContextualValueDeserializer(ctxt.constructType(String.class), null);
+    }
+
+    private static boolean isRight(final String fieldName) {
+        return "right".equals(fieldName) || "r".equals(fieldName);
+    }
+
+    private static boolean isLeft(final String fieldName) {
+        return "left".equals(fieldName) || "l".equals(fieldName);
     }
 }
