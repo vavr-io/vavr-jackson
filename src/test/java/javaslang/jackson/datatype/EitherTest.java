@@ -5,10 +5,13 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.module.scala.DefaultScalaModule;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.math.BigInteger;
 
 import javaslang.Tuple;
 import javaslang.collection.HashSet;
@@ -16,6 +19,7 @@ import javaslang.collection.List;
 import javaslang.collection.Set;
 import javaslang.control.Either;
 import javaslang.control.Option;
+import scala.util.Left;
 
 import static javaslang.control.Option.none;
 import static javaslang.control.Option.some;
@@ -134,6 +138,23 @@ public class EitherTest extends BaseTest {
         Assert.assertEquals("{\"f\":[\"right\",{\"card\":{\"type\":\"hello\"}}]}", javaUtilValue);
         Right restoredRight = mapper().readValue(javaUtilValue, Right.class);
         Assert.assertEquals("hello", restoredRight.f.right().get().type);
+    }
+
+    @Test
+    public void testDeserializingScalaEither() throws IOException {
+        final scala.util.Either<String, BigInteger> left = scala.util.Left.apply("test");
+        final scala.util.Either<String, BigInteger> right = scala.util.Right.apply(BigInteger.ONE);
+        final ObjectMapper mapper = mapper().registerModule(new DefaultScalaModule());
+
+        final String serializedLeft = mapper.writeValueAsString(left);
+        final Either<String, BigInteger> deserializedLeft =
+                mapper.readValue(serializedLeft, new TypeReference<Either<String, BigInteger>>() { });
+        Assert.assertEquals("test", deserializedLeft.left().get());
+
+        final String serializedRight = mapper.writeValueAsString(right);
+        final Either<String, BigInteger> deserializedRight =
+                mapper.readValue(serializedRight, new TypeReference<Either<String, BigInteger>>() { });
+        Assert.assertEquals(BigInteger.ONE, deserializedRight.right().get());
     }
 
     public static class Parameterized<L, R> {
