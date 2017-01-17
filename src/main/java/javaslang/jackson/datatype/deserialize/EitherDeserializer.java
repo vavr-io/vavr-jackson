@@ -59,7 +59,7 @@ class EitherDeserializer extends ValueDeserializer<Either<?, ?>> {
                         } else if (isLeft(def)) {
                             right = false;
                         } else {
-                            throw ctxt.mappingException(javaType.getRawClass());
+                            throw mappingException(ctxt, javaType.getRawClass(), jsonToken);
                         }
                         break;
                     case 2:
@@ -69,10 +69,11 @@ class EitherDeserializer extends ValueDeserializer<Either<?, ?>> {
                 }
             }
             if (cnt != 2) {
-                throw ctxt.mappingException(javaType.getRawClass());
+                throw mappingException(ctxt, javaType.getRawClass(), null);
             }
             return right ? Either.right(value) : Either.left(value);
         } else if (nextToken == START_OBJECT) {
+            final JsonToken currentToken = p.getCurrentToken();
             final String type = p.nextFieldName();
             if (isRight(type)) {
                 final JsonDeserializer<?> deserializer = deserializer(1);
@@ -83,10 +84,10 @@ class EitherDeserializer extends ValueDeserializer<Either<?, ?>> {
                 final Object value = p.nextToken() != VALUE_NULL ? deserializer.deserialize(p, ctxt) : deserializer.getNullValue(ctxt);
                 return Either.left(value);
             } else {
-                throw ctxt.mappingException(javaType.getRawClass());
+                throw mappingException(ctxt, javaType.getRawClass(), currentToken);
             }
         } else {
-            throw ctxt.mappingException(javaType.getRawClass());
+            throw mappingException(ctxt, javaType.getRawClass(), p.getCurrentToken());
         }
     }
 

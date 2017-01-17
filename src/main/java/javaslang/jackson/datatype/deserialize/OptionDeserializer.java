@@ -52,13 +52,14 @@ class OptionDeserializer extends ValueDeserializer<Option<?>> {
             cnt++;
             switch (cnt) {
                 case 1:
+                    JsonToken currentToken = p.getCurrentToken();
                     String def = (String) stringDeserializer.deserialize(p, ctxt);
                     if ("defined".equals(def)) {
                         defined = true;
                     } else if ("undefined".equals(def)) {
                         defined = false;
                     } else {
-                        throw ctxt.mappingException(javaType.getRawClass());
+                        throw mappingException(ctxt, javaType.getRawClass(), currentToken);
                     }
                     break;
                 case 2:
@@ -68,12 +69,12 @@ class OptionDeserializer extends ValueDeserializer<Option<?>> {
         }
         if (defined) {
             if (cnt != 2) {
-                throw ctxt.mappingException(javaType.getRawClass());
+                throw mappingException(ctxt, javaType.getRawClass(), null);
             }
             return Option.some(value);
         } else {
             if (cnt != 1) {
-                throw ctxt.mappingException(javaType.getRawClass());
+                throw mappingException(ctxt, javaType.getRawClass(), null);
             }
             return Option.none();
         }

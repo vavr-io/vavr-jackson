@@ -50,7 +50,7 @@ abstract class ArrayDeserializer<T> extends ValueDeserializer<T> {
         JsonDeserializer<?> deserializer = deserializer(0);
         List<Object> list = new ArrayList<>();
         if (!p.isExpectedStartArrayToken()) {
-            throw ctxt.mappingException(valueType.getRawClass());
+            throw mappingException(ctxt, valueType.getRawClass(), p.getCurrentToken());
         }
         for (JsonToken jsonToken = p.nextToken(); jsonToken != END_ARRAY; jsonToken = p.nextToken()) {
             Object value = (jsonToken != VALUE_NULL) ? deserializer.deserialize(p, ctxt) : deserializer.getNullValue(ctxt);
@@ -70,7 +70,7 @@ abstract class ArrayDeserializer<T> extends ValueDeserializer<T> {
     static void checkContainedTypeIsComparable(DeserializationContext ctxt, JavaType type) throws JsonMappingException {
         Class<?> clz = type.getRawClass();
         if (clz == Object.class || !Comparable.class.isAssignableFrom(clz)) {
-            throw ctxt.mappingException(clz);
+            throw mappingException(ctxt, clz, null);
         }
     }
 }
