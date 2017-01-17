@@ -11,7 +11,7 @@ import java.io.IOException;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-public class AbstractContent {
+public class AbstractContentTest {
 
     public static class L {
         @JsonDeserialize(contentAs = X.class)
