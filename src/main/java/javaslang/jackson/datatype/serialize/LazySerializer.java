@@ -16,6 +16,7 @@
 package javaslang.jackson.datatype.serialize;
 
 import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 import javaslang.Lazy;
 
 import java.io.IOException;
@@ -34,7 +35,7 @@ class LazySerializer extends ValueSerializer<Lazy<?>> {
     }
 
     @Override
-    JavaType emulatedJavaType(JavaType type) {
+    JavaType emulatedJavaType(JavaType type, TypeFactory typeFactory) {
         return type.containedType(0);
     }
 }

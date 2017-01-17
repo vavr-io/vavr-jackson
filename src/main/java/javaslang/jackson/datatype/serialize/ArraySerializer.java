@@ -17,7 +17,7 @@ package javaslang.jackson.datatype.serialize;
 
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.type.CollectionType;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 import javaslang.Value;
 
 import java.io.IOException;
@@ -37,8 +37,8 @@ class ArraySerializer<T extends Value<?>> extends ValueSerializer<T> {
     }
 
     @Override
-    JavaType emulatedJavaType(JavaType type) {
-        return CollectionType.construct(ArrayList.class, type.containedType(0));
+    JavaType emulatedJavaType(JavaType type, TypeFactory typeFactory) {
+        return typeFactory.constructCollectionType(ArrayList.class, type.containedType(0));
     }
 
     @Override

@@ -77,6 +77,9 @@ public class JavaslangSerializers extends Serializers.Base {
                                                           CollectionLikeType type, BeanDescription beanDesc,
                                                           TypeSerializer elementTypeSerializer, JsonSerializer<Object> elementValueSerializer) {
         Class<?> raw = type.getRawClass();
+        if (raw == CharSeq.class) {
+            return new CharSeqSerializer(type);
+        }
         if (Seq.class.isAssignableFrom(raw)) {
             return new ArraySerializer<>(type);
         }

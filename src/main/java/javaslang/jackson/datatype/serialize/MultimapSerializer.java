@@ -17,8 +17,7 @@ package javaslang.jackson.datatype.serialize;
 
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.type.CollectionType;
-import com.fasterxml.jackson.databind.type.MapType;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 import javaslang.collection.Multimap;
 
 import java.io.IOException;
@@ -49,8 +48,9 @@ class MultimapSerializer extends ValueSerializer<Multimap<?, ?>> {
     }
 
     @Override
-    JavaType emulatedJavaType(JavaType type) {
-        return MapType.construct(LinkedHashMap.class, type.containedType(0), CollectionType.construct(ArrayList.class, type.containedType(1)));
+    JavaType emulatedJavaType(JavaType type, TypeFactory typeFactory) {
+        JavaType containerType = typeFactory.constructCollectionType(ArrayList.class, type.containedType(1));
+        return typeFactory.constructMapType(LinkedHashMap.class, type.containedType(0), containerType);
     }
 
     @Override

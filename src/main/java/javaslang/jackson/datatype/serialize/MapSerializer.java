@@ -17,7 +17,7 @@ package javaslang.jackson.datatype.serialize;
 
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.type.MapType;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 import javaslang.collection.Map;
 
 import java.io.IOException;
@@ -39,8 +39,8 @@ class MapSerializer extends ValueSerializer<Map<?, ?>> {
     }
 
     @Override
-    JavaType emulatedJavaType(JavaType type) {
-        return MapType.construct(LinkedHashMap.class, type.containedType(0), type.containedType(1));
+    JavaType emulatedJavaType(JavaType type, TypeFactory typeFactory) {
+        return typeFactory.constructMapType(LinkedHashMap.class, type.containedType(0), type.containedType(1));
     }
 
     @Override

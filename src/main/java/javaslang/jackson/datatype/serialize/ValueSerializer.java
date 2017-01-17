@@ -21,6 +21,7 @@ import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 
 import java.io.IOException;
 
@@ -36,7 +37,7 @@ abstract class ValueSerializer<T> extends StdSerializer<T> {
     }
 
     abstract Object toJavaObj(T value) throws IOException;
-    abstract JavaType emulatedJavaType(JavaType type);
+    abstract JavaType emulatedJavaType(JavaType type, TypeFactory typeFactory);
 
     @Override
     public void serialize(T value, JsonGenerator gen, SerializerProvider provider) throws IOException {
@@ -46,7 +47,7 @@ abstract class ValueSerializer<T> extends StdSerializer<T> {
         } else {
             JsonSerializer<Object> ser;
             try {
-                JavaType emulated = emulatedJavaType(type);
+                JavaType emulated = emulatedJavaType(type, provider.getTypeFactory());
                 if (emulated.getRawClass() != Object.class) {
                     ser = provider.findTypedValueSerializer(emulated, true, null);
                 } else {
