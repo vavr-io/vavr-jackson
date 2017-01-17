@@ -16,9 +16,11 @@
 package javaslang.jackson.datatype.serialize;
 
 import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 import javaslang.Tuple;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 class TupleSerializer extends ValueSerializer<Tuple> {
 
@@ -34,8 +36,8 @@ class TupleSerializer extends ValueSerializer<Tuple> {
     }
 
     @Override
-    JavaType emulatedJavaType(JavaType type) {
-        return null;
+    JavaType emulatedJavaType(JavaType type, TypeFactory typeFactory) {
+        return typeFactory.constructCollectionType(ArrayList.class, Object.class);
     }
 
 }

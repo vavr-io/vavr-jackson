@@ -15,6 +15,7 @@
  */
 package javaslang.jackson.datatype.deserialize;
 
+import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonDeserializer;
@@ -52,8 +53,24 @@ abstract class ValueDeserializer<T> extends StdDeserializer<T> implements Resolv
     @Override
     public void resolve(DeserializationContext ctxt) throws JsonMappingException {
         for (int i = 0; i < typeCount; i++) {
-            deserializers.add(ctxt.findRootValueDeserializer(javaType.containedTypeOrUnknown(i)));
+            JavaType containedType = javaType.isCollectionLikeType() ? javaType.getContentType() : javaType.containedTypeOrUnknown(i);
+            deserializers.add(ctxt.findRootValueDeserializer(containedType));
         }
+    }
+
+    // DEV-NOTE: original method is deprecated since 2.8
+    static JsonMappingException mappingException(DeserializationContext ctxt, Class<?> targetClass, JsonToken token) {
+        String tokenDesc = (token == null) ? "<end of input>" : String.format("%s token", token);
+        return JsonMappingException.from(ctxt.getParser(),
+                String.format("Can not deserialize instance of %s out of %s",
+                        _calcName(targetClass), tokenDesc));
+    }
+
+    private static String _calcName(Class<?> cls) {
+        if (cls.isArray()) {
+            return _calcName(cls.getComponentType())+"[]";
+        }
+        return cls.getName();
     }
 
 }

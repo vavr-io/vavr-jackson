@@ -52,13 +52,13 @@ class TupleDeserializer extends ValueDeserializer<Tuple> {
     }
 
     @Override
-    public Tuple deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException {
+    public Tuple deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
         List<Object> list = new ArrayList<>();
         int ptr = 0;
 
         for (JsonToken jsonToken = p.nextToken(); jsonToken != END_ARRAY; jsonToken = p.nextToken()) {
             if (ptr >= deserializersCount()) {
-                throw ctxt.mappingException(javaType.getRawClass());
+                throw mappingException(ctxt, javaType.getRawClass(), jsonToken);
             }
             JsonDeserializer<?> deserializer = deserializer(ptr++);
             Object value = (jsonToken != VALUE_NULL) ? deserializer.deserialize(p, ctxt) : deserializer.getNullValue(ctxt);
@@ -98,7 +98,7 @@ class TupleDeserializer extends ValueDeserializer<Tuple> {
                 result = Tuple.empty();
         }
         if (!javaType.getRawClass().isAssignableFrom(result.getClass())) {
-            throw ctxt.mappingException(javaType.getRawClass());
+            throw mappingException(ctxt, javaType.getRawClass(), null);
         }
         return result;
     }

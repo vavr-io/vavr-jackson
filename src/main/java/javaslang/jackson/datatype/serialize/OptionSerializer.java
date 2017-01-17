@@ -17,8 +17,8 @@ package javaslang.jackson.datatype.serialize;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 import javaslang.control.Option;
 
 import java.io.IOException;
@@ -62,7 +62,7 @@ class OptionSerializer extends ValueSerializer<Option<?>> {
     }
 
     @Override
-    JavaType emulatedJavaType(JavaType type) {
+    JavaType emulatedJavaType(JavaType type, TypeFactory typeFactory) {
         // plain mode only
         return type.containedType(0);
     }

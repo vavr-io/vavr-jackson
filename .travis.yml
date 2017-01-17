@@ -9,6 +9,9 @@ before_install:
 - sudo apt-get update
 - sudo apt-get install --only-upgrade -y oracle-java8-installer
 - pip install --user codecov
+script:
+- mvn clean test -B
+- mvn clean test -B -Dfasterxml.version=2.8.4
 after_success:
 - codecov
 - mvn clean deploy -DskipTests --settings .travis/maven-settings.xml

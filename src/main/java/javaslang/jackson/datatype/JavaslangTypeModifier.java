@@ -19,13 +19,13 @@ public class JavaslangTypeModifier extends TypeModifier {
     {
         final Class<?> raw = type.getRawClass();
         if (Seq.class.isAssignableFrom(raw) && CharSeq.class != raw) {
-            return CollectionLikeType.construct(raw, type.containedTypeOrUnknown(0));
+            return CollectionLikeType.upgradeFrom(type, type.containedTypeOrUnknown(0));
         }
         if (Set.class.isAssignableFrom(raw)) {
-            return CollectionLikeType.construct(raw, type.containedTypeOrUnknown(0));
+            return CollectionLikeType.upgradeFrom(type, type.containedTypeOrUnknown(0));
         }
         if (PriorityQueue.class.isAssignableFrom(raw)) {
-            return CollectionLikeType.construct(raw, type.containedTypeOrUnknown(0));
+            return CollectionLikeType.upgradeFrom(type, type.containedTypeOrUnknown(0));
         }
         return type;
     }

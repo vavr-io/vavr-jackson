@@ -75,6 +75,9 @@ public class JavaslangDeserializers extends Deserializers.Base {
             throws JsonMappingException
     {
         Class<?> raw = type.getRawClass();
+        if (raw == CharSeq.class) {
+            return new CharSeqDeserializer(type);
+        }
         if (Seq.class.isAssignableFrom(raw)) {
             return new SeqDeserializer(type, settings.deserializeNullAsEmptyCollection());
         }
