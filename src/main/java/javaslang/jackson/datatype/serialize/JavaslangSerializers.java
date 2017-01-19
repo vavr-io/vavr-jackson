@@ -22,6 +22,7 @@ import com.fasterxml.jackson.databind.SerializationConfig;
 import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
 import com.fasterxml.jackson.databind.ser.Serializers;
 import com.fasterxml.jackson.databind.type.CollectionLikeType;
+import com.fasterxml.jackson.databind.type.MapLikeType;
 import javaslang.Lazy;
 import javaslang.Tuple;
 import javaslang.collection.*;
@@ -52,15 +53,6 @@ public class JavaslangSerializers extends Serializers.Base {
         if (Either.class.isAssignableFrom(raw)) {
             return new EitherSerializer(type);
         }
-        if (CharSeq.class.isAssignableFrom(raw)) {
-            return new CharSeqSerializer(type);
-        }
-        if (Map.class.isAssignableFrom(raw)) {
-            return new MapSerializer(type);
-        }
-        if (Multimap.class.isAssignableFrom(raw)) {
-            return new MultimapSerializer(type);
-        }
         if (Tuple.class.isAssignableFrom(raw)) {
             return new TupleSerializer(type);
         }
@@ -90,5 +82,20 @@ public class JavaslangSerializers extends Serializers.Base {
             return new ArraySerializer<>(type);
         }
         return super.findCollectionLikeSerializer(config, type, beanDesc, elementTypeSerializer, elementValueSerializer);
+    }
+
+    @Override
+    public JsonSerializer<?> findMapLikeSerializer(SerializationConfig config,
+                                                   MapLikeType type, BeanDescription beanDesc,
+                                                   JsonSerializer<Object> keySerializer,
+                                                   TypeSerializer elementTypeSerializer, JsonSerializer<Object> elementValueSerializer) {
+        Class<?> raw = type.getRawClass();
+        if (Map.class.isAssignableFrom(raw)) {
+            return new MapSerializer(type);
+        }
+        if (Multimap.class.isAssignableFrom(raw)) {
+            return new MultimapSerializer(type);
+        }
+        return super.findMapLikeSerializer(config, type, beanDesc, keySerializer, elementTypeSerializer, elementValueSerializer);
     }
 }
