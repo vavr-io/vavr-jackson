@@ -45,7 +45,7 @@ class MultimapDeserializer extends MaplikeDeserializer<Multimap<?, ?>> {
     @Override
     public void resolve(DeserializationContext ctxt) throws JsonMappingException {
         super.resolve(ctxt);
-        JavaType containerType = ctxt.getTypeFactory().constructCollectionType(ArrayList.class, mapLikeType.getContentType());
+        JavaType containerType = ctxt.getTypeFactory().constructCollectionType(ArrayList.class, javaType.getContentType());
         containerDeserializer = ctxt.findContextualValueDeserializer(containerType, null);
     }
 

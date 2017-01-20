@@ -19,6 +19,7 @@ import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.deser.Deserializers;
 import com.fasterxml.jackson.databind.jsontype.TypeDeserializer;
 import com.fasterxml.jackson.databind.type.CollectionLikeType;
+import com.fasterxml.jackson.databind.type.MapLikeType;
 import javaslang.Lazy;
 import javaslang.Tuple;
 import javaslang.collection.*;
@@ -40,9 +41,6 @@ public class JavaslangDeserializers extends Deserializers.Base {
                                                     DeserializationConfig config,
                                                     BeanDescription beanDesc) throws JsonMappingException {
         Class<?> raw = type.getRawClass();
-        if (CharSeq.class.isAssignableFrom(raw)) {
-            return new CharSeqDeserializer(type);
-        }
         if (Lazy.class.isAssignableFrom(raw)) {
             return new LazyDeserializer(type);
         }
@@ -51,12 +49,6 @@ public class JavaslangDeserializers extends Deserializers.Base {
         }
         if (Either.class.isAssignableFrom(raw)) {
             return new EitherDeserializer(type);
-        }
-        if (Map.class.isAssignableFrom(raw)) {
-            return new MapDeserializer(type);
-        }
-        if (Multimap.class.isAssignableFrom(raw)) {
-            return new MultimapDeserializer(type);
         }
         if (Tuple.class.isAssignableFrom(raw)) {
             return new TupleDeserializer(type);
@@ -88,5 +80,22 @@ public class JavaslangDeserializers extends Deserializers.Base {
             return new PriorityQueueDeserializer(type, settings.deserializeNullAsEmptyCollection());
         }
         return super.findCollectionLikeDeserializer(type, config, beanDesc, elementTypeDeserializer, elementDeserializer);
+    }
+
+    @Override
+    public JsonDeserializer<?> findMapLikeDeserializer(MapLikeType type,
+                                                       DeserializationConfig config, BeanDescription beanDesc,
+                                                       KeyDeserializer keyDeserializer,
+                                                       TypeDeserializer elementTypeDeserializer, JsonDeserializer<?> elementDeserializer)
+            throws JsonMappingException
+    {
+        Class<?> raw = type.getRawClass();
+        if (Map.class.isAssignableFrom(raw)) {
+            return new MapDeserializer(type);
+        }
+        if (Multimap.class.isAssignableFrom(raw)) {
+            return new MultimapDeserializer(type);
+        }
+        return super.findMapLikeDeserializer(type, config, beanDesc, keyDeserializer, elementTypeDeserializer, elementDeserializer);
     }
 }

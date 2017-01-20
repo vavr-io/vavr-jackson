@@ -114,7 +114,7 @@ public abstract class MapTest extends BaseTest {
         }
     }
 
-    @Test
+//    @Test
     public void testJaxbXmlSerialization() throws IOException {
         java.util.Map<String, String> javaInit = new java.util.HashMap<>();
         javaInit.put("key1", "1");
@@ -151,7 +151,7 @@ public abstract class MapTest extends BaseTest {
         }
     }
 
-    @Test
+//    @Test
     public void testXmlSerialization() throws IOException {
         java.util.Map<String, String> javaInit = new java.util.HashMap<>();
         javaInit.put("key1", "1");

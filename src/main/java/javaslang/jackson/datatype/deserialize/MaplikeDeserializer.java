@@ -19,7 +19,6 @@ import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.deser.ResolvableDeserializer;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.type.MapLikeType;
-import com.fasterxml.jackson.databind.type.TypeFactory;
 
 import java.util.Comparator;
 
@@ -27,35 +26,27 @@ abstract class MaplikeDeserializer<T> extends StdDeserializer<T> implements Reso
 
     private static final long serialVersionUID = 1L;
 
-    private final JavaType javaType;
+    final MapLikeType javaType;
 
-    MapLikeType mapLikeType;
     Comparator<Object> keyComparator;
     KeyDeserializer keyDeserializer;
     JsonDeserializer<?> valueDeserializer;
 
     MaplikeDeserializer(JavaType valueType) {
         super(valueType);
-        this.javaType = valueType;
+        this.javaType = (MapLikeType) valueType;
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public void resolve(DeserializationContext ctxt) throws JsonMappingException {
-        mapLikeType = mapLike(javaType, ctxt);
-        JavaType keyType = mapLikeType.getKeyType();
+        JavaType keyType = javaType.getKeyType();
         if (keyType.getRawClass().isAssignableFrom(Comparable.class)) {
             keyComparator = (o1, o2) -> ((Comparable) o1).compareTo(o2);
         } else {
             keyComparator = (o1, o2) -> o1.toString().compareTo(o2.toString());
         }
         keyDeserializer = ctxt.findKeyDeserializer(keyType, null);
-        valueDeserializer = ctxt.findRootValueDeserializer(mapLikeType.getContentType());
-    }
-
-    private static MapLikeType mapLike(JavaType type, DeserializationContext ctxt) {
-        JavaType keyType = type.containedTypeOrUnknown(0);
-        JavaType valueType = type.containedTypeOrUnknown(1);
-        return ctxt.getTypeFactory().constructMapLikeType(type.getRawClass(), keyType, valueType);
+        valueDeserializer = ctxt.findRootValueDeserializer(javaType.getContentType());
     }
 }

@@ -2,7 +2,9 @@ package javaslang.jackson.datatype.bean;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import javaslang.collection.HashMap;
 import javaslang.collection.List;
+import javaslang.collection.Map;
 import javaslang.jackson.datatype.JavaslangModule;
 import org.junit.Test;
 
@@ -38,6 +40,41 @@ public class AbstractContentTest {
             if (o == null || getClass() != o.getClass()) return false;
 
             L l = (L) o;
+
+            return xs != null ? xs.equals(l.xs) : l.xs == null;
+        }
+
+        @Override
+        public int hashCode() {
+            return xs != null ? xs.hashCode() : 0;
+        }
+    }
+
+    public static class M {
+        @JsonDeserialize(contentAs = X.class)
+        private Map<Integer, AX> xs;
+
+        public M() {
+        }
+
+        public M(Map<Integer, AX> xs) {
+            this.xs = xs;
+        }
+
+        public Map<Integer, AX> getXs() {
+            return xs;
+        }
+
+        public void setXs(Map<Integer, AX> xs) {
+            this.xs = xs;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            M l = (M) o;
 
             return xs != null ? xs.equals(l.xs) : l.xs == null;
         }
@@ -101,9 +138,15 @@ public class AbstractContentTest {
     }
 
     @Test
-    public void javaslang_jackson() throws IOException {
+    public void testList() throws IOException {
         L l = new L(List.of(new X("a", 1), new X("bbb", 42)));
         json_roundtrip_test(l, L.class);
+    }
+
+    @Test
+    public void testMap() throws IOException {
+        M m = new M(HashMap.of(1, new X("a", 1), 42, new X("bbb", 42)));
+        json_roundtrip_test(m, M.class);
     }
 
     public static <T> void json_roundtrip_test(T value, Class<T> valueType) throws IOException {
@@ -111,7 +154,6 @@ public class AbstractContentTest {
         mapper.registerModule(new JavaslangModule());
         String asString = mapper.writeValueAsString(value);
         assertNotNull(asString);
-        System.out.println(asString);
         final T value_decoded = mapper.readValue(asString, valueType);
         assertEquals(value, value_decoded);
     }

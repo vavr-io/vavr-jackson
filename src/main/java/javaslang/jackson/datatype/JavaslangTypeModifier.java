@@ -1,14 +1,8 @@
 package javaslang.jackson.datatype;
 
 import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.type.CollectionLikeType;
-import com.fasterxml.jackson.databind.type.TypeBindings;
-import com.fasterxml.jackson.databind.type.TypeFactory;
-import com.fasterxml.jackson.databind.type.TypeModifier;
-import javaslang.collection.CharSeq;
-import javaslang.collection.PriorityQueue;
-import javaslang.collection.Seq;
-import javaslang.collection.Set;
+import com.fasterxml.jackson.databind.type.*;
+import javaslang.collection.*;
 
 import java.lang.reflect.Type;
 
@@ -26,6 +20,12 @@ public class JavaslangTypeModifier extends TypeModifier {
         }
         if (PriorityQueue.class.isAssignableFrom(raw)) {
             return CollectionLikeType.upgradeFrom(type, type.containedTypeOrUnknown(0));
+        }
+        if (Map.class.isAssignableFrom(raw)) {
+            return MapLikeType.upgradeFrom(type, type.containedTypeOrUnknown(0), type.containedTypeOrUnknown(1));
+        }
+        if (Multimap.class.isAssignableFrom(raw)) {
+            return MapLikeType.upgradeFrom(type, type.containedTypeOrUnknown(0), type.containedTypeOrUnknown(1));
         }
         return type;
     }
