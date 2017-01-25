@@ -57,11 +57,6 @@ abstract class ValueDeserializer<T> extends StdDeserializer<T> implements Resolv
             deserializers.add(ctxt.findRootValueDeserializer(javaType.getContentType()));
             return;
         }
-        if (javaType.isMapLikeType()) {
-            deserializers.add(ctxt.findRootValueDeserializer(javaType.getKeyType()));
-            deserializers.add(ctxt.findRootValueDeserializer(javaType.getContentType()));
-            return;
-        }
         for (int i = 0; i < typeCount; i++) {
             JavaType containedType = javaType.containedTypeOrUnknown(i);
             deserializers.add(ctxt.findRootValueDeserializer(containedType));
