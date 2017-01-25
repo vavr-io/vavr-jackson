@@ -2,9 +2,14 @@ package javaslang.jackson.datatype.bean;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import javaslang.Lazy;
+import javaslang.Tuple;
+import javaslang.Tuple2;
 import javaslang.collection.HashMap;
 import javaslang.collection.List;
 import javaslang.collection.Map;
+import javaslang.control.Either;
+import javaslang.control.Option;
 import javaslang.jackson.datatype.JavaslangModule;
 import org.junit.Test;
 
@@ -85,6 +90,51 @@ public class AbstractContentTest {
         }
     }
 
+    public static class V {
+        @JsonDeserialize(contentAs = X.class)
+        private Lazy<AX> lazy;
+        @JsonDeserialize(contentAs = X.class)
+        private Option<AX> option;
+
+        public V() {}
+
+        public V setLazy(Lazy<AX> lazy) {
+            this.lazy = lazy;
+            return this;
+        }
+
+        public V setOption(Option<AX> option) {
+            this.option = option;
+            return this;
+        }
+
+        public Lazy<AX> getLazy() {
+            return lazy;
+        }
+
+        public Option<AX> getOption() {
+            return option;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            V v = (V) o;
+
+            if (lazy != null ? !lazy.equals(v.lazy) : v.lazy != null) return false;
+            return option != null ? option.equals(v.option) : v.option == null;
+        }
+
+        @Override
+        public int hashCode() {
+            int result = lazy != null ? lazy.hashCode() : 0;
+            result = 31 * result + (option != null ? option.hashCode() : 0);
+            return result;
+        }
+    }
+
     public interface  AX {
         String getaString();
         int getAnInt();
@@ -147,6 +197,14 @@ public class AbstractContentTest {
     public void testMap() throws IOException {
         M m = new M(HashMap.of(1, new X("a", 1), 42, new X("bbb", 42)));
         json_roundtrip_test(m, M.class);
+    }
+
+    @Test
+    public void testValue() throws IOException {
+        V v = new V()
+                .setLazy(Lazy.of(() -> new X("b", 2)))
+                .setOption(Option.of(new X("c", 3)));
+        json_roundtrip_test(v, V.class);
     }
 
     public static <T> void json_roundtrip_test(T value, Class<T> valueType) throws IOException {

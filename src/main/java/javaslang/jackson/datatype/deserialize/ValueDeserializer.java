@@ -52,8 +52,18 @@ abstract class ValueDeserializer<T> extends StdDeserializer<T> implements Resolv
 
     @Override
     public void resolve(DeserializationContext ctxt) throws JsonMappingException {
+        // TODO rewrite this
+        if (javaType.isCollectionLikeType() || javaType.isReferenceType()) {
+            deserializers.add(ctxt.findRootValueDeserializer(javaType.getContentType()));
+            return;
+        }
+        if (javaType.isMapLikeType()) {
+            deserializers.add(ctxt.findRootValueDeserializer(javaType.getKeyType()));
+            deserializers.add(ctxt.findRootValueDeserializer(javaType.getContentType()));
+            return;
+        }
         for (int i = 0; i < typeCount; i++) {
-            JavaType containedType = javaType.isCollectionLikeType() ? javaType.getContentType() : javaType.containedTypeOrUnknown(i);
+            JavaType containedType = javaType.containedTypeOrUnknown(i);
             deserializers.add(ctxt.findRootValueDeserializer(containedType));
         }
     }
