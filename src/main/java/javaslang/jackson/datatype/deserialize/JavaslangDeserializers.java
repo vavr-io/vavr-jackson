@@ -20,6 +20,7 @@ import com.fasterxml.jackson.databind.deser.Deserializers;
 import com.fasterxml.jackson.databind.jsontype.TypeDeserializer;
 import com.fasterxml.jackson.databind.type.CollectionLikeType;
 import com.fasterxml.jackson.databind.type.MapLikeType;
+import com.fasterxml.jackson.databind.type.ReferenceType;
 import javaslang.Lazy;
 import javaslang.Tuple;
 import javaslang.collection.*;
@@ -41,12 +42,6 @@ public class JavaslangDeserializers extends Deserializers.Base {
                                                     DeserializationConfig config,
                                                     BeanDescription beanDesc) throws JsonMappingException {
         Class<?> raw = type.getRawClass();
-        if (Lazy.class.isAssignableFrom(raw)) {
-            return new LazyDeserializer(type);
-        }
-        if (Option.class.isAssignableFrom(raw)) {
-            return new OptionDeserializer(type, settings.useOptionInPlainFormat());
-        }
         if (Either.class.isAssignableFrom(raw)) {
             return new EitherDeserializer(type);
         }
@@ -58,6 +53,21 @@ public class JavaslangDeserializers extends Deserializers.Base {
         }
 
         return super.findBeanDeserializer(type, config, beanDesc);
+    }
+
+    @Override
+    public JsonDeserializer<?> findReferenceDeserializer(ReferenceType type,
+                                                         DeserializationConfig config, BeanDescription beanDesc,
+                                                         TypeDeserializer contentTypeDeserializer, JsonDeserializer<?> contentDeserializer)
+            throws JsonMappingException {
+        Class<?> raw = type.getRawClass();
+        if (raw == Lazy.class) {
+            return new LazyDeserializer(type);
+        }
+        if (raw == Option.class) {
+            return new OptionDeserializer(type, settings.useOptionInPlainFormat());
+        }
+        return super.findReferenceDeserializer(type, config, beanDesc, contentTypeDeserializer, contentDeserializer);
     }
 
     @Override

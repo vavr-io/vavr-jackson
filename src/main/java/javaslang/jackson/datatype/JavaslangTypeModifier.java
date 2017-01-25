@@ -2,7 +2,9 @@ package javaslang.jackson.datatype;
 
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.type.*;
+import javaslang.Lazy;
 import javaslang.collection.*;
+import javaslang.control.Option;
 
 import java.lang.reflect.Type;
 
@@ -26,6 +28,12 @@ public class JavaslangTypeModifier extends TypeModifier {
         }
         if (Multimap.class.isAssignableFrom(raw)) {
             return MapLikeType.upgradeFrom(type, type.containedTypeOrUnknown(0), type.containedTypeOrUnknown(1));
+        }
+        if (Lazy.class.isAssignableFrom(raw)) {
+            return ReferenceType.upgradeFrom(type, type.containedTypeOrUnknown(0));
+        }
+        if (Option.class.isAssignableFrom(raw)) {
+            return ReferenceType.upgradeFrom(type, type.containedTypeOrUnknown(0));
         }
         return type;
     }
