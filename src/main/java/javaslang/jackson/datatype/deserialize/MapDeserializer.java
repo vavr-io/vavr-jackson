@@ -21,10 +21,7 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JavaType;
 import javaslang.Tuple;
 import javaslang.Tuple2;
-import javaslang.collection.HashMap;
-import javaslang.collection.LinkedHashMap;
-import javaslang.collection.Map;
-import javaslang.collection.TreeMap;
+import javaslang.collection.*;
 
 import java.io.IOException;
 
@@ -45,7 +42,7 @@ class MapDeserializer extends MaplikeDeserializer<Map<?, ?>> {
             p.nextToken();
             result.add(Tuple.of(key, valueDeserializer.deserialize(p, ctxt)));
         }
-        if (TreeMap.class.isAssignableFrom(handledType())) {
+        if (SortedMap.class.isAssignableFrom(handledType())) {
             return TreeMap.ofEntries(keyComparator, result);
         }
         if (LinkedHashMap.class.isAssignableFrom(handledType())) {
