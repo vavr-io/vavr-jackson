@@ -30,7 +30,6 @@ import javaslang.collection.*;
 import javaslang.control.Either;
 import javaslang.control.Option;
 import javaslang.jackson.datatype.JavaslangModule;
-import javaslang.λ;
 
 public class JavaslangSerializers extends Serializers.Base {
 
@@ -40,6 +39,7 @@ public class JavaslangSerializers extends Serializers.Base {
         this.settings = settings;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public JsonSerializer<?> findSerializer(SerializationConfig config,
                                             JavaType type, BeanDescription beanDesc) {
@@ -52,7 +52,7 @@ public class JavaslangSerializers extends Serializers.Base {
             return new TupleSerializer(type);
         }
 
-        if (λ.class.isAssignableFrom(raw)) {
+        if (javaslang.λ.class.isAssignableFrom(raw)) {
             return new SerializableSerializer<>(type);
         }
 

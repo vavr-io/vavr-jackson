@@ -27,7 +27,6 @@ import javaslang.collection.*;
 import javaslang.control.Either;
 import javaslang.control.Option;
 import javaslang.jackson.datatype.JavaslangModule;
-import javaslang.λ;
 
 public class JavaslangDeserializers extends Deserializers.Base {
 
@@ -37,6 +36,7 @@ public class JavaslangDeserializers extends Deserializers.Base {
         this.settings = settings;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public JsonDeserializer<?> findBeanDeserializer(JavaType type,
                                                     DeserializationConfig config,
@@ -48,7 +48,7 @@ public class JavaslangDeserializers extends Deserializers.Base {
         if (Tuple.class.isAssignableFrom(raw)) {
             return new TupleDeserializer(type);
         }
-        if (λ.class.isAssignableFrom(raw)) {
+        if (javaslang.λ.class.isAssignableFrom(raw)) {
             return new SerializableDeserializer<>(type);
         }
 
