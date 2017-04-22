@@ -1,5 +1,5 @@
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.vavr/vavr-jackson/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.vavr/vavr-jackson)
-[![Build Status](https://travis-ci.org/vavr/vavr-jackson.svg?branch=master)](https://travis-ci.org/vavr/vavr-jackson)
+[![Build Status](https://travis-ci.org/vavr-io/vavr-jackson.svg?branch=master)](https://travis-ci.org/vavr/vavr-jackson)
 [![Coverage Status](https://codecov.io/github/vavr-io/vavr-jackson/coverage.svg?branch=master)](https://codecov.io/github/vavr-io/vavr-jackson?branch=master)
 [![Gitter Chat](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/vavr-io/vavr)
 

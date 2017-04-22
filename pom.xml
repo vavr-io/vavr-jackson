@@ -22,9 +22,9 @@
         </license>
     </licenses>
     <scm>
-        <connection>scm:git:git@github.com:vavr/vavr-jackson.git</connection>
-        <developerConnection>scm:git:git@github.com:vavr/vavr-jackson.git</developerConnection>
-        <url>git@github.com:vavr/vavr-jackson.git</url>
+        <connection>scm:git:git@github.com:vavr-io/vavr-jackson.git</connection>
+        <developerConnection>scm:git:git@github.com:vavr-io/vavr-jackson.git</developerConnection>
+        <url>git@github.com:vavr-io/vavr-jackson.git</url>
         <tag>HEAD</tag>
     </scm>
 
