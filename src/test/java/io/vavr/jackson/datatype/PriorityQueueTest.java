@@ -1,0 +1,138 @@
+package io.vavr.jackson.datatype;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import io.vavr.collection.PriorityQueue;
+import org.junit.Assert;
+import org.junit.Test;
+
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+import java.io.IOException;
+import java.util.Arrays;
+
+public class PriorityQueueTest extends BaseTest {
+
+    @Test(expected = JsonMappingException.class)
+    public void testGeneric1() throws IOException {
+        mapper().readValue("[1, 2]", PriorityQueue.class);
+    }
+
+    @Test(expected = JsonMappingException.class)
+    public void testGeneric2() throws IOException {
+        mapper().readValue("[1, 2]", new TypeReference<PriorityQueue<Object>>() {});
+    }
+
+    static class Incomparable {
+        private int i = 0;
+        int getI() { return i; }
+        void setI(int i) { this.i = i; }
+    }
+
+    @Test(expected = JsonMappingException.class)
+    public void testGeneric3() throws IOException {
+        mapper().readValue("[{\"i\":1}, {\"i\":2}]", new TypeReference<PriorityQueue<PriorityQueueTest.Incomparable>>() {});
+    }
+
+    @Test
+    public void test1() throws IOException {
+        ObjectWriter writer = mapper().writer();
+        PriorityQueue<Integer> src = PriorityQueue.of(1, 5, 8);
+        String json = writer.writeValueAsString(src);
+        Assert.assertEquals(genJsonList(1, 5, 8), json);
+        PriorityQueue<Integer> dst = mapper().readValue(json, new TypeReference<PriorityQueue<Integer>>() {});
+        Assert.assertEquals(src, dst);
+    }
+
+    @XmlRootElement(name = "xmlSerialize")
+    private static class JaxbXmlSerializeVavr {
+        @XmlElementWrapper(name = "transitTypes")
+        @XmlElement(name = "transitType")
+        public PriorityQueue<Integer> transitTypes;
+
+        public JaxbXmlSerializeVavr init(PriorityQueue<Integer> slangSet) {
+            transitTypes = slangSet;
+            return this;
+        }
+    }
+
+    @XmlRootElement(name = "xmlSerialize")
+    private static class JaxbXmlSerializeJavaUtil {
+        @XmlElementWrapper(name = "transitTypes")
+        @XmlElement(name = "transitType")
+        public java.util.Collection<Integer> transitTypes;
+
+        public JaxbXmlSerializeJavaUtil init(java.util.Collection<Integer> javaSet) {
+            transitTypes = javaSet;
+            return this;
+        }
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    public void testJaxbXmlSerialization() throws IOException {
+        ObjectMapper mapper = xmlMapperJaxb();
+        String javaUtilValue = mapper.writeValueAsString(new JaxbXmlSerializeVavr().init(PriorityQueue.of(1, 2, 3)));
+        Assert.assertEquals(mapper.writeValueAsString(new JaxbXmlSerializeJavaUtil().init(Arrays.asList(1, 2, 3))), javaUtilValue);
+        JaxbXmlSerializeVavr restored = mapper.readValue(javaUtilValue, JaxbXmlSerializeVavr.class);
+        Assert.assertEquals(restored.transitTypes.size(), 3);
+    }
+
+    @JacksonXmlRootElement(localName = "xmlSerialize")
+    private static class XmlSerializeVavr {
+        @JacksonXmlElementWrapper(localName = "transitTypes")
+        @JsonProperty("transitType")
+        public PriorityQueue<Integer> transitTypes;
+
+        public XmlSerializeVavr init(PriorityQueue<Integer> slangSet) {
+            transitTypes = slangSet;
+            return this;
+        }
+    }
+
+    @JacksonXmlRootElement(localName = "xmlSerialize")
+    private static class XmlSerializeJavaUtil {
+        @JacksonXmlElementWrapper(localName = "transitTypes")
+        @JsonProperty("transitType")
+        public java.util.Collection<Integer> transitTypes;
+
+        public XmlSerializeJavaUtil init(java.util.Collection<Integer> javaSet) {
+            transitTypes = javaSet;
+            return this;
+        }
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    public void testXmlSerialization() throws IOException {
+        ObjectMapper mapper = xmlMapper();
+        String javaUtilValue = mapper.writeValueAsString(new XmlSerializeVavr().init(PriorityQueue.of(1, 2, 3)));
+        Assert.assertEquals(mapper.writeValueAsString(new XmlSerializeJavaUtil().init(Arrays.asList(1, 2, 3))), javaUtilValue);
+        XmlSerializeVavr restored = mapper.readValue(javaUtilValue, XmlSerializeVavr.class);
+        Assert.assertEquals(restored.transitTypes.size(), 3);
+    }
+
+    public static class Parameterized<T> {
+        public PriorityQueue<T> value;
+        public Parameterized() {}
+        public Parameterized(PriorityQueue<T> value) {
+            this.value = value;
+        }
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    public void testWrappedParameterizedSome() throws IOException {
+        String expected = "{\"value\":[1]}";
+        Parameterized<Integer> object = new Parameterized<>(PriorityQueue.of(1));
+        Assert.assertEquals(expected, mapper().writeValueAsString(object));
+        Parameterized<Integer> restored = mapper().readValue(expected, new TypeReference<Parameterized<Integer>>() {});
+        Assert.assertEquals(restored.value.head(), (Integer) 1);
+    }
+}
