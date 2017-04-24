@@ -1,11 +1,11 @@
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.javaslang/javaslang-jackson/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.javaslang/javaslang-jackson)
-[![Build Status](https://travis-ci.org/javaslang/javaslang-jackson.svg?branch=master)](https://travis-ci.org/javaslang/javaslang-jackson)
-[![Coverage Status](https://codecov.io/github/javaslang/javaslang-jackson/coverage.svg?branch=master)](https://codecov.io/github/javaslang/javaslang-jackson?branch=master)
-[![Gitter Chat](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/javaslang/javaslang)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.vavr/vavr-jackson/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.vavr/vavr-jackson)
+[![Build Status](https://travis-ci.org/vavr-io/vavr-jackson.svg?branch=master)](https://travis-ci.org/vavr/vavr-jackson)
+[![Coverage Status](https://codecov.io/github/vavr-io/vavr-jackson/coverage.svg?branch=master)](https://codecov.io/github/vavr-io/vavr-jackson?branch=master)
+[![Gitter Chat](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/vavr-io/vavr)
 
-# javaslang-jackson
+# vavr-jackson
 
-Jackson datatype module for [Javaslang](http://javaslang.io/) library
+Jackson datatype module for [Vavr](http://vavr.io/) library
 
 ## Usage
 
@@ -13,23 +13,23 @@ Jackson datatype module for [Javaslang](http://javaslang.io/) library
 
 ```xml
 <dependency>
-  <groupId>io.javaslang</groupId>
-  <artifactId>javaslang-jackson</artifactId>
-  <version>2.1.0-alpha</version>
+  <groupId>io.vavr</groupId>
+  <artifactId>vavr-jackson</artifactId>
+  <version>...</version>
 </dependency>
 ```
 
 ### Gradle
 
 ```groovy
-compile("io.javaslang:javaslang-jackson:2.1.0-alpha")
+compile("io.vavr:vavr-jackson:...")
 ```
 
 ### Registering module
-Just register a new instance of <code>JavaslangModule</code>
+Just register a new instance of <code>VavrModule</code>
 ```java
 ObjectMapper mapper = new ObjectMapper();
-mapper.registerModule(new JavaslangModule());
+mapper.registerModule(new VavrModule());
 ```
 ### Serialization/deserialization
 ```java
@@ -42,15 +42,15 @@ Object restored2 = mapper.readValue(json, new TypeReference<List<List<?>>>() {})
 ```
 ## Using Developer Versions
 
-Developer versions can be found [here](https://oss.sonatype.org/content/repositories/snapshots/io/javaslang/javaslang-jackson).
+Developer versions can be found [here](https://oss.sonatype.org/content/repositories/snapshots/io/vavr/vavr-jackson).
 
 ### Maven
 
 ```xml
 <dependency>
-  <groupId>io.javaslang</groupId>
-  <artifactId>javaslang-jackson</artifactId>
-  <version>2.1.0-SNAPSHOT</version>
+  <groupId>io.vavr</groupId>
+  <artifactId>vavr-jackson</artifactId>
+  <version>0.9.0-SNAPSHOT</version>
 </dependency>
 ```
 
@@ -82,7 +82,7 @@ Ensure that your `~/.m2/settings.xml` contains the following:
 ### Gradle
 
 ```groovy
-compile("io.javaslang:javaslang-jackson:2.1.0-SNAPSHOT")
+compile("io.vavr:vavr-jackson:2.1.0-SNAPSHOT")
 ```
 
 Ensure that your `build.gradle` contains the following:

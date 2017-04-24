@@ -1,0 +1,26 @@
+package io.vavr.jackson.datatype.seq;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+
+import java.util.Arrays;
+
+import io.vavr.collection.Queue;
+import io.vavr.collection.Seq;
+import io.vavr.control.Option;
+
+public class QueueTest extends SeqTest {
+    @Override
+    protected Class<?> clz() {
+        return Queue.class;
+    }
+
+    @Override
+    protected TypeReference<Queue<Option<String>>> typeReferenceWithOption() {
+        return new TypeReference<Queue<Option<String>>>() {};
+    }
+
+    @Override
+    protected Seq<?> of(Object... objects) {
+        return Queue.ofAll(Arrays.asList(objects));
+    }
+}
