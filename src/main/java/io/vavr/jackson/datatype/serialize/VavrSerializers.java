@@ -15,8 +15,7 @@ import com.fasterxml.jackson.databind.ser.Serializers;
 import com.fasterxml.jackson.databind.type.CollectionLikeType;
 import com.fasterxml.jackson.databind.type.MapLikeType;
 import com.fasterxml.jackson.databind.type.ReferenceType;
-import io.vavr.Lazy;
-import io.vavr.Tuple;
+import io.vavr.*;
 import io.vavr.collection.*;
 import io.vavr.control.Either;
 import io.vavr.control.Option;
@@ -43,7 +42,59 @@ public class VavrSerializers extends Serializers.Base {
             return new TupleSerializer(type);
         }
 
-        if (io.vavr.λ.class.isAssignableFrom(raw)) {
+        if (Function0.class.isAssignableFrom(raw)) {
+            return new SerializableSerializer<>(type);
+        }
+        if (Function1.class.isAssignableFrom(raw)) {
+            return new SerializableSerializer<>(type);
+        }
+        if (Function2.class.isAssignableFrom(raw)) {
+            return new SerializableSerializer<>(type);
+        }
+        if (Function3.class.isAssignableFrom(raw)) {
+            return new SerializableSerializer<>(type);
+        }
+        if (Function4.class.isAssignableFrom(raw)) {
+            return new SerializableSerializer<>(type);
+        }
+        if (Function5.class.isAssignableFrom(raw)) {
+            return new SerializableSerializer<>(type);
+        }
+        if (Function6.class.isAssignableFrom(raw)) {
+            return new SerializableSerializer<>(type);
+        }
+        if (Function7.class.isAssignableFrom(raw)) {
+            return new SerializableSerializer<>(type);
+        }
+        if (Function8.class.isAssignableFrom(raw)) {
+            return new SerializableSerializer<>(type);
+        }
+
+        if (CheckedFunction0.class.isAssignableFrom(raw)) {
+            return new SerializableSerializer<>(type);
+        }
+        if (CheckedFunction1.class.isAssignableFrom(raw)) {
+            return new SerializableSerializer<>(type);
+        }
+        if (CheckedFunction2.class.isAssignableFrom(raw)) {
+            return new SerializableSerializer<>(type);
+        }
+        if (CheckedFunction3.class.isAssignableFrom(raw)) {
+            return new SerializableSerializer<>(type);
+        }
+        if (CheckedFunction4.class.isAssignableFrom(raw)) {
+            return new SerializableSerializer<>(type);
+        }
+        if (CheckedFunction5.class.isAssignableFrom(raw)) {
+            return new SerializableSerializer<>(type);
+        }
+        if (CheckedFunction6.class.isAssignableFrom(raw)) {
+            return new SerializableSerializer<>(type);
+        }
+        if (CheckedFunction7.class.isAssignableFrom(raw)) {
+            return new SerializableSerializer<>(type);
+        }
+        if (CheckedFunction8.class.isAssignableFrom(raw)) {
             return new SerializableSerializer<>(type);
         }
 
