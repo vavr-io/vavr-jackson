@@ -40,7 +40,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
         <junit.version>4.12</junit.version>
-        <vavr.version>0.9.0-SNAPSHOT</vavr.version>
+        <vavr.version>0.9.0</vavr.version>
         <maven.compiler.version>3.2</maven.compiler.version>
         <fasterxml.version>2.7.2</fasterxml.version>
         <maven.coveralls.version>4.0.0</maven.coveralls.version>
