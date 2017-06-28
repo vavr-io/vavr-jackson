@@ -15,7 +15,7 @@ Jackson datatype module for [Vavr](http://vavr.io/) library
 <dependency>
   <groupId>io.vavr</groupId>
   <artifactId>vavr-jackson</artifactId>
-  <version>0.9.0</version>
+  <version>1.0.1</version>
 </dependency>
 ```
 
@@ -50,7 +50,7 @@ Developer versions can be found [here](https://oss.sonatype.org/content/reposito
 <dependency>
   <groupId>io.vavr</groupId>
   <artifactId>vavr-jackson</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.0.1-SNAPSHOT</version>
 </dependency>
 ```
 
