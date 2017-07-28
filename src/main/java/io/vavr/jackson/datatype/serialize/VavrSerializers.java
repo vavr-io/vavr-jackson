@@ -110,7 +110,7 @@ public class VavrSerializers extends Serializers.Base {
             return new LazySerializer(type);
         }
         if (Option.class.isAssignableFrom(raw)) {
-            return new OptionSerializer(type, settings.useOptionInPlainFormat());
+            return new OptionSerializer(type.getContentType(), settings.useOptionInPlainFormat());
         }
         return super.findReferenceSerializer(config, type, beanDesc, contentTypeSerializer, contentValueSerializer);
     }
