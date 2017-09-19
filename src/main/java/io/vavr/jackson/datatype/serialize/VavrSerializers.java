@@ -107,7 +107,7 @@ public class VavrSerializers extends Serializers.Base {
                                                      TypeSerializer contentTypeSerializer, JsonSerializer<Object> contentValueSerializer) {
         Class<?> raw = type.getRawClass();
         if (Lazy.class.isAssignableFrom(raw)) {
-            return new LazySerializer(type);
+            return new LazySerializer(type.getContentType());
         }
         if (Option.class.isAssignableFrom(raw)) {
             return new OptionSerializer(type.getContentType(), settings.useOptionInPlainFormat());

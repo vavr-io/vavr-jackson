@@ -16,8 +16,8 @@ class LazySerializer extends ValueSerializer<Lazy<?>> {
 
     private static final long serialVersionUID = 1L;
 
-    LazySerializer(JavaType type) {
-        super(type);
+    LazySerializer(JavaType contentType) {
+        super(contentType);
     }
 
     @Override

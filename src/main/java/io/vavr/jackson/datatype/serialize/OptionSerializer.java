@@ -20,8 +20,8 @@ class OptionSerializer extends ValueSerializer<Option<?>> {
 
     private final boolean plainMode;
 
-    OptionSerializer(JavaType type, boolean plainMode) {
-        super(type);
+    OptionSerializer(JavaType contentType, boolean plainMode) {
+        super(contentType);
         this.plainMode = plainMode;
     }
 
