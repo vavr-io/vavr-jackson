@@ -15,14 +15,14 @@ Jackson datatype module for [Vavr](http://vavr.io/) library
 <dependency>
   <groupId>io.vavr</groupId>
   <artifactId>vavr-jackson</artifactId>
-  <version>0.9.0</version>
+  <version>0.9.1</version>
 </dependency>
 ```
 
 ### Gradle
 
 ```groovy
-compile("io.vavr:vavr-jackson:0.9.0")
+compile("io.vavr:vavr-jackson:0.9.1")
 ```
 
 ### Registering module
