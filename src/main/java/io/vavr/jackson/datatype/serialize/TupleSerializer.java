@@ -19,14 +19,15 @@
  */
 package io.vavr.jackson.datatype.serialize;
 
+import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.type.TypeFactory;
+import com.fasterxml.jackson.databind.SerializerProvider;
 import io.vavr.Tuple;
+import io.vavr.collection.Seq;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
-class TupleSerializer extends ValueSerializer<Tuple> {
+class TupleSerializer extends HListSerializer<Tuple> {
 
     private static final long serialVersionUID = 1L;
 
@@ -35,13 +36,13 @@ class TupleSerializer extends ValueSerializer<Tuple> {
     }
 
     @Override
-    Object toJavaObj(Tuple tuple) throws IOException {
-        return tuple.toSeq().toJavaList();
-    }
-
-    @Override
-    JavaType emulatedJavaType(JavaType type, TypeFactory typeFactory) {
-        return typeFactory.constructCollectionType(ArrayList.class, Object.class);
+    public void serialize(Tuple value, JsonGenerator gen, SerializerProvider provider) throws IOException {
+        gen.writeStartArray();
+        Seq<?> asSeq = value.toSeq();
+        for (int i = 0; i < value.arity(); i++) {
+            write(asSeq.get(i), i, gen, provider);
+        }
+        gen.writeEndArray();
     }
 
 }

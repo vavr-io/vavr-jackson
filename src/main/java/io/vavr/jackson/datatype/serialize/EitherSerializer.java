@@ -21,22 +21,17 @@ package io.vavr.jackson.datatype.serialize;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import io.vavr.control.Either;
 
 import java.io.IOException;
 
-class EitherSerializer extends StdSerializer<Either<?, ?>> {
+class EitherSerializer extends HListSerializer<Either<?, ?>> {
 
     private static final long serialVersionUID = 1L;
 
-    private final JavaType type;
-
     EitherSerializer(JavaType type) {
         super(type);
-        this.type = type;
     }
 
     @Override
@@ -50,25 +45,6 @@ class EitherSerializer extends StdSerializer<Either<?, ?>> {
             write(value.right().get(), 1, gen, provider);
         }
         gen.writeEndArray();
-    }
-
-    private void write(Object val, int containedTypeIndex, JsonGenerator gen, SerializerProvider provider) throws IOException {
-        if (val != null) {
-            if (type.containedTypeCount() > containedTypeIndex) {
-                JsonSerializer<Object> ser;
-                JavaType containedType = type.containedType(containedTypeIndex);
-                if (containedType.getRawClass() != Object.class) {
-                    ser = provider.findTypedValueSerializer(type.containedType(containedTypeIndex), true, null);
-                } else {
-                    ser = provider.findTypedValueSerializer(val.getClass(), true, null);
-                }
-                ser.serialize(val, gen, provider);
-            } else {
-                gen.writeObject(val);
-            }
-        } else {
-            gen.writeNull();
-        }
     }
 
     @Override

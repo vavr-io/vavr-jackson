@@ -1,12 +1,14 @@
 package io.vavr.jackson.datatype.tuples;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import io.vavr.jackson.datatype.BaseTest;
 import io.vavr.Tuple;
 import io.vavr.Tuple0;
 import io.vavr.Tuple2;
 import io.vavr.Tuple3;
+import io.vavr.jackson.datatype.BaseTest;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -57,5 +59,27 @@ public class TupleXTest extends BaseTest {
         Parameterized<Integer, Integer> restored = mapper().readValue(expected, new TypeReference<Parameterized<Integer, Integer>>() {});
         Assert.assertEquals(restored.value._1, (Integer) 1);
         Assert.assertEquals(restored.value._2, (Integer) 2);
+    }
+
+    @JsonTypeInfo(
+            use = JsonTypeInfo.Id.NAME,
+            include = JsonTypeInfo.As.WRAPPER_OBJECT,
+            property = "type")
+    @JsonTypeName("card")
+    private static class TestSerialize {
+        public String type = "hello";
+    }
+
+    private static class A {
+        public Tuple2<TestSerialize, TestSerialize> f = Tuple.of(new TestSerialize(), new TestSerialize());
+    }
+
+    @Test
+    public void testJsonTypeInfo1() throws IOException {
+        String javaUtilValue = mapper().writeValueAsString(new A());
+        Assert.assertEquals("{\"f\":[{\"card\":{\"type\":\"hello\"}},{\"card\":{\"type\":\"hello\"}}]}", javaUtilValue);
+        A restored = mapper().readValue(javaUtilValue, A.class);
+        Assert.assertEquals("hello", restored.f._1.type);
+        Assert.assertEquals("hello", restored.f._2.type);
     }
 }

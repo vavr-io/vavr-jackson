@@ -27,6 +27,18 @@ public class EitherTest extends BaseTest {
 
     @SuppressWarnings("unchecked")
     @Test
+    public void testWrapperObject() throws IOException {
+        ObjectMapper mapper = mapper().addMixIn(Either.class, WrapperObject.class);
+        Either<Integer, Integer> src = Either.right(1);
+        String plainJson = mapper().writeValueAsString(src);
+        String wrappedJson = mapper.writeValueAsString(src);
+        Assert.assertEquals(wrappedJson, wrapToObject(Either.Right.class.getName(), plainJson));
+        Either<Integer, Integer> restored = (Either<Integer, Integer>) mapper.readValue(wrappedJson, Either.class);
+        Assert.assertEquals(src, restored);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
     public void test1() throws IOException {
         Either<String, Integer> left = Either.left("left");
         String json = mapper().writer().writeValueAsString(left);
