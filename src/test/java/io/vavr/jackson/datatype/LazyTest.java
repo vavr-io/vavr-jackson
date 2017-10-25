@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.vavr.Lazy;
+import io.vavr.Tuple;
+import io.vavr.Tuple2;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -55,5 +57,25 @@ public class LazyTest extends BaseTest {
         D restored = mapper.readValue(javaUtilValue, D.class);
         Assert.assertEquals("g", restored.v.get().g);
         Assert.assertEquals("h", ((B) restored.v.get()).h);
+    }
+
+    private static class Pojo {
+        private Lazy<Tuple2<String, String>> x = Lazy.of(() -> Tuple.of("A", "B"));
+
+        public Lazy<Tuple2<String, String>> getX() {
+            return x;
+        }
+        public void setX(Lazy<Tuple2<String, String>> x) {
+            this.x = x;
+        }
+    }
+
+    @Test
+    public void testPojo() throws Exception {
+        final String json = mapper().writeValueAsString(new Pojo());
+        Assert.assertEquals(json, "{\"x\":[\"A\",\"B\"]}");
+        Pojo restored = mapper().readValue(json, Pojo.class);
+        Assert.assertEquals(restored.getX().get()._1, "A");
+        Assert.assertEquals(restored.getX().get()._2, "B");
     }
 }

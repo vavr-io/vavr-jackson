@@ -19,13 +19,15 @@
  */
 package io.vavr.jackson.datatype.serialize;
 
+import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import io.vavr.Lazy;
 
 import java.io.IOException;
 
-class LazySerializer extends ValueSerializer<Lazy<?>> {
+class LazySerializer extends HListSerializer<Lazy<?>> {
 
     private static final long serialVersionUID = 1L;
 
@@ -34,12 +36,7 @@ class LazySerializer extends ValueSerializer<Lazy<?>> {
     }
 
     @Override
-    Object toJavaObj(Lazy<?> value) throws IOException {
-        return value.get();
-    }
-
-    @Override
-    JavaType emulatedJavaType(JavaType type, TypeFactory typeFactory) {
-        return type.containedType(0);
+    public void serialize(Lazy<?> value, JsonGenerator gen, SerializerProvider provider) throws IOException {
+        write(value.get(), 0, gen, provider);
     }
 }

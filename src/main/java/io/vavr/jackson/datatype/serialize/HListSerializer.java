@@ -44,8 +44,10 @@ abstract class HListSerializer<T> extends StdSerializer<T> {
             if (type.containedTypeCount() > containedTypeIndex) {
                 JsonSerializer<Object> ser;
                 JavaType containedType = type.containedType(containedTypeIndex);
-                if (containedType.getRawClass() != Object.class) {
-                    ser = provider.findTypedValueSerializer(type.containedType(containedTypeIndex), true, null);
+                if (containedType != null && containedType.hasGenericTypes()) {
+                    JavaType[] generics = (JavaType[]) containedType.getBindings().getTypeParameters().toArray();
+                    JavaType adjusted = provider.getTypeFactory().constructSimpleType(val.getClass(), generics);
+                    ser = provider.findTypedValueSerializer(adjusted, true, null);
                 } else {
                     ser = provider.findTypedValueSerializer(val.getClass(), true, null);
                 }
