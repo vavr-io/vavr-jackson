@@ -42,6 +42,7 @@
         <junit.version>4.12</junit.version>
         <vavr.version>0.9.1</vavr.version>
         <maven.compiler.version>3.2</maven.compiler.version>
+        <maven.compiler.warnings>-Werror</maven.compiler.warnings>
         <fasterxml.version>2.7.2</fasterxml.version>
         <maven.coveralls.version>4.0.0</maven.coveralls.version>
         <maven.jacoco.version>0.7.5.201505241946</maven.jacoco.version>
@@ -112,7 +113,7 @@
                     <showWarnings>true</showWarnings>
                     <compilerArgs>
                         <arg>-Xlint:all</arg>
-                        <arg>-Werror</arg>
+                        <arg>${maven.compiler.warnings}</arg>
                         <!-- Workaround for JDK bug https://bugs.openjdk.java.net/browse/JDK-6999068 -->
                         <arg>-Xlint:-processing</arg>
                     </compilerArgs>
