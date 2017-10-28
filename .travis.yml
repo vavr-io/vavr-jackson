@@ -12,6 +12,7 @@ before_install:
 script:
 - mvn clean test -B
 - mvn clean test -B -Dfasterxml.version=2.8.4
+- mvn clean test -B -Dfasterxml.version=2.9.1 -Dmaven.compiler.warnings=""
 after_success:
 - codecov
 - mvn clean deploy -DskipTests --settings .travis/maven-settings.xml

@@ -27,7 +27,7 @@ import io.vavr.control.Option;
 
 import java.io.IOException;
 
-class OptionSerializer extends ValueSerializer<Option<?>> {
+class OptionSerializer extends HListSerializer<Option<?>> {
 
     private static final long serialVersionUID = 1L;
 
@@ -42,33 +42,21 @@ class OptionSerializer extends ValueSerializer<Option<?>> {
     @Override
     public void serialize(Option<?> value, JsonGenerator gen, SerializerProvider provider) throws IOException {
         if (plainMode) {
-            super.serialize(value, gen, provider);
+            if (value.isDefined()) {
+                write(value.get(), 0, gen, provider);
+            } else {
+                gen.writeNull();
+            }
         } else {
             gen.writeStartArray();
             if (value.isDefined()) {
                 gen.writeString("defined");
-                super.serialize(value, gen, provider);
+                write(value.get(), 0, gen, provider);
             } else {
                 gen.writeString("undefined");
             }
             gen.writeEndArray();
         }
-    }
-
-    @Override
-    Object toJavaObj(Option<?> value) throws IOException {
-        // plain mode only
-        if (value.isDefined()) {
-            return value.get();
-        } else {
-            return null;
-        }
-    }
-
-    @Override
-    JavaType emulatedJavaType(JavaType type, TypeFactory typeFactory) {
-        // plain mode only
-        return type.containedType(0);
     }
 
     @Override
