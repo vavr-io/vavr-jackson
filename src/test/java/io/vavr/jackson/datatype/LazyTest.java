@@ -58,24 +58,4 @@ public class LazyTest extends BaseTest {
         Assert.assertEquals("g", restored.v.get().g);
         Assert.assertEquals("h", ((B) restored.v.get()).h);
     }
-
-    private static class Pojo {
-        private Lazy<Tuple2<String, String>> x = Lazy.of(() -> Tuple.of("A", "B"));
-
-        public Lazy<Tuple2<String, String>> getX() {
-            return x;
-        }
-        public void setX(Lazy<Tuple2<String, String>> x) {
-            this.x = x;
-        }
-    }
-
-    @Test
-    public void testPojo() throws Exception {
-        final String json = mapper().writeValueAsString(new Pojo());
-        Assert.assertEquals(json, "{\"x\":[\"A\",\"B\"]}");
-        Pojo restored = mapper().readValue(json, Pojo.class);
-        Assert.assertEquals(restored.getX().get()._1, "A");
-        Assert.assertEquals(restored.getX().get()._2, "B");
-    }
 }

@@ -27,6 +27,7 @@ import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
 import java.io.IOException;
+import java.util.List;
 
 abstract class HListSerializer<T> extends StdSerializer<T> {
 
@@ -45,7 +46,11 @@ abstract class HListSerializer<T> extends StdSerializer<T> {
                 JsonSerializer<Object> ser;
                 JavaType containedType = type.containedType(containedTypeIndex);
                 if (containedType != null && containedType.hasGenericTypes()) {
-                    JavaType[] generics = (JavaType[]) containedType.getBindings().getTypeParameters().toArray();
+                    List<JavaType> types = containedType.getBindings().getTypeParameters();
+                    JavaType[] generics = new JavaType[types.size()];
+                    for (int i = 0; i < types.size(); i++) {
+                        generics[i] = types.get(i);
+                    }
                     JavaType adjusted = provider.getTypeFactory().constructSimpleType(val.getClass(), generics);
                     ser = provider.findTypedValueSerializer(adjusted, true, null);
                 } else {

@@ -169,25 +169,4 @@ public class OptionTest extends BaseTest {
         Parameterized<?> restored = mapper(optSettings).readValue(expected, Parameterized.class);
         Assert.assertEquals(restored.value.get(), 1);
     }
-
-
-    private static class Pojo {
-        private Option<Tuple2<String, String>> x = Option.of(Tuple.of("A", "B"));
-
-        public Option<Tuple2<String, String>> getX() {
-            return x;
-        }
-        public void setX(Option<Tuple2<String, String>> x) {
-            this.x = x;
-        }
-    }
-
-    @Test
-    public void test() throws Exception {
-        final String json = mapper(optSettings).writeValueAsString(new Pojo());
-        Assert.assertEquals(json, "{\"x\":[\"defined\",[\"A\",\"B\"]]}");
-        Pojo restored = mapper(optSettings).readValue(json, Pojo.class);
-        Assert.assertEquals(restored.getX().get()._1, "A");
-        Assert.assertEquals(restored.getX().get()._2, "B");
-    }
 }
