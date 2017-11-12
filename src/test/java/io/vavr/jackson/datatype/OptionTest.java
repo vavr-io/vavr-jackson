@@ -3,11 +3,8 @@ package io.vavr.jackson.datatype;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.vavr.Tuple;
-import io.vavr.Tuple2;
 import io.vavr.control.Option;
 import org.junit.Assert;
 import org.junit.Test;
@@ -142,31 +139,5 @@ public class OptionTest extends BaseTest {
                 "hello\"}}],\"h\":[\"defined\",{\"card\":{\"type\":\"hello\"}}]}}]}", javaUtilValue);
         D restored = mapper.readValue(javaUtilValue, D.class);
         Assert.assertEquals("hello", restored.v.get().g.get().type);
-    }
-
-    public static class Parameterized<T> {
-        public Option<T> value;
-        public Parameterized() {}
-        public Parameterized(Option<T> value) {
-            this.value = value;
-        }
-    }
-
-    @Test
-    public void testWrappedParameterizedSome() throws IOException {
-        String expected = "{\"value\":[\"defined\",1]}";
-        Parameterized<Integer> object = new Parameterized<>(Option.some(1));
-        Assert.assertEquals(expected, mapper(optSettings).writeValueAsString(object));
-        Parameterized<Integer> restored = mapper(optSettings).readValue(expected, new TypeReference<Parameterized<Integer>>() {});
-        Assert.assertEquals(restored.value.get(), (Integer) 1);
-    }
-
-    @Test
-    public void testWrappedWildcardSome() throws IOException {
-        String expected = "{\"value\":[\"defined\",1]}";
-        Parameterized<?> object = new Parameterized<>(Option.some(1));
-        Assert.assertEquals(expected, mapper(optSettings).writeValueAsString(object));
-        Parameterized<?> restored = mapper(optSettings).readValue(expected, Parameterized.class);
-        Assert.assertEquals(restored.value.get(), 1);
     }
 }

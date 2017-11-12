@@ -1,5 +1,6 @@
 package io.vavr.jackson.generated;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.vavr.Lazy;
 import io.vavr.Tuple;
@@ -29,7 +30,7 @@ import org.junit.Test;
 /**
  * generated
  */
-public class SimplePojoTest {
+public class ParameterizedPojoTest {
     private static final VavrModule MAPPER_MODULE = new VavrModule();
 
     private static final ObjectMapper MAPPER = new ObjectMapper().registerModule(MAPPER_MODULE);
@@ -39,9 +40,10 @@ public class SimplePojoTest {
         String src0 = "A";
         String src1 = "B";
         Tuple2<String, String> src = Tuple.of(src0, src1);
-        String json = MAPPER.writeValueAsString(new TupleOfString().setValue(src));
+        String json = MAPPER.writeValueAsString(new ParameterizedTuple2Pojo<>(src));
         Assert.assertEquals(json, "{\"value\":[\"A\",\"B\"]}");
-        TupleOfString restored = MAPPER.readValue(json, TupleOfString.class);
+        ParameterizedTuple2Pojo<java.lang.String, java.lang.String> restored = 
+                MAPPER.readValue(json, new TypeReference<ParameterizedTuple2Pojo<java.lang.String, java.lang.String>>(){});
         Assert.assertEquals(src, restored.getValue());
     }
 
@@ -52,9 +54,10 @@ public class SimplePojoTest {
         String src11 = "C";
         Tuple2<String, String> src1 = Tuple.of(src10, src11);
         Tuple2<String, Tuple2<String, String>> src = Tuple.of(src0, src1);
-        String json = MAPPER.writeValueAsString(new TupleOfTuple().setValue(src));
+        String json = MAPPER.writeValueAsString(new ParameterizedTuple2Pojo<>(src));
         Assert.assertEquals(json, "{\"value\":[\"A\",[\"B\",\"C\"]]}");
-        TupleOfTuple restored = MAPPER.readValue(json, TupleOfTuple.class);
+        ParameterizedTuple2Pojo<java.lang.String, io.vavr.Tuple2<java.lang.String, java.lang.String>> restored = 
+                MAPPER.readValue(json, new TypeReference<ParameterizedTuple2Pojo<java.lang.String, io.vavr.Tuple2<java.lang.String, java.lang.String>>>(){});
         Assert.assertEquals(src, restored.getValue());
     }
 
@@ -64,9 +67,10 @@ public class SimplePojoTest {
         String src1 = "B";
         String src2 = "C";
         List<String> src = List.of(src0, src1, src2);
-        String json = MAPPER.writeValueAsString(new ListOfString().setValue(src));
+        String json = MAPPER.writeValueAsString(new ParameterizedListPojo<>(src));
         Assert.assertEquals(json, "{\"value\":[\"A\",\"B\",\"C\"]}");
-        ListOfString restored = MAPPER.readValue(json, ListOfString.class);
+        ParameterizedListPojo<java.lang.String> restored = 
+                MAPPER.readValue(json, new TypeReference<ParameterizedListPojo<java.lang.String>>(){});
         Assert.assertEquals(src, restored.getValue());
     }
 
@@ -76,9 +80,10 @@ public class SimplePojoTest {
         String src01 = "B";
         Tuple2<String, String> src0 = Tuple.of(src00, src01);
         List<Tuple2<String, String>> src = List.of(src0);
-        String json = MAPPER.writeValueAsString(new ListOfTuple().setValue(src));
+        String json = MAPPER.writeValueAsString(new ParameterizedListPojo<>(src));
         Assert.assertEquals(json, "{\"value\":[[\"A\",\"B\"]]}");
-        ListOfTuple restored = MAPPER.readValue(json, ListOfTuple.class);
+        ParameterizedListPojo<io.vavr.Tuple2<java.lang.String, java.lang.String>> restored = 
+                MAPPER.readValue(json, new TypeReference<ParameterizedListPojo<io.vavr.Tuple2<java.lang.String, java.lang.String>>>(){});
         Assert.assertEquals(src, restored.getValue());
     }
 
@@ -88,9 +93,10 @@ public class SimplePojoTest {
         String src1 = "B";
         String src2 = "C";
         Stream<String> src = Stream.of(src0, src1, src2);
-        String json = MAPPER.writeValueAsString(new StreamOfString().setValue(src));
+        String json = MAPPER.writeValueAsString(new ParameterizedStreamPojo<>(src));
         Assert.assertEquals(json, "{\"value\":[\"A\",\"B\",\"C\"]}");
-        StreamOfString restored = MAPPER.readValue(json, StreamOfString.class);
+        ParameterizedStreamPojo<java.lang.String> restored = 
+                MAPPER.readValue(json, new TypeReference<ParameterizedStreamPojo<java.lang.String>>(){});
         Assert.assertEquals(src, restored.getValue());
     }
 
@@ -100,9 +106,10 @@ public class SimplePojoTest {
         String src01 = "B";
         Tuple2<String, String> src0 = Tuple.of(src00, src01);
         Stream<Tuple2<String, String>> src = Stream.of(src0);
-        String json = MAPPER.writeValueAsString(new StreamOfTuple().setValue(src));
+        String json = MAPPER.writeValueAsString(new ParameterizedStreamPojo<>(src));
         Assert.assertEquals(json, "{\"value\":[[\"A\",\"B\"]]}");
-        StreamOfTuple restored = MAPPER.readValue(json, StreamOfTuple.class);
+        ParameterizedStreamPojo<io.vavr.Tuple2<java.lang.String, java.lang.String>> restored = 
+                MAPPER.readValue(json, new TypeReference<ParameterizedStreamPojo<io.vavr.Tuple2<java.lang.String, java.lang.String>>>(){});
         Assert.assertEquals(src, restored.getValue());
     }
 
@@ -112,9 +119,10 @@ public class SimplePojoTest {
         String src1 = "B";
         String src2 = "C";
         PriorityQueue<String> src = PriorityQueue.of(src0, src1, src2);
-        String json = MAPPER.writeValueAsString(new PriorityQueueOfString().setValue(src));
+        String json = MAPPER.writeValueAsString(new ParameterizedPriorityQueuePojo<>(src));
         Assert.assertEquals(json, "{\"value\":[\"A\",\"B\",\"C\"]}");
-        PriorityQueueOfString restored = MAPPER.readValue(json, PriorityQueueOfString.class);
+        ParameterizedPriorityQueuePojo<java.lang.String> restored = 
+                MAPPER.readValue(json, new TypeReference<ParameterizedPriorityQueuePojo<java.lang.String>>(){});
         Assert.assertEquals(src, restored.getValue());
     }
 
@@ -124,9 +132,10 @@ public class SimplePojoTest {
         String src01 = "B";
         Tuple2<String, String> src0 = Tuple.of(src00, src01);
         PriorityQueue<Tuple2<String, String>> src = PriorityQueue.of(src0);
-        String json = MAPPER.writeValueAsString(new PriorityQueueOfTuple().setValue(src));
+        String json = MAPPER.writeValueAsString(new ParameterizedPriorityQueuePojo<>(src));
         Assert.assertEquals(json, "{\"value\":[[\"A\",\"B\"]]}");
-        PriorityQueueOfTuple restored = MAPPER.readValue(json, PriorityQueueOfTuple.class);
+        ParameterizedPriorityQueuePojo<io.vavr.Tuple2<java.lang.String, java.lang.String>> restored = 
+                MAPPER.readValue(json, new TypeReference<ParameterizedPriorityQueuePojo<io.vavr.Tuple2<java.lang.String, java.lang.String>>>(){});
         Assert.assertEquals(src, restored.getValue());
     }
 
@@ -136,9 +145,10 @@ public class SimplePojoTest {
         String src1 = "B";
         String src2 = "C";
         HashSet<String> src = HashSet.of(src0, src1, src2);
-        String json = MAPPER.writeValueAsString(new HashSetOfString().setValue(src));
+        String json = MAPPER.writeValueAsString(new ParameterizedHashSetPojo<>(src));
         Assert.assertEquals(json, "{\"value\":[\"A\",\"B\",\"C\"]}");
-        HashSetOfString restored = MAPPER.readValue(json, HashSetOfString.class);
+        ParameterizedHashSetPojo<java.lang.String> restored = 
+                MAPPER.readValue(json, new TypeReference<ParameterizedHashSetPojo<java.lang.String>>(){});
         Assert.assertEquals(src, restored.getValue());
     }
 
@@ -148,9 +158,10 @@ public class SimplePojoTest {
         String src01 = "B";
         Tuple2<String, String> src0 = Tuple.of(src00, src01);
         HashSet<Tuple2<String, String>> src = HashSet.of(src0);
-        String json = MAPPER.writeValueAsString(new HashSetOfTuple().setValue(src));
+        String json = MAPPER.writeValueAsString(new ParameterizedHashSetPojo<>(src));
         Assert.assertEquals(json, "{\"value\":[[\"A\",\"B\"]]}");
-        HashSetOfTuple restored = MAPPER.readValue(json, HashSetOfTuple.class);
+        ParameterizedHashSetPojo<io.vavr.Tuple2<java.lang.String, java.lang.String>> restored = 
+                MAPPER.readValue(json, new TypeReference<ParameterizedHashSetPojo<io.vavr.Tuple2<java.lang.String, java.lang.String>>>(){});
         Assert.assertEquals(src, restored.getValue());
     }
 
@@ -160,9 +171,10 @@ public class SimplePojoTest {
         String src1 = "B";
         String src2 = "C";
         LinkedHashSet<String> src = LinkedHashSet.of(src0, src1, src2);
-        String json = MAPPER.writeValueAsString(new LinkedHashSetOfString().setValue(src));
+        String json = MAPPER.writeValueAsString(new ParameterizedLinkedHashSetPojo<>(src));
         Assert.assertEquals(json, "{\"value\":[\"A\",\"B\",\"C\"]}");
-        LinkedHashSetOfString restored = MAPPER.readValue(json, LinkedHashSetOfString.class);
+        ParameterizedLinkedHashSetPojo<java.lang.String> restored = 
+                MAPPER.readValue(json, new TypeReference<ParameterizedLinkedHashSetPojo<java.lang.String>>(){});
         Assert.assertEquals(src, restored.getValue());
     }
 
@@ -172,9 +184,10 @@ public class SimplePojoTest {
         String src01 = "B";
         Tuple2<String, String> src0 = Tuple.of(src00, src01);
         LinkedHashSet<Tuple2<String, String>> src = LinkedHashSet.of(src0);
-        String json = MAPPER.writeValueAsString(new LinkedHashSetOfTuple().setValue(src));
+        String json = MAPPER.writeValueAsString(new ParameterizedLinkedHashSetPojo<>(src));
         Assert.assertEquals(json, "{\"value\":[[\"A\",\"B\"]]}");
-        LinkedHashSetOfTuple restored = MAPPER.readValue(json, LinkedHashSetOfTuple.class);
+        ParameterizedLinkedHashSetPojo<io.vavr.Tuple2<java.lang.String, java.lang.String>> restored = 
+                MAPPER.readValue(json, new TypeReference<ParameterizedLinkedHashSetPojo<io.vavr.Tuple2<java.lang.String, java.lang.String>>>(){});
         Assert.assertEquals(src, restored.getValue());
     }
 
@@ -184,9 +197,10 @@ public class SimplePojoTest {
         String src1 = "B";
         String src2 = "C";
         TreeSet<String> src = TreeSet.of(src0, src1, src2);
-        String json = MAPPER.writeValueAsString(new TreeSetOfString().setValue(src));
+        String json = MAPPER.writeValueAsString(new ParameterizedTreeSetPojo<>(src));
         Assert.assertEquals(json, "{\"value\":[\"A\",\"B\",\"C\"]}");
-        TreeSetOfString restored = MAPPER.readValue(json, TreeSetOfString.class);
+        ParameterizedTreeSetPojo<java.lang.String> restored = 
+                MAPPER.readValue(json, new TypeReference<ParameterizedTreeSetPojo<java.lang.String>>(){});
         Assert.assertEquals(src, restored.getValue());
     }
 
@@ -196,9 +210,10 @@ public class SimplePojoTest {
         String src01 = "B";
         Tuple2<String, String> src0 = Tuple.of(src00, src01);
         TreeSet<Tuple2<String, String>> src = TreeSet.of(src0);
-        String json = MAPPER.writeValueAsString(new TreeSetOfTuple().setValue(src));
+        String json = MAPPER.writeValueAsString(new ParameterizedTreeSetPojo<>(src));
         Assert.assertEquals(json, "{\"value\":[[\"A\",\"B\"]]}");
-        TreeSetOfTuple restored = MAPPER.readValue(json, TreeSetOfTuple.class);
+        ParameterizedTreeSetPojo<io.vavr.Tuple2<java.lang.String, java.lang.String>> restored = 
+                MAPPER.readValue(json, new TypeReference<ParameterizedTreeSetPojo<io.vavr.Tuple2<java.lang.String, java.lang.String>>>(){});
         Assert.assertEquals(src, restored.getValue());
     }
 
@@ -208,9 +223,10 @@ public class SimplePojoTest {
         String src01 = "A";
         Tuple2<Integer, String> src0 = Tuple.of(src00, src01);
         HashMap<Integer, String> src = HashMap.ofEntries(src0);
-        String json = MAPPER.writeValueAsString(new HashMapOfString().setValue(src));
+        String json = MAPPER.writeValueAsString(new ParameterizedHashMapPojo<>(src));
         Assert.assertEquals(json, "{\"value\":{\"1\":\"A\"}}");
-        HashMapOfString restored = MAPPER.readValue(json, HashMapOfString.class);
+        ParameterizedHashMapPojo<java.lang.Integer, java.lang.String> restored = 
+                MAPPER.readValue(json, new TypeReference<ParameterizedHashMapPojo<java.lang.Integer, java.lang.String>>(){});
         Assert.assertEquals(src, restored.getValue());
     }
 
@@ -222,9 +238,10 @@ public class SimplePojoTest {
         Tuple2<String, String> src01 = Tuple.of(src010, src011);
         Tuple2<Integer, Tuple2<String, String>> src0 = Tuple.of(src00, src01);
         HashMap<Integer, Tuple2<String, String>> src = HashMap.ofEntries(src0);
-        String json = MAPPER.writeValueAsString(new HashMapOfTuple().setValue(src));
+        String json = MAPPER.writeValueAsString(new ParameterizedHashMapPojo<>(src));
         Assert.assertEquals(json, "{\"value\":{\"1\":[\"A\",\"B\"]}}");
-        HashMapOfTuple restored = MAPPER.readValue(json, HashMapOfTuple.class);
+        ParameterizedHashMapPojo<java.lang.Integer, io.vavr.Tuple2<java.lang.String, java.lang.String>> restored = 
+                MAPPER.readValue(json, new TypeReference<ParameterizedHashMapPojo<java.lang.Integer, io.vavr.Tuple2<java.lang.String, java.lang.String>>>(){});
         Assert.assertEquals(src, restored.getValue());
     }
 
@@ -234,9 +251,10 @@ public class SimplePojoTest {
         String src01 = "A";
         Tuple2<Integer, String> src0 = Tuple.of(src00, src01);
         LinkedHashMap<Integer, String> src = LinkedHashMap.ofEntries(src0);
-        String json = MAPPER.writeValueAsString(new LinkedHashMapOfString().setValue(src));
+        String json = MAPPER.writeValueAsString(new ParameterizedLinkedHashMapPojo<>(src));
         Assert.assertEquals(json, "{\"value\":{\"1\":\"A\"}}");
-        LinkedHashMapOfString restored = MAPPER.readValue(json, LinkedHashMapOfString.class);
+        ParameterizedLinkedHashMapPojo<java.lang.Integer, java.lang.String> restored = 
+                MAPPER.readValue(json, new TypeReference<ParameterizedLinkedHashMapPojo<java.lang.Integer, java.lang.String>>(){});
         Assert.assertEquals(src, restored.getValue());
     }
 
@@ -248,9 +266,10 @@ public class SimplePojoTest {
         Tuple2<String, String> src01 = Tuple.of(src010, src011);
         Tuple2<Integer, Tuple2<String, String>> src0 = Tuple.of(src00, src01);
         LinkedHashMap<Integer, Tuple2<String, String>> src = LinkedHashMap.ofEntries(src0);
-        String json = MAPPER.writeValueAsString(new LinkedHashMapOfTuple().setValue(src));
+        String json = MAPPER.writeValueAsString(new ParameterizedLinkedHashMapPojo<>(src));
         Assert.assertEquals(json, "{\"value\":{\"1\":[\"A\",\"B\"]}}");
-        LinkedHashMapOfTuple restored = MAPPER.readValue(json, LinkedHashMapOfTuple.class);
+        ParameterizedLinkedHashMapPojo<java.lang.Integer, io.vavr.Tuple2<java.lang.String, java.lang.String>> restored = 
+                MAPPER.readValue(json, new TypeReference<ParameterizedLinkedHashMapPojo<java.lang.Integer, io.vavr.Tuple2<java.lang.String, java.lang.String>>>(){});
         Assert.assertEquals(src, restored.getValue());
     }
 
@@ -260,9 +279,10 @@ public class SimplePojoTest {
         String src01 = "A";
         Tuple2<Integer, String> src0 = Tuple.of(src00, src01);
         TreeMap<Integer, String> src = TreeMap.ofEntries(src0);
-        String json = MAPPER.writeValueAsString(new TreeMapOfString().setValue(src));
+        String json = MAPPER.writeValueAsString(new ParameterizedTreeMapPojo<>(src));
         Assert.assertEquals(json, "{\"value\":{\"1\":\"A\"}}");
-        TreeMapOfString restored = MAPPER.readValue(json, TreeMapOfString.class);
+        ParameterizedTreeMapPojo<java.lang.Integer, java.lang.String> restored = 
+                MAPPER.readValue(json, new TypeReference<ParameterizedTreeMapPojo<java.lang.Integer, java.lang.String>>(){});
         Assert.assertEquals(src, restored.getValue());
     }
 
@@ -274,9 +294,10 @@ public class SimplePojoTest {
         Tuple2<String, String> src01 = Tuple.of(src010, src011);
         Tuple2<Integer, Tuple2<String, String>> src0 = Tuple.of(src00, src01);
         TreeMap<Integer, Tuple2<String, String>> src = TreeMap.ofEntries(src0);
-        String json = MAPPER.writeValueAsString(new TreeMapOfTuple().setValue(src));
+        String json = MAPPER.writeValueAsString(new ParameterizedTreeMapPojo<>(src));
         Assert.assertEquals(json, "{\"value\":{\"1\":[\"A\",\"B\"]}}");
-        TreeMapOfTuple restored = MAPPER.readValue(json, TreeMapOfTuple.class);
+        ParameterizedTreeMapPojo<java.lang.Integer, io.vavr.Tuple2<java.lang.String, java.lang.String>> restored = 
+                MAPPER.readValue(json, new TypeReference<ParameterizedTreeMapPojo<java.lang.Integer, io.vavr.Tuple2<java.lang.String, java.lang.String>>>(){});
         Assert.assertEquals(src, restored.getValue());
     }
 
@@ -289,9 +310,10 @@ public class SimplePojoTest {
         String src11 = "C";
         Tuple2<String, String> src1 = Tuple.of(src10, src11);
         HashMultimap<String, String> src = HashMultimap.withSeq().ofEntries(src0, src1);
-        String json = MAPPER.writeValueAsString(new HashMultimapOfSeqString().setValue(src));
+        String json = MAPPER.writeValueAsString(new ParameterizedHashMultimapPojo<>(src));
         Assert.assertEquals(json, "{\"value\":{\"A\":[\"B\",\"C\"]}}");
-        HashMultimapOfSeqString restored = MAPPER.readValue(json, HashMultimapOfSeqString.class);
+        ParameterizedHashMultimapPojo<java.lang.String, java.lang.String> restored = 
+                MAPPER.readValue(json, new TypeReference<ParameterizedHashMultimapPojo<java.lang.String, java.lang.String>>(){});
         Assert.assertEquals(src, restored.getValue());
     }
 
@@ -308,9 +330,10 @@ public class SimplePojoTest {
         Tuple2<String, String> src11 = Tuple.of(src110, src111);
         Tuple2<String, Tuple2<String, String>> src1 = Tuple.of(src10, src11);
         HashMultimap<String, Tuple2<String, String>> src = HashMultimap.withSeq().ofEntries(src0, src1);
-        String json = MAPPER.writeValueAsString(new HashMultimapOfSeqTuple().setValue(src));
+        String json = MAPPER.writeValueAsString(new ParameterizedHashMultimapPojo<>(src));
         Assert.assertEquals(json, "{\"value\":{\"A\":[[\"A\",\"B\"],[\"C\",\"D\"]]}}");
-        HashMultimapOfSeqTuple restored = MAPPER.readValue(json, HashMultimapOfSeqTuple.class);
+        ParameterizedHashMultimapPojo<java.lang.String, io.vavr.Tuple2<java.lang.String, java.lang.String>> restored = 
+                MAPPER.readValue(json, new TypeReference<ParameterizedHashMultimapPojo<java.lang.String, io.vavr.Tuple2<java.lang.String, java.lang.String>>>(){});
         Assert.assertEquals(src, restored.getValue());
     }
 
@@ -323,9 +346,10 @@ public class SimplePojoTest {
         String src11 = "C";
         Tuple2<String, String> src1 = Tuple.of(src10, src11);
         LinkedHashMultimap<String, String> src = LinkedHashMultimap.withSeq().ofEntries(src0, src1);
-        String json = MAPPER.writeValueAsString(new LinkedHashMultimapOfSeqString().setValue(src));
+        String json = MAPPER.writeValueAsString(new ParameterizedLinkedHashMultimapPojo<>(src));
         Assert.assertEquals(json, "{\"value\":{\"A\":[\"B\",\"C\"]}}");
-        LinkedHashMultimapOfSeqString restored = MAPPER.readValue(json, LinkedHashMultimapOfSeqString.class);
+        ParameterizedLinkedHashMultimapPojo<java.lang.String, java.lang.String> restored = 
+                MAPPER.readValue(json, new TypeReference<ParameterizedLinkedHashMultimapPojo<java.lang.String, java.lang.String>>(){});
         Assert.assertEquals(src, restored.getValue());
     }
 
@@ -342,9 +366,10 @@ public class SimplePojoTest {
         Tuple2<String, String> src11 = Tuple.of(src110, src111);
         Tuple2<String, Tuple2<String, String>> src1 = Tuple.of(src10, src11);
         LinkedHashMultimap<String, Tuple2<String, String>> src = LinkedHashMultimap.withSeq().ofEntries(src0, src1);
-        String json = MAPPER.writeValueAsString(new LinkedHashMultimapOfSeqTuple().setValue(src));
+        String json = MAPPER.writeValueAsString(new ParameterizedLinkedHashMultimapPojo<>(src));
         Assert.assertEquals(json, "{\"value\":{\"A\":[[\"A\",\"B\"],[\"C\",\"D\"]]}}");
-        LinkedHashMultimapOfSeqTuple restored = MAPPER.readValue(json, LinkedHashMultimapOfSeqTuple.class);
+        ParameterizedLinkedHashMultimapPojo<java.lang.String, io.vavr.Tuple2<java.lang.String, java.lang.String>> restored = 
+                MAPPER.readValue(json, new TypeReference<ParameterizedLinkedHashMultimapPojo<java.lang.String, io.vavr.Tuple2<java.lang.String, java.lang.String>>>(){});
         Assert.assertEquals(src, restored.getValue());
     }
 
@@ -357,9 +382,10 @@ public class SimplePojoTest {
         String src11 = "C";
         Tuple2<String, String> src1 = Tuple.of(src10, src11);
         TreeMultimap<String, String> src = TreeMultimap.withSet().ofEntries(src0, src1);
-        String json = MAPPER.writeValueAsString(new TreeMultimapOfSeqString().setValue(src));
+        String json = MAPPER.writeValueAsString(new ParameterizedTreeMultimapPojo<>(src));
         Assert.assertEquals(json, "{\"value\":{\"A\":[\"B\",\"C\"]}}");
-        TreeMultimapOfSeqString restored = MAPPER.readValue(json, TreeMultimapOfSeqString.class);
+        ParameterizedTreeMultimapPojo<java.lang.String, java.lang.String> restored = 
+                MAPPER.readValue(json, new TypeReference<ParameterizedTreeMultimapPojo<java.lang.String, java.lang.String>>(){});
         Assert.assertEquals(src, restored.getValue());
     }
 
@@ -376,9 +402,10 @@ public class SimplePojoTest {
         Tuple2<String, String> src11 = Tuple.of(src110, src111);
         Tuple2<String, Tuple2<String, String>> src1 = Tuple.of(src10, src11);
         TreeMultimap<String, Tuple2<String, String>> src = TreeMultimap.withSet().ofEntries(src0, src1);
-        String json = MAPPER.writeValueAsString(new TreeMultimapOfSeqTuple().setValue(src));
+        String json = MAPPER.writeValueAsString(new ParameterizedTreeMultimapPojo<>(src));
         Assert.assertEquals(json, "{\"value\":{\"A\":[[\"A\",\"B\"],[\"C\",\"D\"]]}}");
-        TreeMultimapOfSeqTuple restored = MAPPER.readValue(json, TreeMultimapOfSeqTuple.class);
+        ParameterizedTreeMultimapPojo<java.lang.String, io.vavr.Tuple2<java.lang.String, java.lang.String>> restored = 
+                MAPPER.readValue(json, new TypeReference<ParameterizedTreeMultimapPojo<java.lang.String, io.vavr.Tuple2<java.lang.String, java.lang.String>>>(){});
         Assert.assertEquals(src, restored.getValue());
     }
 
@@ -386,9 +413,10 @@ public class SimplePojoTest {
     public void testOptionOfString() throws Exception {
         String src0 = "A";
         Option<String> src = Option.of(src0);
-        String json = MAPPER.writeValueAsString(new OptionOfString().setValue(src));
+        String json = MAPPER.writeValueAsString(new ParameterizedOptionPojo<>(src));
         Assert.assertEquals(json, "{\"value\":\"A\"}");
-        OptionOfString restored = MAPPER.readValue(json, OptionOfString.class);
+        ParameterizedOptionPojo<java.lang.String> restored = 
+                MAPPER.readValue(json, new TypeReference<ParameterizedOptionPojo<java.lang.String>>(){});
         Assert.assertEquals(src, restored.getValue());
     }
 
@@ -398,9 +426,10 @@ public class SimplePojoTest {
         String src01 = "B";
         Tuple2<String, String> src0 = Tuple.of(src00, src01);
         Option<Tuple2<String, String>> src = Option.of(src0);
-        String json = MAPPER.writeValueAsString(new OptionOfTuple().setValue(src));
+        String json = MAPPER.writeValueAsString(new ParameterizedOptionPojo<>(src));
         Assert.assertEquals(json, "{\"value\":[\"A\",\"B\"]}");
-        OptionOfTuple restored = MAPPER.readValue(json, OptionOfTuple.class);
+        ParameterizedOptionPojo<io.vavr.Tuple2<java.lang.String, java.lang.String>> restored = 
+                MAPPER.readValue(json, new TypeReference<ParameterizedOptionPojo<io.vavr.Tuple2<java.lang.String, java.lang.String>>>(){});
         Assert.assertEquals(src, restored.getValue());
     }
 
@@ -408,9 +437,10 @@ public class SimplePojoTest {
     public void testLazyOfString() throws Exception {
         String src0 = "A";
         Lazy<String> src = Lazy.of(() -> src0);
-        String json = MAPPER.writeValueAsString(new LazyOfString().setValue(src));
+        String json = MAPPER.writeValueAsString(new ParameterizedLazyPojo<>(src));
         Assert.assertEquals(json, "{\"value\":\"A\"}");
-        LazyOfString restored = MAPPER.readValue(json, LazyOfString.class);
+        ParameterizedLazyPojo<java.lang.String> restored = 
+                MAPPER.readValue(json, new TypeReference<ParameterizedLazyPojo<java.lang.String>>(){});
         Assert.assertEquals(src, restored.getValue());
     }
 
@@ -420,9 +450,10 @@ public class SimplePojoTest {
         String src01 = "B";
         Tuple2<String, String> src0 = Tuple.of(src00, src01);
         Lazy<Tuple2<String, String>> src = Lazy.of(() -> src0);
-        String json = MAPPER.writeValueAsString(new LazyOfTuple().setValue(src));
+        String json = MAPPER.writeValueAsString(new ParameterizedLazyPojo<>(src));
         Assert.assertEquals(json, "{\"value\":[\"A\",\"B\"]}");
-        LazyOfTuple restored = MAPPER.readValue(json, LazyOfTuple.class);
+        ParameterizedLazyPojo<io.vavr.Tuple2<java.lang.String, java.lang.String>> restored = 
+                MAPPER.readValue(json, new TypeReference<ParameterizedLazyPojo<io.vavr.Tuple2<java.lang.String, java.lang.String>>>(){});
         Assert.assertEquals(src, restored.getValue());
     }
 
@@ -430,9 +461,10 @@ public class SimplePojoTest {
     public void testLeftEitherOfString() throws Exception {
         String srcl = "A";
         Either<String, Object> src = Either.left(srcl);
-        String json = MAPPER.writeValueAsString(new LeftEitherOfString().setValue(src));
+        String json = MAPPER.writeValueAsString(new ParameterizedEitherPojo<>(src));
         Assert.assertEquals(json, "{\"value\":[\"left\",\"A\"]}");
-        LeftEitherOfString restored = MAPPER.readValue(json, LeftEitherOfString.class);
+        ParameterizedEitherPojo<java.lang.String, java.lang.Object> restored = 
+                MAPPER.readValue(json, new TypeReference<ParameterizedEitherPojo<java.lang.String, java.lang.Object>>(){});
         Assert.assertEquals(src, restored.getValue());
     }
 
@@ -442,9 +474,10 @@ public class SimplePojoTest {
         String srcl1 = "B";
         Tuple2<String, String> srcl = Tuple.of(srcl0, srcl1);
         Either<Tuple2<String, String>, Object> src = Either.left(srcl);
-        String json = MAPPER.writeValueAsString(new LeftEitherOfTuple().setValue(src));
+        String json = MAPPER.writeValueAsString(new ParameterizedEitherPojo<>(src));
         Assert.assertEquals(json, "{\"value\":[\"left\",[\"A\",\"B\"]]}");
-        LeftEitherOfTuple restored = MAPPER.readValue(json, LeftEitherOfTuple.class);
+        ParameterizedEitherPojo<io.vavr.Tuple2<java.lang.String, java.lang.String>, java.lang.Object> restored = 
+                MAPPER.readValue(json, new TypeReference<ParameterizedEitherPojo<io.vavr.Tuple2<java.lang.String, java.lang.String>, java.lang.Object>>(){});
         Assert.assertEquals(src, restored.getValue());
     }
 
@@ -452,9 +485,10 @@ public class SimplePojoTest {
     public void testRightEitherOfString() throws Exception {
         String srcr = "A";
         Either<Object, String> src = Either.right(srcr);
-        String json = MAPPER.writeValueAsString(new RightEitherOfString().setValue(src));
+        String json = MAPPER.writeValueAsString(new ParameterizedEitherPojo<>(src));
         Assert.assertEquals(json, "{\"value\":[\"right\",\"A\"]}");
-        RightEitherOfString restored = MAPPER.readValue(json, RightEitherOfString.class);
+        ParameterizedEitherPojo<java.lang.Object, java.lang.String> restored = 
+                MAPPER.readValue(json, new TypeReference<ParameterizedEitherPojo<java.lang.Object, java.lang.String>>(){});
         Assert.assertEquals(src, restored.getValue());
     }
 
@@ -464,449 +498,328 @@ public class SimplePojoTest {
         String srcr1 = "B";
         Tuple2<String, String> srcr = Tuple.of(srcr0, srcr1);
         Either<Object, Tuple2<String, String>> src = Either.right(srcr);
-        String json = MAPPER.writeValueAsString(new RightEitherOfTuple().setValue(src));
+        String json = MAPPER.writeValueAsString(new ParameterizedEitherPojo<>(src));
         Assert.assertEquals(json, "{\"value\":[\"right\",[\"A\",\"B\"]]}");
-        RightEitherOfTuple restored = MAPPER.readValue(json, RightEitherOfTuple.class);
+        ParameterizedEitherPojo<java.lang.Object, io.vavr.Tuple2<java.lang.String, java.lang.String>> restored = 
+                MAPPER.readValue(json, new TypeReference<ParameterizedEitherPojo<java.lang.Object, io.vavr.Tuple2<java.lang.String, java.lang.String>>>(){});
         Assert.assertEquals(src, restored.getValue());
     }
 
-    public static class TupleOfString {
-        private Tuple2<String, String> v;
+    public static class ParameterizedTuple2Pojo<T1, T2> {
+        private Tuple2<T1, T2> v;
 
-        public Tuple2<String, String> getValue() {
+        public ParameterizedTuple2Pojo() {
+        }
+
+        public ParameterizedTuple2Pojo(Tuple2<T1, T2> v) {
+            this.v = v;
+        }
+
+        public Tuple2<T1, T2> getValue() {
             return v;
         }
 
-        public TupleOfString setValue(Tuple2<String, String> v) {
+        public ParameterizedTuple2Pojo setValue(Tuple2<T1, T2> v) {
             this.v = v;
             return this;
         }
     }
 
-    public static class TupleOfTuple {
-        private Tuple2<String, Tuple2<String, String>> v;
+    public static class ParameterizedListPojo<T1> {
+        private List<T1> v;
 
-        public Tuple2<String, Tuple2<String, String>> getValue() {
+        public ParameterizedListPojo() {
+        }
+
+        public ParameterizedListPojo(List<T1> v) {
+            this.v = v;
+        }
+
+        public List<T1> getValue() {
             return v;
         }
 
-        public TupleOfTuple setValue(Tuple2<String, Tuple2<String, String>> v) {
+        public ParameterizedListPojo setValue(List<T1> v) {
             this.v = v;
             return this;
         }
     }
 
-    public static class ListOfString {
-        private List<String> v;
+    public static class ParameterizedStreamPojo<T1> {
+        private Stream<T1> v;
 
-        public List<String> getValue() {
+        public ParameterizedStreamPojo() {
+        }
+
+        public ParameterizedStreamPojo(Stream<T1> v) {
+            this.v = v;
+        }
+
+        public Stream<T1> getValue() {
             return v;
         }
 
-        public ListOfString setValue(List<String> v) {
+        public ParameterizedStreamPojo setValue(Stream<T1> v) {
             this.v = v;
             return this;
         }
     }
 
-    public static class ListOfTuple {
-        private List<Tuple2<String, String>> v;
+    public static class ParameterizedPriorityQueuePojo<T1> {
+        private PriorityQueue<T1> v;
 
-        public List<Tuple2<String, String>> getValue() {
+        public ParameterizedPriorityQueuePojo() {
+        }
+
+        public ParameterizedPriorityQueuePojo(PriorityQueue<T1> v) {
+            this.v = v;
+        }
+
+        public PriorityQueue<T1> getValue() {
             return v;
         }
 
-        public ListOfTuple setValue(List<Tuple2<String, String>> v) {
+        public ParameterizedPriorityQueuePojo setValue(PriorityQueue<T1> v) {
             this.v = v;
             return this;
         }
     }
 
-    public static class StreamOfString {
-        private Stream<String> v;
+    public static class ParameterizedHashSetPojo<T1> {
+        private HashSet<T1> v;
 
-        public Stream<String> getValue() {
+        public ParameterizedHashSetPojo() {
+        }
+
+        public ParameterizedHashSetPojo(HashSet<T1> v) {
+            this.v = v;
+        }
+
+        public HashSet<T1> getValue() {
             return v;
         }
 
-        public StreamOfString setValue(Stream<String> v) {
+        public ParameterizedHashSetPojo setValue(HashSet<T1> v) {
             this.v = v;
             return this;
         }
     }
 
-    public static class StreamOfTuple {
-        private Stream<Tuple2<String, String>> v;
+    public static class ParameterizedLinkedHashSetPojo<T1> {
+        private LinkedHashSet<T1> v;
 
-        public Stream<Tuple2<String, String>> getValue() {
+        public ParameterizedLinkedHashSetPojo() {
+        }
+
+        public ParameterizedLinkedHashSetPojo(LinkedHashSet<T1> v) {
+            this.v = v;
+        }
+
+        public LinkedHashSet<T1> getValue() {
             return v;
         }
 
-        public StreamOfTuple setValue(Stream<Tuple2<String, String>> v) {
+        public ParameterizedLinkedHashSetPojo setValue(LinkedHashSet<T1> v) {
             this.v = v;
             return this;
         }
     }
 
-    public static class PriorityQueueOfString {
-        private PriorityQueue<String> v;
+    public static class ParameterizedTreeSetPojo<T1> {
+        private TreeSet<T1> v;
 
-        public PriorityQueue<String> getValue() {
+        public ParameterizedTreeSetPojo() {
+        }
+
+        public ParameterizedTreeSetPojo(TreeSet<T1> v) {
+            this.v = v;
+        }
+
+        public TreeSet<T1> getValue() {
             return v;
         }
 
-        public PriorityQueueOfString setValue(PriorityQueue<String> v) {
+        public ParameterizedTreeSetPojo setValue(TreeSet<T1> v) {
             this.v = v;
             return this;
         }
     }
 
-    public static class PriorityQueueOfTuple {
-        private PriorityQueue<Tuple2<String, String>> v;
+    public static class ParameterizedHashMapPojo<T1, T2> {
+        private HashMap<T1, T2> v;
 
-        public PriorityQueue<Tuple2<String, String>> getValue() {
+        public ParameterizedHashMapPojo() {
+        }
+
+        public ParameterizedHashMapPojo(HashMap<T1, T2> v) {
+            this.v = v;
+        }
+
+        public HashMap<T1, T2> getValue() {
             return v;
         }
 
-        public PriorityQueueOfTuple setValue(PriorityQueue<Tuple2<String, String>> v) {
+        public ParameterizedHashMapPojo setValue(HashMap<T1, T2> v) {
             this.v = v;
             return this;
         }
     }
 
-    public static class HashSetOfString {
-        private HashSet<String> v;
+    public static class ParameterizedLinkedHashMapPojo<T1, T2> {
+        private LinkedHashMap<T1, T2> v;
 
-        public HashSet<String> getValue() {
+        public ParameterizedLinkedHashMapPojo() {
+        }
+
+        public ParameterizedLinkedHashMapPojo(LinkedHashMap<T1, T2> v) {
+            this.v = v;
+        }
+
+        public LinkedHashMap<T1, T2> getValue() {
             return v;
         }
 
-        public HashSetOfString setValue(HashSet<String> v) {
+        public ParameterizedLinkedHashMapPojo setValue(LinkedHashMap<T1, T2> v) {
             this.v = v;
             return this;
         }
     }
 
-    public static class HashSetOfTuple {
-        private HashSet<Tuple2<String, String>> v;
+    public static class ParameterizedTreeMapPojo<T1, T2> {
+        private TreeMap<T1, T2> v;
 
-        public HashSet<Tuple2<String, String>> getValue() {
+        public ParameterizedTreeMapPojo() {
+        }
+
+        public ParameterizedTreeMapPojo(TreeMap<T1, T2> v) {
+            this.v = v;
+        }
+
+        public TreeMap<T1, T2> getValue() {
             return v;
         }
 
-        public HashSetOfTuple setValue(HashSet<Tuple2<String, String>> v) {
+        public ParameterizedTreeMapPojo setValue(TreeMap<T1, T2> v) {
             this.v = v;
             return this;
         }
     }
 
-    public static class LinkedHashSetOfString {
-        private LinkedHashSet<String> v;
+    public static class ParameterizedHashMultimapPojo<T1, T2> {
+        private HashMultimap<T1, T2> v;
 
-        public LinkedHashSet<String> getValue() {
+        public ParameterizedHashMultimapPojo() {
+        }
+
+        public ParameterizedHashMultimapPojo(HashMultimap<T1, T2> v) {
+            this.v = v;
+        }
+
+        public HashMultimap<T1, T2> getValue() {
             return v;
         }
 
-        public LinkedHashSetOfString setValue(LinkedHashSet<String> v) {
+        public ParameterizedHashMultimapPojo setValue(HashMultimap<T1, T2> v) {
             this.v = v;
             return this;
         }
     }
 
-    public static class LinkedHashSetOfTuple {
-        private LinkedHashSet<Tuple2<String, String>> v;
+    public static class ParameterizedLinkedHashMultimapPojo<T1, T2> {
+        private LinkedHashMultimap<T1, T2> v;
 
-        public LinkedHashSet<Tuple2<String, String>> getValue() {
+        public ParameterizedLinkedHashMultimapPojo() {
+        }
+
+        public ParameterizedLinkedHashMultimapPojo(LinkedHashMultimap<T1, T2> v) {
+            this.v = v;
+        }
+
+        public LinkedHashMultimap<T1, T2> getValue() {
             return v;
         }
 
-        public LinkedHashSetOfTuple setValue(LinkedHashSet<Tuple2<String, String>> v) {
+        public ParameterizedLinkedHashMultimapPojo setValue(LinkedHashMultimap<T1, T2> v) {
             this.v = v;
             return this;
         }
     }
 
-    public static class TreeSetOfString {
-        private TreeSet<String> v;
+    public static class ParameterizedTreeMultimapPojo<T1, T2> {
+        private TreeMultimap<T1, T2> v;
 
-        public TreeSet<String> getValue() {
+        public ParameterizedTreeMultimapPojo() {
+        }
+
+        public ParameterizedTreeMultimapPojo(TreeMultimap<T1, T2> v) {
+            this.v = v;
+        }
+
+        public TreeMultimap<T1, T2> getValue() {
             return v;
         }
 
-        public TreeSetOfString setValue(TreeSet<String> v) {
+        public ParameterizedTreeMultimapPojo setValue(TreeMultimap<T1, T2> v) {
             this.v = v;
             return this;
         }
     }
 
-    public static class TreeSetOfTuple {
-        private TreeSet<Tuple2<String, String>> v;
+    public static class ParameterizedOptionPojo<T1> {
+        private Option<T1> v;
 
-        public TreeSet<Tuple2<String, String>> getValue() {
+        public ParameterizedOptionPojo() {
+        }
+
+        public ParameterizedOptionPojo(Option<T1> v) {
+            this.v = v;
+        }
+
+        public Option<T1> getValue() {
             return v;
         }
 
-        public TreeSetOfTuple setValue(TreeSet<Tuple2<String, String>> v) {
+        public ParameterizedOptionPojo setValue(Option<T1> v) {
             this.v = v;
             return this;
         }
     }
 
-    public static class HashMapOfString {
-        private HashMap<Integer, String> v;
+    public static class ParameterizedLazyPojo<T1> {
+        private Lazy<T1> v;
 
-        public HashMap<Integer, String> getValue() {
+        public ParameterizedLazyPojo() {
+        }
+
+        public ParameterizedLazyPojo(Lazy<T1> v) {
+            this.v = v;
+        }
+
+        public Lazy<T1> getValue() {
             return v;
         }
 
-        public HashMapOfString setValue(HashMap<Integer, String> v) {
+        public ParameterizedLazyPojo setValue(Lazy<T1> v) {
             this.v = v;
             return this;
         }
     }
 
-    public static class HashMapOfTuple {
-        private HashMap<Integer, Tuple2<String, String>> v;
+    public static class ParameterizedEitherPojo<T1, T2> {
+        private Either<T1, T2> v;
 
-        public HashMap<Integer, Tuple2<String, String>> getValue() {
-            return v;
+        public ParameterizedEitherPojo() {
         }
 
-        public HashMapOfTuple setValue(HashMap<Integer, Tuple2<String, String>> v) {
+        public ParameterizedEitherPojo(Either<T1, T2> v) {
             this.v = v;
-            return this;
         }
-    }
 
-    public static class LinkedHashMapOfString {
-        private LinkedHashMap<Integer, String> v;
-
-        public LinkedHashMap<Integer, String> getValue() {
+        public Either<T1, T2> getValue() {
             return v;
         }
 
-        public LinkedHashMapOfString setValue(LinkedHashMap<Integer, String> v) {
-            this.v = v;
-            return this;
-        }
-    }
-
-    public static class LinkedHashMapOfTuple {
-        private LinkedHashMap<Integer, Tuple2<String, String>> v;
-
-        public LinkedHashMap<Integer, Tuple2<String, String>> getValue() {
-            return v;
-        }
-
-        public LinkedHashMapOfTuple setValue(LinkedHashMap<Integer, Tuple2<String, String>> v) {
-            this.v = v;
-            return this;
-        }
-    }
-
-    public static class TreeMapOfString {
-        private TreeMap<Integer, String> v;
-
-        public TreeMap<Integer, String> getValue() {
-            return v;
-        }
-
-        public TreeMapOfString setValue(TreeMap<Integer, String> v) {
-            this.v = v;
-            return this;
-        }
-    }
-
-    public static class TreeMapOfTuple {
-        private TreeMap<Integer, Tuple2<String, String>> v;
-
-        public TreeMap<Integer, Tuple2<String, String>> getValue() {
-            return v;
-        }
-
-        public TreeMapOfTuple setValue(TreeMap<Integer, Tuple2<String, String>> v) {
-            this.v = v;
-            return this;
-        }
-    }
-
-    public static class HashMultimapOfSeqString {
-        private HashMultimap<String, String> v;
-
-        public HashMultimap<String, String> getValue() {
-            return v;
-        }
-
-        public HashMultimapOfSeqString setValue(HashMultimap<String, String> v) {
-            this.v = v;
-            return this;
-        }
-    }
-
-    public static class HashMultimapOfSeqTuple {
-        private HashMultimap<String, Tuple2<String, String>> v;
-
-        public HashMultimap<String, Tuple2<String, String>> getValue() {
-            return v;
-        }
-
-        public HashMultimapOfSeqTuple setValue(HashMultimap<String, Tuple2<String, String>> v) {
-            this.v = v;
-            return this;
-        }
-    }
-
-    public static class LinkedHashMultimapOfSeqString {
-        private LinkedHashMultimap<String, String> v;
-
-        public LinkedHashMultimap<String, String> getValue() {
-            return v;
-        }
-
-        public LinkedHashMultimapOfSeqString setValue(LinkedHashMultimap<String, String> v) {
-            this.v = v;
-            return this;
-        }
-    }
-
-    public static class LinkedHashMultimapOfSeqTuple {
-        private LinkedHashMultimap<String, Tuple2<String, String>> v;
-
-        public LinkedHashMultimap<String, Tuple2<String, String>> getValue() {
-            return v;
-        }
-
-        public LinkedHashMultimapOfSeqTuple setValue(LinkedHashMultimap<String, Tuple2<String, String>> v) {
-            this.v = v;
-            return this;
-        }
-    }
-
-    public static class TreeMultimapOfSeqString {
-        private TreeMultimap<String, String> v;
-
-        public TreeMultimap<String, String> getValue() {
-            return v;
-        }
-
-        public TreeMultimapOfSeqString setValue(TreeMultimap<String, String> v) {
-            this.v = v;
-            return this;
-        }
-    }
-
-    public static class TreeMultimapOfSeqTuple {
-        private TreeMultimap<String, Tuple2<String, String>> v;
-
-        public TreeMultimap<String, Tuple2<String, String>> getValue() {
-            return v;
-        }
-
-        public TreeMultimapOfSeqTuple setValue(TreeMultimap<String, Tuple2<String, String>> v) {
-            this.v = v;
-            return this;
-        }
-    }
-
-    public static class OptionOfString {
-        private Option<String> v;
-
-        public Option<String> getValue() {
-            return v;
-        }
-
-        public OptionOfString setValue(Option<String> v) {
-            this.v = v;
-            return this;
-        }
-    }
-
-    public static class OptionOfTuple {
-        private Option<Tuple2<String, String>> v;
-
-        public Option<Tuple2<String, String>> getValue() {
-            return v;
-        }
-
-        public OptionOfTuple setValue(Option<Tuple2<String, String>> v) {
-            this.v = v;
-            return this;
-        }
-    }
-
-    public static class LazyOfString {
-        private Lazy<String> v;
-
-        public Lazy<String> getValue() {
-            return v;
-        }
-
-        public LazyOfString setValue(Lazy<String> v) {
-            this.v = v;
-            return this;
-        }
-    }
-
-    public static class LazyOfTuple {
-        private Lazy<Tuple2<String, String>> v;
-
-        public Lazy<Tuple2<String, String>> getValue() {
-            return v;
-        }
-
-        public LazyOfTuple setValue(Lazy<Tuple2<String, String>> v) {
-            this.v = v;
-            return this;
-        }
-    }
-
-    public static class LeftEitherOfString {
-        private Either<String, Object> v;
-
-        public Either<String, Object> getValue() {
-            return v;
-        }
-
-        public LeftEitherOfString setValue(Either<String, Object> v) {
-            this.v = v;
-            return this;
-        }
-    }
-
-    public static class LeftEitherOfTuple {
-        private Either<Tuple2<String, String>, Object> v;
-
-        public Either<Tuple2<String, String>, Object> getValue() {
-            return v;
-        }
-
-        public LeftEitherOfTuple setValue(Either<Tuple2<String, String>, Object> v) {
-            this.v = v;
-            return this;
-        }
-    }
-
-    public static class RightEitherOfString {
-        private Either<Object, String> v;
-
-        public Either<Object, String> getValue() {
-            return v;
-        }
-
-        public RightEitherOfString setValue(Either<Object, String> v) {
-            this.v = v;
-            return this;
-        }
-    }
-
-    public static class RightEitherOfTuple {
-        private Either<Object, Tuple2<String, String>> v;
-
-        public Either<Object, Tuple2<String, String>> getValue() {
-            return v;
-        }
-
-        public RightEitherOfTuple setValue(Either<Object, Tuple2<String, String>> v) {
+        public ParameterizedEitherPojo setValue(Either<T1, T2> v) {
             this.v = v;
             return this;
         }

@@ -42,6 +42,22 @@ public class Initializer {
                 .build());
     }
 
+    public static Class<?> publicVavrClass(Class<?> clz) {
+        if (Either.class.isAssignableFrom(clz)) {
+            return Either.class;
+        }
+        if (Option.class.isAssignableFrom(clz)) {
+            return Option.class;
+        }
+        if (List.class.isAssignableFrom(clz)) {
+            return List.class;
+        }
+        if (Stream.class.isAssignableFrom(clz)) {
+            return Stream.class;
+        }
+        return clz;
+    }
+
     public static TypeName initValue(MethodSpec.Builder builder, String name, Object obj) {
         if (obj instanceof Either) {
             Either<?, ?> either = (Either<?, ?>) obj;
@@ -67,6 +83,14 @@ public class Initializer {
             TypeName subType = initValue(builder, name + "0", ((Lazy<?>) obj).get());
             ParameterizedTypeName ptn = ParameterizedTypeName.get(ClassName.get(Lazy.class), subType);
             builder.addStatement("$T $L = $T.of(() -> $L)", ptn, name, ClassName.get(Lazy.class), name + "0");
+            return ptn;
+        }
+        if (obj instanceof PriorityQueue) {
+            PriorityQueue<?> pq = (PriorityQueue<?>) obj;
+            TypeName[] subTypes = initValues(builder, name, pq.toJavaArray());
+            ParameterizedTypeName ptn = ParameterizedTypeName.get(clsName(pq), commonTypeName(subTypes));
+            String args = List.range(0, subTypes.length).map(i -> name + i).mkString(", ");
+            builder.addStatement("$T $L = $T.of($L)", ptn, name, clsName(pq), args);
             return ptn;
         }
         if (obj instanceof Seq) {
@@ -142,9 +166,6 @@ public class Initializer {
     }
 
     private static ClassName clsName(Value<?> value) {
-        if (value instanceof List) {
-            return ClassName.get(List.class);
-        }
-        return ClassName.get(value.getClass());
+        return ClassName.get(publicVavrClass(value.getClass()));
     }
 }

@@ -162,22 +162,4 @@ public abstract class SetTest extends BaseTest {
         XmlSerializeVavr restored = mapper.readValue(javaUtilValue, XmlSerializeVavr.class);
         Assert.assertEquals(restored.transitTypes.size(), 3);
     }
-
-    public static class Parameterized<T> {
-        public Set<T> value;
-        public Parameterized() {}
-        public Parameterized(Set<T> value) {
-            this.value = value;
-        }
-    }
-
-    @Test
-    @SuppressWarnings("unchecked")
-    public void testWrappedParameterizedSome() throws IOException {
-        String expected = "{\"value\":[1]}";
-        Parameterized<Integer> object = new Parameterized<>((Set<Integer>) of(1));
-        Assert.assertEquals(expected, mapper().writeValueAsString(object));
-        Parameterized<Integer> restored = mapper().readValue(expected, new TypeReference<Parameterized<Integer>>() {});
-        Assert.assertEquals(restored.value.head(), (Integer) 1);
-    }
 }

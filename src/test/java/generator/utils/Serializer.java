@@ -3,10 +3,7 @@ package generator.utils;
 import io.vavr.Lazy;
 import io.vavr.Tuple;
 import io.vavr.Tuple2;
-import io.vavr.collection.Map;
-import io.vavr.collection.Multimap;
-import io.vavr.collection.Seq;
-import io.vavr.collection.Set;
+import io.vavr.collection.*;
 import io.vavr.control.Either;
 import io.vavr.control.Option;
 
@@ -34,6 +31,9 @@ public class Serializer {
         }
         if (o instanceof Option) {
             return expectedOptionJson((Option<?>) o, opts);
+        }
+        if (o instanceof PriorityQueue) {
+            return expectedPriorityQueueJson((PriorityQueue<?>) o, opts);
         }
         if (o instanceof Seq) {
             return expectedSeqJson((Seq<?>) o, opts);
@@ -82,6 +82,10 @@ public class Serializer {
                 return "[\"undefined\"]";
             }
         }
+    }
+
+    private static String expectedPriorityQueueJson(PriorityQueue<?> seq, int opts) {
+        return seq.toStream().map(o -> expectedJson(o, opts)).mkString("[", ",", "]");
     }
 
     private static String expectedSeqJson(Seq<?> seq, int opts) {
