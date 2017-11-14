@@ -1,7 +1,6 @@
 package generator;
 
 import com.squareup.javapoet.*;
-import io.vavr.Tuple;
 import io.vavr.collection.PriorityQueue;
 import org.junit.Assert;
 import org.junit.Test;
@@ -12,6 +11,7 @@ import java.io.IOException;
 
 import static generator.utils.Initializer.initMapper;
 import static generator.utils.Initializer.initValue;
+import static generator.utils.PoetHelpers.simplePojo;
 import static generator.utils.Serializer.expectedJson;
 
 /**
@@ -59,24 +59,6 @@ public class SimplePojo {
                 .addStatement("$T.assertEquals(src, restored.getValue())", ClassName.get(Assert.class))
                 .build();
         builder.addMethod(testSpec);
-
-        TypeSpec pojoSpec = TypeSpec.classBuilder(pojoName)
-                .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
-                .addField(FieldSpec.builder(valueTypeName, "v", Modifier.PRIVATE).build())
-                .addMethod(MethodSpec.methodBuilder("getValue")
-                        .addModifiers(Modifier.PUBLIC)
-                        .returns(valueTypeName)
-                        .addStatement("return v")
-                        .build())
-                .addMethod(MethodSpec.methodBuilder("setValue")
-                        .addModifiers(Modifier.PUBLIC)
-                        .returns(ClassName.get("", pojoName))
-                        .addParameter(ParameterSpec.builder(valueTypeName, "v").build())
-                        .addStatement("this.v = v")
-                        .addStatement("return this")
-                        .build())
-                .build();
-
-        builder.addType(pojoSpec);
+        builder.addType(simplePojo(pojoName, valueTypeName));
     }
 }
