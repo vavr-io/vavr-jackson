@@ -47,8 +47,8 @@ public class Serializer {
         if (o instanceof Multimap) {
             return expectedMultimapJson((Multimap<?, ?>) o, opts);
         }
-        if (o instanceof Tuple2) {
-            return expectedTupleJson((Tuple2<?, ?>) o, opts);
+        if (o instanceof Tuple) {
+            return expectedTupleJson((Tuple) o, opts);
         }
         if (o instanceof String) {
             return "\"" + o.toString().replace("\"", "\\\"") + "\"";

@@ -3,7 +3,15 @@ package io.vavr.jackson.generated;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.vavr.Lazy;
 import io.vavr.Tuple;
+import io.vavr.Tuple1;
 import io.vavr.Tuple2;
+import io.vavr.Tuple3;
+import io.vavr.Tuple4;
+import io.vavr.Tuple5;
+import io.vavr.Tuple6;
+import io.vavr.Tuple7;
+import io.vavr.Tuple8;
+import io.vavr.collection.Array;
 import io.vavr.collection.HashMap;
 import io.vavr.collection.HashMultimap;
 import io.vavr.collection.HashSet;
@@ -12,10 +20,12 @@ import io.vavr.collection.LinkedHashMultimap;
 import io.vavr.collection.LinkedHashSet;
 import io.vavr.collection.List;
 import io.vavr.collection.PriorityQueue;
+import io.vavr.collection.Queue;
 import io.vavr.collection.Stream;
 import io.vavr.collection.TreeMap;
 import io.vavr.collection.TreeMultimap;
 import io.vavr.collection.TreeSet;
+import io.vavr.collection.Vector;
 import io.vavr.control.Either;
 import io.vavr.control.Option;
 import io.vavr.jackson.datatype.VavrModule;
@@ -35,26 +45,291 @@ public class SimplePojoTest {
     private static final ObjectMapper MAPPER = new ObjectMapper().registerModule(MAPPER_MODULE);
 
     @Test
-    public void testTupleOfString() throws Exception {
+    public void testTuple1OfString() throws Exception {
         String src0 = "A";
-        String src1 = "B";
-        Tuple2<String, String> src = Tuple.of(src0, src1);
-        String json = MAPPER.writeValueAsString(new TupleOfString().setValue(src));
-        Assert.assertEquals(json, "{\"value\":[\"A\",\"B\"]}");
-        TupleOfString restored = MAPPER.readValue(json, TupleOfString.class);
+        Tuple1<String> src = Tuple.of(src0);
+        String json = MAPPER.writeValueAsString(new Tuple1OfString().setValue(src));
+        Assert.assertEquals(json, "{\"value\":[\"A\"]}");
+        Tuple1OfString restored = MAPPER.readValue(json, Tuple1OfString.class);
         Assert.assertEquals(src, restored.getValue());
     }
 
     @Test
-    public void testTupleOfTuple() throws Exception {
+    public void testTuple1OfTuple() throws Exception {
+        String src00 = "B";
+        Tuple1<String> src0 = Tuple.of(src00);
+        Tuple1<Tuple1<String>> src = Tuple.of(src0);
+        String json = MAPPER.writeValueAsString(new Tuple1OfTuple().setValue(src));
+        Assert.assertEquals(json, "{\"value\":[[\"B\"]]}");
+        Tuple1OfTuple restored = MAPPER.readValue(json, Tuple1OfTuple.class);
+        Assert.assertEquals(src, restored.getValue());
+    }
+
+    @Test
+    public void testTuple2OfString() throws Exception {
+        String src0 = "A";
+        String src1 = "B";
+        Tuple2<String, String> src = Tuple.of(src0, src1);
+        String json = MAPPER.writeValueAsString(new Tuple2OfString().setValue(src));
+        Assert.assertEquals(json, "{\"value\":[\"A\",\"B\"]}");
+        Tuple2OfString restored = MAPPER.readValue(json, Tuple2OfString.class);
+        Assert.assertEquals(src, restored.getValue());
+    }
+
+    @Test
+    public void testTuple2OfTuple() throws Exception {
         String src0 = "A";
         String src10 = "B";
         String src11 = "C";
         Tuple2<String, String> src1 = Tuple.of(src10, src11);
         Tuple2<String, Tuple2<String, String>> src = Tuple.of(src0, src1);
-        String json = MAPPER.writeValueAsString(new TupleOfTuple().setValue(src));
+        String json = MAPPER.writeValueAsString(new Tuple2OfTuple().setValue(src));
         Assert.assertEquals(json, "{\"value\":[\"A\",[\"B\",\"C\"]]}");
-        TupleOfTuple restored = MAPPER.readValue(json, TupleOfTuple.class);
+        Tuple2OfTuple restored = MAPPER.readValue(json, Tuple2OfTuple.class);
+        Assert.assertEquals(src, restored.getValue());
+    }
+
+    @Test
+    public void testTuple3OfString() throws Exception {
+        String src0 = "A";
+        String src1 = "B";
+        String src2 = "C";
+        Tuple3<String, String, String> src = Tuple.of(src0, src1, src2);
+        String json = MAPPER.writeValueAsString(new Tuple3OfString().setValue(src));
+        Assert.assertEquals(json, "{\"value\":[\"A\",\"B\",\"C\"]}");
+        Tuple3OfString restored = MAPPER.readValue(json, Tuple3OfString.class);
+        Assert.assertEquals(src, restored.getValue());
+    }
+
+    @Test
+    public void testTuple3OfTuple() throws Exception {
+        String src0 = "A";
+        String src10 = "B";
+        String src11 = "C";
+        Tuple2<String, String> src1 = Tuple.of(src10, src11);
+        String src20 = "D";
+        String src21 = "E";
+        Tuple2<String, String> src2 = Tuple.of(src20, src21);
+        Tuple3<String, Tuple2<String, String>, Tuple2<String, String>> src = Tuple.of(src0, src1, src2);
+        String json = MAPPER.writeValueAsString(new Tuple3OfTuple().setValue(src));
+        Assert.assertEquals(json, "{\"value\":[\"A\",[\"B\",\"C\"],[\"D\",\"E\"]]}");
+        Tuple3OfTuple restored = MAPPER.readValue(json, Tuple3OfTuple.class);
+        Assert.assertEquals(src, restored.getValue());
+    }
+
+    @Test
+    public void testTuple4OfString() throws Exception {
+        String src0 = "A";
+        String src1 = "B";
+        String src2 = "C";
+        String src3 = "D";
+        Tuple4<String, String, String, String> src = Tuple.of(src0, src1, src2, src3);
+        String json = MAPPER.writeValueAsString(new Tuple4OfString().setValue(src));
+        Assert.assertEquals(json, "{\"value\":[\"A\",\"B\",\"C\",\"D\"]}");
+        Tuple4OfString restored = MAPPER.readValue(json, Tuple4OfString.class);
+        Assert.assertEquals(src, restored.getValue());
+    }
+
+    @Test
+    public void testTuple4OfTuple() throws Exception {
+        String src0 = "A";
+        String src10 = "B";
+        String src11 = "C";
+        Tuple2<String, String> src1 = Tuple.of(src10, src11);
+        String src20 = "D";
+        String src21 = "E";
+        Tuple2<String, String> src2 = Tuple.of(src20, src21);
+        String src30 = "F";
+        String src31 = "1";
+        Tuple2<String, String> src3 = Tuple.of(src30, src31);
+        Tuple4<String, Tuple2<String, String>, Tuple2<String, String>, Tuple2<String, String>> src = Tuple.of(src0, src1, src2, src3);
+        String json = MAPPER.writeValueAsString(new Tuple4OfTuple().setValue(src));
+        Assert.assertEquals(json, "{\"value\":[\"A\",[\"B\",\"C\"],[\"D\",\"E\"],[\"F\",\"1\"]]}");
+        Tuple4OfTuple restored = MAPPER.readValue(json, Tuple4OfTuple.class);
+        Assert.assertEquals(src, restored.getValue());
+    }
+
+    @Test
+    public void testTuple5OfString() throws Exception {
+        String src0 = "A";
+        String src1 = "B";
+        String src2 = "C";
+        String src3 = "D";
+        String src4 = "E";
+        Tuple5<String, String, String, String, String> src = Tuple.of(src0, src1, src2, src3, src4);
+        String json = MAPPER.writeValueAsString(new Tuple5OfString().setValue(src));
+        Assert.assertEquals(json, "{\"value\":[\"A\",\"B\",\"C\",\"D\",\"E\"]}");
+        Tuple5OfString restored = MAPPER.readValue(json, Tuple5OfString.class);
+        Assert.assertEquals(src, restored.getValue());
+    }
+
+    @Test
+    public void testTuple5OfTuple() throws Exception {
+        String src0 = "A";
+        String src10 = "B";
+        String src11 = "C";
+        Tuple2<String, String> src1 = Tuple.of(src10, src11);
+        String src20 = "D";
+        String src21 = "E";
+        Tuple2<String, String> src2 = Tuple.of(src20, src21);
+        String src30 = "F";
+        String src31 = "1";
+        Tuple2<String, String> src3 = Tuple.of(src30, src31);
+        String src4 = "A";
+        Tuple5<String, Tuple2<String, String>, Tuple2<String, String>, Tuple2<String, String>, String> src = Tuple.of(src0, src1, src2, src3, src4);
+        String json = MAPPER.writeValueAsString(new Tuple5OfTuple().setValue(src));
+        Assert.assertEquals(json, "{\"value\":[\"A\",[\"B\",\"C\"],[\"D\",\"E\"],[\"F\",\"1\"],\"A\"]}");
+        Tuple5OfTuple restored = MAPPER.readValue(json, Tuple5OfTuple.class);
+        Assert.assertEquals(src, restored.getValue());
+    }
+
+    @Test
+    public void testTuple6OfString() throws Exception {
+        String src0 = "A";
+        String src1 = "B";
+        String src2 = "C";
+        String src3 = "D";
+        String src4 = "E";
+        String src5 = "F";
+        Tuple6<String, String, String, String, String, String> src = Tuple.of(src0, src1, src2, src3, src4, src5);
+        String json = MAPPER.writeValueAsString(new Tuple6OfString().setValue(src));
+        Assert.assertEquals(json, "{\"value\":[\"A\",\"B\",\"C\",\"D\",\"E\",\"F\"]}");
+        Tuple6OfString restored = MAPPER.readValue(json, Tuple6OfString.class);
+        Assert.assertEquals(src, restored.getValue());
+    }
+
+    @Test
+    public void testTuple6OfTuple() throws Exception {
+        String src0 = "A";
+        String src10 = "B";
+        String src11 = "C";
+        Tuple2<String, String> src1 = Tuple.of(src10, src11);
+        String src20 = "D";
+        String src21 = "E";
+        Tuple2<String, String> src2 = Tuple.of(src20, src21);
+        String src30 = "F";
+        String src31 = "1";
+        Tuple2<String, String> src3 = Tuple.of(src30, src31);
+        String src4 = "A";
+        String src50 = "B";
+        String src51 = "C";
+        Tuple2<String, String> src5 = Tuple.of(src50, src51);
+        Tuple6<String, Tuple2<String, String>, Tuple2<String, String>, Tuple2<String, String>, String, Tuple2<String, String>> src = Tuple.of(src0, src1, src2, src3, src4, src5);
+        String json = MAPPER.writeValueAsString(new Tuple6OfTuple().setValue(src));
+        Assert.assertEquals(json, "{\"value\":[\"A\",[\"B\",\"C\"],[\"D\",\"E\"],[\"F\",\"1\"],\"A\",[\"B\",\"C\"]]}");
+        Tuple6OfTuple restored = MAPPER.readValue(json, Tuple6OfTuple.class);
+        Assert.assertEquals(src, restored.getValue());
+    }
+
+    @Test
+    public void testTuple7OfString() throws Exception {
+        String src0 = "A";
+        String src1 = "B";
+        String src2 = "C";
+        String src3 = "D";
+        String src4 = "E";
+        String src5 = "F";
+        String src6 = "1";
+        Tuple7<String, String, String, String, String, String, String> src = Tuple.of(src0, src1, src2, src3, src4, src5, src6);
+        String json = MAPPER.writeValueAsString(new Tuple7OfString().setValue(src));
+        Assert.assertEquals(json, "{\"value\":[\"A\",\"B\",\"C\",\"D\",\"E\",\"F\",\"1\"]}");
+        Tuple7OfString restored = MAPPER.readValue(json, Tuple7OfString.class);
+        Assert.assertEquals(src, restored.getValue());
+    }
+
+    @Test
+    public void testTuple7OfTuple() throws Exception {
+        String src0 = "A";
+        String src10 = "B";
+        String src11 = "C";
+        Tuple2<String, String> src1 = Tuple.of(src10, src11);
+        String src20 = "D";
+        String src21 = "E";
+        Tuple2<String, String> src2 = Tuple.of(src20, src21);
+        String src30 = "F";
+        String src31 = "1";
+        Tuple2<String, String> src3 = Tuple.of(src30, src31);
+        String src4 = "A";
+        String src50 = "B";
+        String src51 = "C";
+        Tuple2<String, String> src5 = Tuple.of(src50, src51);
+        String src60 = "D";
+        String src61 = "E";
+        Tuple2<String, String> src6 = Tuple.of(src60, src61);
+        Tuple7<String, Tuple2<String, String>, Tuple2<String, String>, Tuple2<String, String>, String, Tuple2<String, String>, Tuple2<String, String>> src = Tuple.of(src0, src1, src2, src3, src4, src5, src6);
+        String json = MAPPER.writeValueAsString(new Tuple7OfTuple().setValue(src));
+        Assert.assertEquals(json, "{\"value\":[\"A\",[\"B\",\"C\"],[\"D\",\"E\"],[\"F\",\"1\"],\"A\",[\"B\",\"C\"],[\"D\",\"E\"]]}");
+        Tuple7OfTuple restored = MAPPER.readValue(json, Tuple7OfTuple.class);
+        Assert.assertEquals(src, restored.getValue());
+    }
+
+    @Test
+    public void testTuple8OfString() throws Exception {
+        String src0 = "A";
+        String src1 = "B";
+        String src2 = "C";
+        String src3 = "D";
+        String src4 = "E";
+        String src5 = "F";
+        String src6 = "1";
+        String src7 = "2";
+        Tuple8<String, String, String, String, String, String, String, String> src = Tuple.of(src0, src1, src2, src3, src4, src5, src6, src7);
+        String json = MAPPER.writeValueAsString(new Tuple8OfString().setValue(src));
+        Assert.assertEquals(json, "{\"value\":[\"A\",\"B\",\"C\",\"D\",\"E\",\"F\",\"1\",\"2\"]}");
+        Tuple8OfString restored = MAPPER.readValue(json, Tuple8OfString.class);
+        Assert.assertEquals(src, restored.getValue());
+    }
+
+    @Test
+    public void testTuple8OfTuple() throws Exception {
+        String src0 = "A";
+        String src10 = "B";
+        String src11 = "C";
+        Tuple2<String, String> src1 = Tuple.of(src10, src11);
+        String src20 = "D";
+        String src21 = "E";
+        Tuple2<String, String> src2 = Tuple.of(src20, src21);
+        String src30 = "F";
+        String src31 = "1";
+        Tuple2<String, String> src3 = Tuple.of(src30, src31);
+        String src4 = "A";
+        String src50 = "B";
+        String src51 = "C";
+        Tuple2<String, String> src5 = Tuple.of(src50, src51);
+        String src60 = "D";
+        String src61 = "E";
+        Tuple2<String, String> src6 = Tuple.of(src60, src61);
+        String src70 = "F";
+        String src71 = "1";
+        Tuple2<String, String> src7 = Tuple.of(src70, src71);
+        Tuple8<String, Tuple2<String, String>, Tuple2<String, String>, Tuple2<String, String>, String, Tuple2<String, String>, Tuple2<String, String>, Tuple2<String, String>> src = Tuple.of(src0, src1, src2, src3, src4, src5, src6, src7);
+        String json = MAPPER.writeValueAsString(new Tuple8OfTuple().setValue(src));
+        Assert.assertEquals(json, "{\"value\":[\"A\",[\"B\",\"C\"],[\"D\",\"E\"],[\"F\",\"1\"],\"A\",[\"B\",\"C\"],[\"D\",\"E\"],[\"F\",\"1\"]]}");
+        Tuple8OfTuple restored = MAPPER.readValue(json, Tuple8OfTuple.class);
+        Assert.assertEquals(src, restored.getValue());
+    }
+
+    @Test
+    public void testArrayOfString() throws Exception {
+        String src0 = "A";
+        String src1 = "B";
+        String src2 = "C";
+        Array<String> src = Array.of(src0, src1, src2);
+        String json = MAPPER.writeValueAsString(new ArrayOfString().setValue(src));
+        Assert.assertEquals(json, "{\"value\":[\"A\",\"B\",\"C\"]}");
+        ArrayOfString restored = MAPPER.readValue(json, ArrayOfString.class);
+        Assert.assertEquals(src, restored.getValue());
+    }
+
+    @Test
+    public void testArrayOfTuple() throws Exception {
+        String src00 = "A";
+        String src01 = "B";
+        Tuple2<String, String> src0 = Tuple.of(src00, src01);
+        Array<Tuple2<String, String>> src = Array.of(src0);
+        String json = MAPPER.writeValueAsString(new ArrayOfTuple().setValue(src));
+        Assert.assertEquals(json, "{\"value\":[[\"A\",\"B\"]]}");
+        ArrayOfTuple restored = MAPPER.readValue(json, ArrayOfTuple.class);
         Assert.assertEquals(src, restored.getValue());
     }
 
@@ -83,6 +358,30 @@ public class SimplePojoTest {
     }
 
     @Test
+    public void testQueueOfString() throws Exception {
+        String src0 = "A";
+        String src1 = "B";
+        String src2 = "C";
+        Queue<String> src = Queue.of(src0, src1, src2);
+        String json = MAPPER.writeValueAsString(new QueueOfString().setValue(src));
+        Assert.assertEquals(json, "{\"value\":[\"A\",\"B\",\"C\"]}");
+        QueueOfString restored = MAPPER.readValue(json, QueueOfString.class);
+        Assert.assertEquals(src, restored.getValue());
+    }
+
+    @Test
+    public void testQueueOfTuple() throws Exception {
+        String src00 = "A";
+        String src01 = "B";
+        Tuple2<String, String> src0 = Tuple.of(src00, src01);
+        Queue<Tuple2<String, String>> src = Queue.of(src0);
+        String json = MAPPER.writeValueAsString(new QueueOfTuple().setValue(src));
+        Assert.assertEquals(json, "{\"value\":[[\"A\",\"B\"]]}");
+        QueueOfTuple restored = MAPPER.readValue(json, QueueOfTuple.class);
+        Assert.assertEquals(src, restored.getValue());
+    }
+
+    @Test
     public void testStreamOfString() throws Exception {
         String src0 = "A";
         String src1 = "B";
@@ -103,6 +402,30 @@ public class SimplePojoTest {
         String json = MAPPER.writeValueAsString(new StreamOfTuple().setValue(src));
         Assert.assertEquals(json, "{\"value\":[[\"A\",\"B\"]]}");
         StreamOfTuple restored = MAPPER.readValue(json, StreamOfTuple.class);
+        Assert.assertEquals(src, restored.getValue());
+    }
+
+    @Test
+    public void testVectorOfString() throws Exception {
+        String src0 = "A";
+        String src1 = "B";
+        String src2 = "C";
+        Vector<String> src = Vector.of(src0, src1, src2);
+        String json = MAPPER.writeValueAsString(new VectorOfString().setValue(src));
+        Assert.assertEquals(json, "{\"value\":[\"A\",\"B\",\"C\"]}");
+        VectorOfString restored = MAPPER.readValue(json, VectorOfString.class);
+        Assert.assertEquals(src, restored.getValue());
+    }
+
+    @Test
+    public void testVectorOfTuple() throws Exception {
+        String src00 = "A";
+        String src01 = "B";
+        Tuple2<String, String> src0 = Tuple.of(src00, src01);
+        Vector<Tuple2<String, String>> src = Vector.of(src0);
+        String json = MAPPER.writeValueAsString(new VectorOfTuple().setValue(src));
+        Assert.assertEquals(json, "{\"value\":[[\"A\",\"B\"]]}");
+        VectorOfTuple restored = MAPPER.readValue(json, VectorOfTuple.class);
         Assert.assertEquals(src, restored.getValue());
     }
 
@@ -470,27 +793,235 @@ public class SimplePojoTest {
         Assert.assertEquals(src, restored.getValue());
     }
 
-    public static class TupleOfString {
+    public static class Tuple1OfString {
+        private Tuple1<String> v;
+
+        public Tuple1<String> getValue() {
+            return v;
+        }
+
+        public Tuple1OfString setValue(Tuple1<String> v) {
+            this.v = v;
+            return this;
+        }
+    }
+
+    public static class Tuple1OfTuple {
+        private Tuple1<Tuple1<String>> v;
+
+        public Tuple1<Tuple1<String>> getValue() {
+            return v;
+        }
+
+        public Tuple1OfTuple setValue(Tuple1<Tuple1<String>> v) {
+            this.v = v;
+            return this;
+        }
+    }
+
+    public static class Tuple2OfString {
         private Tuple2<String, String> v;
 
         public Tuple2<String, String> getValue() {
             return v;
         }
 
-        public TupleOfString setValue(Tuple2<String, String> v) {
+        public Tuple2OfString setValue(Tuple2<String, String> v) {
             this.v = v;
             return this;
         }
     }
 
-    public static class TupleOfTuple {
+    public static class Tuple2OfTuple {
         private Tuple2<String, Tuple2<String, String>> v;
 
         public Tuple2<String, Tuple2<String, String>> getValue() {
             return v;
         }
 
-        public TupleOfTuple setValue(Tuple2<String, Tuple2<String, String>> v) {
+        public Tuple2OfTuple setValue(Tuple2<String, Tuple2<String, String>> v) {
+            this.v = v;
+            return this;
+        }
+    }
+
+    public static class Tuple3OfString {
+        private Tuple3<String, String, String> v;
+
+        public Tuple3<String, String, String> getValue() {
+            return v;
+        }
+
+        public Tuple3OfString setValue(Tuple3<String, String, String> v) {
+            this.v = v;
+            return this;
+        }
+    }
+
+    public static class Tuple3OfTuple {
+        private Tuple3<String, Tuple2<String, String>, Tuple2<String, String>> v;
+
+        public Tuple3<String, Tuple2<String, String>, Tuple2<String, String>> getValue() {
+            return v;
+        }
+
+        public Tuple3OfTuple setValue(Tuple3<String, Tuple2<String, String>, Tuple2<String, String>> v) {
+            this.v = v;
+            return this;
+        }
+    }
+
+    public static class Tuple4OfString {
+        private Tuple4<String, String, String, String> v;
+
+        public Tuple4<String, String, String, String> getValue() {
+            return v;
+        }
+
+        public Tuple4OfString setValue(Tuple4<String, String, String, String> v) {
+            this.v = v;
+            return this;
+        }
+    }
+
+    public static class Tuple4OfTuple {
+        private Tuple4<String, Tuple2<String, String>, Tuple2<String, String>, Tuple2<String, String>> v;
+
+        public Tuple4<String, Tuple2<String, String>, Tuple2<String, String>, Tuple2<String, String>> getValue() {
+            return v;
+        }
+
+        public Tuple4OfTuple setValue(Tuple4<String, Tuple2<String, String>, Tuple2<String, String>, Tuple2<String, String>> v) {
+            this.v = v;
+            return this;
+        }
+    }
+
+    public static class Tuple5OfString {
+        private Tuple5<String, String, String, String, String> v;
+
+        public Tuple5<String, String, String, String, String> getValue() {
+            return v;
+        }
+
+        public Tuple5OfString setValue(Tuple5<String, String, String, String, String> v) {
+            this.v = v;
+            return this;
+        }
+    }
+
+    public static class Tuple5OfTuple {
+        private Tuple5<String, Tuple2<String, String>, Tuple2<String, String>, Tuple2<String, String>, String> v;
+
+        public Tuple5<String, Tuple2<String, String>, Tuple2<String, String>, Tuple2<String, String>, String> getValue() {
+            return v;
+        }
+
+        public Tuple5OfTuple setValue(Tuple5<String, Tuple2<String, String>, Tuple2<String, String>, Tuple2<String, String>, String> v) {
+            this.v = v;
+            return this;
+        }
+    }
+
+    public static class Tuple6OfString {
+        private Tuple6<String, String, String, String, String, String> v;
+
+        public Tuple6<String, String, String, String, String, String> getValue() {
+            return v;
+        }
+
+        public Tuple6OfString setValue(Tuple6<String, String, String, String, String, String> v) {
+            this.v = v;
+            return this;
+        }
+    }
+
+    public static class Tuple6OfTuple {
+        private Tuple6<String, Tuple2<String, String>, Tuple2<String, String>, Tuple2<String, String>, String, Tuple2<String, String>> v;
+
+        public Tuple6<String, Tuple2<String, String>, Tuple2<String, String>, Tuple2<String, String>, String, Tuple2<String, String>> getValue() {
+            return v;
+        }
+
+        public Tuple6OfTuple setValue(Tuple6<String, Tuple2<String, String>, Tuple2<String, String>, Tuple2<String, String>, String, Tuple2<String, String>> v) {
+            this.v = v;
+            return this;
+        }
+    }
+
+    public static class Tuple7OfString {
+        private Tuple7<String, String, String, String, String, String, String> v;
+
+        public Tuple7<String, String, String, String, String, String, String> getValue() {
+            return v;
+        }
+
+        public Tuple7OfString setValue(Tuple7<String, String, String, String, String, String, String> v) {
+            this.v = v;
+            return this;
+        }
+    }
+
+    public static class Tuple7OfTuple {
+        private Tuple7<String, Tuple2<String, String>, Tuple2<String, String>, Tuple2<String, String>, String, Tuple2<String, String>, Tuple2<String, String>> v;
+
+        public Tuple7<String, Tuple2<String, String>, Tuple2<String, String>, Tuple2<String, String>, String, Tuple2<String, String>, Tuple2<String, String>> getValue() {
+            return v;
+        }
+
+        public Tuple7OfTuple setValue(Tuple7<String, Tuple2<String, String>, Tuple2<String, String>, Tuple2<String, String>, String, Tuple2<String, String>, Tuple2<String, String>> v) {
+            this.v = v;
+            return this;
+        }
+    }
+
+    public static class Tuple8OfString {
+        private Tuple8<String, String, String, String, String, String, String, String> v;
+
+        public Tuple8<String, String, String, String, String, String, String, String> getValue() {
+            return v;
+        }
+
+        public Tuple8OfString setValue(Tuple8<String, String, String, String, String, String, String, String> v) {
+            this.v = v;
+            return this;
+        }
+    }
+
+    public static class Tuple8OfTuple {
+        private Tuple8<String, Tuple2<String, String>, Tuple2<String, String>, Tuple2<String, String>, String, Tuple2<String, String>, Tuple2<String, String>, Tuple2<String, String>> v;
+
+        public Tuple8<String, Tuple2<String, String>, Tuple2<String, String>, Tuple2<String, String>, String, Tuple2<String, String>, Tuple2<String, String>, Tuple2<String, String>> getValue() {
+            return v;
+        }
+
+        public Tuple8OfTuple setValue(Tuple8<String, Tuple2<String, String>, Tuple2<String, String>, Tuple2<String, String>, String, Tuple2<String, String>, Tuple2<String, String>, Tuple2<String, String>> v) {
+            this.v = v;
+            return this;
+        }
+    }
+
+    public static class ArrayOfString {
+        private Array<String> v;
+
+        public Array<String> getValue() {
+            return v;
+        }
+
+        public ArrayOfString setValue(Array<String> v) {
+            this.v = v;
+            return this;
+        }
+    }
+
+    public static class ArrayOfTuple {
+        private Array<Tuple2<String, String>> v;
+
+        public Array<Tuple2<String, String>> getValue() {
+            return v;
+        }
+
+        public ArrayOfTuple setValue(Array<Tuple2<String, String>> v) {
             this.v = v;
             return this;
         }
@@ -522,6 +1053,32 @@ public class SimplePojoTest {
         }
     }
 
+    public static class QueueOfString {
+        private Queue<String> v;
+
+        public Queue<String> getValue() {
+            return v;
+        }
+
+        public QueueOfString setValue(Queue<String> v) {
+            this.v = v;
+            return this;
+        }
+    }
+
+    public static class QueueOfTuple {
+        private Queue<Tuple2<String, String>> v;
+
+        public Queue<Tuple2<String, String>> getValue() {
+            return v;
+        }
+
+        public QueueOfTuple setValue(Queue<Tuple2<String, String>> v) {
+            this.v = v;
+            return this;
+        }
+    }
+
     public static class StreamOfString {
         private Stream<String> v;
 
@@ -543,6 +1100,32 @@ public class SimplePojoTest {
         }
 
         public StreamOfTuple setValue(Stream<Tuple2<String, String>> v) {
+            this.v = v;
+            return this;
+        }
+    }
+
+    public static class VectorOfString {
+        private Vector<String> v;
+
+        public Vector<String> getValue() {
+            return v;
+        }
+
+        public VectorOfString setValue(Vector<String> v) {
+            this.v = v;
+            return this;
+        }
+    }
+
+    public static class VectorOfTuple {
+        private Vector<Tuple2<String, String>> v;
+
+        public Vector<Tuple2<String, String>> getValue() {
+            return v;
+        }
+
+        public VectorOfTuple setValue(Vector<Tuple2<String, String>> v) {
             this.v = v;
             return this;
         }

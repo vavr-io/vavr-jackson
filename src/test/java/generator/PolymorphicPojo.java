@@ -3,10 +3,7 @@ package generator;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.squareup.javapoet.*;
-import io.vavr.Lazy;
-import io.vavr.Tuple;
-import io.vavr.Tuple1;
-import io.vavr.Tuple2;
+import io.vavr.*;
 import io.vavr.collection.*;
 import io.vavr.control.Either;
 import io.vavr.control.Option;
@@ -40,6 +37,13 @@ public class PolymorphicPojo {
 
         pojoTest.addType(TypeSpec.interfaceBuilder("I")
                 .addModifiers(Modifier.PUBLIC)
+                .addSuperinterface(ParameterizedTypeName.get(ClassName.get(Comparable.class), ClassName.get("", "I")))
+                .addMethod(MethodSpec.methodBuilder("compareTo")
+                        .addModifiers(Modifier.PUBLIC, Modifier.DEFAULT)
+                        .addParameter(ParameterSpec.builder(ClassName.get("", "I"), "o").build())
+                        .returns(ClassName.INT)
+                        .addStatement("return Integer.compare(hashCode(), o.hashCode())")
+                        .build())
                 .addAnnotation(AnnotationSpec.builder(JsonTypeInfo.class)
                         .addMember("use", "$T.NAME", JsonTypeInfo.Id.class)
                         .addMember("include", "$T.PROPERTY", JsonTypeInfo.As.class)
@@ -69,13 +73,33 @@ public class PolymorphicPojo {
                 .addSuperinterface(ClassName.get("", "I"))
                 .build());
 
+        addSeqCase(pojoTest, Array.class);
         addSeqCase(pojoTest, List.class);
+        addSeqCase(pojoTest, Queue.class);
+        addSeqCase(pojoTest, Stream.class);
+        addSeqCase(pojoTest, Vector.class);
+
+        addSetCase(pojoTest, HashSet.class);
+        addSetCase(pojoTest, LinkedHashSet.class);
+        addSetCase(pojoTest, TreeSet.class);
+        addSetCase(pojoTest, PriorityQueue.class);
+
         addMapCase(pojoTest, HashMap.class);
         addMapCase(pojoTest, LinkedHashMap.class);
         addMapCase(pojoTest, TreeMap.class);
+
         addMultimapCase(pojoTest, HashMultimap.class);
+        addMultimapCase(pojoTest, LinkedHashMultimap.class);
+        addMultimapCase(pojoTest, TreeMultimap.class);
+
         addTupleCase(pojoTest, Tuple1.class, 1);
         addTupleCase(pojoTest, Tuple2.class, 2);
+        addTupleCase(pojoTest, Tuple3.class, 3);
+        addTupleCase(pojoTest, Tuple4.class, 4);
+        addTupleCase(pojoTest, Tuple5.class, 5);
+        addTupleCase(pojoTest, Tuple6.class, 6);
+        addTupleCase(pojoTest, Tuple7.class, 7);
+        addTupleCase(pojoTest, Tuple8.class, 8);
 
         ParameterizedTypeName lazy = ParameterizedTypeName.get(ClassName.get(Lazy.class), ClassName.get("", "I"));
         addCase(pojoTest, lazy, HashMap.of("type", "a"),
@@ -132,6 +156,13 @@ public class PolymorphicPojo {
                 m -> m.addStatement("$T src = $T.of(new A(), new B())", ptn, ptn.rawType),
                 m -> m.addStatement("$T.assertTrue(restored.get(0) instanceof A)", ClassName.get(Assert.class))
                         .addStatement("$T.assertTrue(restored.get(1) instanceof B)", ClassName.get(Assert.class)));
+    }
+
+    private static void addSetCase(TypeSpec.Builder builder, Class<?> clz) {
+        ParameterizedTypeName ptn = ParameterizedTypeName.get(ClassName.get(clz), ClassName.get("", "I"));
+        addCase(builder, ptn, List.of(HashMap.of("type", "b")),
+                m -> m.addStatement("$T src = $T.of(new B())", ptn, ptn.rawType),
+                m -> m.addStatement("$T.assertEquals(restored.filter(e -> e instanceof B).length(), 1)", ClassName.get(Assert.class)));
     }
 
     private static void addMapCase(TypeSpec.Builder builder, Class<?> clz) {
