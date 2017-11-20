@@ -3,11 +3,8 @@ package io.vavr.jackson.datatype;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.vavr.Tuple;
-import io.vavr.Tuple2;
 import io.vavr.control.Option;
 import org.junit.Assert;
 import org.junit.Test;
@@ -98,25 +95,6 @@ public class OptionTest extends BaseTest {
         public Option<TestSerialize> f = Option.of(new TestSerialize());
     }
 
-    @JsonTypeInfo(
-            use = JsonTypeInfo.Id.NAME,
-            include = JsonTypeInfo.As.WRAPPER_OBJECT,
-            property = "typeV")
-    @JsonSubTypes({
-            @JsonSubTypes.Type(value = B.class)
-    })
-    private static abstract class V {
-        public Option<TestSerialize> g = Option.of(new TestSerialize());
-    }
-
-    private static class B extends V {
-        public Option<TestSerialize> h = Option.of(new TestSerialize());
-    }
-
-    private static class D {
-        public Option<V> v = Option.of(new B());
-    }
-
     @Test
     public void testJsonTypeInfo1() throws IOException {
         String javaUtilValue = mapper().writeValueAsString(new A());
@@ -132,62 +110,5 @@ public class OptionTest extends BaseTest {
         Assert.assertEquals("{\"f\":[\"defined\",{\"card\":{\"type\":\"hello\"}}]}", javaUtilValue);
         A restored = mapper.readValue(javaUtilValue, A.class);
         Assert.assertEquals("hello", restored.f.get().type);
-    }
-
-    @Test
-    public void testJsonTypeInfo3() throws IOException {
-        ObjectMapper mapper = mapper(optSettings);
-        String javaUtilValue = mapper.writeValueAsString(new D());
-        Assert.assertEquals("{\"v\":[\"defined\",{\"OptionTest$B\":{\"g\":[\"defined\",{\"card\":{\"type\":\"" +
-                "hello\"}}],\"h\":[\"defined\",{\"card\":{\"type\":\"hello\"}}]}}]}", javaUtilValue);
-        D restored = mapper.readValue(javaUtilValue, D.class);
-        Assert.assertEquals("hello", restored.v.get().g.get().type);
-    }
-
-    public static class Parameterized<T> {
-        public Option<T> value;
-        public Parameterized() {}
-        public Parameterized(Option<T> value) {
-            this.value = value;
-        }
-    }
-
-    @Test
-    public void testWrappedParameterizedSome() throws IOException {
-        String expected = "{\"value\":[\"defined\",1]}";
-        Parameterized<Integer> object = new Parameterized<>(Option.some(1));
-        Assert.assertEquals(expected, mapper(optSettings).writeValueAsString(object));
-        Parameterized<Integer> restored = mapper(optSettings).readValue(expected, new TypeReference<Parameterized<Integer>>() {});
-        Assert.assertEquals(restored.value.get(), (Integer) 1);
-    }
-
-    @Test
-    public void testWrappedWildcardSome() throws IOException {
-        String expected = "{\"value\":[\"defined\",1]}";
-        Parameterized<?> object = new Parameterized<>(Option.some(1));
-        Assert.assertEquals(expected, mapper(optSettings).writeValueAsString(object));
-        Parameterized<?> restored = mapper(optSettings).readValue(expected, Parameterized.class);
-        Assert.assertEquals(restored.value.get(), 1);
-    }
-
-
-    private static class Pojo {
-        private Option<Tuple2<String, String>> x = Option.of(Tuple.of("A", "B"));
-
-        public Option<Tuple2<String, String>> getX() {
-            return x;
-        }
-        public void setX(Option<Tuple2<String, String>> x) {
-            this.x = x;
-        }
-    }
-
-    @Test
-    public void test() throws Exception {
-        final String json = mapper(optSettings).writeValueAsString(new Pojo());
-        Assert.assertEquals(json, "{\"x\":[\"defined\",[\"A\",\"B\"]]}");
-        Pojo restored = mapper(optSettings).readValue(json, Pojo.class);
-        Assert.assertEquals(restored.getX().get()._1, "A");
-        Assert.assertEquals(restored.getX().get()._2, "B");
     }
 }
