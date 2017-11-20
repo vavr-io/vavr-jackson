@@ -80,5 +80,6 @@ public class Generator {
         SimplePojo.generate(cases);
         ParameterizedPojo.generate(cases);
         PolymorphicPojo.generate();
+        ExtFieldsPojo.generate();
     }
 }

@@ -95,25 +95,6 @@ public class OptionTest extends BaseTest {
         public Option<TestSerialize> f = Option.of(new TestSerialize());
     }
 
-    @JsonTypeInfo(
-            use = JsonTypeInfo.Id.NAME,
-            include = JsonTypeInfo.As.WRAPPER_OBJECT,
-            property = "typeV")
-    @JsonSubTypes({
-            @JsonSubTypes.Type(value = B.class)
-    })
-    private static abstract class V {
-        public Option<TestSerialize> g = Option.of(new TestSerialize());
-    }
-
-    private static class B extends V {
-        public Option<TestSerialize> h = Option.of(new TestSerialize());
-    }
-
-    private static class D {
-        public Option<V> v = Option.of(new B());
-    }
-
     @Test
     public void testJsonTypeInfo1() throws IOException {
         String javaUtilValue = mapper().writeValueAsString(new A());
@@ -129,15 +110,5 @@ public class OptionTest extends BaseTest {
         Assert.assertEquals("{\"f\":[\"defined\",{\"card\":{\"type\":\"hello\"}}]}", javaUtilValue);
         A restored = mapper.readValue(javaUtilValue, A.class);
         Assert.assertEquals("hello", restored.f.get().type);
-    }
-
-    @Test
-    public void testJsonTypeInfo3() throws IOException {
-        ObjectMapper mapper = mapper(optSettings);
-        String javaUtilValue = mapper.writeValueAsString(new D());
-        Assert.assertEquals("{\"v\":[\"defined\",{\"OptionTest$B\":{\"g\":[\"defined\",{\"card\":{\"type\":\"" +
-                "hello\"}}],\"h\":[\"defined\",{\"card\":{\"type\":\"hello\"}}]}}]}", javaUtilValue);
-        D restored = mapper.readValue(javaUtilValue, D.class);
-        Assert.assertEquals("hello", restored.v.get().g.get().type);
     }
 }
