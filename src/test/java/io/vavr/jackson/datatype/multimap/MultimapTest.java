@@ -2,6 +2,7 @@ package io.vavr.jackson.datatype.multimap;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.vavr.jackson.datatype.BaseTest;
 import org.junit.Assert;
 import org.junit.Test;
@@ -40,6 +41,14 @@ public abstract class MultimapTest extends BaseTest {
 
         Multimap<?, ?> restored = (Multimap<?, ?>) mapper().readValue(json, clz());
         Assert.assertEquals(restored, vavrObject);
+    }
+
+    @Test
+    public void testSerializable() throws IOException {
+        ObjectMapper mapper = mapper();
+        Multimap<Object, Object> src = emptyMap().put("1", 2).put("2", 3).put("2", 4);
+        Multimap<?, ?> restored = (Multimap<?, ?>) mapper.readValue(mapper.writeValueAsString(src), clz());
+        checkSerialization(restored);
     }
 
     @Test

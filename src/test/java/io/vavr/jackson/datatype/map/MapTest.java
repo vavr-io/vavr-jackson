@@ -67,6 +67,14 @@ public abstract class MapTest extends BaseTest {
     }
 
     @Test
+    public void testSerializable() throws IOException {
+        ObjectMapper mapper = mapper();
+        Map<?, ?> src = emptyMap().put("1", 2);
+        Map<?, ?> restored = (Map<?, ?>) mapper.readValue(mapper.writeValueAsString(src), clz());
+        checkSerialization(restored);
+    }
+
+    @Test
     public void testWithOption() throws Exception {
         verifySerialization(typeReferenceWithOption(), List.of(
                 Tuple.of(emptyMap().put("1", Option.some(1)), genJsonMap(HashMap.of("1", 1).toJavaMap())),

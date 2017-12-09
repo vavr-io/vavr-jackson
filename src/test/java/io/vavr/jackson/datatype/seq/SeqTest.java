@@ -90,6 +90,14 @@ public abstract class SeqTest extends BaseTest {
         Assert.assertTrue(clz().isAssignableFrom(restored.getClass()));
     }
 
+    @Test
+    public void testSerializable() throws IOException {
+        ObjectMapper mapper = mapper();
+        Seq<?> src = of(1);
+        Seq<?> restored = (Seq<?>) mapper.readValue(mapper.writeValueAsString(src), clz());
+        checkSerialization(restored);
+    }
+
     @Test(expected = JsonMappingException.class)
     public void testExpectedStartArrayToken() throws IOException {
         ObjectMapper mapper = mapper();
