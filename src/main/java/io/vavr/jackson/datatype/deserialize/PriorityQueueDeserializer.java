@@ -24,6 +24,8 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import io.vavr.collection.PriorityQueue;
 
+import java.io.Serializable;
+import java.util.Comparator;
 import java.util.List;
 
 class PriorityQueueDeserializer extends ArrayDeserializer<PriorityQueue<?>> {
@@ -41,6 +43,6 @@ class PriorityQueueDeserializer extends ArrayDeserializer<PriorityQueue<?>> {
     @Override
     PriorityQueue<?> create(List<Object> list, DeserializationContext ctxt) throws JsonMappingException {
         checkContainedTypeIsComparable(ctxt, javaType.containedTypeOrUnknown(0));
-        return PriorityQueue.ofAll((o1, o2) -> ((Comparable) o1).compareTo(o2), list);
+        return PriorityQueue.ofAll((Comparator<Object> & Serializable) (o1, o2) -> ((Comparable) o1).compareTo(o2), list);
     }
 }

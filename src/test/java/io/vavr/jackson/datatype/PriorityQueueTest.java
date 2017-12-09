@@ -50,6 +50,14 @@ public class PriorityQueueTest extends BaseTest {
         Assert.assertEquals(src, dst);
     }
 
+    @Test
+    public void testSerializable() throws IOException {
+        ObjectMapper mapper = mapper();
+        PriorityQueue<Integer> src = PriorityQueue.of(1);
+        PriorityQueue<Integer> restored = mapper.readValue(mapper.writeValueAsString(src), new TypeReference<PriorityQueue<Integer>>() {});
+        checkSerialization(restored);
+    }
+
     @XmlRootElement(name = "xmlSerialize")
     private static class JaxbXmlSerializeVavr {
         @XmlElementWrapper(name = "transitTypes")

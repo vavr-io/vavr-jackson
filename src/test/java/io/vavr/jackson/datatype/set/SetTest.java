@@ -1,6 +1,7 @@
 package io.vavr.jackson.datatype.set;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -85,6 +86,14 @@ public abstract class SetTest extends BaseTest {
         Set<?> restored = mapper.readValue("[]", typeReference());
         Assert.assertTrue(restored.isEmpty());
         Assert.assertTrue(clz().isAssignableFrom(restored.getClass()));
+    }
+
+    @Test
+    public void testSerializable() throws IOException {
+        ObjectMapper mapper = mapper();
+        Set<?> src = of(1);
+        Set<?> restored = mapper.readValue(mapper.writeValueAsString(src), typeReference());
+        checkSerialization(restored);
     }
 
     @Test

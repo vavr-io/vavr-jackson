@@ -9,7 +9,9 @@ import com.fasterxml.jackson.module.jaxb.JaxbAnnotationModule;
 
 import org.junit.Assert;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.Collection;
 import java.util.Map;
 
@@ -115,6 +117,12 @@ public class BaseTest {
         }
         sb.append("}");
         return sb.toString();
+    }
+
+    protected void checkSerialization(Object obj) throws IOException {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        ObjectOutputStream outputStream = new ObjectOutputStream(byteArrayOutputStream);
+        outputStream.writeObject(obj);
     }
 
     private void appendObj(StringBuilder sb, Object o) {

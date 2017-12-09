@@ -24,6 +24,7 @@ import com.fasterxml.jackson.databind.deser.ResolvableDeserializer;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.type.MapLikeType;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 abstract class MaplikeDeserializer<T> extends StdDeserializer<T> implements ResolvableDeserializer {
@@ -46,9 +47,9 @@ abstract class MaplikeDeserializer<T> extends StdDeserializer<T> implements Reso
     public void resolve(DeserializationContext ctxt) throws JsonMappingException {
         JavaType keyType = javaType.getKeyType();
         if (keyType.getRawClass().isAssignableFrom(Comparable.class)) {
-            keyComparator = (o1, o2) -> ((Comparable) o1).compareTo(o2);
+            keyComparator = (Comparator<Object> & Serializable) (o1, o2) -> ((Comparable) o1).compareTo(o2);
         } else {
-            keyComparator = (o1, o2) -> o1.toString().compareTo(o2.toString());
+            keyComparator = (Comparator<Object> & Serializable) (o1, o2) -> o1.toString().compareTo(o2.toString());
         }
         keyDeserializer = ctxt.findKeyDeserializer(keyType, null);
         valueDeserializer = ctxt.findRootValueDeserializer(javaType.getContentType());
