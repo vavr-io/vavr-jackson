@@ -46,6 +46,14 @@ codeCoverageReport.dependsOn {
     project.test
 }
 
+jar {
+    manifest {
+        attributes(
+                'Automatic-Module-Name': 'io.vavr.jackson'
+        )
+    }
+}
+
 modifyPom {
     project {
         name 'Vavr-Jackson'
