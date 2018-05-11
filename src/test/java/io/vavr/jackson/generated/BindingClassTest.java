@@ -4,9 +4,14 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.vavr.Lazy;
 import io.vavr.Tuple1;
+import io.vavr.Tuple2;
+import io.vavr.collection.HashMap;
+import io.vavr.collection.HashMultimap;
 import io.vavr.collection.HashSet;
 import io.vavr.collection.List;
+import io.vavr.control.Either;
 import io.vavr.control.Option;
 import io.vavr.jackson.datatype.VavrModule;
 import java.lang.Exception;
@@ -23,6 +28,14 @@ public class BindingClassTest {
     private static final VavrModule MAPPER_MODULE = new VavrModule();
 
     private static final ObjectMapper MAPPER = new ObjectMapper().registerModule(MAPPER_MODULE);
+
+    @Test
+    public void testLazyClass() throws Exception {
+        LazyClass src = new LazyClass(Lazy.of(ImplementedClass::new));
+        String json = MAPPER.writeValueAsString(src);
+        LazyClass restored = MAPPER.readValue(json, LazyClass.class);
+        Assert.assertEquals(restored.value.get().getClass(), ImplementedClass.class);
+    }
 
     @Test
     public void testTuple1Class() throws Exception {
@@ -56,6 +69,38 @@ public class BindingClassTest {
         Assert.assertEquals(restored.value.head().getClass(), ImplementedClass.class);
     }
 
+    @Test
+    public void testEitherClass() throws Exception {
+        EitherClass src = new EitherClass(Either.right(new ImplementedClass()));
+        String json = MAPPER.writeValueAsString(src);
+        EitherClass restored = MAPPER.readValue(json, EitherClass.class);
+        Assert.assertEquals(restored.value.get().getClass(), ImplementedClass.class);
+    }
+
+    @Test
+    public void testHashMapClass() throws Exception {
+        HashMapClass src = new HashMapClass(HashMap.of(42, new ImplementedClass()));
+        String json = MAPPER.writeValueAsString(src);
+        HashMapClass restored = MAPPER.readValue(json, HashMapClass.class);
+        Assert.assertEquals(restored.value.head()._2.getClass(), ImplementedClass.class);
+    }
+
+    @Test
+    public void testTuple2Class() throws Exception {
+        Tuple2Class src = new Tuple2Class(new Tuple2<>(42, new ImplementedClass()));
+        String json = MAPPER.writeValueAsString(src);
+        Tuple2Class restored = MAPPER.readValue(json, Tuple2Class.class);
+        Assert.assertEquals(restored.value._2.getClass(), ImplementedClass.class);
+    }
+
+    @Test
+    public void testHashMultimapClass() throws Exception {
+        HashMultimapClass src = new HashMultimapClass(HashMultimap.withSeq().of(42, new ImplementedClass()));
+        String json = MAPPER.writeValueAsString(src);
+        HashMultimapClass restored = MAPPER.readValue(json, HashMultimapClass.class);
+        Assert.assertEquals(restored.value.head()._2.getClass(), ImplementedClass.class);
+    }
+
     @JsonTypeInfo(
             use = JsonTypeInfo.Id.CLASS,
             include = JsonTypeInfo.As.PROPERTY,
@@ -74,6 +119,15 @@ public class BindingClassTest {
         @Override
         public boolean myMethod(Integer value) {
             return false;
+        }
+    }
+
+    public static class LazyClass {
+        @JsonProperty("value")
+        final Lazy<MyInterface<Integer>> value;
+
+        LazyClass(@JsonProperty("value") Lazy<MyInterface<Integer>> value) {
+            this.value = value;
         }
     }
 
@@ -109,6 +163,42 @@ public class BindingClassTest {
         final HashSet<MyInterface<Integer>> value;
 
         HashSetClass(@JsonProperty("value") HashSet<MyInterface<Integer>> value) {
+            this.value = value;
+        }
+    }
+
+    public static class EitherClass {
+        @JsonProperty("value")
+        final Either<Integer, MyInterface<Integer>> value;
+
+        EitherClass(@JsonProperty("value") Either<Integer, MyInterface<Integer>> value) {
+            this.value = value;
+        }
+    }
+
+    public static class HashMapClass {
+        @JsonProperty("value")
+        final HashMap<Integer, MyInterface<Integer>> value;
+
+        HashMapClass(@JsonProperty("value") HashMap<Integer, MyInterface<Integer>> value) {
+            this.value = value;
+        }
+    }
+
+    public static class Tuple2Class {
+        @JsonProperty("value")
+        final Tuple2<Integer, MyInterface<Integer>> value;
+
+        Tuple2Class(@JsonProperty("value") Tuple2<Integer, MyInterface<Integer>> value) {
+            this.value = value;
+        }
+    }
+
+    public static class HashMultimapClass {
+        @JsonProperty("value")
+        final HashMultimap<Integer, MyInterface<Integer>> value;
+
+        HashMultimapClass(@JsonProperty("value") HashMultimap<Integer, MyInterface<Integer>> value) {
             this.value = value;
         }
     }
