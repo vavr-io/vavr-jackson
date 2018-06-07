@@ -23,6 +23,7 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import io.vavr.collection.Array;
+import io.vavr.collection.IndexedSeq;
 import io.vavr.collection.Queue;
 import io.vavr.collection.Seq;
 import io.vavr.collection.Stream;
@@ -54,6 +55,9 @@ class SeqDeserializer extends ArrayDeserializer<Seq<?>> {
         }
         if (Vector.class.isAssignableFrom(javaType.getRawClass())) {
             return Vector.ofAll(result);
+        }
+        if (IndexedSeq.class.isAssignableFrom(javaType.getRawClass())) {
+            return Array.ofAll(result);
         }
         // default deserialization [...] -> Seq
         return io.vavr.collection.List.ofAll(result);
