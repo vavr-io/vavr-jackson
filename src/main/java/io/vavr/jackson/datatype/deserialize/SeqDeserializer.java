@@ -47,9 +47,6 @@ class SeqDeserializer extends ArrayDeserializer<Seq<?>> {
         if (Array.class.isAssignableFrom(javaType.getRawClass())) {
             return Array.ofAll(result);
         }
-        if (IndexedSeq.class.isAssignableFrom(javaType.getRawClass())) {
-            return Array.ofAll(result);
-        }
         if (Queue.class.isAssignableFrom(javaType.getRawClass())) {
             return Queue.ofAll(result);
         }
@@ -58,6 +55,9 @@ class SeqDeserializer extends ArrayDeserializer<Seq<?>> {
         }
         if (Vector.class.isAssignableFrom(javaType.getRawClass())) {
             return Vector.ofAll(result);
+        }
+        if (IndexedSeq.class.isAssignableFrom(javaType.getRawClass())) {
+            return Array.ofAll(result);
         }
         // default deserialization [...] -> Seq
         return io.vavr.collection.List.ofAll(result);
