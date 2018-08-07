@@ -62,11 +62,11 @@ public class Initializer {
             Either<?, ?> either = (Either<?, ?>) obj;
             ParameterizedTypeName ptn;
             if (either.isLeft()) {
-                TypeName subType = initValue(builder, name + "l", either.left().get());
+                TypeName subType = initValue(builder, name + "l", either.getLeft());
                 ptn = ParameterizedTypeName.get(ClassName.get(Either.class), subType, ClassName.get(Object.class));
                 builder.addStatement("$T $L = $T.left($L)", ptn, name, ClassName.get(Either.class), name + "l");
             } else {
-                TypeName subType = initValue(builder, name + "r", either.right().get());
+                TypeName subType = initValue(builder, name + "r", either.get());
                 ptn = ParameterizedTypeName.get(ClassName.get(Either.class), ClassName.get(Object.class), subType);
                 builder.addStatement("$T $L = $T.right($L)", ptn, name, ClassName.get(Either.class), name + "r");
             }

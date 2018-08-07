@@ -88,9 +88,9 @@ public class Serializer {
 
     private static String expectedEitherJson(Either<?, ?> either, int opts) {
         if (either.isLeft()) {
-            return "[\"left\"," + expectedJson(either.left().get(), opts) + "]";
+            return "[\"left\"," + expectedJson(either.getLeft(), opts) + "]";
         } else {
-            return "[\"right\"," + expectedJson(either.right().get(), opts) + "]";
+            return "[\"right\"," + expectedJson(either.get(), opts) + "]";
         }
     }
 

@@ -39,10 +39,10 @@ class EitherSerializer extends HListSerializer<Either<?, ?>> {
         gen.writeStartArray();
         if (value.isLeft()) {
             gen.writeString("left");
-            write(value.left().get(), 0, gen, provider);
+            write(value.getLeft(), 0, gen, provider);
         } else {
             gen.writeString("right");
-            write(value.right().get(), 1, gen, provider);
+            write(value.get(), 1, gen, provider);
         }
         gen.writeEndArray();
     }
