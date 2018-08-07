@@ -3,6 +3,7 @@ package io.vavr.jackson.datatype.tuples;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import io.vavr.Tuple1;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -14,7 +15,7 @@ import io.vavr.collection.List;
 import io.vavr.control.Option;
 import io.vavr.jackson.datatype.BaseTest;
 
-public abstract class TupleTest<T extends Tuple> extends BaseTest {
+public abstract class TupleTest<T> extends BaseTest {
 
     protected abstract Class<?> clz();
 
@@ -39,7 +40,6 @@ public abstract class TupleTest<T extends Tuple> extends BaseTest {
         String json = mapper().writeValueAsString(src);
         Assert.assertEquals(genJsonTuple(1, 17), json);
         Assert.assertEquals(src, mapper().readValue(json, clz()));
-        Assert.assertEquals(src, mapper().readValue(json, Tuple.class));
     }
 
     @SuppressWarnings("unchecked")

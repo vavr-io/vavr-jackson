@@ -51,8 +51,33 @@ public class VavrSerializers extends Serializers.Base {
         if (Either.class.isAssignableFrom(raw)) {
             return new EitherSerializer(type);
         }
-        if (Tuple.class.isAssignableFrom(raw)) {
-            return new TupleSerializer(type);
+
+        if (Tuple0.class.isAssignableFrom(raw)) {
+            return new Tuple0Serializer(type);
+        }
+        if (Tuple1.class.isAssignableFrom(raw)) {
+            return new Tuple1Serializer(type);
+        }
+        if (Tuple2.class.isAssignableFrom(raw)) {
+            return new Tuple2Serializer(type);
+        }
+        if (Tuple3.class.isAssignableFrom(raw)) {
+            return new Tuple3Serializer(type);
+        }
+        if (Tuple4.class.isAssignableFrom(raw)) {
+            return new Tuple4Serializer(type);
+        }
+        if (Tuple5.class.isAssignableFrom(raw)) {
+            return new Tuple5Serializer(type);
+        }
+        if (Tuple6.class.isAssignableFrom(raw)) {
+            return new Tuple6Serializer(type);
+        }
+        if (Tuple7.class.isAssignableFrom(raw)) {
+            return new Tuple7Serializer(type);
+        }
+        if (Tuple8.class.isAssignableFrom(raw)) {
+            return new Tuple8Serializer(type);
         }
 
         if (Function0.class.isAssignableFrom(raw)) {

@@ -48,8 +48,33 @@ public class VavrDeserializers extends Deserializers.Base {
         if (Either.class.isAssignableFrom(raw)) {
             return new EitherDeserializer(type);
         }
-        if (Tuple.class.isAssignableFrom(raw)) {
-            return new TupleDeserializer(type);
+
+        if (Tuple0.class.isAssignableFrom(raw)) {
+            return new Tuple0Deserializer(type);
+        }
+        if (Tuple1.class.isAssignableFrom(raw)) {
+            return new Tuple1Deserializer(type);
+        }
+        if (Tuple2.class.isAssignableFrom(raw)) {
+            return new Tuple2Deserializer(type);
+        }
+        if (Tuple3.class.isAssignableFrom(raw)) {
+            return new Tuple3Deserializer(type);
+        }
+        if (Tuple4.class.isAssignableFrom(raw)) {
+            return new Tuple4Deserializer(type);
+        }
+        if (Tuple5.class.isAssignableFrom(raw)) {
+            return new Tuple5Deserializer(type);
+        }
+        if (Tuple6.class.isAssignableFrom(raw)) {
+            return new Tuple6Deserializer(type);
+        }
+        if (Tuple7.class.isAssignableFrom(raw)) {
+            return new Tuple7Deserializer(type);
+        }
+        if (Tuple8.class.isAssignableFrom(raw)) {
+            return new Tuple8Deserializer(type);
         }
 
         if (Function0.class.isAssignableFrom(raw)) {

@@ -1,8 +1,6 @@
 package generator.utils;
 
-import io.vavr.Lazy;
-import io.vavr.Tuple;
-import io.vavr.Tuple2;
+import io.vavr.*;
 import io.vavr.collection.*;
 import io.vavr.control.Either;
 import io.vavr.control.Option;
@@ -47,8 +45,40 @@ public class Serializer {
         if (o instanceof Multimap) {
             return expectedMultimapJson((Multimap<?, ?>) o, opts);
         }
-        if (o instanceof Tuple) {
-            return expectedTupleJson((Tuple) o, opts);
+        if (o instanceof Tuple0) {
+            return "[]";
+        }
+        if (o instanceof Tuple1) {
+            Tuple1<?> t = (Tuple1<?>) o;
+            return Stream.of(t._1).map(e -> expectedJson(e, opts)).mkString("[", ",", "]");
+        }
+        if (o instanceof Tuple2) {
+            Tuple2<?, ?> t = (Tuple2<?, ?>) o;
+            return Stream.of(t._1, t._2).map(e -> expectedJson(e, opts)).mkString("[", ",", "]");
+        }
+        if (o instanceof Tuple3) {
+            Tuple3<?, ?, ?> t = (Tuple3<?, ?, ?>) o;
+            return Stream.of(t._1, t._2, t._3).map(e -> expectedJson(e, opts)).mkString("[", ",", "]");
+        }
+        if (o instanceof Tuple4) {
+            Tuple4<?, ?, ?, ?> t = (Tuple4<?, ?, ?, ?>) o;
+            return Stream.of(t._1, t._2, t._3, t._4).map(e -> expectedJson(e, opts)).mkString("[", ",", "]");
+        }
+        if (o instanceof Tuple5) {
+            Tuple5<?, ?, ?, ?, ?> t = (Tuple5<?, ?, ?, ?, ?>) o;
+            return Stream.of(t._1, t._2, t._3, t._4, t._5).map(e -> expectedJson(e, opts)).mkString("[", ",", "]");
+        }
+        if (o instanceof Tuple6) {
+            Tuple6<?, ?, ?, ?, ?, ?> t = (Tuple6<?, ?, ?, ?, ?, ?>) o;
+            return Stream.of(t._1, t._2, t._3, t._4, t._5, t._6).map(e -> expectedJson(e, opts)).mkString("[", ",", "]");
+        }
+        if (o instanceof Tuple7) {
+            Tuple7<?, ?, ?, ?, ?, ?, ?> t = (Tuple7<?, ?, ?, ?, ?, ?, ?>) o;
+            return Stream.of(t._1, t._2, t._3, t._4, t._5, t._6, t._7).map(e -> expectedJson(e, opts)).mkString("[", ",", "]");
+        }
+        if (o instanceof Tuple8) {
+            Tuple8<?, ?, ?, ?, ?, ?, ?, ?> t = (Tuple8<?, ?, ?, ?, ?, ?, ?, ?>) o;
+            return Stream.of(t._1, t._2, t._3, t._4, t._5, t._6, t._7, t._8).map(e -> expectedJson(e, opts)).mkString("[", ",", "]");
         }
         if (o instanceof String) {
             return "\"" + o.toString().replace("\"", "\\\"") + "\"";
@@ -58,14 +88,10 @@ public class Serializer {
 
     private static String expectedEitherJson(Either<?, ?> either, int opts) {
         if (either.isLeft()) {
-            return "[\"left\"," + expectedJson(either.left().get(), opts) + "]";
+            return "[\"left\"," + expectedJson(either.getLeft(), opts) + "]";
         } else {
-            return "[\"right\"," + expectedJson(either.right().get(), opts) + "]";
+            return "[\"right\"," + expectedJson(either.get(), opts) + "]";
         }
-    }
-
-    private static String expectedTupleJson(Tuple tuple, int opts) {
-        return expectedSeqJson(tuple.toSeq(), opts);
     }
 
     private static String expectedLazyJson(Lazy<?> lazy, int opts) {

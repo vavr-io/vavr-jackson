@@ -17,32 +17,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.vavr.jackson.datatype.serialize;
+package io.vavr.jackson.datatype.deserialize;
 
-import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.SerializerProvider;
+import io.vavr.Tuple;
+import io.vavr.Tuple6;
 
-import java.io.IOException;
 import java.util.List;
 
-abstract class TupleSerializer<T> extends HListSerializer<T> {
+class Tuple6Deserializer extends TupleDeserializer<Tuple6<?, ?, ?, ?, ?, ?>> {
 
-    private static final long serialVersionUID = 1L;
-
-    TupleSerializer(JavaType type) {
-        super(type);
+    Tuple6Deserializer(JavaType valueType) {
+        super(valueType);
     }
 
     @Override
-    public void serialize(T value, JsonGenerator gen, SerializerProvider provider) throws IOException {
-        gen.writeStartArray();
-        List<?> list = toList(value);
-        for (int i = 0; i < list.size(); i++) {
-            write(list.get(i), i, gen, provider);
-        }
-        gen.writeEndArray();
+    Tuple6<?, ?, ?, ?, ?, ?> create(List<Object> list, DeserializationContext ctxt) {
+        return Tuple.of(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4), list.get(5));
     }
-
-    abstract List<?> toList(T value);
 }

@@ -19,30 +19,20 @@
  */
 package io.vavr.jackson.datatype.serialize;
 
-import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.SerializerProvider;
+import io.vavr.Tuple5;
 
-import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
-abstract class TupleSerializer<T> extends HListSerializer<T> {
+class Tuple5Serializer extends TupleSerializer<Tuple5<?, ?, ?, ?, ?>> {
 
-    private static final long serialVersionUID = 1L;
-
-    TupleSerializer(JavaType type) {
+    Tuple5Serializer(JavaType type) {
         super(type);
     }
 
     @Override
-    public void serialize(T value, JsonGenerator gen, SerializerProvider provider) throws IOException {
-        gen.writeStartArray();
-        List<?> list = toList(value);
-        for (int i = 0; i < list.size(); i++) {
-            write(list.get(i), i, gen, provider);
-        }
-        gen.writeEndArray();
+    List<?> toList(Tuple5<?, ?, ?, ?, ?> value) {
+        return Arrays.asList(value._1, value._2, value._3, value._4, value._5);
     }
-
-    abstract List<?> toList(T value);
 }

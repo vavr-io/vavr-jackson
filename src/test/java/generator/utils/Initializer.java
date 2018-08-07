@@ -2,15 +2,14 @@ package generator.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.squareup.javapoet.*;
-import io.vavr.Lazy;
-import io.vavr.Tuple;
-import io.vavr.Value;
+import io.vavr.*;
 import io.vavr.collection.*;
 import io.vavr.control.Either;
 import io.vavr.control.Option;
 import io.vavr.jackson.datatype.VavrModule;
 
 import javax.lang.model.element.Modifier;
+import java.util.Arrays;
 
 /**
  * @author <a href="mailto:ruslan.sennov@gmail.com">Ruslan Sennov</a>
@@ -63,11 +62,11 @@ public class Initializer {
             Either<?, ?> either = (Either<?, ?>) obj;
             ParameterizedTypeName ptn;
             if (either.isLeft()) {
-                TypeName subType = initValue(builder, name + "l", either.left().get());
+                TypeName subType = initValue(builder, name + "l", either.getLeft());
                 ptn = ParameterizedTypeName.get(ClassName.get(Either.class), subType, ClassName.get(Object.class));
                 builder.addStatement("$T $L = $T.left($L)", ptn, name, ClassName.get(Either.class), name + "l");
             } else {
-                TypeName subType = initValue(builder, name + "r", either.right().get());
+                TypeName subType = initValue(builder, name + "r", either.get());
                 ptn = ParameterizedTypeName.get(ClassName.get(Either.class), ClassName.get(Object.class), subType);
                 builder.addStatement("$T $L = $T.right($L)", ptn, name, ClassName.get(Either.class), name + "r");
             }
@@ -141,8 +140,72 @@ public class Initializer {
             builder.addStatement("$T $L = $T.$L().ofEntries($L)", ptn, name, clsName(multimap), withContainerType, args);
             return ptn;
         }
-        if (obj instanceof Tuple) {
-            TypeName[] subTypes = initValues(builder, name, ((Tuple) obj).toSeq().toJavaArray());
+        if (obj instanceof Tuple0) {
+            TypeName[] subTypes = new TypeName[0];
+            ParameterizedTypeName ptn = ParameterizedTypeName.get(ClassName.get(obj.getClass()), subTypes);
+            String args = List.range(0, subTypes.length).map(i -> name + i).mkString(", ");
+            builder.addStatement("$T $L = $T.of($L)", ptn, name, ClassName.get(Tuple.class), args);
+            return ptn;
+        }
+        if (obj instanceof Tuple1) {
+            Tuple1<?> t = (Tuple1<?>) obj;
+            TypeName[] subTypes = initValues(builder, name, t._1);
+            ParameterizedTypeName ptn = ParameterizedTypeName.get(ClassName.get(obj.getClass()), subTypes);
+            String args = List.range(0, subTypes.length).map(i -> name + i).mkString(", ");
+            builder.addStatement("$T $L = $T.of($L)", ptn, name, ClassName.get(Tuple.class), args);
+            return ptn;
+        }
+        if (obj instanceof Tuple2) {
+            Tuple2<?, ?> t = (Tuple2<?, ?>) obj;
+            TypeName[] subTypes = initValues(builder, name, t._1, t._2);
+            ParameterizedTypeName ptn = ParameterizedTypeName.get(ClassName.get(obj.getClass()), subTypes);
+            String args = List.range(0, subTypes.length).map(i -> name + i).mkString(", ");
+            builder.addStatement("$T $L = $T.of($L)", ptn, name, ClassName.get(Tuple.class), args);
+            return ptn;
+        }
+        if (obj instanceof Tuple3) {
+            Tuple3<?, ?, ?> t = (Tuple3<?, ?, ?>) obj;
+            TypeName[] subTypes = initValues(builder, name, t._1, t._2, t._3);
+            ParameterizedTypeName ptn = ParameterizedTypeName.get(ClassName.get(obj.getClass()), subTypes);
+            String args = List.range(0, subTypes.length).map(i -> name + i).mkString(", ");
+            builder.addStatement("$T $L = $T.of($L)", ptn, name, ClassName.get(Tuple.class), args);
+            return ptn;
+        }
+        if (obj instanceof Tuple4) {
+            Tuple4<?, ?, ?, ?> t = (Tuple4<?, ?, ?, ?>) obj;
+            TypeName[] subTypes = initValues(builder, name, t._1, t._2, t._3, t._4);
+            ParameterizedTypeName ptn = ParameterizedTypeName.get(ClassName.get(obj.getClass()), subTypes);
+            String args = List.range(0, subTypes.length).map(i -> name + i).mkString(", ");
+            builder.addStatement("$T $L = $T.of($L)", ptn, name, ClassName.get(Tuple.class), args);
+            return ptn;
+        }
+        if (obj instanceof Tuple5) {
+            Tuple5<?, ?, ?, ?, ?> t = (Tuple5<?, ?, ?, ?, ?>) obj;
+            TypeName[] subTypes = initValues(builder, name, t._1, t._2, t._3, t._4, t._5);
+            ParameterizedTypeName ptn = ParameterizedTypeName.get(ClassName.get(obj.getClass()), subTypes);
+            String args = List.range(0, subTypes.length).map(i -> name + i).mkString(", ");
+            builder.addStatement("$T $L = $T.of($L)", ptn, name, ClassName.get(Tuple.class), args);
+            return ptn;
+        }
+        if (obj instanceof Tuple6) {
+            Tuple6<?, ?, ?, ?, ?, ?> t = (Tuple6<?, ?, ?, ?, ?, ?>) obj;
+            TypeName[] subTypes = initValues(builder, name, t._1, t._2, t._3, t._4, t._5, t._6);
+            ParameterizedTypeName ptn = ParameterizedTypeName.get(ClassName.get(obj.getClass()), subTypes);
+            String args = List.range(0, subTypes.length).map(i -> name + i).mkString(", ");
+            builder.addStatement("$T $L = $T.of($L)", ptn, name, ClassName.get(Tuple.class), args);
+            return ptn;
+        }
+        if (obj instanceof Tuple7) {
+            Tuple7<?, ?, ?, ?, ?, ?, ?> t = (Tuple7<?, ?, ?, ?, ?, ?, ?>) obj;
+            TypeName[] subTypes = initValues(builder, name, t._1, t._2, t._3, t._4, t._5, t._6, t._7);
+            ParameterizedTypeName ptn = ParameterizedTypeName.get(ClassName.get(obj.getClass()), subTypes);
+            String args = List.range(0, subTypes.length).map(i -> name + i).mkString(", ");
+            builder.addStatement("$T $L = $T.of($L)", ptn, name, ClassName.get(Tuple.class), args);
+            return ptn;
+        }
+        if (obj instanceof Tuple8) {
+            Tuple8<?, ?, ?, ?, ?, ?, ?, ?> t = (Tuple8<?, ?, ?, ?, ?, ?, ?, ?>) obj;
+            TypeName[] subTypes = initValues(builder, name, t._1, t._2, t._3, t._4, t._5, t._6, t._7, t._8);
             ParameterizedTypeName ptn = ParameterizedTypeName.get(ClassName.get(obj.getClass()), subTypes);
             String args = List.range(0, subTypes.length).map(i -> name + i).mkString(", ");
             builder.addStatement("$T $L = $T.of($L)", ptn, name, ClassName.get(Tuple.class), args);

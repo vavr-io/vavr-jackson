@@ -144,11 +144,11 @@ public class EitherTest extends BaseTest {
         javaUtilValue = mapper().writeValueAsString(new Left());
         Assert.assertEquals("{\"f\":[\"left\",{\"card\":{\"type\":\"hello\"}}]}", javaUtilValue);
         Left restoredLeft = mapper().readValue(javaUtilValue, Left.class);
-        Assert.assertEquals("hello", restoredLeft.f.left().get().type);
+        Assert.assertEquals("hello", restoredLeft.f.getLeft().type);
         javaUtilValue = mapper().writeValueAsString(new Right());
         Assert.assertEquals("{\"f\":[\"right\",{\"card\":{\"type\":\"hello\"}}]}", javaUtilValue);
         Right restoredRight = mapper().readValue(javaUtilValue, Right.class);
-        Assert.assertEquals("hello", restoredRight.f.right().get().type);
+        Assert.assertEquals("hello", restoredRight.f.get().type);
     }
 
     @Test
@@ -160,11 +160,11 @@ public class EitherTest extends BaseTest {
         final String serializedLeft = mapper.writeValueAsString(left);
         final Either<String, BigInteger> deserializedLeft =
                 mapper.readValue(serializedLeft, new TypeReference<Either<String, BigInteger>>() { });
-        Assert.assertEquals("test", deserializedLeft.left().get());
+        Assert.assertEquals("test", deserializedLeft.getLeft());
 
         final String serializedRight = mapper.writeValueAsString(right);
         final Either<String, BigInteger> deserializedRight =
                 mapper.readValue(serializedRight, new TypeReference<Either<String, BigInteger>>() { });
-        Assert.assertEquals(BigInteger.ONE, deserializedRight.right().get());
+        Assert.assertEquals(BigInteger.ONE, deserializedRight.get());
     }
 }

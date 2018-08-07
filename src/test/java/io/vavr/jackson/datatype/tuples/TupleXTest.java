@@ -4,10 +4,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import io.vavr.Tuple;
-import io.vavr.Tuple0;
-import io.vavr.Tuple2;
-import io.vavr.Tuple3;
+import io.vavr.*;
 import io.vavr.jackson.datatype.BaseTest;
 import org.junit.Assert;
 import org.junit.Test;
@@ -21,13 +18,12 @@ public class TupleXTest extends BaseTest {
         Tuple0 tuple0 = Tuple0.instance();
         String json = mapper().writer().writeValueAsString(tuple0);
         Assert.assertEquals(mapper().readValue(json, Tuple0.class), tuple0);
-        Assert.assertEquals(mapper().readValue(json, Tuple.class), tuple0);
     }
 
     @Test(expected = JsonMappingException.class)
     public void test9() throws IOException {
         String wrongJson = "[1, 2, 3, 4, 5, 6, 7, 8, 9]";
-        mapper().readValue(wrongJson, Tuple.class);
+        mapper().readValue(wrongJson, Tuple8.class);
     }
 
     @Test(expected = JsonMappingException.class)

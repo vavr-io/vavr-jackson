@@ -2,7 +2,7 @@ package generator;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.squareup.javapoet.*;
-import io.vavr.Tuple;
+import io.vavr.*;
 import io.vavr.collection.List;
 import io.vavr.collection.Map;
 import io.vavr.collection.Multimap;
@@ -55,8 +55,24 @@ public class ParameterizedPojo {
         Class<?> clz = publicVavrClass(value.getClass());
         if (!generated.contains(clz)) {
             int arity;
-            if (Tuple.class.isAssignableFrom(clz)) {
-                arity = ((Tuple) value).arity();
+            if (clz == Tuple0.class) {
+                arity = 0;
+            } else if (clz == Tuple1.class) {
+                arity = 1;
+            } else if (clz == Tuple2.class) {
+                arity = 2;
+            } else if (clz == Tuple3.class) {
+                arity = 3;
+            } else if (clz == Tuple4.class) {
+                arity = 4;
+            } else if (clz == Tuple5.class) {
+                arity = 5;
+            } else if (clz == Tuple6.class) {
+                arity = 6;
+            } else if (clz == Tuple7.class) {
+                arity = 7;
+            } else if (clz == Tuple8.class) {
+                arity = 8;
             } else if (Map.class.isAssignableFrom(clz) || Multimap.class.isAssignableFrom(clz) || Either.class.isAssignableFrom(clz)) {
                 arity = 2;
             } else {
