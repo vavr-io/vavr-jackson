@@ -22,6 +22,7 @@ dependencies {
     compile "io.vavr:vavr:${vavrVersion}"
     compile "com.fasterxml.jackson.core:jackson-databind:${fasterxmlVersion}"
     testCompile "junit:junit:${junitVersion}"
+    testCompile "javax.xml.bind:jaxb-api:${jaxbVersion}"
     testCompile "com.squareup:javapoet:${javapoetVersion}"
     testCompile "com.fasterxml.jackson.dataformat:jackson-dataformat-csv:${fasterxmlVersion}"
     testCompile "com.fasterxml.jackson.dataformat:jackson-dataformat-xml:${fasterxmlVersion}"
@@ -88,6 +89,3 @@ nexus {
     sign = !version.endsWith("SNAPSHOT")
 }
 
-task wrapper(type: Wrapper) {
-    gradleVersion = '4.3'
-}
