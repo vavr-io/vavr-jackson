@@ -2,8 +2,8 @@ package io.vavr.jackson.datatype.multimap;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -36,9 +36,9 @@ public class LinkedHashMultimapTest extends MultimapTest {
         javaObject.put("1", Collections.singletonList(2));
 
         String json = mapper().writer().writeValueAsString(vavrObject);
-        Assert.assertEquals(genJsonMap(javaObject), json);
+        Assertions.assertEquals(genJsonMap(javaObject), json);
 
         Multimap<?, ?> restored = (Multimap<?, ?>) mapper().readValue(json, clz());
-        Assert.assertEquals(restored, vavrObject);
+        Assertions.assertEquals(restored, vavrObject);
     }
 }

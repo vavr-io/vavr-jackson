@@ -6,8 +6,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import io.vavr.collection.List;
 import io.vavr.collection.Seq;
 import io.vavr.control.Option;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -35,8 +35,8 @@ public class ListTest extends SeqTest {
     }
 
     @Test
-    public void testDefaultDeserialization() throws IOException {
-        Assert.assertEquals(mapper().readValue("[1]", Seq.class), List.of(1));
+    void testDefaultDeserialization() throws IOException {
+        Assertions.assertEquals(mapper().readValue("[1]", Seq.class), List.of(1));
     }
 
     @JsonTypeInfo(
@@ -57,11 +57,11 @@ public class ListTest extends SeqTest {
     }
 
     @Test
-    public void testJsonTypeInfo() throws IOException {
+    void testJsonTypeInfo() throws IOException {
         String javaUtilValue = mapper().writeValueAsString(new A());
-        Assert.assertEquals(mapper().writeValueAsString(new B()), javaUtilValue);
+        Assertions.assertEquals(mapper().writeValueAsString(new B()), javaUtilValue);
         A restored = mapper().readValue(javaUtilValue, A.class);
-        Assert.assertEquals("hello", restored.f.head().type);
+        Assertions.assertEquals("hello", restored.f.head().type);
     }
 
 }

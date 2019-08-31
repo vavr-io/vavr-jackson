@@ -14,8 +14,8 @@ import io.vavr.collection.HashSet;
 import io.vavr.collection.List;
 import io.vavr.control.Either;
 import io.vavr.control.Option;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import javax.lang.model.element.Modifier;
 import java.io.File;
@@ -99,9 +99,9 @@ public class BindingClass {
         MethodSpec testSpec = testBuilder
                 .addStatement("$L src = new $L(" + m._1 + ")", clz.getSimpleName() + "Class", clz.getSimpleName() + "Class")
                 .addStatement("$T json = MAPPER.writeValueAsString(src)", ClassName.get(String.class))
-//                .addStatement("$T.assertEquals(json, $S)", ClassName.get(Assert.class), "{\"value\":"+ expectedJson(value, opts) + "}")
+//                .addStatement("$T.assertEquals(json, $S)", ClassName.get(Assertions.class), "{\"value\":"+ expectedJson(value, opts) + "}")
                 .addStatement("$L restored = MAPPER.readValue(json, $L.class)", clz.getSimpleName() + "Class", clz.getSimpleName() + "Class")
-                .addStatement("$T.assertEquals(restored.value." + m._2 + ".getClass(), $L)", ClassName.get(Assert.class), "ImplementedClass.class")
+                .addStatement("$T.assertEquals(restored.value." + m._2 + ".getClass(), $L)", ClassName.get(Assertions.class), "ImplementedClass.class")
                 .build();
         builder.addMethod(testSpec);
         TypeName valueTypeName = ParameterizedTypeName.get(ClassName.get(clz),
@@ -129,9 +129,9 @@ public class BindingClass {
         MethodSpec testSpec = testBuilder
                 .addStatement("$L src = new $L(" + m._1 + ")", clz.getSimpleName() + "Class", clz.getSimpleName() + "Class")
                 .addStatement("$T json = MAPPER.writeValueAsString(src)", ClassName.get(String.class))
-//                .addStatement("$T.assertEquals(json, $S)", ClassName.get(Assert.class), "{\"value\":"+ expectedJson(value, opts) + "}")
+//                .addStatement("$T.assertEquals(json, $S)", ClassName.get(Assertions.class), "{\"value\":"+ expectedJson(value, opts) + "}")
                 .addStatement("$L restored = MAPPER.readValue(json, $L.class)", clz.getSimpleName() + "Class", clz.getSimpleName() + "Class")
-                .addStatement("$T.assertEquals(restored.value." + m._2 + ".getClass(), $L)", ClassName.get(Assert.class), "ImplementedClass.class")
+                .addStatement("$T.assertEquals(restored.value." + m._2 + ".getClass(), $L)", ClassName.get(Assertions.class), "ImplementedClass.class")
                 .build();
         builder.addMethod(testSpec);
         TypeName valueTypeName = ParameterizedTypeName.get(ClassName.get(clz), ClassName.get(Integer.class),

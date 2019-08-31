@@ -6,12 +6,12 @@ import io.vavr.collection.Map;
 import io.vavr.collection.SortedMap;
 import io.vavr.collection.TreeMap;
 import io.vavr.control.Option;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.Objects;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TreeMapTest extends MapTest {
     @Override
@@ -42,7 +42,7 @@ public class TreeMapTest extends MapTest {
     }
 
     @Test
-    public void testDeserializeToSortedMap() throws IOException {
+    void testDeserializeToSortedMap() throws IOException {
         Clazz c = new Clazz();
         c.setSet(TreeMap.of(1, 3, 5, 7));
         Clazz dc = mapper().readValue(mapper().writeValueAsString(c), Clazz.class);

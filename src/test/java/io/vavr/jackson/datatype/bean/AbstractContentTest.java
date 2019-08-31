@@ -8,12 +8,12 @@ import io.vavr.collection.List;
 import io.vavr.collection.Map;
 import io.vavr.control.Option;
 import io.vavr.jackson.datatype.VavrModule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class AbstractContentTest {
 
@@ -185,19 +185,19 @@ public class AbstractContentTest {
     }
 
     @Test
-    public void testList() throws IOException {
+    void testList() throws IOException {
         L l = new L(List.of(new X("a", 1), new X("bbb", 42)));
         json_roundtrip_test(l, L.class);
     }
 
     @Test
-    public void testMap() throws IOException {
+    void testMap() throws IOException {
         M m = new M(HashMap.of(1, new X("a", 1), 42, new X("bbb", 42)));
         json_roundtrip_test(m, M.class);
     }
 
     @Test
-    public void testValue() throws IOException {
+    void testValue() throws IOException {
         V v = new V()
                 .setLazy(Lazy.of(() -> new X("b", 2)))
                 .setOption(Option.of(new X("c", 3)));

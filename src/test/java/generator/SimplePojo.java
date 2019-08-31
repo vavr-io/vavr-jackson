@@ -2,8 +2,8 @@ package generator;
 
 import com.squareup.javapoet.*;
 import io.vavr.collection.PriorityQueue;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import javax.lang.model.element.Modifier;
 import java.io.File;
@@ -49,14 +49,13 @@ public class SimplePojo {
 
         MethodSpec.Builder testBuilder = MethodSpec.methodBuilder("test" + pojoName)
                 .addAnnotation(Test.class)
-                .addModifiers(Modifier.PUBLIC)
                 .addException(ClassName.get(Exception.class));
         TypeName valueTypeName = initValue(testBuilder, "src", value);
         MethodSpec testSpec = testBuilder
                 .addStatement("$T json = MAPPER.writeValueAsString(new $L().setValue(src))", ClassName.get(String.class), pojoName)
-                .addStatement("$T.assertEquals(json, $S)", ClassName.get(Assert.class), "{\"value\":"+ expectedJson(value, opts) + "}")
+                .addStatement("$T.assertEquals(json, $S)", ClassName.get(Assertions.class), "{\"value\":"+ expectedJson(value, opts) + "}")
                 .addStatement("$L restored = MAPPER.readValue(json, $L.class)", pojoName, pojoName)
-                .addStatement("$T.assertEquals(src, restored.getValue())", ClassName.get(Assert.class))
+                .addStatement("$T.assertEquals(src, restored.getValue())", ClassName.get(Assertions.class))
                 .build();
         builder.addMethod(testSpec);
         builder.addType(simplePojo(pojoName, valueTypeName));

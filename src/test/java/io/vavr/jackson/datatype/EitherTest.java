@@ -7,8 +7,9 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.module.scala.DefaultScalaModule;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.math.BigInteger;
@@ -27,91 +28,99 @@ public class EitherTest extends BaseTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void testWrapperObject() throws IOException {
+    void testWrapperObject() throws IOException {
         ObjectMapper mapper = mapper().addMixIn(Either.class, WrapperObject.class);
         Either<Integer, Integer> src = Either.right(1);
         String plainJson = mapper().writeValueAsString(src);
         String wrappedJson = mapper.writeValueAsString(src);
-        Assert.assertEquals(wrappedJson, wrapToObject(Either.Right.class.getName(), plainJson));
+        Assertions.assertEquals(wrappedJson, wrapToObject(Either.Right.class.getName(), plainJson));
         Either<Integer, Integer> restored = (Either<Integer, Integer>) mapper.readValue(wrappedJson, Either.class);
-        Assert.assertEquals(src, restored);
+        Assertions.assertEquals(src, restored);
     }
 
     @SuppressWarnings("unchecked")
     @Test
-    public void test1() throws IOException {
+    void test1() throws IOException {
         Either<String, Integer> left = Either.left("left");
         String json = mapper().writer().writeValueAsString(left);
         Either<String, Integer> restored = mapper().readValue(json, Either.class);
-        Assert.assertEquals(left, restored);
+        Assertions.assertEquals(left, restored);
     }
 
     @SuppressWarnings("unchecked")
     @Test
-    public void test2() throws IOException {
+    void test2() throws IOException {
         Either<String, Integer> right = Either.right(1);
         String json = mapper().writer().writeValueAsString(right);
         Either<String, Integer> restored = mapper().readValue(json, Either.class);
-        Assert.assertEquals(right, restored);
+        Assertions.assertEquals(right, restored);
     }
 
-    @Test(expected = JsonMappingException.class)
-    public void test3() throws IOException {
-        String json = "[\"right\", 2, 3]";
-        mapper().readValue(json, Either.class);
+    @Test
+    void test3() throws IOException {
+        Assertions.assertThrows(JsonMappingException.class, () -> {
+            String json = "[\"right\", 2, 3]";
+            mapper().readValue(json, Either.class);
+        });
     }
 
-    @Test(expected = JsonMappingException.class)
-    public void test4() throws IOException {
-        String json = "[\"right\"]";
-        mapper().readValue(json, Either.class);
+    @Test
+    void test4() throws IOException {
+        Assertions.assertThrows(JsonMappingException.class, () -> {
+            String json = "[\"right\"]";
+            mapper().readValue(json, Either.class);
+        });
     }
 
-    @Test(expected = JsonMappingException.class)
-    public void test5() throws IOException {
-        String json = "[\"lEft\", 42]";
-        mapper().readValue(json, Either.class);
+    @Test
+    void test5() throws IOException {
+        Assertions.assertThrows(JsonMappingException.class, () -> {
+            String json = "[\"lEft\", 42]";
+            mapper().readValue(json, Either.class);
+        });
     }
 
-    @Test(expected = JsonMappingException.class)
-    public void test6() throws IOException {
-        String json = "[42, 42]";
-        mapper().readValue(json, Either.class);
+    @Test
+    void test6() throws IOException {
+        Assertions.assertThrows(JsonMappingException.class, () -> {
+            String json = "[42, 42]";
+            mapper().readValue(json, Either.class);
+        });
     }
 
     @SuppressWarnings("unchecked")
     @Test
-    public void test7() throws IOException {
+    void test7() throws IOException {
         Either<List<Integer>, Set<Double>> either = Either.left(List.of(42));
         String json = mapper().writer().writeValueAsString(either);
         Either<List<Integer>, Set<Double>> restored = mapper().readValue(json, new TypeReference<Either<List<Integer>, Set<Double>>>() {});
-        Assert.assertEquals(either, restored);
+        Assertions.assertEquals(either, restored);
     }
 
     @SuppressWarnings("unchecked")
     @Test
-    public void test8() throws IOException {
+    void test8() throws IOException {
         Either<List<Integer>, Set<Double>> either = Either.right(HashSet.of(42.0));
         String json = mapper().writer().writeValueAsString(either);
         Either<List<Integer>, Set<Double>> restored = mapper().readValue(json, new TypeReference<Either<List<Integer>, Set<Double>>>() {});
-        Assert.assertEquals(either, restored);
+        Assertions.assertEquals(either, restored);
     }
 
     @SuppressWarnings("unchecked")
     @Test
-    public void testNullSerialization() throws IOException {
+    void testNullSerialization() throws IOException {
         Either<String, Integer> left = Either.left(null);
         String leftJson = mapper().writer().writeValueAsString(left);
         Either<String, Integer> restoredLeft = mapper().readValue(leftJson, Either.class);
-        Assert.assertEquals(left, restoredLeft);
+        Assertions.assertEquals(left, restoredLeft);
         Either<String, Integer> right = Either.left(null);
         String rightJson = mapper().writer().writeValueAsString(right);
         Either<String, Integer> restoredRight = mapper().readValue(rightJson, Either.class);
-        Assert.assertEquals(right, restoredRight);
+        Assertions.assertEquals(right, restoredRight);
     }
 
     @Test
-    public void testWithOption() throws IOException {
+    void testWithOption() throws IOException {
         TypeReference<Either<Option<String>, Option<String>>> typeReference = new TypeReference<Either<Option<String>, Option<String>>>() {};
         verifySerialization(typeReference, List.of(
                 Tuple.of(Either.left(none()), genJsonList("left", null)),
@@ -139,20 +148,20 @@ public class EitherTest extends BaseTest {
     }
 
     @Test
-    public void testJsonTypeInfo() throws IOException {
+    void testJsonTypeInfo() throws IOException {
         String javaUtilValue;
         javaUtilValue = mapper().writeValueAsString(new Left());
-        Assert.assertEquals("{\"f\":[\"left\",{\"card\":{\"type\":\"hello\"}}]}", javaUtilValue);
+        Assertions.assertEquals("{\"f\":[\"left\",{\"card\":{\"type\":\"hello\"}}]}", javaUtilValue);
         Left restoredLeft = mapper().readValue(javaUtilValue, Left.class);
-        Assert.assertEquals("hello", restoredLeft.f.getLeft().type);
+        Assertions.assertEquals("hello", restoredLeft.f.getLeft().type);
         javaUtilValue = mapper().writeValueAsString(new Right());
-        Assert.assertEquals("{\"f\":[\"right\",{\"card\":{\"type\":\"hello\"}}]}", javaUtilValue);
+        Assertions.assertEquals("{\"f\":[\"right\",{\"card\":{\"type\":\"hello\"}}]}", javaUtilValue);
         Right restoredRight = mapper().readValue(javaUtilValue, Right.class);
-        Assert.assertEquals("hello", restoredRight.f.get().type);
+        Assertions.assertEquals("hello", restoredRight.f.get().type);
     }
 
     @Test
-    public void testDeserializingScalaEither() throws IOException {
+    void testDeserializingScalaEither() throws IOException {
         final scala.util.Either<String, BigInteger> left = scala.util.Left.apply("test");
         final scala.util.Either<String, BigInteger> right = scala.util.Right.apply(BigInteger.ONE);
         final ObjectMapper mapper = mapper().registerModule(new DefaultScalaModule());
@@ -160,11 +169,11 @@ public class EitherTest extends BaseTest {
         final String serializedLeft = mapper.writeValueAsString(left);
         final Either<String, BigInteger> deserializedLeft =
                 mapper.readValue(serializedLeft, new TypeReference<Either<String, BigInteger>>() { });
-        Assert.assertEquals("test", deserializedLeft.getLeft());
+        Assertions.assertEquals("test", deserializedLeft.getLeft());
 
         final String serializedRight = mapper.writeValueAsString(right);
         final Either<String, BigInteger> deserializedRight =
                 mapper.readValue(serializedRight, new TypeReference<Either<String, BigInteger>>() { });
-        Assert.assertEquals(BigInteger.ONE, deserializedRight.get());
+        Assertions.assertEquals(BigInteger.ONE, deserializedRight.get());
     }
 }

@@ -2,8 +2,8 @@ package io.vavr.jackson.datatype.map;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
@@ -28,7 +28,7 @@ public class HashMapTest extends MapTest {
     }
 
     @Test
-    public void testDefaultDeserialization() throws IOException {
-        Assert.assertEquals(mapper().readValue("{\"1\":\"2\"}", Map.class), HashMap.empty().put("1", "2"));
+    void testDefaultDeserialization() throws IOException {
+        Assertions.assertEquals(mapper().readValue("{\"1\":\"2\"}", Map.class), HashMap.empty().put("1", "2"));
     }
 }

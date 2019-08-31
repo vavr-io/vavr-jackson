@@ -13,8 +13,8 @@ import io.vavr.Tuple;
 import io.vavr.collection.List;
 import io.vavr.collection.Set;
 import io.vavr.control.Option;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
@@ -33,63 +33,63 @@ public abstract class SetTest extends BaseTest {
     protected abstract Set<?> of(Object... objects);
 
     @Test
-    public void test1() throws IOException {
+    void test1() throws IOException {
         ObjectWriter writer = mapper().writer();
         Set<?> src = of(1, 2, 5);
         String json = writer.writeValueAsString(src);
-        Assert.assertEquals(genJsonList(1, 2, 5), json);
+        Assertions.assertEquals(genJsonList(1, 2, 5), json);
         Set<?> dst = mapper().readValue(json, typeReference());
-        Assert.assertEquals(src, dst);
+        Assertions.assertEquals(src, dst);
     }
 
     @Test
-    public void test2() throws IOException {
+    void test2() throws IOException {
         ObjectMapper mapper = mapper().addMixIn(clz(), WrapperObject.class);
         Set<?> src = of(1);
         String plainJson = mapper().writeValueAsString(src);
         String wrappedJson = mapper.writeValueAsString(src);
-        Assert.assertEquals(wrappedJson, wrapToObject(clz().getName(), plainJson));
+        Assertions.assertEquals(wrappedJson, wrapToObject(clz().getName(), plainJson));
         Set<?> restored = mapper.readValue(wrappedJson, typeReference());
-        Assert.assertEquals(src, restored);
+        Assertions.assertEquals(src, restored);
     }
 
     @Test
-    public void test3() throws IOException {
+    void test3() throws IOException {
         ObjectMapper mapper = mapper().addMixIn(clz(), WrapperArray.class);
         Set<?> src = of(1);
         String plainJson = mapper().writeValueAsString(src);
         String wrappedJson = mapper.writeValueAsString(src);
-        Assert.assertEquals(wrappedJson, wrapToArray(clz().getName(), plainJson));
+        Assertions.assertEquals(wrappedJson, wrapToArray(clz().getName(), plainJson));
         Set<?> restored = mapper.readValue(wrappedJson, typeReference());
-        Assert.assertEquals(src, restored);
+        Assertions.assertEquals(src, restored);
     }
 
     @Test
-    public void test4() throws IOException {
+    void test4() throws IOException {
         VavrModule.Settings settings = new VavrModule.Settings();
         settings.deserializeNullAsEmptyCollection(true);
         ObjectMapper mapper = mapper(settings);
         Set<?> restored = mapper.readValue("null", typeReference());
-        Assert.assertTrue(restored.isEmpty());
+        Assertions.assertTrue(restored.isEmpty());
     }
 
     @Test
-    public void test5() throws IOException {
+    void test5() throws IOException {
         ObjectMapper mapper = mapper();
         Set<?> restored = mapper.readValue("null", typeReference());
-        Assert.assertNull(restored);
+        Assertions.assertNull(restored);
     }
 
     @Test
-    public void test6() throws IOException {
+    void test6() throws IOException {
         ObjectMapper mapper = mapper();
         Set<?> restored = mapper.readValue("[]", typeReference());
-        Assert.assertTrue(restored.isEmpty());
-        Assert.assertTrue(clz().isAssignableFrom(restored.getClass()));
+        Assertions.assertTrue(restored.isEmpty());
+        Assertions.assertTrue(clz().isAssignableFrom(restored.getClass()));
     }
 
     @Test
-    public void testSerializable() throws IOException {
+    void testSerializable() throws IOException {
         ObjectMapper mapper = mapper();
         Set<?> src = of(1);
         Set<?> restored = mapper.readValue(mapper.writeValueAsString(src), typeReference());
@@ -97,7 +97,7 @@ public abstract class SetTest extends BaseTest {
     }
 
     @Test
-    public void testWithOption() throws Exception {
+    void testWithOption() throws Exception {
         verifySerialization(typeReferenceWithOption(), List.of(
                 Tuple.of(of(Option.some("value")), genJsonList("value")),
                 Tuple.of(of(Option.none()), genJsonList((Object) null))
@@ -130,12 +130,12 @@ public abstract class SetTest extends BaseTest {
 
     @Test
     @SuppressWarnings("unchecked")
-    public void testJaxbXmlSerialization() throws IOException {
+    void testJaxbXmlSerialization() throws IOException {
         ObjectMapper mapper = xmlMapperJaxb();
         String javaUtilValue = mapper.writeValueAsString(new JaxbXmlSerializeVavr().init((Set<Integer>) of(1, 2, 3)));
-        Assert.assertEquals(mapper.writeValueAsString(new JaxbXmlSerializeJavaUtil().init(new java.util.HashSet<>(Arrays.asList(1, 2, 3)))), javaUtilValue);
+        Assertions.assertEquals(mapper.writeValueAsString(new JaxbXmlSerializeJavaUtil().init(new java.util.HashSet<>(Arrays.asList(1, 2, 3)))), javaUtilValue);
         JaxbXmlSerializeVavr restored = mapper.readValue(javaUtilValue, JaxbXmlSerializeVavr.class);
-        Assert.assertEquals(restored.transitTypes.size(), 3);
+        Assertions.assertEquals(restored.transitTypes.size(), 3);
     }
 
     @JacksonXmlRootElement(localName = "xmlSerialize")
@@ -164,11 +164,11 @@ public abstract class SetTest extends BaseTest {
 
     @Test
     @SuppressWarnings("unchecked")
-    public void testXmlSerialization() throws IOException {
+    void testXmlSerialization() throws IOException {
         ObjectMapper mapper = xmlMapper();
         String javaUtilValue = mapper.writeValueAsString(new XmlSerializeVavr().init((Set<Integer>) of(1, 2, 3)));
-        Assert.assertEquals(mapper.writeValueAsString(new XmlSerializeJavaUtil().init(new java.util.HashSet<>(Arrays.asList(1, 2, 3)))), javaUtilValue);
+        Assertions.assertEquals(mapper.writeValueAsString(new XmlSerializeJavaUtil().init(new java.util.HashSet<>(Arrays.asList(1, 2, 3)))), javaUtilValue);
         XmlSerializeVavr restored = mapper.readValue(javaUtilValue, XmlSerializeVavr.class);
-        Assert.assertEquals(restored.transitTypes.size(), 3);
+        Assertions.assertEquals(restored.transitTypes.size(), 3);
     }
 }

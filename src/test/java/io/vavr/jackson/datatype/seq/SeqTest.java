@@ -1,5 +1,7 @@
 package io.vavr.jackson.datatype.seq;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -13,8 +15,9 @@ import io.vavr.Tuple;
 import io.vavr.collection.List;
 import io.vavr.collection.Seq;
 import io.vavr.control.Option;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
@@ -35,77 +38,79 @@ public abstract class SeqTest extends BaseTest {
     protected abstract Seq<?> of(Object... objects);
 
     @Test
-    public void test1() throws IOException {
+    void test1() throws IOException {
         ObjectWriter writer = mapper().writer();
         Seq<?> src = of(1, null, 2.0, "s");
         String json = writer.writeValueAsString(src);
-        Assert.assertEquals(genJsonList(1, null, 2.0, "s"), json);
+        Assertions.assertEquals(genJsonList(1, null, 2.0, "s"), json);
         Seq<?> dst = (Seq<?>) mapper().readValue(json, clz());
-        Assert.assertEquals(src, dst);
+        Assertions.assertEquals(src, dst);
     }
 
     @Test
-    public void test2() throws IOException {
+    void test2() throws IOException {
         ObjectMapper mapper = mapper().addMixIn(clz(), WrapperObject.class);
         Seq<?> src = of(1);
         String plainJson = mapper().writeValueAsString(src);
         String wrappedJson = mapper.writeValueAsString(src);
-        Assert.assertEquals(wrappedJson, wrapToObject(implClzName(), plainJson));
+        Assertions.assertEquals(wrappedJson, wrapToObject(implClzName(), plainJson));
         Seq<?> restored = (Seq<?>) mapper.readValue(wrappedJson, clz());
-        Assert.assertEquals(src, restored);
+        Assertions.assertEquals(src, restored);
     }
 
     @Test
-    public void test3() throws IOException {
+    void test3() throws IOException {
         ObjectMapper mapper = mapper().addMixIn(clz(), WrapperArray.class);
         Seq<?> src = of(1);
         String plainJson = mapper().writeValueAsString(src);
         String wrappedJson = mapper.writeValueAsString(src);
-        Assert.assertEquals(wrappedJson, wrapToArray(implClzName(), plainJson));
+        Assertions.assertEquals(wrappedJson, wrapToArray(implClzName(), plainJson));
         Seq<?> restored = (Seq<?>) mapper.readValue(wrappedJson, clz());
-        Assert.assertEquals(src, restored);
+        Assertions.assertEquals(src, restored);
     }
 
     @Test
-    public void test4() throws IOException {
+    void test4() throws IOException {
         VavrModule.Settings settings = new VavrModule.Settings();
         settings.deserializeNullAsEmptyCollection(true);
         ObjectMapper mapper = mapper(settings);
         Seq<?> restored = (Seq<?>) mapper.readValue("null", clz());
-        Assert.assertTrue(restored.isEmpty());
+        Assertions.assertTrue(restored.isEmpty());
     }
 
     @Test
-    public void test5() throws IOException {
+    void test5() throws IOException {
         ObjectMapper mapper = mapper();
         Seq<?> restored = (Seq<?>) mapper.readValue("null", clz());
-        Assert.assertNull(restored);
+        Assertions.assertNull(restored);
     }
 
     @Test
-    public void test6() throws IOException {
+    void test6() throws IOException {
         ObjectMapper mapper = mapper();
         Seq<?> restored = (Seq<?>) mapper.readValue("[]", clz());
-        Assert.assertTrue(restored.isEmpty());
-        Assert.assertTrue(clz().isAssignableFrom(restored.getClass()));
+        Assertions.assertTrue(restored.isEmpty());
+        Assertions.assertTrue(clz().isAssignableFrom(restored.getClass()));
     }
 
     @Test
-    public void testSerializable() throws IOException {
+    void testSerializable() throws IOException {
         ObjectMapper mapper = mapper();
         Seq<?> src = of(1);
         Seq<?> restored = (Seq<?>) mapper.readValue(mapper.writeValueAsString(src), clz());
         checkSerialization(restored);
     }
 
-    @Test(expected = JsonMappingException.class)
-    public void testExpectedStartArrayToken() throws IOException {
-        ObjectMapper mapper = mapper();
-        mapper.readValue("42", clz());
+    @Test
+    void testExpectedStartArrayToken() {
+        assertThrows(JsonMappingException.class, () -> {
+            ObjectMapper mapper = mapper();
+            mapper.readValue("42", clz());
+        });
     }
 
     @Test
-    public void testWithOption() throws Exception {
+    void testWithOption() throws Exception {
         verifySerialization(typeReferenceWithOption(), List.of(
                 Tuple.of(of(Option.some("value")), genJsonList("value")),
                 Tuple.of(of(Option.none()), genJsonList((Object) null))
@@ -138,12 +143,12 @@ public abstract class SeqTest extends BaseTest {
 
     @Test
     @SuppressWarnings("unchecked")
-    public void testJaxbXmlSerialization() throws IOException {
+    void testJaxbXmlSerialization() throws IOException {
         ObjectMapper mapper = xmlMapperJaxb();
         String javaUtilValue = mapper.writeValueAsString(new JaxbXmlSerializeVavr().init((Seq<Integer>) of(1, 2, 3)));
-        Assert.assertEquals(mapper.writeValueAsString(new JaxbXmlSerializeJavaUtil().init(Arrays.asList(1, 2, 3))), javaUtilValue);
+        Assertions.assertEquals(mapper.writeValueAsString(new JaxbXmlSerializeJavaUtil().init(Arrays.asList(1, 2, 3))), javaUtilValue);
         JaxbXmlSerializeVavr restored = mapper.readValue(javaUtilValue, JaxbXmlSerializeVavr.class);
-        Assert.assertEquals(restored.transitTypes.size(), 3);
+        Assertions.assertEquals(restored.transitTypes.size(), 3);
     }
 
     @JacksonXmlRootElement(localName = "xmlSerialize")
@@ -172,11 +177,11 @@ public abstract class SeqTest extends BaseTest {
 
     @Test
     @SuppressWarnings("unchecked")
-    public void testXmlSerialization() throws IOException {
+    void testXmlSerialization() throws IOException {
         ObjectMapper mapper = xmlMapper();
         String javaUtilValue = mapper.writeValueAsString(new XmlSerializeVavr().init((Seq<Integer>) of(1, 2, 3)));
-        Assert.assertEquals(mapper.writeValueAsString(new XmlSerializeJavaUtil().init(Arrays.asList(1, 2, 3))), javaUtilValue);
+        Assertions.assertEquals(mapper.writeValueAsString(new XmlSerializeJavaUtil().init(Arrays.asList(1, 2, 3))), javaUtilValue);
         XmlSerializeVavr restored = mapper.readValue(javaUtilValue, XmlSerializeVavr.class);
-        Assert.assertEquals(restored.transitTypes.size(), 3);
+        Assertions.assertEquals(restored.transitTypes.size(), 3);
     }
 }

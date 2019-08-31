@@ -3,9 +3,8 @@ package io.vavr.jackson.datatype.tuples;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import io.vavr.Tuple1;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -35,39 +34,39 @@ public abstract class TupleTest<T> extends BaseTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void test1() throws IOException {
+    void test1() throws IOException {
         T src = ofObjects(1, 17);
         String json = mapper().writeValueAsString(src);
-        Assert.assertEquals(genJsonTuple(1, 17), json);
-        Assert.assertEquals(src, mapper().readValue(json, clz()));
+        Assertions.assertEquals(genJsonTuple(1, 17), json);
+        Assertions.assertEquals(src, mapper().readValue(json, clz()));
     }
 
     @SuppressWarnings("unchecked")
     @Test
-    public void test2() throws IOException {
+    void test2() throws IOException {
         ObjectMapper mapper = mapper().addMixIn(clz(), WrapperObject.class);
         T src = ofObjects(1, 17);
         String plainJson = mapper().writeValueAsString(src);
         String wrappedJson = mapper.writeValueAsString(src);
-        Assert.assertEquals(wrappedJson, wrapToObject(clz().getName(), plainJson));
+        Assertions.assertEquals(wrappedJson, wrapToObject(clz().getName(), plainJson));
         T restored = (T) mapper.readValue(wrappedJson, clz());
-        Assert.assertEquals(src, restored);
+        Assertions.assertEquals(src, restored);
     }
 
     @SuppressWarnings("unchecked")
     @Test
-    public void test3() throws IOException {
+    void test3() throws IOException {
         ObjectMapper mapper = mapper().addMixIn(clz(), WrapperArray.class);
         T src = ofObjects(1, 17);
         String plainJson = mapper().writeValueAsString(src);
         String wrappedJson = mapper.writeValueAsString(src);
-        Assert.assertEquals(wrappedJson, wrapToArray(clz().getName(), plainJson));
+        Assertions.assertEquals(wrappedJson, wrapToArray(clz().getName(), plainJson));
         T restored = (T) mapper.readValue(wrappedJson, clz());
-        Assert.assertEquals(src, restored);
+        Assertions.assertEquals(src, restored);
     }
 
     @Test
-    public void testWithOption() throws IOException {
+    void testWithOption() throws IOException {
         verifySerialization(typeReferenceWithOption(), List.of(
                 Tuple.of(ofObjects(Option.some("1"), Option.none()), genJsonTuple("1", null)),
                 Tuple.of(ofObjects(Option.some("1"), Option.some("17")), genJsonTuple("1", "17")),

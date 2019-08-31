@@ -34,8 +34,8 @@ import java.lang.Exception;
 import java.lang.Integer;
 import java.lang.Object;
 import java.lang.String;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * generated
@@ -46,69 +46,69 @@ public class ParameterizedPojoTest {
     private static final ObjectMapper MAPPER = new ObjectMapper().registerModule(MAPPER_MODULE);
 
     @Test
-    public void testTuple1OfString() throws Exception {
+    void testTuple1OfString() throws Exception {
         String src0 = "A";
         Tuple1<String> src = Tuple.of(src0);
         String json = MAPPER.writeValueAsString(new ParameterizedTuple1Pojo<>(src));
-        Assert.assertEquals(json, "{\"value\":[\"A\"]}");
+        Assertions.assertEquals(json, "{\"value\":[\"A\"]}");
         ParameterizedTuple1Pojo<java.lang.String> restored = 
                 MAPPER.readValue(json, new TypeReference<ParameterizedTuple1Pojo<java.lang.String>>(){});
-        Assert.assertEquals(src, restored.getValue());
+        Assertions.assertEquals(src, restored.getValue());
     }
 
     @Test
-    public void testTuple1OfTuple() throws Exception {
+    void testTuple1OfTuple() throws Exception {
         String src00 = "B";
         Tuple1<String> src0 = Tuple.of(src00);
         Tuple1<Tuple1<String>> src = Tuple.of(src0);
         String json = MAPPER.writeValueAsString(new ParameterizedTuple1Pojo<>(src));
-        Assert.assertEquals(json, "{\"value\":[[\"B\"]]}");
+        Assertions.assertEquals(json, "{\"value\":[[\"B\"]]}");
         ParameterizedTuple1Pojo<io.vavr.Tuple1<java.lang.String>> restored = 
                 MAPPER.readValue(json, new TypeReference<ParameterizedTuple1Pojo<io.vavr.Tuple1<java.lang.String>>>(){});
-        Assert.assertEquals(src, restored.getValue());
+        Assertions.assertEquals(src, restored.getValue());
     }
 
     @Test
-    public void testTuple2OfString() throws Exception {
+    void testTuple2OfString() throws Exception {
         String src0 = "A";
         String src1 = "B";
         Tuple2<String, String> src = Tuple.of(src0, src1);
         String json = MAPPER.writeValueAsString(new ParameterizedTuple2Pojo<>(src));
-        Assert.assertEquals(json, "{\"value\":[\"A\",\"B\"]}");
+        Assertions.assertEquals(json, "{\"value\":[\"A\",\"B\"]}");
         ParameterizedTuple2Pojo<java.lang.String, java.lang.String> restored = 
                 MAPPER.readValue(json, new TypeReference<ParameterizedTuple2Pojo<java.lang.String, java.lang.String>>(){});
-        Assert.assertEquals(src, restored.getValue());
+        Assertions.assertEquals(src, restored.getValue());
     }
 
     @Test
-    public void testTuple2OfTuple() throws Exception {
+    void testTuple2OfTuple() throws Exception {
         String src0 = "A";
         String src10 = "B";
         String src11 = "C";
         Tuple2<String, String> src1 = Tuple.of(src10, src11);
         Tuple2<String, Tuple2<String, String>> src = Tuple.of(src0, src1);
         String json = MAPPER.writeValueAsString(new ParameterizedTuple2Pojo<>(src));
-        Assert.assertEquals(json, "{\"value\":[\"A\",[\"B\",\"C\"]]}");
+        Assertions.assertEquals(json, "{\"value\":[\"A\",[\"B\",\"C\"]]}");
         ParameterizedTuple2Pojo<java.lang.String, io.vavr.Tuple2<java.lang.String, java.lang.String>> restored = 
                 MAPPER.readValue(json, new TypeReference<ParameterizedTuple2Pojo<java.lang.String, io.vavr.Tuple2<java.lang.String, java.lang.String>>>(){});
-        Assert.assertEquals(src, restored.getValue());
+        Assertions.assertEquals(src, restored.getValue());
     }
 
     @Test
-    public void testTuple3OfString() throws Exception {
+    void testTuple3OfString() throws Exception {
         String src0 = "A";
         String src1 = "B";
         String src2 = "C";
         Tuple3<String, String, String> src = Tuple.of(src0, src1, src2);
         String json = MAPPER.writeValueAsString(new ParameterizedTuple3Pojo<>(src));
-        Assert.assertEquals(json, "{\"value\":[\"A\",\"B\",\"C\"]}");
+        Assertions.assertEquals(json, "{\"value\":[\"A\",\"B\",\"C\"]}");
         ParameterizedTuple3Pojo<java.lang.String, java.lang.String, java.lang.String> restored = 
                 MAPPER.readValue(json, new TypeReference<ParameterizedTuple3Pojo<java.lang.String, java.lang.String, java.lang.String>>(){});
-        Assert.assertEquals(src, restored.getValue());
+        Assertions.assertEquals(src, restored.getValue());
     }
 
     @Test
-    public void testTuple3OfTuple() throws Exception {
+    void testTuple3OfTuple() throws Exception {
         String src0 = "A";
         String src10 = "B";
         String src11 = "C";
@@ -118,28 +118,28 @@ public class ParameterizedPojoTest {
         Tuple2<String, String> src2 = Tuple.of(src20, src21);
         Tuple3<String, Tuple2<String, String>, Tuple2<String, String>> src = Tuple.of(src0, src1, src2);
         String json = MAPPER.writeValueAsString(new ParameterizedTuple3Pojo<>(src));
-        Assert.assertEquals(json, "{\"value\":[\"A\",[\"B\",\"C\"],[\"D\",\"E\"]]}");
+        Assertions.assertEquals(json, "{\"value\":[\"A\",[\"B\",\"C\"],[\"D\",\"E\"]]}");
         ParameterizedTuple3Pojo<java.lang.String, io.vavr.Tuple2<java.lang.String, java.lang.String>, io.vavr.Tuple2<java.lang.String, java.lang.String>> restored = 
                 MAPPER.readValue(json, new TypeReference<ParameterizedTuple3Pojo<java.lang.String, io.vavr.Tuple2<java.lang.String, java.lang.String>, io.vavr.Tuple2<java.lang.String, java.lang.String>>>(){});
-        Assert.assertEquals(src, restored.getValue());
+        Assertions.assertEquals(src, restored.getValue());
     }
 
     @Test
-    public void testTuple4OfString() throws Exception {
+    void testTuple4OfString() throws Exception {
         String src0 = "A";
         String src1 = "B";
         String src2 = "C";
         String src3 = "D";
         Tuple4<String, String, String, String> src = Tuple.of(src0, src1, src2, src3);
         String json = MAPPER.writeValueAsString(new ParameterizedTuple4Pojo<>(src));
-        Assert.assertEquals(json, "{\"value\":[\"A\",\"B\",\"C\",\"D\"]}");
+        Assertions.assertEquals(json, "{\"value\":[\"A\",\"B\",\"C\",\"D\"]}");
         ParameterizedTuple4Pojo<java.lang.String, java.lang.String, java.lang.String, java.lang.String> restored = 
                 MAPPER.readValue(json, new TypeReference<ParameterizedTuple4Pojo<java.lang.String, java.lang.String, java.lang.String, java.lang.String>>(){});
-        Assert.assertEquals(src, restored.getValue());
+        Assertions.assertEquals(src, restored.getValue());
     }
 
     @Test
-    public void testTuple4OfTuple() throws Exception {
+    void testTuple4OfTuple() throws Exception {
         String src0 = "A";
         String src10 = "B";
         String src11 = "C";
@@ -152,14 +152,14 @@ public class ParameterizedPojoTest {
         Tuple2<String, String> src3 = Tuple.of(src30, src31);
         Tuple4<String, Tuple2<String, String>, Tuple2<String, String>, Tuple2<String, String>> src = Tuple.of(src0, src1, src2, src3);
         String json = MAPPER.writeValueAsString(new ParameterizedTuple4Pojo<>(src));
-        Assert.assertEquals(json, "{\"value\":[\"A\",[\"B\",\"C\"],[\"D\",\"E\"],[\"F\",\"1\"]]}");
+        Assertions.assertEquals(json, "{\"value\":[\"A\",[\"B\",\"C\"],[\"D\",\"E\"],[\"F\",\"1\"]]}");
         ParameterizedTuple4Pojo<java.lang.String, io.vavr.Tuple2<java.lang.String, java.lang.String>, io.vavr.Tuple2<java.lang.String, java.lang.String>, io.vavr.Tuple2<java.lang.String, java.lang.String>> restored = 
                 MAPPER.readValue(json, new TypeReference<ParameterizedTuple4Pojo<java.lang.String, io.vavr.Tuple2<java.lang.String, java.lang.String>, io.vavr.Tuple2<java.lang.String, java.lang.String>, io.vavr.Tuple2<java.lang.String, java.lang.String>>>(){});
-        Assert.assertEquals(src, restored.getValue());
+        Assertions.assertEquals(src, restored.getValue());
     }
 
     @Test
-    public void testTuple5OfString() throws Exception {
+    void testTuple5OfString() throws Exception {
         String src0 = "A";
         String src1 = "B";
         String src2 = "C";
@@ -167,14 +167,14 @@ public class ParameterizedPojoTest {
         String src4 = "E";
         Tuple5<String, String, String, String, String> src = Tuple.of(src0, src1, src2, src3, src4);
         String json = MAPPER.writeValueAsString(new ParameterizedTuple5Pojo<>(src));
-        Assert.assertEquals(json, "{\"value\":[\"A\",\"B\",\"C\",\"D\",\"E\"]}");
+        Assertions.assertEquals(json, "{\"value\":[\"A\",\"B\",\"C\",\"D\",\"E\"]}");
         ParameterizedTuple5Pojo<java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String> restored = 
                 MAPPER.readValue(json, new TypeReference<ParameterizedTuple5Pojo<java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String>>(){});
-        Assert.assertEquals(src, restored.getValue());
+        Assertions.assertEquals(src, restored.getValue());
     }
 
     @Test
-    public void testTuple5OfTuple() throws Exception {
+    void testTuple5OfTuple() throws Exception {
         String src0 = "A";
         String src10 = "B";
         String src11 = "C";
@@ -188,14 +188,14 @@ public class ParameterizedPojoTest {
         String src4 = "A";
         Tuple5<String, Tuple2<String, String>, Tuple2<String, String>, Tuple2<String, String>, String> src = Tuple.of(src0, src1, src2, src3, src4);
         String json = MAPPER.writeValueAsString(new ParameterizedTuple5Pojo<>(src));
-        Assert.assertEquals(json, "{\"value\":[\"A\",[\"B\",\"C\"],[\"D\",\"E\"],[\"F\",\"1\"],\"A\"]}");
+        Assertions.assertEquals(json, "{\"value\":[\"A\",[\"B\",\"C\"],[\"D\",\"E\"],[\"F\",\"1\"],\"A\"]}");
         ParameterizedTuple5Pojo<java.lang.String, io.vavr.Tuple2<java.lang.String, java.lang.String>, io.vavr.Tuple2<java.lang.String, java.lang.String>, io.vavr.Tuple2<java.lang.String, java.lang.String>, java.lang.String> restored = 
                 MAPPER.readValue(json, new TypeReference<ParameterizedTuple5Pojo<java.lang.String, io.vavr.Tuple2<java.lang.String, java.lang.String>, io.vavr.Tuple2<java.lang.String, java.lang.String>, io.vavr.Tuple2<java.lang.String, java.lang.String>, java.lang.String>>(){});
-        Assert.assertEquals(src, restored.getValue());
+        Assertions.assertEquals(src, restored.getValue());
     }
 
     @Test
-    public void testTuple6OfString() throws Exception {
+    void testTuple6OfString() throws Exception {
         String src0 = "A";
         String src1 = "B";
         String src2 = "C";
@@ -204,14 +204,14 @@ public class ParameterizedPojoTest {
         String src5 = "F";
         Tuple6<String, String, String, String, String, String> src = Tuple.of(src0, src1, src2, src3, src4, src5);
         String json = MAPPER.writeValueAsString(new ParameterizedTuple6Pojo<>(src));
-        Assert.assertEquals(json, "{\"value\":[\"A\",\"B\",\"C\",\"D\",\"E\",\"F\"]}");
+        Assertions.assertEquals(json, "{\"value\":[\"A\",\"B\",\"C\",\"D\",\"E\",\"F\"]}");
         ParameterizedTuple6Pojo<java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String> restored = 
                 MAPPER.readValue(json, new TypeReference<ParameterizedTuple6Pojo<java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String>>(){});
-        Assert.assertEquals(src, restored.getValue());
+        Assertions.assertEquals(src, restored.getValue());
     }
 
     @Test
-    public void testTuple6OfTuple() throws Exception {
+    void testTuple6OfTuple() throws Exception {
         String src0 = "A";
         String src10 = "B";
         String src11 = "C";
@@ -228,14 +228,14 @@ public class ParameterizedPojoTest {
         Tuple2<String, String> src5 = Tuple.of(src50, src51);
         Tuple6<String, Tuple2<String, String>, Tuple2<String, String>, Tuple2<String, String>, String, Tuple2<String, String>> src = Tuple.of(src0, src1, src2, src3, src4, src5);
         String json = MAPPER.writeValueAsString(new ParameterizedTuple6Pojo<>(src));
-        Assert.assertEquals(json, "{\"value\":[\"A\",[\"B\",\"C\"],[\"D\",\"E\"],[\"F\",\"1\"],\"A\",[\"B\",\"C\"]]}");
+        Assertions.assertEquals(json, "{\"value\":[\"A\",[\"B\",\"C\"],[\"D\",\"E\"],[\"F\",\"1\"],\"A\",[\"B\",\"C\"]]}");
         ParameterizedTuple6Pojo<java.lang.String, io.vavr.Tuple2<java.lang.String, java.lang.String>, io.vavr.Tuple2<java.lang.String, java.lang.String>, io.vavr.Tuple2<java.lang.String, java.lang.String>, java.lang.String, io.vavr.Tuple2<java.lang.String, java.lang.String>> restored = 
                 MAPPER.readValue(json, new TypeReference<ParameterizedTuple6Pojo<java.lang.String, io.vavr.Tuple2<java.lang.String, java.lang.String>, io.vavr.Tuple2<java.lang.String, java.lang.String>, io.vavr.Tuple2<java.lang.String, java.lang.String>, java.lang.String, io.vavr.Tuple2<java.lang.String, java.lang.String>>>(){});
-        Assert.assertEquals(src, restored.getValue());
+        Assertions.assertEquals(src, restored.getValue());
     }
 
     @Test
-    public void testTuple7OfString() throws Exception {
+    void testTuple7OfString() throws Exception {
         String src0 = "A";
         String src1 = "B";
         String src2 = "C";
@@ -245,14 +245,14 @@ public class ParameterizedPojoTest {
         String src6 = "1";
         Tuple7<String, String, String, String, String, String, String> src = Tuple.of(src0, src1, src2, src3, src4, src5, src6);
         String json = MAPPER.writeValueAsString(new ParameterizedTuple7Pojo<>(src));
-        Assert.assertEquals(json, "{\"value\":[\"A\",\"B\",\"C\",\"D\",\"E\",\"F\",\"1\"]}");
+        Assertions.assertEquals(json, "{\"value\":[\"A\",\"B\",\"C\",\"D\",\"E\",\"F\",\"1\"]}");
         ParameterizedTuple7Pojo<java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String> restored = 
                 MAPPER.readValue(json, new TypeReference<ParameterizedTuple7Pojo<java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String>>(){});
-        Assert.assertEquals(src, restored.getValue());
+        Assertions.assertEquals(src, restored.getValue());
     }
 
     @Test
-    public void testTuple7OfTuple() throws Exception {
+    void testTuple7OfTuple() throws Exception {
         String src0 = "A";
         String src10 = "B";
         String src11 = "C";
@@ -272,14 +272,14 @@ public class ParameterizedPojoTest {
         Tuple2<String, String> src6 = Tuple.of(src60, src61);
         Tuple7<String, Tuple2<String, String>, Tuple2<String, String>, Tuple2<String, String>, String, Tuple2<String, String>, Tuple2<String, String>> src = Tuple.of(src0, src1, src2, src3, src4, src5, src6);
         String json = MAPPER.writeValueAsString(new ParameterizedTuple7Pojo<>(src));
-        Assert.assertEquals(json, "{\"value\":[\"A\",[\"B\",\"C\"],[\"D\",\"E\"],[\"F\",\"1\"],\"A\",[\"B\",\"C\"],[\"D\",\"E\"]]}");
+        Assertions.assertEquals(json, "{\"value\":[\"A\",[\"B\",\"C\"],[\"D\",\"E\"],[\"F\",\"1\"],\"A\",[\"B\",\"C\"],[\"D\",\"E\"]]}");
         ParameterizedTuple7Pojo<java.lang.String, io.vavr.Tuple2<java.lang.String, java.lang.String>, io.vavr.Tuple2<java.lang.String, java.lang.String>, io.vavr.Tuple2<java.lang.String, java.lang.String>, java.lang.String, io.vavr.Tuple2<java.lang.String, java.lang.String>, io.vavr.Tuple2<java.lang.String, java.lang.String>> restored = 
                 MAPPER.readValue(json, new TypeReference<ParameterizedTuple7Pojo<java.lang.String, io.vavr.Tuple2<java.lang.String, java.lang.String>, io.vavr.Tuple2<java.lang.String, java.lang.String>, io.vavr.Tuple2<java.lang.String, java.lang.String>, java.lang.String, io.vavr.Tuple2<java.lang.String, java.lang.String>, io.vavr.Tuple2<java.lang.String, java.lang.String>>>(){});
-        Assert.assertEquals(src, restored.getValue());
+        Assertions.assertEquals(src, restored.getValue());
     }
 
     @Test
-    public void testTuple8OfString() throws Exception {
+    void testTuple8OfString() throws Exception {
         String src0 = "A";
         String src1 = "B";
         String src2 = "C";
@@ -290,14 +290,14 @@ public class ParameterizedPojoTest {
         String src7 = "2";
         Tuple8<String, String, String, String, String, String, String, String> src = Tuple.of(src0, src1, src2, src3, src4, src5, src6, src7);
         String json = MAPPER.writeValueAsString(new ParameterizedTuple8Pojo<>(src));
-        Assert.assertEquals(json, "{\"value\":[\"A\",\"B\",\"C\",\"D\",\"E\",\"F\",\"1\",\"2\"]}");
+        Assertions.assertEquals(json, "{\"value\":[\"A\",\"B\",\"C\",\"D\",\"E\",\"F\",\"1\",\"2\"]}");
         ParameterizedTuple8Pojo<java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String> restored = 
                 MAPPER.readValue(json, new TypeReference<ParameterizedTuple8Pojo<java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String>>(){});
-        Assert.assertEquals(src, restored.getValue());
+        Assertions.assertEquals(src, restored.getValue());
     }
 
     @Test
-    public void testTuple8OfTuple() throws Exception {
+    void testTuple8OfTuple() throws Exception {
         String src0 = "A";
         String src10 = "B";
         String src11 = "C";
@@ -320,261 +320,261 @@ public class ParameterizedPojoTest {
         Tuple2<String, String> src7 = Tuple.of(src70, src71);
         Tuple8<String, Tuple2<String, String>, Tuple2<String, String>, Tuple2<String, String>, String, Tuple2<String, String>, Tuple2<String, String>, Tuple2<String, String>> src = Tuple.of(src0, src1, src2, src3, src4, src5, src6, src7);
         String json = MAPPER.writeValueAsString(new ParameterizedTuple8Pojo<>(src));
-        Assert.assertEquals(json, "{\"value\":[\"A\",[\"B\",\"C\"],[\"D\",\"E\"],[\"F\",\"1\"],\"A\",[\"B\",\"C\"],[\"D\",\"E\"],[\"F\",\"1\"]]}");
+        Assertions.assertEquals(json, "{\"value\":[\"A\",[\"B\",\"C\"],[\"D\",\"E\"],[\"F\",\"1\"],\"A\",[\"B\",\"C\"],[\"D\",\"E\"],[\"F\",\"1\"]]}");
         ParameterizedTuple8Pojo<java.lang.String, io.vavr.Tuple2<java.lang.String, java.lang.String>, io.vavr.Tuple2<java.lang.String, java.lang.String>, io.vavr.Tuple2<java.lang.String, java.lang.String>, java.lang.String, io.vavr.Tuple2<java.lang.String, java.lang.String>, io.vavr.Tuple2<java.lang.String, java.lang.String>, io.vavr.Tuple2<java.lang.String, java.lang.String>> restored = 
                 MAPPER.readValue(json, new TypeReference<ParameterizedTuple8Pojo<java.lang.String, io.vavr.Tuple2<java.lang.String, java.lang.String>, io.vavr.Tuple2<java.lang.String, java.lang.String>, io.vavr.Tuple2<java.lang.String, java.lang.String>, java.lang.String, io.vavr.Tuple2<java.lang.String, java.lang.String>, io.vavr.Tuple2<java.lang.String, java.lang.String>, io.vavr.Tuple2<java.lang.String, java.lang.String>>>(){});
-        Assert.assertEquals(src, restored.getValue());
+        Assertions.assertEquals(src, restored.getValue());
     }
 
     @Test
-    public void testArrayOfString() throws Exception {
+    void testArrayOfString() throws Exception {
         String src0 = "A";
         String src1 = "B";
         String src2 = "C";
         Array<String> src = Array.of(src0, src1, src2);
         String json = MAPPER.writeValueAsString(new ParameterizedArrayPojo<>(src));
-        Assert.assertEquals(json, "{\"value\":[\"A\",\"B\",\"C\"]}");
+        Assertions.assertEquals(json, "{\"value\":[\"A\",\"B\",\"C\"]}");
         ParameterizedArrayPojo<java.lang.String> restored = 
                 MAPPER.readValue(json, new TypeReference<ParameterizedArrayPojo<java.lang.String>>(){});
-        Assert.assertEquals(src, restored.getValue());
+        Assertions.assertEquals(src, restored.getValue());
     }
 
     @Test
-    public void testArrayOfTuple() throws Exception {
+    void testArrayOfTuple() throws Exception {
         String src00 = "A";
         String src01 = "B";
         Tuple2<String, String> src0 = Tuple.of(src00, src01);
         Array<Tuple2<String, String>> src = Array.of(src0);
         String json = MAPPER.writeValueAsString(new ParameterizedArrayPojo<>(src));
-        Assert.assertEquals(json, "{\"value\":[[\"A\",\"B\"]]}");
+        Assertions.assertEquals(json, "{\"value\":[[\"A\",\"B\"]]}");
         ParameterizedArrayPojo<io.vavr.Tuple2<java.lang.String, java.lang.String>> restored = 
                 MAPPER.readValue(json, new TypeReference<ParameterizedArrayPojo<io.vavr.Tuple2<java.lang.String, java.lang.String>>>(){});
-        Assert.assertEquals(src, restored.getValue());
+        Assertions.assertEquals(src, restored.getValue());
     }
 
     @Test
-    public void testListOfString() throws Exception {
+    void testListOfString() throws Exception {
         String src0 = "A";
         String src1 = "B";
         String src2 = "C";
         List<String> src = List.of(src0, src1, src2);
         String json = MAPPER.writeValueAsString(new ParameterizedListPojo<>(src));
-        Assert.assertEquals(json, "{\"value\":[\"A\",\"B\",\"C\"]}");
+        Assertions.assertEquals(json, "{\"value\":[\"A\",\"B\",\"C\"]}");
         ParameterizedListPojo<java.lang.String> restored = 
                 MAPPER.readValue(json, new TypeReference<ParameterizedListPojo<java.lang.String>>(){});
-        Assert.assertEquals(src, restored.getValue());
+        Assertions.assertEquals(src, restored.getValue());
     }
 
     @Test
-    public void testListOfTuple() throws Exception {
+    void testListOfTuple() throws Exception {
         String src00 = "A";
         String src01 = "B";
         Tuple2<String, String> src0 = Tuple.of(src00, src01);
         List<Tuple2<String, String>> src = List.of(src0);
         String json = MAPPER.writeValueAsString(new ParameterizedListPojo<>(src));
-        Assert.assertEquals(json, "{\"value\":[[\"A\",\"B\"]]}");
+        Assertions.assertEquals(json, "{\"value\":[[\"A\",\"B\"]]}");
         ParameterizedListPojo<io.vavr.Tuple2<java.lang.String, java.lang.String>> restored = 
                 MAPPER.readValue(json, new TypeReference<ParameterizedListPojo<io.vavr.Tuple2<java.lang.String, java.lang.String>>>(){});
-        Assert.assertEquals(src, restored.getValue());
+        Assertions.assertEquals(src, restored.getValue());
     }
 
     @Test
-    public void testQueueOfString() throws Exception {
+    void testQueueOfString() throws Exception {
         String src0 = "A";
         String src1 = "B";
         String src2 = "C";
         Queue<String> src = Queue.of(src0, src1, src2);
         String json = MAPPER.writeValueAsString(new ParameterizedQueuePojo<>(src));
-        Assert.assertEquals(json, "{\"value\":[\"A\",\"B\",\"C\"]}");
+        Assertions.assertEquals(json, "{\"value\":[\"A\",\"B\",\"C\"]}");
         ParameterizedQueuePojo<java.lang.String> restored = 
                 MAPPER.readValue(json, new TypeReference<ParameterizedQueuePojo<java.lang.String>>(){});
-        Assert.assertEquals(src, restored.getValue());
+        Assertions.assertEquals(src, restored.getValue());
     }
 
     @Test
-    public void testQueueOfTuple() throws Exception {
+    void testQueueOfTuple() throws Exception {
         String src00 = "A";
         String src01 = "B";
         Tuple2<String, String> src0 = Tuple.of(src00, src01);
         Queue<Tuple2<String, String>> src = Queue.of(src0);
         String json = MAPPER.writeValueAsString(new ParameterizedQueuePojo<>(src));
-        Assert.assertEquals(json, "{\"value\":[[\"A\",\"B\"]]}");
+        Assertions.assertEquals(json, "{\"value\":[[\"A\",\"B\"]]}");
         ParameterizedQueuePojo<io.vavr.Tuple2<java.lang.String, java.lang.String>> restored = 
                 MAPPER.readValue(json, new TypeReference<ParameterizedQueuePojo<io.vavr.Tuple2<java.lang.String, java.lang.String>>>(){});
-        Assert.assertEquals(src, restored.getValue());
+        Assertions.assertEquals(src, restored.getValue());
     }
 
     @Test
-    public void testStreamOfString() throws Exception {
+    void testStreamOfString() throws Exception {
         String src0 = "A";
         String src1 = "B";
         String src2 = "C";
         Stream<String> src = Stream.of(src0, src1, src2);
         String json = MAPPER.writeValueAsString(new ParameterizedStreamPojo<>(src));
-        Assert.assertEquals(json, "{\"value\":[\"A\",\"B\",\"C\"]}");
+        Assertions.assertEquals(json, "{\"value\":[\"A\",\"B\",\"C\"]}");
         ParameterizedStreamPojo<java.lang.String> restored = 
                 MAPPER.readValue(json, new TypeReference<ParameterizedStreamPojo<java.lang.String>>(){});
-        Assert.assertEquals(src, restored.getValue());
+        Assertions.assertEquals(src, restored.getValue());
     }
 
     @Test
-    public void testStreamOfTuple() throws Exception {
+    void testStreamOfTuple() throws Exception {
         String src00 = "A";
         String src01 = "B";
         Tuple2<String, String> src0 = Tuple.of(src00, src01);
         Stream<Tuple2<String, String>> src = Stream.of(src0);
         String json = MAPPER.writeValueAsString(new ParameterizedStreamPojo<>(src));
-        Assert.assertEquals(json, "{\"value\":[[\"A\",\"B\"]]}");
+        Assertions.assertEquals(json, "{\"value\":[[\"A\",\"B\"]]}");
         ParameterizedStreamPojo<io.vavr.Tuple2<java.lang.String, java.lang.String>> restored = 
                 MAPPER.readValue(json, new TypeReference<ParameterizedStreamPojo<io.vavr.Tuple2<java.lang.String, java.lang.String>>>(){});
-        Assert.assertEquals(src, restored.getValue());
+        Assertions.assertEquals(src, restored.getValue());
     }
 
     @Test
-    public void testVectorOfString() throws Exception {
+    void testVectorOfString() throws Exception {
         String src0 = "A";
         String src1 = "B";
         String src2 = "C";
         Vector<String> src = Vector.of(src0, src1, src2);
         String json = MAPPER.writeValueAsString(new ParameterizedVectorPojo<>(src));
-        Assert.assertEquals(json, "{\"value\":[\"A\",\"B\",\"C\"]}");
+        Assertions.assertEquals(json, "{\"value\":[\"A\",\"B\",\"C\"]}");
         ParameterizedVectorPojo<java.lang.String> restored = 
                 MAPPER.readValue(json, new TypeReference<ParameterizedVectorPojo<java.lang.String>>(){});
-        Assert.assertEquals(src, restored.getValue());
+        Assertions.assertEquals(src, restored.getValue());
     }
 
     @Test
-    public void testVectorOfTuple() throws Exception {
+    void testVectorOfTuple() throws Exception {
         String src00 = "A";
         String src01 = "B";
         Tuple2<String, String> src0 = Tuple.of(src00, src01);
         Vector<Tuple2<String, String>> src = Vector.of(src0);
         String json = MAPPER.writeValueAsString(new ParameterizedVectorPojo<>(src));
-        Assert.assertEquals(json, "{\"value\":[[\"A\",\"B\"]]}");
+        Assertions.assertEquals(json, "{\"value\":[[\"A\",\"B\"]]}");
         ParameterizedVectorPojo<io.vavr.Tuple2<java.lang.String, java.lang.String>> restored = 
                 MAPPER.readValue(json, new TypeReference<ParameterizedVectorPojo<io.vavr.Tuple2<java.lang.String, java.lang.String>>>(){});
-        Assert.assertEquals(src, restored.getValue());
+        Assertions.assertEquals(src, restored.getValue());
     }
 
     @Test
-    public void testPriorityQueueOfString() throws Exception {
+    void testPriorityQueueOfString() throws Exception {
         String src0 = "A";
         String src1 = "B";
         String src2 = "C";
         PriorityQueue<String> src = PriorityQueue.of(src0, src1, src2);
         String json = MAPPER.writeValueAsString(new ParameterizedPriorityQueuePojo<>(src));
-        Assert.assertEquals(json, "{\"value\":[\"A\",\"B\",\"C\"]}");
+        Assertions.assertEquals(json, "{\"value\":[\"A\",\"B\",\"C\"]}");
         ParameterizedPriorityQueuePojo<java.lang.String> restored = 
                 MAPPER.readValue(json, new TypeReference<ParameterizedPriorityQueuePojo<java.lang.String>>(){});
-        Assert.assertEquals(src, restored.getValue());
+        Assertions.assertEquals(src, restored.getValue());
     }
 
     @Test
-    public void testPriorityQueueOfTuple() throws Exception {
+    void testPriorityQueueOfTuple() throws Exception {
         String src00 = "A";
         String src01 = "B";
         Tuple2<String, String> src0 = Tuple.of(src00, src01);
         PriorityQueue<Tuple2<String, String>> src = PriorityQueue.of(src0);
         String json = MAPPER.writeValueAsString(new ParameterizedPriorityQueuePojo<>(src));
-        Assert.assertEquals(json, "{\"value\":[[\"A\",\"B\"]]}");
+        Assertions.assertEquals(json, "{\"value\":[[\"A\",\"B\"]]}");
         ParameterizedPriorityQueuePojo<io.vavr.Tuple2<java.lang.String, java.lang.String>> restored = 
                 MAPPER.readValue(json, new TypeReference<ParameterizedPriorityQueuePojo<io.vavr.Tuple2<java.lang.String, java.lang.String>>>(){});
-        Assert.assertEquals(src, restored.getValue());
+        Assertions.assertEquals(src, restored.getValue());
     }
 
     @Test
-    public void testHashSetOfString() throws Exception {
+    void testHashSetOfString() throws Exception {
         String src0 = "A";
         String src1 = "B";
         String src2 = "C";
         HashSet<String> src = HashSet.of(src0, src1, src2);
         String json = MAPPER.writeValueAsString(new ParameterizedHashSetPojo<>(src));
-        Assert.assertEquals(json, "{\"value\":[\"A\",\"B\",\"C\"]}");
+        Assertions.assertEquals(json, "{\"value\":[\"A\",\"B\",\"C\"]}");
         ParameterizedHashSetPojo<java.lang.String> restored = 
                 MAPPER.readValue(json, new TypeReference<ParameterizedHashSetPojo<java.lang.String>>(){});
-        Assert.assertEquals(src, restored.getValue());
+        Assertions.assertEquals(src, restored.getValue());
     }
 
     @Test
-    public void testHashSetOfTuple() throws Exception {
+    void testHashSetOfTuple() throws Exception {
         String src00 = "A";
         String src01 = "B";
         Tuple2<String, String> src0 = Tuple.of(src00, src01);
         HashSet<Tuple2<String, String>> src = HashSet.of(src0);
         String json = MAPPER.writeValueAsString(new ParameterizedHashSetPojo<>(src));
-        Assert.assertEquals(json, "{\"value\":[[\"A\",\"B\"]]}");
+        Assertions.assertEquals(json, "{\"value\":[[\"A\",\"B\"]]}");
         ParameterizedHashSetPojo<io.vavr.Tuple2<java.lang.String, java.lang.String>> restored = 
                 MAPPER.readValue(json, new TypeReference<ParameterizedHashSetPojo<io.vavr.Tuple2<java.lang.String, java.lang.String>>>(){});
-        Assert.assertEquals(src, restored.getValue());
+        Assertions.assertEquals(src, restored.getValue());
     }
 
     @Test
-    public void testLinkedHashSetOfString() throws Exception {
+    void testLinkedHashSetOfString() throws Exception {
         String src0 = "A";
         String src1 = "B";
         String src2 = "C";
         LinkedHashSet<String> src = LinkedHashSet.of(src0, src1, src2);
         String json = MAPPER.writeValueAsString(new ParameterizedLinkedHashSetPojo<>(src));
-        Assert.assertEquals(json, "{\"value\":[\"A\",\"B\",\"C\"]}");
+        Assertions.assertEquals(json, "{\"value\":[\"A\",\"B\",\"C\"]}");
         ParameterizedLinkedHashSetPojo<java.lang.String> restored = 
                 MAPPER.readValue(json, new TypeReference<ParameterizedLinkedHashSetPojo<java.lang.String>>(){});
-        Assert.assertEquals(src, restored.getValue());
+        Assertions.assertEquals(src, restored.getValue());
     }
 
     @Test
-    public void testLinkedHashSetOfTuple() throws Exception {
+    void testLinkedHashSetOfTuple() throws Exception {
         String src00 = "A";
         String src01 = "B";
         Tuple2<String, String> src0 = Tuple.of(src00, src01);
         LinkedHashSet<Tuple2<String, String>> src = LinkedHashSet.of(src0);
         String json = MAPPER.writeValueAsString(new ParameterizedLinkedHashSetPojo<>(src));
-        Assert.assertEquals(json, "{\"value\":[[\"A\",\"B\"]]}");
+        Assertions.assertEquals(json, "{\"value\":[[\"A\",\"B\"]]}");
         ParameterizedLinkedHashSetPojo<io.vavr.Tuple2<java.lang.String, java.lang.String>> restored = 
                 MAPPER.readValue(json, new TypeReference<ParameterizedLinkedHashSetPojo<io.vavr.Tuple2<java.lang.String, java.lang.String>>>(){});
-        Assert.assertEquals(src, restored.getValue());
+        Assertions.assertEquals(src, restored.getValue());
     }
 
     @Test
-    public void testTreeSetOfString() throws Exception {
+    void testTreeSetOfString() throws Exception {
         String src0 = "A";
         String src1 = "B";
         String src2 = "C";
         TreeSet<String> src = TreeSet.of(src0, src1, src2);
         String json = MAPPER.writeValueAsString(new ParameterizedTreeSetPojo<>(src));
-        Assert.assertEquals(json, "{\"value\":[\"A\",\"B\",\"C\"]}");
+        Assertions.assertEquals(json, "{\"value\":[\"A\",\"B\",\"C\"]}");
         ParameterizedTreeSetPojo<java.lang.String> restored = 
                 MAPPER.readValue(json, new TypeReference<ParameterizedTreeSetPojo<java.lang.String>>(){});
-        Assert.assertEquals(src, restored.getValue());
+        Assertions.assertEquals(src, restored.getValue());
     }
 
     @Test
-    public void testTreeSetOfTuple() throws Exception {
+    void testTreeSetOfTuple() throws Exception {
         String src00 = "A";
         String src01 = "B";
         Tuple2<String, String> src0 = Tuple.of(src00, src01);
         TreeSet<Tuple2<String, String>> src = TreeSet.of(src0);
         String json = MAPPER.writeValueAsString(new ParameterizedTreeSetPojo<>(src));
-        Assert.assertEquals(json, "{\"value\":[[\"A\",\"B\"]]}");
+        Assertions.assertEquals(json, "{\"value\":[[\"A\",\"B\"]]}");
         ParameterizedTreeSetPojo<io.vavr.Tuple2<java.lang.String, java.lang.String>> restored = 
                 MAPPER.readValue(json, new TypeReference<ParameterizedTreeSetPojo<io.vavr.Tuple2<java.lang.String, java.lang.String>>>(){});
-        Assert.assertEquals(src, restored.getValue());
+        Assertions.assertEquals(src, restored.getValue());
     }
 
     @Test
-    public void testHashMapOfString() throws Exception {
+    void testHashMapOfString() throws Exception {
         Integer src00 = 1;
         String src01 = "A";
         Tuple2<Integer, String> src0 = Tuple.of(src00, src01);
         HashMap<Integer, String> src = HashMap.ofEntries(src0);
         String json = MAPPER.writeValueAsString(new ParameterizedHashMapPojo<>(src));
-        Assert.assertEquals(json, "{\"value\":{\"1\":\"A\"}}");
+        Assertions.assertEquals(json, "{\"value\":{\"1\":\"A\"}}");
         ParameterizedHashMapPojo<java.lang.Integer, java.lang.String> restored = 
                 MAPPER.readValue(json, new TypeReference<ParameterizedHashMapPojo<java.lang.Integer, java.lang.String>>(){});
-        Assert.assertEquals(src, restored.getValue());
+        Assertions.assertEquals(src, restored.getValue());
     }
 
     @Test
-    public void testHashMapOfTuple() throws Exception {
+    void testHashMapOfTuple() throws Exception {
         Integer src00 = 1;
         String src010 = "A";
         String src011 = "B";
@@ -582,27 +582,27 @@ public class ParameterizedPojoTest {
         Tuple2<Integer, Tuple2<String, String>> src0 = Tuple.of(src00, src01);
         HashMap<Integer, Tuple2<String, String>> src = HashMap.ofEntries(src0);
         String json = MAPPER.writeValueAsString(new ParameterizedHashMapPojo<>(src));
-        Assert.assertEquals(json, "{\"value\":{\"1\":[\"A\",\"B\"]}}");
+        Assertions.assertEquals(json, "{\"value\":{\"1\":[\"A\",\"B\"]}}");
         ParameterizedHashMapPojo<java.lang.Integer, io.vavr.Tuple2<java.lang.String, java.lang.String>> restored = 
                 MAPPER.readValue(json, new TypeReference<ParameterizedHashMapPojo<java.lang.Integer, io.vavr.Tuple2<java.lang.String, java.lang.String>>>(){});
-        Assert.assertEquals(src, restored.getValue());
+        Assertions.assertEquals(src, restored.getValue());
     }
 
     @Test
-    public void testLinkedHashMapOfString() throws Exception {
+    void testLinkedHashMapOfString() throws Exception {
         Integer src00 = 1;
         String src01 = "A";
         Tuple2<Integer, String> src0 = Tuple.of(src00, src01);
         LinkedHashMap<Integer, String> src = LinkedHashMap.ofEntries(src0);
         String json = MAPPER.writeValueAsString(new ParameterizedLinkedHashMapPojo<>(src));
-        Assert.assertEquals(json, "{\"value\":{\"1\":\"A\"}}");
+        Assertions.assertEquals(json, "{\"value\":{\"1\":\"A\"}}");
         ParameterizedLinkedHashMapPojo<java.lang.Integer, java.lang.String> restored = 
                 MAPPER.readValue(json, new TypeReference<ParameterizedLinkedHashMapPojo<java.lang.Integer, java.lang.String>>(){});
-        Assert.assertEquals(src, restored.getValue());
+        Assertions.assertEquals(src, restored.getValue());
     }
 
     @Test
-    public void testLinkedHashMapOfTuple() throws Exception {
+    void testLinkedHashMapOfTuple() throws Exception {
         Integer src00 = 1;
         String src010 = "A";
         String src011 = "B";
@@ -610,27 +610,27 @@ public class ParameterizedPojoTest {
         Tuple2<Integer, Tuple2<String, String>> src0 = Tuple.of(src00, src01);
         LinkedHashMap<Integer, Tuple2<String, String>> src = LinkedHashMap.ofEntries(src0);
         String json = MAPPER.writeValueAsString(new ParameterizedLinkedHashMapPojo<>(src));
-        Assert.assertEquals(json, "{\"value\":{\"1\":[\"A\",\"B\"]}}");
+        Assertions.assertEquals(json, "{\"value\":{\"1\":[\"A\",\"B\"]}}");
         ParameterizedLinkedHashMapPojo<java.lang.Integer, io.vavr.Tuple2<java.lang.String, java.lang.String>> restored = 
                 MAPPER.readValue(json, new TypeReference<ParameterizedLinkedHashMapPojo<java.lang.Integer, io.vavr.Tuple2<java.lang.String, java.lang.String>>>(){});
-        Assert.assertEquals(src, restored.getValue());
+        Assertions.assertEquals(src, restored.getValue());
     }
 
     @Test
-    public void testTreeMapOfString() throws Exception {
+    void testTreeMapOfString() throws Exception {
         Integer src00 = 1;
         String src01 = "A";
         Tuple2<Integer, String> src0 = Tuple.of(src00, src01);
         TreeMap<Integer, String> src = TreeMap.ofEntries(src0);
         String json = MAPPER.writeValueAsString(new ParameterizedTreeMapPojo<>(src));
-        Assert.assertEquals(json, "{\"value\":{\"1\":\"A\"}}");
+        Assertions.assertEquals(json, "{\"value\":{\"1\":\"A\"}}");
         ParameterizedTreeMapPojo<java.lang.Integer, java.lang.String> restored = 
                 MAPPER.readValue(json, new TypeReference<ParameterizedTreeMapPojo<java.lang.Integer, java.lang.String>>(){});
-        Assert.assertEquals(src, restored.getValue());
+        Assertions.assertEquals(src, restored.getValue());
     }
 
     @Test
-    public void testTreeMapOfTuple() throws Exception {
+    void testTreeMapOfTuple() throws Exception {
         Integer src00 = 1;
         String src010 = "A";
         String src011 = "B";
@@ -638,14 +638,14 @@ public class ParameterizedPojoTest {
         Tuple2<Integer, Tuple2<String, String>> src0 = Tuple.of(src00, src01);
         TreeMap<Integer, Tuple2<String, String>> src = TreeMap.ofEntries(src0);
         String json = MAPPER.writeValueAsString(new ParameterizedTreeMapPojo<>(src));
-        Assert.assertEquals(json, "{\"value\":{\"1\":[\"A\",\"B\"]}}");
+        Assertions.assertEquals(json, "{\"value\":{\"1\":[\"A\",\"B\"]}}");
         ParameterizedTreeMapPojo<java.lang.Integer, io.vavr.Tuple2<java.lang.String, java.lang.String>> restored = 
                 MAPPER.readValue(json, new TypeReference<ParameterizedTreeMapPojo<java.lang.Integer, io.vavr.Tuple2<java.lang.String, java.lang.String>>>(){});
-        Assert.assertEquals(src, restored.getValue());
+        Assertions.assertEquals(src, restored.getValue());
     }
 
     @Test
-    public void testHashMultimapOfSeqString() throws Exception {
+    void testHashMultimapOfSeqString() throws Exception {
         String src00 = "A";
         String src01 = "B";
         Tuple2<String, String> src0 = Tuple.of(src00, src01);
@@ -654,14 +654,14 @@ public class ParameterizedPojoTest {
         Tuple2<String, String> src1 = Tuple.of(src10, src11);
         HashMultimap<String, String> src = HashMultimap.withSeq().ofEntries(src0, src1);
         String json = MAPPER.writeValueAsString(new ParameterizedHashMultimapPojo<>(src));
-        Assert.assertEquals(json, "{\"value\":{\"A\":[\"B\",\"C\"]}}");
+        Assertions.assertEquals(json, "{\"value\":{\"A\":[\"B\",\"C\"]}}");
         ParameterizedHashMultimapPojo<java.lang.String, java.lang.String> restored = 
                 MAPPER.readValue(json, new TypeReference<ParameterizedHashMultimapPojo<java.lang.String, java.lang.String>>(){});
-        Assert.assertEquals(src, restored.getValue());
+        Assertions.assertEquals(src, restored.getValue());
     }
 
     @Test
-    public void testHashMultimapOfSeqTuple() throws Exception {
+    void testHashMultimapOfSeqTuple() throws Exception {
         String src00 = "A";
         String src010 = "A";
         String src011 = "B";
@@ -674,14 +674,14 @@ public class ParameterizedPojoTest {
         Tuple2<String, Tuple2<String, String>> src1 = Tuple.of(src10, src11);
         HashMultimap<String, Tuple2<String, String>> src = HashMultimap.withSeq().ofEntries(src0, src1);
         String json = MAPPER.writeValueAsString(new ParameterizedHashMultimapPojo<>(src));
-        Assert.assertEquals(json, "{\"value\":{\"A\":[[\"A\",\"B\"],[\"C\",\"D\"]]}}");
+        Assertions.assertEquals(json, "{\"value\":{\"A\":[[\"A\",\"B\"],[\"C\",\"D\"]]}}");
         ParameterizedHashMultimapPojo<java.lang.String, io.vavr.Tuple2<java.lang.String, java.lang.String>> restored = 
                 MAPPER.readValue(json, new TypeReference<ParameterizedHashMultimapPojo<java.lang.String, io.vavr.Tuple2<java.lang.String, java.lang.String>>>(){});
-        Assert.assertEquals(src, restored.getValue());
+        Assertions.assertEquals(src, restored.getValue());
     }
 
     @Test
-    public void testLinkedHashMultimapOfSeqString() throws Exception {
+    void testLinkedHashMultimapOfSeqString() throws Exception {
         String src00 = "A";
         String src01 = "B";
         Tuple2<String, String> src0 = Tuple.of(src00, src01);
@@ -690,14 +690,14 @@ public class ParameterizedPojoTest {
         Tuple2<String, String> src1 = Tuple.of(src10, src11);
         LinkedHashMultimap<String, String> src = LinkedHashMultimap.withSeq().ofEntries(src0, src1);
         String json = MAPPER.writeValueAsString(new ParameterizedLinkedHashMultimapPojo<>(src));
-        Assert.assertEquals(json, "{\"value\":{\"A\":[\"B\",\"C\"]}}");
+        Assertions.assertEquals(json, "{\"value\":{\"A\":[\"B\",\"C\"]}}");
         ParameterizedLinkedHashMultimapPojo<java.lang.String, java.lang.String> restored = 
                 MAPPER.readValue(json, new TypeReference<ParameterizedLinkedHashMultimapPojo<java.lang.String, java.lang.String>>(){});
-        Assert.assertEquals(src, restored.getValue());
+        Assertions.assertEquals(src, restored.getValue());
     }
 
     @Test
-    public void testLinkedHashMultimapOfSeqTuple() throws Exception {
+    void testLinkedHashMultimapOfSeqTuple() throws Exception {
         String src00 = "A";
         String src010 = "A";
         String src011 = "B";
@@ -710,14 +710,14 @@ public class ParameterizedPojoTest {
         Tuple2<String, Tuple2<String, String>> src1 = Tuple.of(src10, src11);
         LinkedHashMultimap<String, Tuple2<String, String>> src = LinkedHashMultimap.withSeq().ofEntries(src0, src1);
         String json = MAPPER.writeValueAsString(new ParameterizedLinkedHashMultimapPojo<>(src));
-        Assert.assertEquals(json, "{\"value\":{\"A\":[[\"A\",\"B\"],[\"C\",\"D\"]]}}");
+        Assertions.assertEquals(json, "{\"value\":{\"A\":[[\"A\",\"B\"],[\"C\",\"D\"]]}}");
         ParameterizedLinkedHashMultimapPojo<java.lang.String, io.vavr.Tuple2<java.lang.String, java.lang.String>> restored = 
                 MAPPER.readValue(json, new TypeReference<ParameterizedLinkedHashMultimapPojo<java.lang.String, io.vavr.Tuple2<java.lang.String, java.lang.String>>>(){});
-        Assert.assertEquals(src, restored.getValue());
+        Assertions.assertEquals(src, restored.getValue());
     }
 
     @Test
-    public void testTreeMultimapOfSeqString() throws Exception {
+    void testTreeMultimapOfSeqString() throws Exception {
         String src00 = "A";
         String src01 = "B";
         Tuple2<String, String> src0 = Tuple.of(src00, src01);
@@ -726,14 +726,14 @@ public class ParameterizedPojoTest {
         Tuple2<String, String> src1 = Tuple.of(src10, src11);
         TreeMultimap<String, String> src = TreeMultimap.withSet().ofEntries(src0, src1);
         String json = MAPPER.writeValueAsString(new ParameterizedTreeMultimapPojo<>(src));
-        Assert.assertEquals(json, "{\"value\":{\"A\":[\"B\",\"C\"]}}");
+        Assertions.assertEquals(json, "{\"value\":{\"A\":[\"B\",\"C\"]}}");
         ParameterizedTreeMultimapPojo<java.lang.String, java.lang.String> restored = 
                 MAPPER.readValue(json, new TypeReference<ParameterizedTreeMultimapPojo<java.lang.String, java.lang.String>>(){});
-        Assert.assertEquals(src, restored.getValue());
+        Assertions.assertEquals(src, restored.getValue());
     }
 
     @Test
-    public void testTreeMultimapOfSeqTuple() throws Exception {
+    void testTreeMultimapOfSeqTuple() throws Exception {
         String src00 = "A";
         String src010 = "A";
         String src011 = "B";
@@ -746,106 +746,106 @@ public class ParameterizedPojoTest {
         Tuple2<String, Tuple2<String, String>> src1 = Tuple.of(src10, src11);
         TreeMultimap<String, Tuple2<String, String>> src = TreeMultimap.withSet().ofEntries(src0, src1);
         String json = MAPPER.writeValueAsString(new ParameterizedTreeMultimapPojo<>(src));
-        Assert.assertEquals(json, "{\"value\":{\"A\":[[\"A\",\"B\"],[\"C\",\"D\"]]}}");
+        Assertions.assertEquals(json, "{\"value\":{\"A\":[[\"A\",\"B\"],[\"C\",\"D\"]]}}");
         ParameterizedTreeMultimapPojo<java.lang.String, io.vavr.Tuple2<java.lang.String, java.lang.String>> restored = 
                 MAPPER.readValue(json, new TypeReference<ParameterizedTreeMultimapPojo<java.lang.String, io.vavr.Tuple2<java.lang.String, java.lang.String>>>(){});
-        Assert.assertEquals(src, restored.getValue());
+        Assertions.assertEquals(src, restored.getValue());
     }
 
     @Test
-    public void testOptionOfString() throws Exception {
+    void testOptionOfString() throws Exception {
         String src0 = "A";
         Option<String> src = Option.of(src0);
         String json = MAPPER.writeValueAsString(new ParameterizedOptionPojo<>(src));
-        Assert.assertEquals(json, "{\"value\":\"A\"}");
+        Assertions.assertEquals(json, "{\"value\":\"A\"}");
         ParameterizedOptionPojo<java.lang.String> restored = 
                 MAPPER.readValue(json, new TypeReference<ParameterizedOptionPojo<java.lang.String>>(){});
-        Assert.assertEquals(src, restored.getValue());
+        Assertions.assertEquals(src, restored.getValue());
     }
 
     @Test
-    public void testOptionOfTuple() throws Exception {
+    void testOptionOfTuple() throws Exception {
         String src00 = "A";
         String src01 = "B";
         Tuple2<String, String> src0 = Tuple.of(src00, src01);
         Option<Tuple2<String, String>> src = Option.of(src0);
         String json = MAPPER.writeValueAsString(new ParameterizedOptionPojo<>(src));
-        Assert.assertEquals(json, "{\"value\":[\"A\",\"B\"]}");
+        Assertions.assertEquals(json, "{\"value\":[\"A\",\"B\"]}");
         ParameterizedOptionPojo<io.vavr.Tuple2<java.lang.String, java.lang.String>> restored = 
                 MAPPER.readValue(json, new TypeReference<ParameterizedOptionPojo<io.vavr.Tuple2<java.lang.String, java.lang.String>>>(){});
-        Assert.assertEquals(src, restored.getValue());
+        Assertions.assertEquals(src, restored.getValue());
     }
 
     @Test
-    public void testLazyOfString() throws Exception {
+    void testLazyOfString() throws Exception {
         String src0 = "A";
         Lazy<String> src = Lazy.of(() -> src0);
         String json = MAPPER.writeValueAsString(new ParameterizedLazyPojo<>(src));
-        Assert.assertEquals(json, "{\"value\":\"A\"}");
+        Assertions.assertEquals(json, "{\"value\":\"A\"}");
         ParameterizedLazyPojo<java.lang.String> restored = 
                 MAPPER.readValue(json, new TypeReference<ParameterizedLazyPojo<java.lang.String>>(){});
-        Assert.assertEquals(src, restored.getValue());
+        Assertions.assertEquals(src, restored.getValue());
     }
 
     @Test
-    public void testLazyOfTuple() throws Exception {
+    void testLazyOfTuple() throws Exception {
         String src00 = "A";
         String src01 = "B";
         Tuple2<String, String> src0 = Tuple.of(src00, src01);
         Lazy<Tuple2<String, String>> src = Lazy.of(() -> src0);
         String json = MAPPER.writeValueAsString(new ParameterizedLazyPojo<>(src));
-        Assert.assertEquals(json, "{\"value\":[\"A\",\"B\"]}");
+        Assertions.assertEquals(json, "{\"value\":[\"A\",\"B\"]}");
         ParameterizedLazyPojo<io.vavr.Tuple2<java.lang.String, java.lang.String>> restored = 
                 MAPPER.readValue(json, new TypeReference<ParameterizedLazyPojo<io.vavr.Tuple2<java.lang.String, java.lang.String>>>(){});
-        Assert.assertEquals(src, restored.getValue());
+        Assertions.assertEquals(src, restored.getValue());
     }
 
     @Test
-    public void testLeftEitherOfString() throws Exception {
+    void testLeftEitherOfString() throws Exception {
         String srcl = "A";
         Either<String, Object> src = Either.left(srcl);
         String json = MAPPER.writeValueAsString(new ParameterizedEitherPojo<>(src));
-        Assert.assertEquals(json, "{\"value\":[\"left\",\"A\"]}");
+        Assertions.assertEquals(json, "{\"value\":[\"left\",\"A\"]}");
         ParameterizedEitherPojo<java.lang.String, java.lang.Object> restored = 
                 MAPPER.readValue(json, new TypeReference<ParameterizedEitherPojo<java.lang.String, java.lang.Object>>(){});
-        Assert.assertEquals(src, restored.getValue());
+        Assertions.assertEquals(src, restored.getValue());
     }
 
     @Test
-    public void testLeftEitherOfTuple() throws Exception {
+    void testLeftEitherOfTuple() throws Exception {
         String srcl0 = "A";
         String srcl1 = "B";
         Tuple2<String, String> srcl = Tuple.of(srcl0, srcl1);
         Either<Tuple2<String, String>, Object> src = Either.left(srcl);
         String json = MAPPER.writeValueAsString(new ParameterizedEitherPojo<>(src));
-        Assert.assertEquals(json, "{\"value\":[\"left\",[\"A\",\"B\"]]}");
+        Assertions.assertEquals(json, "{\"value\":[\"left\",[\"A\",\"B\"]]}");
         ParameterizedEitherPojo<io.vavr.Tuple2<java.lang.String, java.lang.String>, java.lang.Object> restored = 
                 MAPPER.readValue(json, new TypeReference<ParameterizedEitherPojo<io.vavr.Tuple2<java.lang.String, java.lang.String>, java.lang.Object>>(){});
-        Assert.assertEquals(src, restored.getValue());
+        Assertions.assertEquals(src, restored.getValue());
     }
 
     @Test
-    public void testRightEitherOfString() throws Exception {
+    void testRightEitherOfString() throws Exception {
         String srcr = "A";
         Either<Object, String> src = Either.right(srcr);
         String json = MAPPER.writeValueAsString(new ParameterizedEitherPojo<>(src));
-        Assert.assertEquals(json, "{\"value\":[\"right\",\"A\"]}");
+        Assertions.assertEquals(json, "{\"value\":[\"right\",\"A\"]}");
         ParameterizedEitherPojo<java.lang.Object, java.lang.String> restored = 
                 MAPPER.readValue(json, new TypeReference<ParameterizedEitherPojo<java.lang.Object, java.lang.String>>(){});
-        Assert.assertEquals(src, restored.getValue());
+        Assertions.assertEquals(src, restored.getValue());
     }
 
     @Test
-    public void testRightEitherOfTuple() throws Exception {
+    void testRightEitherOfTuple() throws Exception {
         String srcr0 = "A";
         String srcr1 = "B";
         Tuple2<String, String> srcr = Tuple.of(srcr0, srcr1);
         Either<Object, Tuple2<String, String>> src = Either.right(srcr);
         String json = MAPPER.writeValueAsString(new ParameterizedEitherPojo<>(src));
-        Assert.assertEquals(json, "{\"value\":[\"right\",[\"A\",\"B\"]]}");
+        Assertions.assertEquals(json, "{\"value\":[\"right\",[\"A\",\"B\"]]}");
         ParameterizedEitherPojo<java.lang.Object, io.vavr.Tuple2<java.lang.String, java.lang.String>> restored = 
                 MAPPER.readValue(json, new TypeReference<ParameterizedEitherPojo<java.lang.Object, io.vavr.Tuple2<java.lang.String, java.lang.String>>>(){});
-        Assert.assertEquals(src, restored.getValue());
+        Assertions.assertEquals(src, restored.getValue());
     }
 
     public static class ParameterizedTuple1Pojo<T1> {

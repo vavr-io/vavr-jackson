@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
 import io.vavr.collection.*;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.Comparator;
@@ -12,7 +12,8 @@ import java.util.Objects;
 
 import io.vavr.control.Option;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TreeSetTest extends SetTest {
     @Override
@@ -52,25 +53,29 @@ public class TreeSetTest extends SetTest {
     }
 
     @Test
-    public void testDeserializeToSortedSet() throws IOException {
+    void testDeserializeToSortedSet() throws IOException {
         Clazz c = new Clazz();
         c.setSet(TreeSet.of(1, 3, 5));
         Clazz dc = mapper().readValue(mapper().writeValueAsString(c), Clazz.class);
         assertEquals(c, dc);
     }
 
-    @Test(expected = JsonMappingException.class)
-    public void testGeneric1() throws IOException {
-        mapper().readValue("[1, 2]", TreeSet.class);
+    @Test
+    void testGeneric1() {
+        assertThrows(JsonMappingException.class, () -> {
+            mapper().readValue("[1, 2]", TreeSet.class);
+        });
     }
 
-    @Test(expected = JsonMappingException.class)
-    public void testGeneric2() throws IOException {
-        mapper().readValue("[1, 2]", new TypeReference<TreeSet<Object>>() {});
+    @Test
+    void testGeneric2() {
+        assertThrows(JsonMappingException.class, () -> {
+            mapper().readValue("[1, 2]", new TypeReference<TreeSet<Object>>() {});
+        });
     }
 
     @Override
-    public void testWithOption() throws IOException {
+    void testWithOption() throws IOException {
         // there is nothing to test, because Option is not Comparable and we cannot deserialize a TreeSet<Option<? extends Comparable<?>>
     }
 
@@ -80,8 +85,10 @@ public class TreeSetTest extends SetTest {
         void setI(int i) { this.i = i; }
     }
 
-    @Test(expected = JsonMappingException.class)
-    public void testGeneric3() throws IOException {
-        mapper().readValue("[{\"i\":1}, {\"i\":2}]", new TypeReference<TreeSet<Incomparable>>() {});
+    @Test
+    void testGeneric3() {
+        assertThrows(JsonMappingException.class, () -> {
+            mapper().readValue("[{\"i\":1}, {\"i\":2}]", new TypeReference<TreeSet<Incomparable>>() {});
+        });
     }
 }

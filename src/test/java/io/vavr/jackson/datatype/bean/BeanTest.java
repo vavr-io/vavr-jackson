@@ -2,8 +2,8 @@ package io.vavr.jackson.datatype.bean;
 
 import io.vavr.jackson.datatype.BaseTest;
 import io.vavr.collection.List;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
@@ -34,12 +34,12 @@ public class BeanTest extends BaseTest {
     }
 
     @Test
-    public void test1() throws IOException {
+    void test1() throws IOException {
         BeanObject src = new BeanObject();
         src.scalar = "s";
         src.value = List.of(1);
         String json = mapper().writer().writeValueAsString(src);
-        Assert.assertEquals(mapper().readValue(json, BeanObject.class), src);
+        Assertions.assertEquals(mapper().readValue(json, BeanObject.class), src);
     }
 
     static class ComplexInnerClass {
@@ -131,7 +131,7 @@ public class BeanTest extends BaseTest {
     }
 
     @Test
-    public void test2() throws IOException {
+    void test2() throws IOException {
         ComplexInnerClass innerSrc = new ComplexInnerClass();
         innerSrc.setScalar(10);
         innerSrc.setValues(List.of("Data1", "Data2", "Data3"));
@@ -147,10 +147,10 @@ public class BeanTest extends BaseTest {
 
         ComplexBeanObject restored = mapper().readValue(json, ComplexBeanObject.class);
         restored.getValues().forEach(innerClass -> {
-            Assert.assertTrue("Instance of ComplexInnerClass", innerClass instanceof ComplexInnerClass);
+            Assertions.assertTrue(innerClass instanceof ComplexInnerClass, "Instance of ComplexInnerClass");
         });
 
-        Assert.assertEquals(restored, src);
+        Assertions.assertEquals(restored, src);
     }
 
 }

@@ -1,28 +1,28 @@
 package io.vavr.jackson.datatype;
 
 import io.vavr.control.Option;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
-public class OptionPlainTest extends BaseTest {
+class OptionPlainTest extends BaseTest {
 
     @Test
-    public void test1() throws IOException {
+    void test1() throws IOException {
         Option<?> src = Option.of(1);
         String json = mapper().writer().writeValueAsString(src);
-        Assert.assertEquals("1", json);
+        Assertions.assertEquals("1", json);
         Option<?> restored = mapper().readValue(json, Option.class);
-        Assert.assertEquals(src, restored);
+        Assertions.assertEquals(src, restored);
     }
 
     @Test
-    public void test2() throws IOException {
+    void test2() throws IOException {
         Option<?> src = Option.none();
         String json = mapper().writer().writeValueAsString(src);
-        Assert.assertEquals("null", json);
+        Assertions.assertEquals("null", json);
         Option<?> restored = mapper().readValue(json, Option.class);
-        Assert.assertEquals(src, restored);
+        Assertions.assertEquals(src, restored);
     }
 }
