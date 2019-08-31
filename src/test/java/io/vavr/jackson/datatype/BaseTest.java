@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.module.jaxb.JaxbAnnotationModule;
 
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -36,10 +36,10 @@ public class BaseTest {
             String expectedJson = testValue._2();
 
             String json = writer.writeValueAsString(src);
-            Assert.assertEquals(expectedJson, json);
+            Assertions.assertEquals(expectedJson, json);
 
             Object dst = mapper().readValue(json, typeReference);
-            Assert.assertEquals(src, dst);
+            Assertions.assertEquals(src, dst);
         }
     }
 

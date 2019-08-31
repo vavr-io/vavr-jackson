@@ -7,8 +7,8 @@ import io.vavr.*;
 import io.vavr.collection.*;
 import io.vavr.control.Either;
 import io.vavr.control.Option;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import javax.lang.model.element.Modifier;
 import java.io.File;
@@ -104,30 +104,30 @@ public class ExtFieldsPojo {
         ParameterizedTypeName lazy = ParameterizedTypeName.get(ClassName.get(Lazy.class), ClassName.get("", "A"));
         addCase(pojoTest, lazy, HashMap.of("ExtFieldsPojoTest$B", HashMap.of("a", "a", "b", "b")),
                 m -> m.addStatement("$T src = $T.of(() -> new B($S, $S))", lazy, lazy.rawType, "a", "b"),
-                m -> m.addStatement("$T.assertTrue(restored.get() instanceof B)", ClassName.get(Assert.class))
-                        .addStatement("$T.assertEquals(restored.get().a, $S)", ClassName.get(Assert.class), "a")
-                        .addStatement("$T.assertEquals(((B) restored.get()).b, $S)", ClassName.get(Assert.class), "b"));
+                m -> m.addStatement("$T.assertTrue(restored.get() instanceof B)", ClassName.get(Assertions.class))
+                        .addStatement("$T.assertEquals(restored.get().a, $S)", ClassName.get(Assertions.class), "a")
+                        .addStatement("$T.assertEquals(((B) restored.get()).b, $S)", ClassName.get(Assertions.class), "b"));
 
         ParameterizedTypeName option = ParameterizedTypeName.get(ClassName.get(Option.class), ClassName.get("", "A"));
         addCase(pojoTest, option, HashMap.of("ExtFieldsPojoTest$B", HashMap.of("a", "a", "b", "b")),
                 m -> m.addStatement("$T src = $T.some(new B($S, $S))", option, option.rawType, "a", "b"),
-                m -> m.addStatement("$T.assertTrue(restored.get() instanceof B)", ClassName.get(Assert.class))
-                        .addStatement("$T.assertEquals(restored.get().a, $S)", ClassName.get(Assert.class), "a")
-                        .addStatement("$T.assertEquals(((B) restored.get()).b, $S)", ClassName.get(Assert.class), "b"));
+                m -> m.addStatement("$T.assertTrue(restored.get() instanceof B)", ClassName.get(Assertions.class))
+                        .addStatement("$T.assertEquals(restored.get().a, $S)", ClassName.get(Assertions.class), "a")
+                        .addStatement("$T.assertEquals(((B) restored.get()).b, $S)", ClassName.get(Assertions.class), "b"));
 
         ParameterizedTypeName either = ParameterizedTypeName.get(ClassName.get(Either.class), ClassName.get("", "A"), ClassName.get("", "A"));
         addCase(pojoTest, "Left", true, either, List.of("left", HashMap.of("ExtFieldsPojoTest$B", HashMap.of("a", "a", "b", "b"))),
                 m -> m.addStatement("$T src = $T.left(new B($S, $S))", either, either.rawType, "a", "b"),
-                m -> m.addStatement("$T.assertTrue(restored.isLeft())", ClassName.get(Assert.class))
-                        .addStatement("$T.assertTrue(restored.getLeft() instanceof B)", ClassName.get(Assert.class))
-                        .addStatement("$T.assertEquals(restored.getLeft().a, $S)", ClassName.get(Assert.class), "a")
-                        .addStatement("$T.assertEquals(((B) restored.getLeft()).b, $S)", ClassName.get(Assert.class), "b"));
+                m -> m.addStatement("$T.assertTrue(restored.isLeft())", ClassName.get(Assertions.class))
+                        .addStatement("$T.assertTrue(restored.getLeft() instanceof B)", ClassName.get(Assertions.class))
+                        .addStatement("$T.assertEquals(restored.getLeft().a, $S)", ClassName.get(Assertions.class), "a")
+                        .addStatement("$T.assertEquals(((B) restored.getLeft()).b, $S)", ClassName.get(Assertions.class), "b"));
         addCase(pojoTest, "Right", false, either, List.of("right", HashMap.of("ExtFieldsPojoTest$B", HashMap.of("a", "a", "b", "b"))),
                 m -> m.addStatement("$T src = $T.right(new B($S, $S))", either, either.rawType, "a", "b"),
-                m -> m.addStatement("$T.assertTrue(restored.isRight())", ClassName.get(Assert.class))
-                        .addStatement("$T.assertTrue(restored.get() instanceof B)", ClassName.get(Assert.class))
-                        .addStatement("$T.assertEquals(restored.get().a, $S)", ClassName.get(Assert.class), "a")
-                        .addStatement("$T.assertEquals(((B) restored.get()).b, $S)", ClassName.get(Assert.class), "b"));
+                m -> m.addStatement("$T.assertTrue(restored.isRight())", ClassName.get(Assertions.class))
+                        .addStatement("$T.assertTrue(restored.get() instanceof B)", ClassName.get(Assertions.class))
+                        .addStatement("$T.assertEquals(restored.get().a, $S)", ClassName.get(Assertions.class), "a")
+                        .addStatement("$T.assertEquals(((B) restored.get()).b, $S)", ClassName.get(Assertions.class), "b"));
 
         JavaFile javaFile = JavaFile.builder("io.vavr.jackson.generated", pojoTest.build())
                 .indent("    ")
@@ -153,9 +153,9 @@ public class ExtFieldsPojo {
                 m -> m.addStatement("$T src = $T.of($L)", ptn, ClassName.get(Tuple.class), argsStr.toString()),
                 m -> {
                     for (int i = 0; i < arity; i++) {
-                        m.addStatement("$T.assertTrue(restored._$L instanceof $L)", ClassName.get(Assert.class), i + 1, "B")
-                                .addStatement("$T.assertEquals(restored._$L.a, $S)", ClassName.get(Assert.class), i + 1, "a")
-                                .addStatement("$T.assertEquals(((B) restored._$L).b, $S)", ClassName.get(Assert.class), i + 1, "b");
+                        m.addStatement("$T.assertTrue(restored._$L instanceof $L)", ClassName.get(Assertions.class), i + 1, "B")
+                                .addStatement("$T.assertEquals(restored._$L.a, $S)", ClassName.get(Assertions.class), i + 1, "a")
+                                .addStatement("$T.assertEquals(((B) restored._$L).b, $S)", ClassName.get(Assertions.class), i + 1, "b");
                     }
                 });
     }
@@ -164,36 +164,36 @@ public class ExtFieldsPojo {
         ParameterizedTypeName ptn = ParameterizedTypeName.get(ClassName.get(clz), ClassName.get("", "A"));
         addCase(builder, ptn, List.of(HashMap.of("ExtFieldsPojoTest$B", HashMap.of("a", "a", "b", "b"))),
                 m -> m.addStatement("$T src = $T.of(new B($S, $S))", ptn, ptn.rawType, "a", "b"),
-                m -> m.addStatement("$T.assertTrue(restored.get(0) instanceof B)", ClassName.get(Assert.class))
-                        .addStatement("$T.assertEquals(restored.get(0).a, $S)", ClassName.get(Assert.class), "a")
-                        .addStatement("$T.assertEquals(((B) restored.get(0)).b, $S)", ClassName.get(Assert.class), "b"));
+                m -> m.addStatement("$T.assertTrue(restored.get(0) instanceof B)", ClassName.get(Assertions.class))
+                        .addStatement("$T.assertEquals(restored.get(0).a, $S)", ClassName.get(Assertions.class), "a")
+                        .addStatement("$T.assertEquals(((B) restored.get(0)).b, $S)", ClassName.get(Assertions.class), "b"));
     }
 
     private static void addSetCase(TypeSpec.Builder builder, Class<?> clz) {
         ParameterizedTypeName ptn = ParameterizedTypeName.get(ClassName.get(clz), ClassName.get("", "A"));
         addCase(builder, ptn, List.of(HashMap.of("ExtFieldsPojoTest$B", HashMap.of("a", "a", "b", "b"))),
                 m -> m.addStatement("$T src = $T.of(new B($S, $S))", ptn, ptn.rawType, "a", "b"),
-                m -> m.addStatement("$T.assertEquals(restored.filter(e -> e instanceof B).length(), 1)", ClassName.get(Assert.class))
-                        .addStatement("$T.assertEquals(restored.head().a, $S)", ClassName.get(Assert.class), "a")
-                        .addStatement("$T.assertEquals(((B) restored.head()).b, $S)", ClassName.get(Assert.class), "b"));
+                m -> m.addStatement("$T.assertEquals(restored.filter(e -> e instanceof B).length(), 1)", ClassName.get(Assertions.class))
+                        .addStatement("$T.assertEquals(restored.head().a, $S)", ClassName.get(Assertions.class), "a")
+                        .addStatement("$T.assertEquals(((B) restored.head()).b, $S)", ClassName.get(Assertions.class), "b"));
     }
 
     private static void addMapCase(TypeSpec.Builder builder, Class<?> clz) {
         ParameterizedTypeName ptn = ParameterizedTypeName.get(ClassName.get(clz), ClassName.get(String.class), ClassName.get("", "A"));
         addCase(builder, ptn, HashMap.of("a", HashMap.of("ExtFieldsPojoTest$B", HashMap.of("a", "a", "b", "b"))),
                 m -> m.addStatement("$T src = $T.of($S, new B($S, $S))", ptn, ptn.rawType, "a", "a", "b"),
-                m -> m.addStatement("$T.assertTrue(restored.get($S).get() instanceof B)", ClassName.get(Assert.class), "a")
-                        .addStatement("$T.assertEquals(restored.get($S).get().a, $S)", ClassName.get(Assert.class), "a", "a")
-                        .addStatement("$T.assertEquals(((B) restored.get($S).get()).b, $S)", ClassName.get(Assert.class), "a", "b"));
+                m -> m.addStatement("$T.assertTrue(restored.get($S).get() instanceof B)", ClassName.get(Assertions.class), "a")
+                        .addStatement("$T.assertEquals(restored.get($S).get().a, $S)", ClassName.get(Assertions.class), "a", "a")
+                        .addStatement("$T.assertEquals(((B) restored.get($S).get()).b, $S)", ClassName.get(Assertions.class), "a", "b"));
     }
 
     private static void addMultimapCase(TypeSpec.Builder builder, Class<?> clz) {
         ParameterizedTypeName ptn = ParameterizedTypeName.get(ClassName.get(clz), ClassName.get(String.class), ClassName.get("", "A"));
         addCase(builder, ptn, HashMap.of("a", List.of(HashMap.of("ExtFieldsPojoTest$B", HashMap.of("a", "a", "b", "b")))),
                 m -> m.addStatement("$T src = $T.withSeq().of($S, new B($S, $S))", ptn, ptn.rawType, "a", "a", "b"),
-                m -> m.addStatement("$T.assertTrue(restored.get($S).get().head() instanceof B)", ClassName.get(Assert.class), "a")
-                        .addStatement("$T.assertEquals(restored.get($S).get().head().a, $S)", ClassName.get(Assert.class), "a", "a")
-                        .addStatement("$T.assertEquals(((B) restored.get($S).get().head()).b, $S)", ClassName.get(Assert.class), "a", "b"));
+                m -> m.addStatement("$T.assertTrue(restored.get($S).get().head() instanceof B)", ClassName.get(Assertions.class), "a")
+                        .addStatement("$T.assertEquals(restored.get($S).get().head().a, $S)", ClassName.get(Assertions.class), "a", "a")
+                        .addStatement("$T.assertEquals(((B) restored.get($S).get().head()).b, $S)", ClassName.get(Assertions.class), "a", "b"));
     }
 
     private static void addCase(TypeSpec.Builder builder, ParameterizedTypeName ptn, Object value, Consumer<MethodSpec.Builder> init, Consumer<MethodSpec.Builder> check) {
@@ -208,12 +208,11 @@ public class ExtFieldsPojo {
         String json = expectedJson(HashMap.of("value", value));
         MethodSpec.Builder methodBuilder = MethodSpec.methodBuilder("test" + ptn.rawType.simpleName()  + namePostfix)
                 .addAnnotation(Test.class)
-                .addModifiers(Modifier.PUBLIC)
                 .addException(ClassName.get(Exception.class));
         init.accept(methodBuilder);
         methodBuilder
                 .addStatement("$T json = MAPPER.writeValueAsString(new $L().setValue(src))", ClassName.get(String.class), pojoName)
-                .addStatement("$T.assertEquals(json, $S)", ClassName.get(Assert.class), json)
+                .addStatement("$T.assertEquals(json, $S)", ClassName.get(Assertions.class), json)
                 .addStatement("$L pojo = MAPPER.readValue(json, $L.class)", pojoName, pojoName)
                 .addStatement("$T restored = pojo.getValue()", ptn);
         check.accept(methodBuilder);

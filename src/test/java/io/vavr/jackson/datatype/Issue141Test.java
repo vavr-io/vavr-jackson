@@ -6,8 +6,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.vavr.control.Option;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.time.YearMonth;
@@ -35,11 +35,11 @@ public class Issue141Test extends BaseTest {
         String json = objectMapper.writeValueAsString(obj);
 
         // Then serialization is successful
-        Assert.assertEquals("{\"operatingMonth\":\"12-2019\"}", json);
+        Assertions.assertEquals("{\"operatingMonth\":\"12-2019\"}", json);
 
         // And deserialization is successful
         MyJavaOptionalClass obj2 = objectMapper.readValue(json, MyJavaOptionalClass.class);
-        Assert.assertEquals(Optional.of(YearMonth.of(2019, 12)), obj2.operatingMonth);
+        Assertions.assertEquals(Optional.of(YearMonth.of(2019, 12)), obj2.operatingMonth);
     }
 
     static class MyVavrOptionalClassWithoutFormat {
@@ -61,11 +61,11 @@ public class Issue141Test extends BaseTest {
         String json = objectMapper.writeValueAsString(obj);
 
         // Then serialization is successful
-        Assert.assertEquals("{\"operatingMonth\":[2019,12]}", json);
+        Assertions.assertEquals("{\"operatingMonth\":[2019,12]}", json);
         MyVavrOptionalClassWithoutFormat obj2 = objectMapper.readValue(json, MyVavrOptionalClassWithoutFormat.class);
 
         // And deserialization is successful
-        Assert.assertEquals(Option.of(YearMonth.of(2019, 12)), obj2.operatingMonth);
+        Assertions.assertEquals(Option.of(YearMonth.of(2019, 12)), obj2.operatingMonth);
     }
 
     static class MyVavrOptionClassWithFormat {
@@ -88,10 +88,10 @@ public class Issue141Test extends BaseTest {
         String json = objectMapper.writeValueAsString(obj);
 
         // Then serialization is failed
-        Assert.assertEquals("{\"operatingMonth\":\"12-2019\"}", json);
+        Assertions.assertEquals("{\"operatingMonth\":\"12-2019\"}", json);
         MyVavrOptionClassWithFormat obj2 = objectMapper.readValue(json, MyVavrOptionClassWithFormat.class);
 
         // And deserialization is failed
-        Assert.assertEquals(Option.of(YearMonth.of(2019, 12)), obj2.operatingMonth);
+        Assertions.assertEquals(Option.of(YearMonth.of(2019, 12)), obj2.operatingMonth);
     }
 }

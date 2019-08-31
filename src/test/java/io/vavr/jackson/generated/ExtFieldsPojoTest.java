@@ -34,8 +34,8 @@ import io.vavr.jackson.datatype.VavrModule;
 import java.lang.Comparable;
 import java.lang.Exception;
 import java.lang.String;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * generated
@@ -46,413 +46,413 @@ public class ExtFieldsPojoTest {
     private static final ObjectMapper MAPPER = new ObjectMapper().registerModule(MAPPER_MODULE);
 
     @Test
-    public void testArray() throws Exception {
+    void testArray() throws Exception {
         Array<A> src = Array.of(new B("a", "b"));
         String json = MAPPER.writeValueAsString(new ArrayPojo().setValue(src));
-        Assert.assertEquals(json, "{\"value\":[{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}]}");
+        Assertions.assertEquals(json, "{\"value\":[{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}]}");
         ArrayPojo pojo = MAPPER.readValue(json, ArrayPojo.class);
         Array<A> restored = pojo.getValue();
-        Assert.assertTrue(restored.get(0) instanceof B);
-        Assert.assertEquals(restored.get(0).a, "a");
-        Assert.assertEquals(((B) restored.get(0)).b, "b");
+        Assertions.assertTrue(restored.get(0) instanceof B);
+        Assertions.assertEquals(restored.get(0).a, "a");
+        Assertions.assertEquals(((B) restored.get(0)).b, "b");
     }
 
     @Test
-    public void testList() throws Exception {
+    void testList() throws Exception {
         List<A> src = List.of(new B("a", "b"));
         String json = MAPPER.writeValueAsString(new ListPojo().setValue(src));
-        Assert.assertEquals(json, "{\"value\":[{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}]}");
+        Assertions.assertEquals(json, "{\"value\":[{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}]}");
         ListPojo pojo = MAPPER.readValue(json, ListPojo.class);
         List<A> restored = pojo.getValue();
-        Assert.assertTrue(restored.get(0) instanceof B);
-        Assert.assertEquals(restored.get(0).a, "a");
-        Assert.assertEquals(((B) restored.get(0)).b, "b");
+        Assertions.assertTrue(restored.get(0) instanceof B);
+        Assertions.assertEquals(restored.get(0).a, "a");
+        Assertions.assertEquals(((B) restored.get(0)).b, "b");
     }
 
     @Test
-    public void testQueue() throws Exception {
+    void testQueue() throws Exception {
         Queue<A> src = Queue.of(new B("a", "b"));
         String json = MAPPER.writeValueAsString(new QueuePojo().setValue(src));
-        Assert.assertEquals(json, "{\"value\":[{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}]}");
+        Assertions.assertEquals(json, "{\"value\":[{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}]}");
         QueuePojo pojo = MAPPER.readValue(json, QueuePojo.class);
         Queue<A> restored = pojo.getValue();
-        Assert.assertTrue(restored.get(0) instanceof B);
-        Assert.assertEquals(restored.get(0).a, "a");
-        Assert.assertEquals(((B) restored.get(0)).b, "b");
+        Assertions.assertTrue(restored.get(0) instanceof B);
+        Assertions.assertEquals(restored.get(0).a, "a");
+        Assertions.assertEquals(((B) restored.get(0)).b, "b");
     }
 
     @Test
-    public void testStream() throws Exception {
+    void testStream() throws Exception {
         Stream<A> src = Stream.of(new B("a", "b"));
         String json = MAPPER.writeValueAsString(new StreamPojo().setValue(src));
-        Assert.assertEquals(json, "{\"value\":[{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}]}");
+        Assertions.assertEquals(json, "{\"value\":[{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}]}");
         StreamPojo pojo = MAPPER.readValue(json, StreamPojo.class);
         Stream<A> restored = pojo.getValue();
-        Assert.assertTrue(restored.get(0) instanceof B);
-        Assert.assertEquals(restored.get(0).a, "a");
-        Assert.assertEquals(((B) restored.get(0)).b, "b");
+        Assertions.assertTrue(restored.get(0) instanceof B);
+        Assertions.assertEquals(restored.get(0).a, "a");
+        Assertions.assertEquals(((B) restored.get(0)).b, "b");
     }
 
     @Test
-    public void testVector() throws Exception {
+    void testVector() throws Exception {
         Vector<A> src = Vector.of(new B("a", "b"));
         String json = MAPPER.writeValueAsString(new VectorPojo().setValue(src));
-        Assert.assertEquals(json, "{\"value\":[{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}]}");
+        Assertions.assertEquals(json, "{\"value\":[{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}]}");
         VectorPojo pojo = MAPPER.readValue(json, VectorPojo.class);
         Vector<A> restored = pojo.getValue();
-        Assert.assertTrue(restored.get(0) instanceof B);
-        Assert.assertEquals(restored.get(0).a, "a");
-        Assert.assertEquals(((B) restored.get(0)).b, "b");
+        Assertions.assertTrue(restored.get(0) instanceof B);
+        Assertions.assertEquals(restored.get(0).a, "a");
+        Assertions.assertEquals(((B) restored.get(0)).b, "b");
     }
 
     @Test
-    public void testHashSet() throws Exception {
+    void testHashSet() throws Exception {
         HashSet<A> src = HashSet.of(new B("a", "b"));
         String json = MAPPER.writeValueAsString(new HashSetPojo().setValue(src));
-        Assert.assertEquals(json, "{\"value\":[{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}]}");
+        Assertions.assertEquals(json, "{\"value\":[{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}]}");
         HashSetPojo pojo = MAPPER.readValue(json, HashSetPojo.class);
         HashSet<A> restored = pojo.getValue();
-        Assert.assertEquals(restored.filter(e -> e instanceof B).length(), 1);
-        Assert.assertEquals(restored.head().a, "a");
-        Assert.assertEquals(((B) restored.head()).b, "b");
+        Assertions.assertEquals(restored.filter(e -> e instanceof B).length(), 1);
+        Assertions.assertEquals(restored.head().a, "a");
+        Assertions.assertEquals(((B) restored.head()).b, "b");
     }
 
     @Test
-    public void testLinkedHashSet() throws Exception {
+    void testLinkedHashSet() throws Exception {
         LinkedHashSet<A> src = LinkedHashSet.of(new B("a", "b"));
         String json = MAPPER.writeValueAsString(new LinkedHashSetPojo().setValue(src));
-        Assert.assertEquals(json, "{\"value\":[{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}]}");
+        Assertions.assertEquals(json, "{\"value\":[{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}]}");
         LinkedHashSetPojo pojo = MAPPER.readValue(json, LinkedHashSetPojo.class);
         LinkedHashSet<A> restored = pojo.getValue();
-        Assert.assertEquals(restored.filter(e -> e instanceof B).length(), 1);
-        Assert.assertEquals(restored.head().a, "a");
-        Assert.assertEquals(((B) restored.head()).b, "b");
+        Assertions.assertEquals(restored.filter(e -> e instanceof B).length(), 1);
+        Assertions.assertEquals(restored.head().a, "a");
+        Assertions.assertEquals(((B) restored.head()).b, "b");
     }
 
     @Test
-    public void testTreeSet() throws Exception {
+    void testTreeSet() throws Exception {
         TreeSet<A> src = TreeSet.of(new B("a", "b"));
         String json = MAPPER.writeValueAsString(new TreeSetPojo().setValue(src));
-        Assert.assertEquals(json, "{\"value\":[{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}]}");
+        Assertions.assertEquals(json, "{\"value\":[{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}]}");
         TreeSetPojo pojo = MAPPER.readValue(json, TreeSetPojo.class);
         TreeSet<A> restored = pojo.getValue();
-        Assert.assertEquals(restored.filter(e -> e instanceof B).length(), 1);
-        Assert.assertEquals(restored.head().a, "a");
-        Assert.assertEquals(((B) restored.head()).b, "b");
+        Assertions.assertEquals(restored.filter(e -> e instanceof B).length(), 1);
+        Assertions.assertEquals(restored.head().a, "a");
+        Assertions.assertEquals(((B) restored.head()).b, "b");
     }
 
     @Test
-    public void testPriorityQueue() throws Exception {
+    void testPriorityQueue() throws Exception {
         PriorityQueue<A> src = PriorityQueue.of(new B("a", "b"));
         String json = MAPPER.writeValueAsString(new PriorityQueuePojo().setValue(src));
-        Assert.assertEquals(json, "{\"value\":[{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}]}");
+        Assertions.assertEquals(json, "{\"value\":[{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}]}");
         PriorityQueuePojo pojo = MAPPER.readValue(json, PriorityQueuePojo.class);
         PriorityQueue<A> restored = pojo.getValue();
-        Assert.assertEquals(restored.filter(e -> e instanceof B).length(), 1);
-        Assert.assertEquals(restored.head().a, "a");
-        Assert.assertEquals(((B) restored.head()).b, "b");
+        Assertions.assertEquals(restored.filter(e -> e instanceof B).length(), 1);
+        Assertions.assertEquals(restored.head().a, "a");
+        Assertions.assertEquals(((B) restored.head()).b, "b");
     }
 
     @Test
-    public void testHashMap() throws Exception {
+    void testHashMap() throws Exception {
         HashMap<String, A> src = HashMap.of("a", new B("a", "b"));
         String json = MAPPER.writeValueAsString(new HashMapPojo().setValue(src));
-        Assert.assertEquals(json, "{\"value\":{\"a\":{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}}}");
+        Assertions.assertEquals(json, "{\"value\":{\"a\":{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}}}");
         HashMapPojo pojo = MAPPER.readValue(json, HashMapPojo.class);
         HashMap<String, A> restored = pojo.getValue();
-        Assert.assertTrue(restored.get("a").get() instanceof B);
-        Assert.assertEquals(restored.get("a").get().a, "a");
-        Assert.assertEquals(((B) restored.get("a").get()).b, "b");
+        Assertions.assertTrue(restored.get("a").get() instanceof B);
+        Assertions.assertEquals(restored.get("a").get().a, "a");
+        Assertions.assertEquals(((B) restored.get("a").get()).b, "b");
     }
 
     @Test
-    public void testLinkedHashMap() throws Exception {
+    void testLinkedHashMap() throws Exception {
         LinkedHashMap<String, A> src = LinkedHashMap.of("a", new B("a", "b"));
         String json = MAPPER.writeValueAsString(new LinkedHashMapPojo().setValue(src));
-        Assert.assertEquals(json, "{\"value\":{\"a\":{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}}}");
+        Assertions.assertEquals(json, "{\"value\":{\"a\":{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}}}");
         LinkedHashMapPojo pojo = MAPPER.readValue(json, LinkedHashMapPojo.class);
         LinkedHashMap<String, A> restored = pojo.getValue();
-        Assert.assertTrue(restored.get("a").get() instanceof B);
-        Assert.assertEquals(restored.get("a").get().a, "a");
-        Assert.assertEquals(((B) restored.get("a").get()).b, "b");
+        Assertions.assertTrue(restored.get("a").get() instanceof B);
+        Assertions.assertEquals(restored.get("a").get().a, "a");
+        Assertions.assertEquals(((B) restored.get("a").get()).b, "b");
     }
 
     @Test
-    public void testTreeMap() throws Exception {
+    void testTreeMap() throws Exception {
         TreeMap<String, A> src = TreeMap.of("a", new B("a", "b"));
         String json = MAPPER.writeValueAsString(new TreeMapPojo().setValue(src));
-        Assert.assertEquals(json, "{\"value\":{\"a\":{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}}}");
+        Assertions.assertEquals(json, "{\"value\":{\"a\":{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}}}");
         TreeMapPojo pojo = MAPPER.readValue(json, TreeMapPojo.class);
         TreeMap<String, A> restored = pojo.getValue();
-        Assert.assertTrue(restored.get("a").get() instanceof B);
-        Assert.assertEquals(restored.get("a").get().a, "a");
-        Assert.assertEquals(((B) restored.get("a").get()).b, "b");
+        Assertions.assertTrue(restored.get("a").get() instanceof B);
+        Assertions.assertEquals(restored.get("a").get().a, "a");
+        Assertions.assertEquals(((B) restored.get("a").get()).b, "b");
     }
 
     @Test
-    public void testHashMultimap() throws Exception {
+    void testHashMultimap() throws Exception {
         HashMultimap<String, A> src = HashMultimap.withSeq().of("a", new B("a", "b"));
         String json = MAPPER.writeValueAsString(new HashMultimapPojo().setValue(src));
-        Assert.assertEquals(json, "{\"value\":{\"a\":[{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}]}}");
+        Assertions.assertEquals(json, "{\"value\":{\"a\":[{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}]}}");
         HashMultimapPojo pojo = MAPPER.readValue(json, HashMultimapPojo.class);
         HashMultimap<String, A> restored = pojo.getValue();
-        Assert.assertTrue(restored.get("a").get().head() instanceof B);
-        Assert.assertEquals(restored.get("a").get().head().a, "a");
-        Assert.assertEquals(((B) restored.get("a").get().head()).b, "b");
+        Assertions.assertTrue(restored.get("a").get().head() instanceof B);
+        Assertions.assertEquals(restored.get("a").get().head().a, "a");
+        Assertions.assertEquals(((B) restored.get("a").get().head()).b, "b");
     }
 
     @Test
-    public void testLinkedHashMultimap() throws Exception {
+    void testLinkedHashMultimap() throws Exception {
         LinkedHashMultimap<String, A> src = LinkedHashMultimap.withSeq().of("a", new B("a", "b"));
         String json = MAPPER.writeValueAsString(new LinkedHashMultimapPojo().setValue(src));
-        Assert.assertEquals(json, "{\"value\":{\"a\":[{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}]}}");
+        Assertions.assertEquals(json, "{\"value\":{\"a\":[{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}]}}");
         LinkedHashMultimapPojo pojo = MAPPER.readValue(json, LinkedHashMultimapPojo.class);
         LinkedHashMultimap<String, A> restored = pojo.getValue();
-        Assert.assertTrue(restored.get("a").get().head() instanceof B);
-        Assert.assertEquals(restored.get("a").get().head().a, "a");
-        Assert.assertEquals(((B) restored.get("a").get().head()).b, "b");
+        Assertions.assertTrue(restored.get("a").get().head() instanceof B);
+        Assertions.assertEquals(restored.get("a").get().head().a, "a");
+        Assertions.assertEquals(((B) restored.get("a").get().head()).b, "b");
     }
 
     @Test
-    public void testTreeMultimap() throws Exception {
+    void testTreeMultimap() throws Exception {
         TreeMultimap<String, A> src = TreeMultimap.withSeq().of("a", new B("a", "b"));
         String json = MAPPER.writeValueAsString(new TreeMultimapPojo().setValue(src));
-        Assert.assertEquals(json, "{\"value\":{\"a\":[{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}]}}");
+        Assertions.assertEquals(json, "{\"value\":{\"a\":[{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}]}}");
         TreeMultimapPojo pojo = MAPPER.readValue(json, TreeMultimapPojo.class);
         TreeMultimap<String, A> restored = pojo.getValue();
-        Assert.assertTrue(restored.get("a").get().head() instanceof B);
-        Assert.assertEquals(restored.get("a").get().head().a, "a");
-        Assert.assertEquals(((B) restored.get("a").get().head()).b, "b");
+        Assertions.assertTrue(restored.get("a").get().head() instanceof B);
+        Assertions.assertEquals(restored.get("a").get().head().a, "a");
+        Assertions.assertEquals(((B) restored.get("a").get().head()).b, "b");
     }
 
     @Test
-    public void testTuple1() throws Exception {
+    void testTuple1() throws Exception {
         Tuple1<A> src = Tuple.of(new B("a", "b"));
         String json = MAPPER.writeValueAsString(new Tuple1Pojo().setValue(src));
-        Assert.assertEquals(json, "{\"value\":[{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}]}");
+        Assertions.assertEquals(json, "{\"value\":[{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}]}");
         Tuple1Pojo pojo = MAPPER.readValue(json, Tuple1Pojo.class);
         Tuple1<A> restored = pojo.getValue();
-        Assert.assertTrue(restored._1 instanceof B);
-        Assert.assertEquals(restored._1.a, "a");
-        Assert.assertEquals(((B) restored._1).b, "b");
+        Assertions.assertTrue(restored._1 instanceof B);
+        Assertions.assertEquals(restored._1.a, "a");
+        Assertions.assertEquals(((B) restored._1).b, "b");
     }
 
     @Test
-    public void testTuple2() throws Exception {
+    void testTuple2() throws Exception {
         Tuple2<A, A> src = Tuple.of(new B("a", "b"), new B("a", "b"));
         String json = MAPPER.writeValueAsString(new Tuple2Pojo().setValue(src));
-        Assert.assertEquals(json, "{\"value\":[{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}]}");
+        Assertions.assertEquals(json, "{\"value\":[{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}]}");
         Tuple2Pojo pojo = MAPPER.readValue(json, Tuple2Pojo.class);
         Tuple2<A, A> restored = pojo.getValue();
-        Assert.assertTrue(restored._1 instanceof B);
-        Assert.assertEquals(restored._1.a, "a");
-        Assert.assertEquals(((B) restored._1).b, "b");
-        Assert.assertTrue(restored._2 instanceof B);
-        Assert.assertEquals(restored._2.a, "a");
-        Assert.assertEquals(((B) restored._2).b, "b");
+        Assertions.assertTrue(restored._1 instanceof B);
+        Assertions.assertEquals(restored._1.a, "a");
+        Assertions.assertEquals(((B) restored._1).b, "b");
+        Assertions.assertTrue(restored._2 instanceof B);
+        Assertions.assertEquals(restored._2.a, "a");
+        Assertions.assertEquals(((B) restored._2).b, "b");
     }
 
     @Test
-    public void testTuple3() throws Exception {
+    void testTuple3() throws Exception {
         Tuple3<A, A, A> src = Tuple.of(new B("a", "b"), new B("a", "b"), new B("a", "b"));
         String json = MAPPER.writeValueAsString(new Tuple3Pojo().setValue(src));
-        Assert.assertEquals(json, "{\"value\":[{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}]}");
+        Assertions.assertEquals(json, "{\"value\":[{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}]}");
         Tuple3Pojo pojo = MAPPER.readValue(json, Tuple3Pojo.class);
         Tuple3<A, A, A> restored = pojo.getValue();
-        Assert.assertTrue(restored._1 instanceof B);
-        Assert.assertEquals(restored._1.a, "a");
-        Assert.assertEquals(((B) restored._1).b, "b");
-        Assert.assertTrue(restored._2 instanceof B);
-        Assert.assertEquals(restored._2.a, "a");
-        Assert.assertEquals(((B) restored._2).b, "b");
-        Assert.assertTrue(restored._3 instanceof B);
-        Assert.assertEquals(restored._3.a, "a");
-        Assert.assertEquals(((B) restored._3).b, "b");
+        Assertions.assertTrue(restored._1 instanceof B);
+        Assertions.assertEquals(restored._1.a, "a");
+        Assertions.assertEquals(((B) restored._1).b, "b");
+        Assertions.assertTrue(restored._2 instanceof B);
+        Assertions.assertEquals(restored._2.a, "a");
+        Assertions.assertEquals(((B) restored._2).b, "b");
+        Assertions.assertTrue(restored._3 instanceof B);
+        Assertions.assertEquals(restored._3.a, "a");
+        Assertions.assertEquals(((B) restored._3).b, "b");
     }
 
     @Test
-    public void testTuple4() throws Exception {
+    void testTuple4() throws Exception {
         Tuple4<A, A, A, A> src = Tuple.of(new B("a", "b"), new B("a", "b"), new B("a", "b"), new B("a", "b"));
         String json = MAPPER.writeValueAsString(new Tuple4Pojo().setValue(src));
-        Assert.assertEquals(json, "{\"value\":[{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}]}");
+        Assertions.assertEquals(json, "{\"value\":[{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}]}");
         Tuple4Pojo pojo = MAPPER.readValue(json, Tuple4Pojo.class);
         Tuple4<A, A, A, A> restored = pojo.getValue();
-        Assert.assertTrue(restored._1 instanceof B);
-        Assert.assertEquals(restored._1.a, "a");
-        Assert.assertEquals(((B) restored._1).b, "b");
-        Assert.assertTrue(restored._2 instanceof B);
-        Assert.assertEquals(restored._2.a, "a");
-        Assert.assertEquals(((B) restored._2).b, "b");
-        Assert.assertTrue(restored._3 instanceof B);
-        Assert.assertEquals(restored._3.a, "a");
-        Assert.assertEquals(((B) restored._3).b, "b");
-        Assert.assertTrue(restored._4 instanceof B);
-        Assert.assertEquals(restored._4.a, "a");
-        Assert.assertEquals(((B) restored._4).b, "b");
+        Assertions.assertTrue(restored._1 instanceof B);
+        Assertions.assertEquals(restored._1.a, "a");
+        Assertions.assertEquals(((B) restored._1).b, "b");
+        Assertions.assertTrue(restored._2 instanceof B);
+        Assertions.assertEquals(restored._2.a, "a");
+        Assertions.assertEquals(((B) restored._2).b, "b");
+        Assertions.assertTrue(restored._3 instanceof B);
+        Assertions.assertEquals(restored._3.a, "a");
+        Assertions.assertEquals(((B) restored._3).b, "b");
+        Assertions.assertTrue(restored._4 instanceof B);
+        Assertions.assertEquals(restored._4.a, "a");
+        Assertions.assertEquals(((B) restored._4).b, "b");
     }
 
     @Test
-    public void testTuple5() throws Exception {
+    void testTuple5() throws Exception {
         Tuple5<A, A, A, A, A> src = Tuple.of(new B("a", "b"), new B("a", "b"), new B("a", "b"), new B("a", "b"), new B("a", "b"));
         String json = MAPPER.writeValueAsString(new Tuple5Pojo().setValue(src));
-        Assert.assertEquals(json, "{\"value\":[{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}]}");
+        Assertions.assertEquals(json, "{\"value\":[{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}]}");
         Tuple5Pojo pojo = MAPPER.readValue(json, Tuple5Pojo.class);
         Tuple5<A, A, A, A, A> restored = pojo.getValue();
-        Assert.assertTrue(restored._1 instanceof B);
-        Assert.assertEquals(restored._1.a, "a");
-        Assert.assertEquals(((B) restored._1).b, "b");
-        Assert.assertTrue(restored._2 instanceof B);
-        Assert.assertEquals(restored._2.a, "a");
-        Assert.assertEquals(((B) restored._2).b, "b");
-        Assert.assertTrue(restored._3 instanceof B);
-        Assert.assertEquals(restored._3.a, "a");
-        Assert.assertEquals(((B) restored._3).b, "b");
-        Assert.assertTrue(restored._4 instanceof B);
-        Assert.assertEquals(restored._4.a, "a");
-        Assert.assertEquals(((B) restored._4).b, "b");
-        Assert.assertTrue(restored._5 instanceof B);
-        Assert.assertEquals(restored._5.a, "a");
-        Assert.assertEquals(((B) restored._5).b, "b");
+        Assertions.assertTrue(restored._1 instanceof B);
+        Assertions.assertEquals(restored._1.a, "a");
+        Assertions.assertEquals(((B) restored._1).b, "b");
+        Assertions.assertTrue(restored._2 instanceof B);
+        Assertions.assertEquals(restored._2.a, "a");
+        Assertions.assertEquals(((B) restored._2).b, "b");
+        Assertions.assertTrue(restored._3 instanceof B);
+        Assertions.assertEquals(restored._3.a, "a");
+        Assertions.assertEquals(((B) restored._3).b, "b");
+        Assertions.assertTrue(restored._4 instanceof B);
+        Assertions.assertEquals(restored._4.a, "a");
+        Assertions.assertEquals(((B) restored._4).b, "b");
+        Assertions.assertTrue(restored._5 instanceof B);
+        Assertions.assertEquals(restored._5.a, "a");
+        Assertions.assertEquals(((B) restored._5).b, "b");
     }
 
     @Test
-    public void testTuple6() throws Exception {
+    void testTuple6() throws Exception {
         Tuple6<A, A, A, A, A, A> src = Tuple.of(new B("a", "b"), new B("a", "b"), new B("a", "b"), new B("a", "b"), new B("a", "b"), new B("a", "b"));
         String json = MAPPER.writeValueAsString(new Tuple6Pojo().setValue(src));
-        Assert.assertEquals(json, "{\"value\":[{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}]}");
+        Assertions.assertEquals(json, "{\"value\":[{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}]}");
         Tuple6Pojo pojo = MAPPER.readValue(json, Tuple6Pojo.class);
         Tuple6<A, A, A, A, A, A> restored = pojo.getValue();
-        Assert.assertTrue(restored._1 instanceof B);
-        Assert.assertEquals(restored._1.a, "a");
-        Assert.assertEquals(((B) restored._1).b, "b");
-        Assert.assertTrue(restored._2 instanceof B);
-        Assert.assertEquals(restored._2.a, "a");
-        Assert.assertEquals(((B) restored._2).b, "b");
-        Assert.assertTrue(restored._3 instanceof B);
-        Assert.assertEquals(restored._3.a, "a");
-        Assert.assertEquals(((B) restored._3).b, "b");
-        Assert.assertTrue(restored._4 instanceof B);
-        Assert.assertEquals(restored._4.a, "a");
-        Assert.assertEquals(((B) restored._4).b, "b");
-        Assert.assertTrue(restored._5 instanceof B);
-        Assert.assertEquals(restored._5.a, "a");
-        Assert.assertEquals(((B) restored._5).b, "b");
-        Assert.assertTrue(restored._6 instanceof B);
-        Assert.assertEquals(restored._6.a, "a");
-        Assert.assertEquals(((B) restored._6).b, "b");
+        Assertions.assertTrue(restored._1 instanceof B);
+        Assertions.assertEquals(restored._1.a, "a");
+        Assertions.assertEquals(((B) restored._1).b, "b");
+        Assertions.assertTrue(restored._2 instanceof B);
+        Assertions.assertEquals(restored._2.a, "a");
+        Assertions.assertEquals(((B) restored._2).b, "b");
+        Assertions.assertTrue(restored._3 instanceof B);
+        Assertions.assertEquals(restored._3.a, "a");
+        Assertions.assertEquals(((B) restored._3).b, "b");
+        Assertions.assertTrue(restored._4 instanceof B);
+        Assertions.assertEquals(restored._4.a, "a");
+        Assertions.assertEquals(((B) restored._4).b, "b");
+        Assertions.assertTrue(restored._5 instanceof B);
+        Assertions.assertEquals(restored._5.a, "a");
+        Assertions.assertEquals(((B) restored._5).b, "b");
+        Assertions.assertTrue(restored._6 instanceof B);
+        Assertions.assertEquals(restored._6.a, "a");
+        Assertions.assertEquals(((B) restored._6).b, "b");
     }
 
     @Test
-    public void testTuple7() throws Exception {
+    void testTuple7() throws Exception {
         Tuple7<A, A, A, A, A, A, A> src = Tuple.of(new B("a", "b"), new B("a", "b"), new B("a", "b"), new B("a", "b"), new B("a", "b"), new B("a", "b"), new B("a", "b"));
         String json = MAPPER.writeValueAsString(new Tuple7Pojo().setValue(src));
-        Assert.assertEquals(json, "{\"value\":[{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}]}");
+        Assertions.assertEquals(json, "{\"value\":[{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}]}");
         Tuple7Pojo pojo = MAPPER.readValue(json, Tuple7Pojo.class);
         Tuple7<A, A, A, A, A, A, A> restored = pojo.getValue();
-        Assert.assertTrue(restored._1 instanceof B);
-        Assert.assertEquals(restored._1.a, "a");
-        Assert.assertEquals(((B) restored._1).b, "b");
-        Assert.assertTrue(restored._2 instanceof B);
-        Assert.assertEquals(restored._2.a, "a");
-        Assert.assertEquals(((B) restored._2).b, "b");
-        Assert.assertTrue(restored._3 instanceof B);
-        Assert.assertEquals(restored._3.a, "a");
-        Assert.assertEquals(((B) restored._3).b, "b");
-        Assert.assertTrue(restored._4 instanceof B);
-        Assert.assertEquals(restored._4.a, "a");
-        Assert.assertEquals(((B) restored._4).b, "b");
-        Assert.assertTrue(restored._5 instanceof B);
-        Assert.assertEquals(restored._5.a, "a");
-        Assert.assertEquals(((B) restored._5).b, "b");
-        Assert.assertTrue(restored._6 instanceof B);
-        Assert.assertEquals(restored._6.a, "a");
-        Assert.assertEquals(((B) restored._6).b, "b");
-        Assert.assertTrue(restored._7 instanceof B);
-        Assert.assertEquals(restored._7.a, "a");
-        Assert.assertEquals(((B) restored._7).b, "b");
+        Assertions.assertTrue(restored._1 instanceof B);
+        Assertions.assertEquals(restored._1.a, "a");
+        Assertions.assertEquals(((B) restored._1).b, "b");
+        Assertions.assertTrue(restored._2 instanceof B);
+        Assertions.assertEquals(restored._2.a, "a");
+        Assertions.assertEquals(((B) restored._2).b, "b");
+        Assertions.assertTrue(restored._3 instanceof B);
+        Assertions.assertEquals(restored._3.a, "a");
+        Assertions.assertEquals(((B) restored._3).b, "b");
+        Assertions.assertTrue(restored._4 instanceof B);
+        Assertions.assertEquals(restored._4.a, "a");
+        Assertions.assertEquals(((B) restored._4).b, "b");
+        Assertions.assertTrue(restored._5 instanceof B);
+        Assertions.assertEquals(restored._5.a, "a");
+        Assertions.assertEquals(((B) restored._5).b, "b");
+        Assertions.assertTrue(restored._6 instanceof B);
+        Assertions.assertEquals(restored._6.a, "a");
+        Assertions.assertEquals(((B) restored._6).b, "b");
+        Assertions.assertTrue(restored._7 instanceof B);
+        Assertions.assertEquals(restored._7.a, "a");
+        Assertions.assertEquals(((B) restored._7).b, "b");
     }
 
     @Test
-    public void testTuple8() throws Exception {
+    void testTuple8() throws Exception {
         Tuple8<A, A, A, A, A, A, A, A> src = Tuple.of(new B("a", "b"), new B("a", "b"), new B("a", "b"), new B("a", "b"), new B("a", "b"), new B("a", "b"), new B("a", "b"), new B("a", "b"));
         String json = MAPPER.writeValueAsString(new Tuple8Pojo().setValue(src));
-        Assert.assertEquals(json, "{\"value\":[{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}]}");
+        Assertions.assertEquals(json, "{\"value\":[{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}]}");
         Tuple8Pojo pojo = MAPPER.readValue(json, Tuple8Pojo.class);
         Tuple8<A, A, A, A, A, A, A, A> restored = pojo.getValue();
-        Assert.assertTrue(restored._1 instanceof B);
-        Assert.assertEquals(restored._1.a, "a");
-        Assert.assertEquals(((B) restored._1).b, "b");
-        Assert.assertTrue(restored._2 instanceof B);
-        Assert.assertEquals(restored._2.a, "a");
-        Assert.assertEquals(((B) restored._2).b, "b");
-        Assert.assertTrue(restored._3 instanceof B);
-        Assert.assertEquals(restored._3.a, "a");
-        Assert.assertEquals(((B) restored._3).b, "b");
-        Assert.assertTrue(restored._4 instanceof B);
-        Assert.assertEquals(restored._4.a, "a");
-        Assert.assertEquals(((B) restored._4).b, "b");
-        Assert.assertTrue(restored._5 instanceof B);
-        Assert.assertEquals(restored._5.a, "a");
-        Assert.assertEquals(((B) restored._5).b, "b");
-        Assert.assertTrue(restored._6 instanceof B);
-        Assert.assertEquals(restored._6.a, "a");
-        Assert.assertEquals(((B) restored._6).b, "b");
-        Assert.assertTrue(restored._7 instanceof B);
-        Assert.assertEquals(restored._7.a, "a");
-        Assert.assertEquals(((B) restored._7).b, "b");
-        Assert.assertTrue(restored._8 instanceof B);
-        Assert.assertEquals(restored._8.a, "a");
-        Assert.assertEquals(((B) restored._8).b, "b");
+        Assertions.assertTrue(restored._1 instanceof B);
+        Assertions.assertEquals(restored._1.a, "a");
+        Assertions.assertEquals(((B) restored._1).b, "b");
+        Assertions.assertTrue(restored._2 instanceof B);
+        Assertions.assertEquals(restored._2.a, "a");
+        Assertions.assertEquals(((B) restored._2).b, "b");
+        Assertions.assertTrue(restored._3 instanceof B);
+        Assertions.assertEquals(restored._3.a, "a");
+        Assertions.assertEquals(((B) restored._3).b, "b");
+        Assertions.assertTrue(restored._4 instanceof B);
+        Assertions.assertEquals(restored._4.a, "a");
+        Assertions.assertEquals(((B) restored._4).b, "b");
+        Assertions.assertTrue(restored._5 instanceof B);
+        Assertions.assertEquals(restored._5.a, "a");
+        Assertions.assertEquals(((B) restored._5).b, "b");
+        Assertions.assertTrue(restored._6 instanceof B);
+        Assertions.assertEquals(restored._6.a, "a");
+        Assertions.assertEquals(((B) restored._6).b, "b");
+        Assertions.assertTrue(restored._7 instanceof B);
+        Assertions.assertEquals(restored._7.a, "a");
+        Assertions.assertEquals(((B) restored._7).b, "b");
+        Assertions.assertTrue(restored._8 instanceof B);
+        Assertions.assertEquals(restored._8.a, "a");
+        Assertions.assertEquals(((B) restored._8).b, "b");
     }
 
     @Test
-    public void testLazy() throws Exception {
+    void testLazy() throws Exception {
         Lazy<A> src = Lazy.of(() -> new B("a", "b"));
         String json = MAPPER.writeValueAsString(new LazyPojo().setValue(src));
-        Assert.assertEquals(json, "{\"value\":{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}}");
+        Assertions.assertEquals(json, "{\"value\":{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}}");
         LazyPojo pojo = MAPPER.readValue(json, LazyPojo.class);
         Lazy<A> restored = pojo.getValue();
-        Assert.assertTrue(restored.get() instanceof B);
-        Assert.assertEquals(restored.get().a, "a");
-        Assert.assertEquals(((B) restored.get()).b, "b");
+        Assertions.assertTrue(restored.get() instanceof B);
+        Assertions.assertEquals(restored.get().a, "a");
+        Assertions.assertEquals(((B) restored.get()).b, "b");
     }
 
     @Test
-    public void testOption() throws Exception {
+    void testOption() throws Exception {
         Option<A> src = Option.some(new B("a", "b"));
         String json = MAPPER.writeValueAsString(new OptionPojo().setValue(src));
-        Assert.assertEquals(json, "{\"value\":{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}}");
+        Assertions.assertEquals(json, "{\"value\":{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}}");
         OptionPojo pojo = MAPPER.readValue(json, OptionPojo.class);
         Option<A> restored = pojo.getValue();
-        Assert.assertTrue(restored.get() instanceof B);
-        Assert.assertEquals(restored.get().a, "a");
-        Assert.assertEquals(((B) restored.get()).b, "b");
+        Assertions.assertTrue(restored.get() instanceof B);
+        Assertions.assertEquals(restored.get().a, "a");
+        Assertions.assertEquals(((B) restored.get()).b, "b");
     }
 
     @Test
-    public void testEitherLeft() throws Exception {
+    void testEitherLeft() throws Exception {
         Either<A, A> src = Either.left(new B("a", "b"));
         String json = MAPPER.writeValueAsString(new EitherPojo().setValue(src));
-        Assert.assertEquals(json, "{\"value\":[\"left\",{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}]}");
+        Assertions.assertEquals(json, "{\"value\":[\"left\",{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}]}");
         EitherPojo pojo = MAPPER.readValue(json, EitherPojo.class);
         Either<A, A> restored = pojo.getValue();
-        Assert.assertTrue(restored.isLeft());
-        Assert.assertTrue(restored.getLeft() instanceof B);
-        Assert.assertEquals(restored.getLeft().a, "a");
-        Assert.assertEquals(((B) restored.getLeft()).b, "b");
+        Assertions.assertTrue(restored.isLeft());
+        Assertions.assertTrue(restored.getLeft() instanceof B);
+        Assertions.assertEquals(restored.getLeft().a, "a");
+        Assertions.assertEquals(((B) restored.getLeft()).b, "b");
     }
 
     @Test
-    public void testEitherRight() throws Exception {
+    void testEitherRight() throws Exception {
         Either<A, A> src = Either.right(new B("a", "b"));
         String json = MAPPER.writeValueAsString(new EitherPojo().setValue(src));
-        Assert.assertEquals(json, "{\"value\":[\"right\",{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}]}");
+        Assertions.assertEquals(json, "{\"value\":[\"right\",{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}]}");
         EitherPojo pojo = MAPPER.readValue(json, EitherPojo.class);
         Either<A, A> restored = pojo.getValue();
-        Assert.assertTrue(restored.isRight());
-        Assert.assertTrue(restored.get() instanceof B);
-        Assert.assertEquals(restored.get().a, "a");
-        Assert.assertEquals(((B) restored.get()).b, "b");
+        Assertions.assertTrue(restored.isRight());
+        Assertions.assertTrue(restored.get() instanceof B);
+        Assertions.assertEquals(restored.get().a, "a");
+        Assertions.assertEquals(((B) restored.get()).b, "b");
     }
 
     @JsonTypeInfo(

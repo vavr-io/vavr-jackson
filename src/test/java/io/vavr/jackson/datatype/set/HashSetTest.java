@@ -2,8 +2,8 @@ package io.vavr.jackson.datatype.set;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -35,7 +35,7 @@ public class HashSetTest extends SetTest {
     }
 
     @Test
-    public void testDefaultDeserialization() throws IOException {
-        Assert.assertEquals(mapper().readValue("[1]", Set.class), HashSet.of(1));
+    void testDefaultDeserialization() throws IOException {
+        Assertions.assertEquals(mapper().readValue("[1]", Set.class), HashSet.of(1));
     }
 }
