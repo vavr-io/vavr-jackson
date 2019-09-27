@@ -43,8 +43,15 @@ class MapDeserializer extends MaplikeDeserializer<Map<?, ?>> {
         while (p.nextToken() != JsonToken.END_OBJECT) {
             String name = p.getCurrentName();
             Object key = keyDeserializer.deserializeKey(name, ctxt);
-            p.nextToken();
-            result.add(Tuple.of(key, valueDeserializer.deserialize(p, ctxt)));
+            JsonToken t = p.nextToken();
+            // Note: must handle null explicitly here; value deserializers won't
+            Object value;
+            if (t == JsonToken.VALUE_NULL) {
+                value = valueDeserializer.getNullValue(ctxt);
+            } else {
+                value = valueDeserializer.deserialize(p, ctxt);
+            }
+            result.add(Tuple.of(key, value));
         }
         if (SortedMap.class.isAssignableFrom(handledType())) {
             return TreeMap.ofEntries(keyComparator, result);

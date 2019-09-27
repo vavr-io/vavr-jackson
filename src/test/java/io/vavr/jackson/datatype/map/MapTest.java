@@ -61,6 +61,17 @@ public abstract class MapTest extends BaseTest {
         Assert.assertEquals(src, restored);
     }
 
+    // Issue 138: Cannot deserialize to Map<String, String>
+    // https://github.com/vavr-io/vavr-jackson/issues/138
+    @Test
+    public void testDeserializeNullValue() throws IOException {
+        Map<String, String> stringStringMap = mapper().readValue("{\"1\":null}", new TypeReference<Map<String, String>>() {});
+        Map<String, Object> stringObjectMap = mapper().readValue("{\"1\":null}", new TypeReference<Map<String, Object>>() {});
+
+        Assert.assertEquals(emptyMap().put("1", null), stringStringMap);
+        Assert.assertEquals(emptyMap().put("1", null), stringObjectMap);
+    }
+
     @Test(expected = JsonParseException.class)
     public void test4() throws IOException {
         mapper().readValue("{1: 1}", clz());
