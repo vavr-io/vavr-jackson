@@ -1,8 +1,12 @@
 package io.vavr.jackson.datatype.multimap;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.vavr.Tuple;
+import io.vavr.collection.HashMap;
+import io.vavr.collection.Multimap;
+import io.vavr.control.Option;
 import io.vavr.jackson.datatype.BaseTest;
 import org.junit.Assert;
 import org.junit.Test;
@@ -11,11 +15,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import io.vavr.Tuple;
-import io.vavr.collection.HashMap;
-import io.vavr.collection.Multimap;
-import io.vavr.control.Option;
 
 import static java.util.Arrays.asList;
 
@@ -49,6 +48,11 @@ public abstract class MultimapTest extends BaseTest {
         Multimap<Object, Object> src = emptyMap().put("1", 2).put("2", 3).put("2", 4);
         Multimap<?, ?> restored = (Multimap<?, ?>) mapper.readValue(mapper.writeValueAsString(src), clz());
         checkSerialization(restored);
+    }
+
+    @Test(expected = JsonMappingException.class)
+    public void testDeserializeValueNull() throws IOException {
+        mapper().readValue("{\"k\":null}", clz());
     }
 
     @Test
