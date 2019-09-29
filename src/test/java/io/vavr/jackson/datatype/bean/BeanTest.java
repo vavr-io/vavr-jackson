@@ -153,4 +153,15 @@ public class BeanTest extends BaseTest {
         Assert.assertEquals(restored, src);
     }
 
+    @Test
+    public void testDeserializeScalarNull() throws IOException {
+        // language=JSON
+        String json = "{\"scalar\":null,\"value\":[]}";
+
+        BeanObject actual = mapper().readValue(json, BeanObject.class);
+
+        BeanObject expected = new BeanObject();
+        expected.value = List.empty();
+        Assert.assertEquals(expected, actual);
+    }
 }
