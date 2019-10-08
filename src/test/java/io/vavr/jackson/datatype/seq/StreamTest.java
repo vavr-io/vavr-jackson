@@ -21,7 +21,7 @@ public class StreamTest extends SeqTest {
 
     @Override
     protected String implClzName() {
-        return "io.vavr.collection.StreamModule$ConsImpl";
+        return "io.vavr.collection.Stream$ConsImpl";
     }
 
     @Override
