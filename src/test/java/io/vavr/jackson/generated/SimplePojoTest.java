@@ -442,18 +442,6 @@ public class SimplePojoTest {
     }
 
     @Test
-    public void testPriorityQueueOfTuple() throws Exception {
-        String src00 = "A";
-        String src01 = "B";
-        Tuple2<String, String> src0 = Tuple.of(src00, src01);
-        PriorityQueue<Tuple2<String, String>> src = PriorityQueue.of(src0);
-        String json = MAPPER.writeValueAsString(new PriorityQueueOfTuple().setValue(src));
-        Assert.assertEquals(json, "{\"value\":[[\"A\",\"B\"]]}");
-        PriorityQueueOfTuple restored = MAPPER.readValue(json, PriorityQueueOfTuple.class);
-        Assert.assertEquals(src, restored.getValue());
-    }
-
-    @Test
     public void testHashSetOfString() throws Exception {
         String src0 = "A";
         String src1 = "B";
@@ -510,18 +498,6 @@ public class SimplePojoTest {
         String json = MAPPER.writeValueAsString(new TreeSetOfString().setValue(src));
         Assert.assertEquals(json, "{\"value\":[\"A\",\"B\",\"C\"]}");
         TreeSetOfString restored = MAPPER.readValue(json, TreeSetOfString.class);
-        Assert.assertEquals(src, restored.getValue());
-    }
-
-    @Test
-    public void testTreeSetOfTuple() throws Exception {
-        String src00 = "A";
-        String src01 = "B";
-        Tuple2<String, String> src0 = Tuple.of(src00, src01);
-        TreeSet<Tuple2<String, String>> src = TreeSet.of(src0);
-        String json = MAPPER.writeValueAsString(new TreeSetOfTuple().setValue(src));
-        Assert.assertEquals(json, "{\"value\":[[\"A\",\"B\"]]}");
-        TreeSetOfTuple restored = MAPPER.readValue(json, TreeSetOfTuple.class);
         Assert.assertEquals(src, restored.getValue());
     }
 
@@ -1144,19 +1120,6 @@ public class SimplePojoTest {
         }
     }
 
-    public static class PriorityQueueOfTuple {
-        private PriorityQueue<Tuple2<String, String>> v;
-
-        public PriorityQueue<Tuple2<String, String>> getValue() {
-            return v;
-        }
-
-        public PriorityQueueOfTuple setValue(PriorityQueue<Tuple2<String, String>> v) {
-            this.v = v;
-            return this;
-        }
-    }
-
     public static class HashSetOfString {
         private HashSet<String> v;
 
@@ -1217,19 +1180,6 @@ public class SimplePojoTest {
         }
 
         public TreeSetOfString setValue(TreeSet<String> v) {
-            this.v = v;
-            return this;
-        }
-    }
-
-    public static class TreeSetOfTuple {
-        private TreeSet<Tuple2<String, String>> v;
-
-        public TreeSet<Tuple2<String, String>> getValue() {
-            return v;
-        }
-
-        public TreeSetOfTuple setValue(TreeSet<Tuple2<String, String>> v) {
             this.v = v;
             return this;
         }
