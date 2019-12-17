@@ -38,6 +38,14 @@ public class BindingClassTest {
     }
 
     @Test
+    public void testOptionClass() throws Exception {
+        OptionClass src = new OptionClass(Option.of(new ImplementedClass()));
+        String json = MAPPER.writeValueAsString(src);
+        OptionClass restored = MAPPER.readValue(json, OptionClass.class);
+        Assert.assertEquals(restored.value.get().getClass(), ImplementedClass.class);
+    }
+
+    @Test
     public void testTuple1Class() throws Exception {
         Tuple1Class src = new Tuple1Class(new Tuple1<>(new ImplementedClass()));
         String json = MAPPER.writeValueAsString(src);
@@ -51,14 +59,6 @@ public class BindingClassTest {
         String json = MAPPER.writeValueAsString(src);
         ListClass restored = MAPPER.readValue(json, ListClass.class);
         Assert.assertEquals(restored.value.head().getClass(), ImplementedClass.class);
-    }
-
-    @Test
-    public void testOptionClass() throws Exception {
-        OptionClass src = new OptionClass(Option.of(new ImplementedClass()));
-        String json = MAPPER.writeValueAsString(src);
-        OptionClass restored = MAPPER.readValue(json, OptionClass.class);
-        Assert.assertEquals(restored.value.get().getClass(), ImplementedClass.class);
     }
 
     @Test
@@ -131,6 +131,15 @@ public class BindingClassTest {
         }
     }
 
+    public static class OptionClass {
+        @JsonProperty("value")
+        final Option<MyInterface<Integer>> value;
+
+        OptionClass(@JsonProperty("value") Option<MyInterface<Integer>> value) {
+            this.value = value;
+        }
+    }
+
     public static class Tuple1Class {
         @JsonProperty("value")
         final Tuple1<MyInterface<Integer>> value;
@@ -145,15 +154,6 @@ public class BindingClassTest {
         final List<MyInterface<Integer>> value;
 
         ListClass(@JsonProperty("value") List<MyInterface<Integer>> value) {
-            this.value = value;
-        }
-    }
-
-    public static class OptionClass {
-        @JsonProperty("value")
-        final Option<MyInterface<Integer>> value;
-
-        OptionClass(@JsonProperty("value") Option<MyInterface<Integer>> value) {
             this.value = value;
         }
     }

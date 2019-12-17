@@ -470,19 +470,6 @@ public class ParameterizedPojoTest {
     }
 
     @Test
-    public void testPriorityQueueOfTuple() throws Exception {
-        String src00 = "A";
-        String src01 = "B";
-        Tuple2<String, String> src0 = Tuple.of(src00, src01);
-        PriorityQueue<Tuple2<String, String>> src = PriorityQueue.of(src0);
-        String json = MAPPER.writeValueAsString(new ParameterizedPriorityQueuePojo<>(src));
-        Assert.assertEquals(json, "{\"value\":[[\"A\",\"B\"]]}");
-        ParameterizedPriorityQueuePojo<io.vavr.Tuple2<java.lang.String, java.lang.String>> restored = 
-                MAPPER.readValue(json, new TypeReference<ParameterizedPriorityQueuePojo<io.vavr.Tuple2<java.lang.String, java.lang.String>>>(){});
-        Assert.assertEquals(src, restored.getValue());
-    }
-
-    @Test
     public void testHashSetOfString() throws Exception {
         String src0 = "A";
         String src1 = "B";
@@ -544,19 +531,6 @@ public class ParameterizedPojoTest {
         Assert.assertEquals(json, "{\"value\":[\"A\",\"B\",\"C\"]}");
         ParameterizedTreeSetPojo<java.lang.String> restored = 
                 MAPPER.readValue(json, new TypeReference<ParameterizedTreeSetPojo<java.lang.String>>(){});
-        Assert.assertEquals(src, restored.getValue());
-    }
-
-    @Test
-    public void testTreeSetOfTuple() throws Exception {
-        String src00 = "A";
-        String src01 = "B";
-        Tuple2<String, String> src0 = Tuple.of(src00, src01);
-        TreeSet<Tuple2<String, String>> src = TreeSet.of(src0);
-        String json = MAPPER.writeValueAsString(new ParameterizedTreeSetPojo<>(src));
-        Assert.assertEquals(json, "{\"value\":[[\"A\",\"B\"]]}");
-        ParameterizedTreeSetPojo<io.vavr.Tuple2<java.lang.String, java.lang.String>> restored = 
-                MAPPER.readValue(json, new TypeReference<ParameterizedTreeSetPojo<io.vavr.Tuple2<java.lang.String, java.lang.String>>>(){});
         Assert.assertEquals(src, restored.getValue());
     }
 

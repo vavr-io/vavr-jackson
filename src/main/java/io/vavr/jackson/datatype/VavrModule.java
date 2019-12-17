@@ -63,6 +63,7 @@ public class VavrModule extends SimpleModule {
 
     @Override
     public void setupModule(SetupContext context) {
+        super.setupModule(context);
         context.addSerializers(new VavrSerializers(settings));
         context.addDeserializers(new VavrDeserializers(settings));
         context.addTypeModifier(new VavrTypeModifier());

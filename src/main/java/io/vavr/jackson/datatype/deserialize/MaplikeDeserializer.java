@@ -46,8 +46,8 @@ abstract class MaplikeDeserializer<T> extends StdDeserializer<T> implements Reso
     @Override
     public void resolve(DeserializationContext ctxt) throws JsonMappingException {
         JavaType keyType = javaType.getKeyType();
-        if (keyType.getRawClass().isAssignableFrom(Comparable.class)) {
-            keyComparator = (Comparator<Object> & Serializable) (o1, o2) -> ((Comparable) o1).compareTo(o2);
+        if (Comparable.class.isAssignableFrom(keyType.getRawClass())) {
+            keyComparator = (Comparator<Object> & Serializable) (o1, o2) -> ((Comparable<Object>) o1).compareTo(o2);
         } else {
             keyComparator = (Comparator<Object> & Serializable) (o1, o2) -> o1.toString().compareTo(o2.toString());
         }

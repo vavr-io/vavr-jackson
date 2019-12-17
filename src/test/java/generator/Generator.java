@@ -45,13 +45,11 @@ public class Generator {
         cases.put("VectorOfTuple", Vector.of(Tuple.of("A", "B")));
 
         cases.put("PriorityQueueOfString", PriorityQueue.of("A", "B", "C"));
-        cases.put("PriorityQueueOfTuple", PriorityQueue.of(Tuple.of("A", "B")));
         cases.put("HashSetOfString", HashSet.of("A", "B", "C"));
         cases.put("HashSetOfTuple", HashSet.of(Tuple.of("A", "B")));
         cases.put("LinkedHashSetOfString", LinkedHashSet.of("A", "B", "C"));
         cases.put("LinkedHashSetOfTuple", LinkedHashSet.of(Tuple.of("A", "B")));
         cases.put("TreeSetOfString", TreeSet.of("A", "B", "C"));
-        cases.put("TreeSetOfTuple", TreeSet.of(Tuple.of("A", "B")));
 
         cases.put("HashMapOfString", HashMap.of(1, "A"));
         cases.put("HashMapOfTuple", HashMap.of(1, Tuple.of("A", "B")));
