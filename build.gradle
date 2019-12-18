@@ -27,6 +27,8 @@ dependencies {
     testCompile "com.fasterxml.jackson.dataformat:jackson-dataformat-csv:${fasterxmlVersion}"
     testCompile "com.fasterxml.jackson.dataformat:jackson-dataformat-xml:${fasterxmlVersion}"
     testCompile "com.fasterxml.jackson.datatype:jackson-datatype-joda:${fasterxmlVersion}"
+    testCompile "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${fasterxmlVersion}"
+    testCompile "com.fasterxml.jackson.datatype:jackson-datatype-jdk8:${fasterxmlVersion}"
     testCompile "com.fasterxml.jackson.module:jackson-module-scala_2.11:${fasterxmlVersion}"
 }
 
