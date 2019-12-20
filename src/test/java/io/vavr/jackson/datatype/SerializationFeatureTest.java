@@ -8,8 +8,8 @@ import com.fasterxml.jackson.datatype.joda.JodaModule;
 import io.vavr.collection.List;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -41,11 +41,11 @@ public class SerializationFeatureTest {
         final String serializedDateTimeList = writer
                 .writeValueAsString(dateTimeList);
 
-        Assert.assertEquals(serializedDateTime, serializedDateTimeJavaList);
-        Assert.assertEquals(serializedDateTimeJavaList, serializedDateTimeList);
+        Assertions.assertEquals(serializedDateTime, serializedDateTimeJavaList);
+        Assertions.assertEquals(serializedDateTimeJavaList, serializedDateTimeList);
 
         List<DateTime> restored = mapper.readValue(serializedDateTimeList, new TypeReference<List<DateTime>>() {});
-        Assert.assertEquals(restored.head().getMillis(), dateTime.getMillis());
+        Assertions.assertEquals(restored.head().getMillis(), dateTime.getMillis());
 
     }
 }

@@ -8,8 +8,9 @@ import io.vavr.collection.Map;
 import io.vavr.collection.Multimap;
 import io.vavr.control.Either;
 import io.vavr.control.Option;
-import org.junit.Assert;
-import org.junit.Test;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import javax.lang.model.element.Modifier;
 import java.io.File;
@@ -88,16 +89,15 @@ public class ParameterizedPojo {
 
         MethodSpec.Builder testBuilder = MethodSpec.methodBuilder("test" + pojoName)
                 .addAnnotation(Test.class)
-                .addModifiers(Modifier.PUBLIC)
                 .addException(ClassName.get(Exception.class));
         TypeName valueTypeName = initValue(testBuilder, "src", value);
         String genericts = ((ParameterizedTypeName) valueTypeName).typeArguments.stream().map(TypeName::toString).collect(Collectors.joining(", "));
         MethodSpec testSpec = testBuilder
                 .addStatement("$T json = MAPPER.writeValueAsString(new Parameterized$LPojo<>(src))", ClassName.get(String.class), clz)
-                .addStatement("$T.assertEquals(json, $S)", ClassName.get(Assert.class), "{\"value\":" + expectedJson(value, opts) + "}")
-                .addStatement("Parameterized$LPojo<$L> restored = \n" +
+                .addStatement("$T.assertEquals(json, $S)", ClassName.get(Assertions.class), "{\"value\":" + expectedJson(value, opts) + "}")
+                .addStatement("Parameterized$LPojo<$L> restored =\n" +
                 "MAPPER.readValue(json, new $T<Parameterized$LPojo<$L>>(){})", clz, genericts, ClassName.get(TypeReference.class), clz, genericts)
-                .addStatement("$T.assertEquals(src, restored.getValue())", ClassName.get(Assert.class))
+                .addStatement("$T.assertEquals(src, restored.getValue())", ClassName.get(Assertions.class))
                 .build();
         builder.addMethod(testSpec);
     }

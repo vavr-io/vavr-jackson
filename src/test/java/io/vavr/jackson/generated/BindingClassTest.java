@@ -18,8 +18,8 @@ import java.lang.Exception;
 import java.lang.Integer;
 import java.lang.Override;
 import java.lang.String;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * generated
@@ -30,75 +30,75 @@ public class BindingClassTest {
     private static final ObjectMapper MAPPER = new ObjectMapper().registerModule(MAPPER_MODULE);
 
     @Test
-    public void testLazyClass() throws Exception {
+    void testLazyClass() throws Exception {
         LazyClass src = new LazyClass(Lazy.of(ImplementedClass::new));
         String json = MAPPER.writeValueAsString(src);
         LazyClass restored = MAPPER.readValue(json, LazyClass.class);
-        Assert.assertEquals(restored.value.get().getClass(), ImplementedClass.class);
+        Assertions.assertEquals(restored.value.get().getClass(), ImplementedClass.class);
     }
 
     @Test
-    public void testOptionClass() throws Exception {
+    void testOptionClass() throws Exception {
         OptionClass src = new OptionClass(Option.of(new ImplementedClass()));
         String json = MAPPER.writeValueAsString(src);
         OptionClass restored = MAPPER.readValue(json, OptionClass.class);
-        Assert.assertEquals(restored.value.get().getClass(), ImplementedClass.class);
+        Assertions.assertEquals(restored.value.get().getClass(), ImplementedClass.class);
     }
 
     @Test
-    public void testTuple1Class() throws Exception {
+    void testTuple1Class() throws Exception {
         Tuple1Class src = new Tuple1Class(new Tuple1<>(new ImplementedClass()));
         String json = MAPPER.writeValueAsString(src);
         Tuple1Class restored = MAPPER.readValue(json, Tuple1Class.class);
-        Assert.assertEquals(restored.value._1.getClass(), ImplementedClass.class);
+        Assertions.assertEquals(restored.value._1.getClass(), ImplementedClass.class);
     }
 
     @Test
-    public void testListClass() throws Exception {
+    void testListClass() throws Exception {
         ListClass src = new ListClass(List.of(new ImplementedClass()));
         String json = MAPPER.writeValueAsString(src);
         ListClass restored = MAPPER.readValue(json, ListClass.class);
-        Assert.assertEquals(restored.value.head().getClass(), ImplementedClass.class);
+        Assertions.assertEquals(restored.value.head().getClass(), ImplementedClass.class);
     }
 
     @Test
-    public void testHashSetClass() throws Exception {
+    void testHashSetClass() throws Exception {
         HashSetClass src = new HashSetClass(HashSet.of(new ImplementedClass()));
         String json = MAPPER.writeValueAsString(src);
         HashSetClass restored = MAPPER.readValue(json, HashSetClass.class);
-        Assert.assertEquals(restored.value.head().getClass(), ImplementedClass.class);
+        Assertions.assertEquals(restored.value.head().getClass(), ImplementedClass.class);
     }
 
     @Test
-    public void testEitherClass() throws Exception {
+    void testEitherClass() throws Exception {
         EitherClass src = new EitherClass(Either.right(new ImplementedClass()));
         String json = MAPPER.writeValueAsString(src);
         EitherClass restored = MAPPER.readValue(json, EitherClass.class);
-        Assert.assertEquals(restored.value.get().getClass(), ImplementedClass.class);
+        Assertions.assertEquals(restored.value.get().getClass(), ImplementedClass.class);
     }
 
     @Test
-    public void testHashMapClass() throws Exception {
+    void testHashMapClass() throws Exception {
         HashMapClass src = new HashMapClass(HashMap.of(42, new ImplementedClass()));
         String json = MAPPER.writeValueAsString(src);
         HashMapClass restored = MAPPER.readValue(json, HashMapClass.class);
-        Assert.assertEquals(restored.value.head()._2.getClass(), ImplementedClass.class);
+        Assertions.assertEquals(restored.value.head()._2.getClass(), ImplementedClass.class);
     }
 
     @Test
-    public void testTuple2Class() throws Exception {
+    void testTuple2Class() throws Exception {
         Tuple2Class src = new Tuple2Class(new Tuple2<>(42, new ImplementedClass()));
         String json = MAPPER.writeValueAsString(src);
         Tuple2Class restored = MAPPER.readValue(json, Tuple2Class.class);
-        Assert.assertEquals(restored.value._2.getClass(), ImplementedClass.class);
+        Assertions.assertEquals(restored.value._2.getClass(), ImplementedClass.class);
     }
 
     @Test
-    public void testHashMultimapClass() throws Exception {
+    void testHashMultimapClass() throws Exception {
         HashMultimapClass src = new HashMultimapClass(HashMultimap.withSeq().of(42, new ImplementedClass()));
         String json = MAPPER.writeValueAsString(src);
         HashMultimapClass restored = MAPPER.readValue(json, HashMultimapClass.class);
-        Assert.assertEquals(restored.value.head()._2.getClass(), ImplementedClass.class);
+        Assertions.assertEquals(restored.value.head()._2.getClass(), ImplementedClass.class);
     }
 
     @JsonTypeInfo(

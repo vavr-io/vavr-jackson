@@ -7,8 +7,8 @@ import io.vavr.*;
 import io.vavr.collection.*;
 import io.vavr.control.Either;
 import io.vavr.control.Option;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import javax.lang.model.element.Modifier;
 import java.io.File;
@@ -104,22 +104,22 @@ public class PolymorphicPojo {
         ParameterizedTypeName lazy = ParameterizedTypeName.get(ClassName.get(Lazy.class), ClassName.get("", "I"));
         addCase(pojoTest, lazy, HashMap.of("type", "a"),
                 m -> m.addStatement("$T src = $T.of(A::new)", lazy, lazy.rawType),
-                m -> m.addStatement("$T.assertTrue(restored.get() instanceof A)", ClassName.get(Assert.class)));
+                m -> m.addStatement("$T.assertTrue(restored.get() instanceof A)", ClassName.get(Assertions.class)));
 
         ParameterizedTypeName option = ParameterizedTypeName.get(ClassName.get(Option.class), ClassName.get("", "I"));
         addCase(pojoTest, option, HashMap.of("type", "a"),
                 m -> m.addStatement("$T src = $T.some(new A())", option, option.rawType),
-                m -> m.addStatement("$T.assertTrue(restored.get() instanceof A)", ClassName.get(Assert.class)));
+                m -> m.addStatement("$T.assertTrue(restored.get() instanceof A)", ClassName.get(Assertions.class)));
 
         ParameterizedTypeName either = ParameterizedTypeName.get(ClassName.get(Either.class), ClassName.get("", "I"), ClassName.get("", "I"));
         addCase(pojoTest, "Left", true, either, List.of("left", HashMap.of("type", "a")),
                 m -> m.addStatement("$T src = $T.left(new A())", either, either.rawType),
-                m -> m.addStatement("$T.assertTrue(restored.isLeft())", ClassName.get(Assert.class))
-                        .addStatement("$T.assertTrue(restored.getLeft() instanceof A)", ClassName.get(Assert.class)));
+                m -> m.addStatement("$T.assertTrue(restored.isLeft())", ClassName.get(Assertions.class))
+                        .addStatement("$T.assertTrue(restored.getLeft() instanceof A)", ClassName.get(Assertions.class)));
         addCase(pojoTest, "Right", false, either, List.of("right", HashMap.of("type", "a")),
                 m -> m.addStatement("$T src = $T.right(new A())", either, either.rawType),
-                m -> m.addStatement("$T.assertTrue(restored.isRight())", ClassName.get(Assert.class))
-                        .addStatement("$T.assertTrue(restored.get() instanceof A)", ClassName.get(Assert.class)));
+                m -> m.addStatement("$T.assertTrue(restored.isRight())", ClassName.get(Assertions.class))
+                        .addStatement("$T.assertTrue(restored.get() instanceof A)", ClassName.get(Assertions.class)));
 
         JavaFile javaFile = JavaFile.builder("io.vavr.jackson.generated", pojoTest.build())
                 .indent("    ")
@@ -145,7 +145,7 @@ public class PolymorphicPojo {
                 m -> m.addStatement("$T src = $T.of($L)", ptn, ClassName.get(Tuple.class), argsStr.toString()),
                 m -> {
                     for (int i = 0; i < arity; i++) {
-                        m.addStatement("$T.assertTrue(restored._$L instanceof $L)", ClassName.get(Assert.class), i + 1, (i % 2) == 0 ? "A" : "B");
+                        m.addStatement("$T.assertTrue(restored._$L instanceof $L)", ClassName.get(Assertions.class), i + 1, (i % 2) == 0 ? "A" : "B");
                     }
                 });
     }
@@ -154,31 +154,31 @@ public class PolymorphicPojo {
         ParameterizedTypeName ptn = ParameterizedTypeName.get(ClassName.get(clz), ClassName.get("", "I"));
         addCase(builder, ptn, List.of(HashMap.of("type", "a"), HashMap.of("type", "b")),
                 m -> m.addStatement("$T src = $T.of(new A(), new B())", ptn, ptn.rawType),
-                m -> m.addStatement("$T.assertTrue(restored.get(0) instanceof A)", ClassName.get(Assert.class))
-                        .addStatement("$T.assertTrue(restored.get(1) instanceof B)", ClassName.get(Assert.class)));
+                m -> m.addStatement("$T.assertTrue(restored.get(0) instanceof A)", ClassName.get(Assertions.class))
+                        .addStatement("$T.assertTrue(restored.get(1) instanceof B)", ClassName.get(Assertions.class)));
     }
 
     private static void addSetCase(TypeSpec.Builder builder, Class<?> clz) {
         ParameterizedTypeName ptn = ParameterizedTypeName.get(ClassName.get(clz), ClassName.get("", "I"));
         addCase(builder, ptn, List.of(HashMap.of("type", "b")),
                 m -> m.addStatement("$T src = $T.of(new B())", ptn, ptn.rawType),
-                m -> m.addStatement("$T.assertEquals(restored.filter(e -> e instanceof B).length(), 1)", ClassName.get(Assert.class)));
+                m -> m.addStatement("$T.assertEquals(restored.filter(e -> e instanceof B).length(), 1)", ClassName.get(Assertions.class)));
     }
 
     private static void addMapCase(TypeSpec.Builder builder, Class<?> clz) {
         ParameterizedTypeName ptn = ParameterizedTypeName.get(ClassName.get(clz), ClassName.get(String.class), ClassName.get("", "I"));
         addCase(builder, ptn, HashMap.of("a", HashMap.of("type", "a"), "b", HashMap.of("type", "b")),
                 m -> m.addStatement("$T src = $T.of($S, new A(), $S, new B())", ptn, ptn.rawType, "a", "b"),
-                m -> m.addStatement("$T.assertTrue(restored.get($S).get() instanceof A)", ClassName.get(Assert.class), "a")
-                        .addStatement("$T.assertTrue(restored.get($S).get() instanceof B)", ClassName.get(Assert.class), "b"));
+                m -> m.addStatement("$T.assertTrue(restored.get($S).get() instanceof A)", ClassName.get(Assertions.class), "a")
+                        .addStatement("$T.assertTrue(restored.get($S).get() instanceof B)", ClassName.get(Assertions.class), "b"));
     }
 
     private static void addMultimapCase(TypeSpec.Builder builder, Class<?> clz) {
         ParameterizedTypeName ptn = ParameterizedTypeName.get(ClassName.get(clz), ClassName.get(String.class), ClassName.get("", "I"));
         addCase(builder, ptn, HashMap.of("a", List.of(HashMap.of("type", "a")), "b", List.of(HashMap.of("type", "b"))),
                 m -> m.addStatement("$T src = $T.withSeq().of($S, new A(), $S, new B())", ptn, ptn.rawType, "a", "b"),
-                m -> m.addStatement("$T.assertTrue(restored.get($S).get().head() instanceof A)", ClassName.get(Assert.class), "a")
-                        .addStatement("$T.assertTrue(restored.get($S).get().head() instanceof B)", ClassName.get(Assert.class), "b"));
+                m -> m.addStatement("$T.assertTrue(restored.get($S).get().head() instanceof A)", ClassName.get(Assertions.class), "a")
+                        .addStatement("$T.assertTrue(restored.get($S).get().head() instanceof B)", ClassName.get(Assertions.class), "b"));
     }
 
     private static void addCase(TypeSpec.Builder builder, ParameterizedTypeName ptn, Object value, Consumer<MethodSpec.Builder> init, Consumer<MethodSpec.Builder> check) {
@@ -193,12 +193,11 @@ public class PolymorphicPojo {
         String json = expectedJson(HashMap.of("value", value));
         MethodSpec.Builder methodBuilder = MethodSpec.methodBuilder("test" + ptn.rawType.simpleName()  + namePostfix)
                 .addAnnotation(Test.class)
-                .addModifiers(Modifier.PUBLIC)
                 .addException(ClassName.get(Exception.class));
         init.accept(methodBuilder);
         methodBuilder
                 .addStatement("$T json = MAPPER.writeValueAsString(new $L().setValue(src))", ClassName.get(String.class), pojoName)
-                .addStatement("$T.assertEquals(json, $S)", ClassName.get(Assert.class), json)
+                .addStatement("$T.assertEquals(json, $S)", ClassName.get(Assertions.class), json)
                 .addStatement("$L pojo = MAPPER.readValue(json, $L.class)", pojoName, pojoName)
                 .addStatement("$T restored = pojo.getValue()", ptn);
         check.accept(methodBuilder);

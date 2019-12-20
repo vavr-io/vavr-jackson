@@ -5,8 +5,8 @@ import io.vavr.jackson.datatype.BaseTest;
 import io.vavr.collection.*;
 import io.vavr.control.Either;
 import io.vavr.control.Option;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class BeanAnnotationTest extends BaseTest {
 
@@ -56,23 +56,23 @@ public class BeanAnnotationTest extends BaseTest {
     }
 
     @Test
-    public void testNonEmpty() throws Exception {
+    void testNonEmpty() throws Exception {
         BeanObjectOptional bean = new BeanObjectOptional(false);
         String json = mapper().writer().writeValueAsString(bean);
-        Assert.assertTrue(json.contains(CHARSEQ_VALUE));
-        Assert.assertTrue(json.contains(EITHER_VALUE));
-        Assert.assertTrue(json.contains(OPTION_VALUE));
-        Assert.assertTrue(json.contains(MAP_VALUE));
-        Assert.assertTrue(json.contains(MULTIMAP_VALUE));
-        Assert.assertTrue(json.contains(SEQ_VALUE));
-        Assert.assertTrue(json.contains(SET_VALUE));
+        Assertions.assertTrue(json.contains(CHARSEQ_VALUE));
+        Assertions.assertTrue(json.contains(EITHER_VALUE));
+        Assertions.assertTrue(json.contains(OPTION_VALUE));
+        Assertions.assertTrue(json.contains(MAP_VALUE));
+        Assertions.assertTrue(json.contains(MULTIMAP_VALUE));
+        Assertions.assertTrue(json.contains(SEQ_VALUE));
+        Assertions.assertTrue(json.contains(SET_VALUE));
     }
 
     @Test
-    public void testEmpty() throws Exception {
+    void testEmpty() throws Exception {
         BeanObjectOptional bean = new BeanObjectOptional();
         String json = mapper().writer().writeValueAsString(bean);
-        Assert.assertEquals(EMPTY_JSON, json);
+        Assertions.assertEquals(EMPTY_JSON, json);
     }
 
 }

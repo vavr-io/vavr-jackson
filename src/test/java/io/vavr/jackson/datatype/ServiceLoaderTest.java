@@ -3,8 +3,8 @@ package io.vavr.jackson.datatype;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.vavr.Lazy;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class ServiceLoaderTest {
 
@@ -15,13 +15,13 @@ public class ServiceLoaderTest {
    * @throws Exception only if jackson fails to handle vavr types - meaning auto-register didn't work
    */
   @Test
-  public void testAutoDiscovery() throws Exception {
+  void testAutoDiscovery() throws Exception {
     ObjectMapper mapper = new ObjectMapper().findAndRegisterModules();
 
     Lazy<?> src = Lazy.of(() -> 1);
     String json = mapper.writer().writeValueAsString(src);
-    Assert.assertEquals("1", json);
+    Assertions.assertEquals("1", json);
     Lazy<?> restored = mapper.readValue(json, Lazy.class);
-    Assert.assertEquals(src, restored);
+    Assertions.assertEquals(src, restored);
   }
 }

@@ -8,9 +8,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import io.vavr.collection.TreeMap;
 import io.vavr.collection.TreeMultimap;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
@@ -42,7 +42,7 @@ public class Iss142Test extends BaseTest {
 
     private ObjectMapper mapper;
 
-    @Before
+    @BeforeEach
     public void before() {
         mapper = new ObjectMapper();
         SimpleModule module = new VavrModule()
@@ -63,9 +63,9 @@ public class Iss142Test extends BaseTest {
                 .put(new MyComparable(2), 2);
 
         String json = mapper.writeValueAsString(mp);
-        Assert.assertEquals("{\"2\":2,\"1\":1}", json);
+        Assertions.assertEquals("{\"2\":2,\"1\":1}", json);
         TreeMap<MyComparable, Integer> restored = mapper.readValue(json, new TypeReference<TreeMap<MyComparable, Integer>>() {});
-        Assert.assertEquals(restored, mp);
+        Assertions.assertEquals(restored, mp);
     }
 
     @Test
@@ -76,8 +76,8 @@ public class Iss142Test extends BaseTest {
                 .put(new MyComparable(2), 2);
 
         String json = mapper.writeValueAsString(mp);
-        Assert.assertEquals("{\"2\":[2],\"1\":[1]}", json);
+        Assertions.assertEquals("{\"2\":[2],\"1\":[1]}", json);
         TreeMultimap<MyComparable, Integer> restored = mapper.readValue(json, new TypeReference<TreeMultimap<MyComparable, Integer>>() {});
-        Assert.assertEquals(restored, mp);
+        Assertions.assertEquals(restored, mp);
     }
 }
