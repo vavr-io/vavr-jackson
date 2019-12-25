@@ -143,7 +143,7 @@ public class VavrDeserializers extends Deserializers.Base {
             throws JsonMappingException {
         Class<?> raw = type.getRawClass();
         if (raw == Lazy.class) {
-            return new LazyDeserializer(type);
+            return new LazyDeserializer(type, type.getContentType(), contentTypeDeserializer, contentDeserializer);
         }
         if (raw == Option.class) {
             return new OptionDeserializer(type, type.getContentType(), contentTypeDeserializer, contentDeserializer, settings.useOptionInPlainFormat());

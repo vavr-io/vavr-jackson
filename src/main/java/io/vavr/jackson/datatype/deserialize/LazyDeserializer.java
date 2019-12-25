@@ -20,28 +20,64 @@
 package io.vavr.jackson.datatype.deserialize;
 
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.databind.deser.ContextualDeserializer;
+import com.fasterxml.jackson.databind.jsontype.TypeDeserializer;
 import io.vavr.Lazy;
 
 import java.io.IOException;
 
-class LazyDeserializer extends ValueDeserializer<Lazy<?>> {
+class LazyDeserializer extends ValueDeserializer<Lazy<?>> implements ContextualDeserializer {
 
     private static final long serialVersionUID = 1L;
 
-    LazyDeserializer(JavaType valueType) {
+    private final JavaType fullType;
+    private final JavaType valueType;
+    private final TypeDeserializer valueTypeDeserializer;
+    private final JsonDeserializer<?> valueDeserializer;
+
+    LazyDeserializer(JavaType fullType, JavaType valueType, TypeDeserializer typeDeser, JsonDeserializer<?> valueDeser) {
         super(valueType, 1);
+        this.fullType = fullType;
+        this.valueType = valueType;
+        this.valueTypeDeserializer = typeDeser;
+        this.valueDeserializer = valueDeser;
+    }
+
+    private LazyDeserializer(LazyDeserializer origin, TypeDeserializer typeDeser, JsonDeserializer<?> valueDeser) {
+        this(origin.fullType, origin.valueType, typeDeser, valueDeser);
     }
 
     @Override
     public Lazy<?> deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
-        Object obj = deserializer(0).deserialize(p, ctxt);
-        return Lazy.of(() -> obj);
+        Object value;
+        if (valueTypeDeserializer == null) {
+            value = valueDeserializer.deserialize(p, ctxt);
+        } else {
+            value = valueDeserializer.deserializeWithType(p, ctxt, valueTypeDeserializer);
+        }
+        return Lazy.of(() -> value);
     }
 
     @Override
     public Lazy<?> getNullValue(DeserializationContext ctxt) {
         return Lazy.of(() -> null);
+    }
+
+    @Override
+    public JsonDeserializer<?> createContextual(DeserializationContext ctxt, BeanProperty property) throws JsonMappingException {
+        JsonDeserializer<?> deser = valueDeserializer;
+        TypeDeserializer typeDeser = valueTypeDeserializer;
+        JavaType refType = valueType;
+
+        if (deser == null) {
+            deser = ctxt.findContextualValueDeserializer(refType, property);
+        } else { // otherwise directly assigned, probably not contextual yet:
+            deser = ctxt.handleSecondaryContextualization(deser, property, refType);
+        }
+        if (typeDeser != null) {
+            typeDeser = typeDeser.forProperty(property);
+        }
+        return new LazyDeserializer(this, typeDeser, deser);
     }
 }
