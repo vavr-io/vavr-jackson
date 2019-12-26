@@ -9,7 +9,6 @@ import io.vavr.control.Option;
 import io.vavr.jackson.datatype.VavrModule;
 
 import javax.lang.model.element.Modifier;
-import java.util.Arrays;
 
 /**
  * @author <a href="mailto:ruslan.sennov@gmail.com">Ruslan Sennov</a>

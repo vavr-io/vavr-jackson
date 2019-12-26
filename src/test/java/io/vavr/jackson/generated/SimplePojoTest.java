@@ -29,10 +29,6 @@ import io.vavr.collection.Vector;
 import io.vavr.control.Either;
 import io.vavr.control.Option;
 import io.vavr.jackson.datatype.VavrModule;
-import java.lang.Exception;
-import java.lang.Integer;
-import java.lang.Object;
-import java.lang.String;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
