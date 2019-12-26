@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'maven'
     id 'jacoco'
+    id 'checkstyle'
     id 'com.bmuschko.nexus' version '2.3.1'
 }
 
