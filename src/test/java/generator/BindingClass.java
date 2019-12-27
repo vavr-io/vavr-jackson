@@ -85,6 +85,7 @@ public class BindingClass {
 
         JavaFile javaFile = JavaFile.builder("io.vavr.jackson.generated", pojoTest.build())
                 .indent("    ")
+                .skipJavaLangImports(true)
                 .build();
 
         javaFile.writeTo(new File("src/test/java"));

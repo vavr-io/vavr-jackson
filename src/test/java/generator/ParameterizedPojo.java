@@ -3,11 +3,9 @@ package generator;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.squareup.javapoet.*;
 import io.vavr.*;
-import io.vavr.collection.List;
 import io.vavr.collection.Map;
 import io.vavr.collection.Multimap;
 import io.vavr.control.Either;
-import io.vavr.control.Option;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -45,6 +43,7 @@ public class ParameterizedPojo {
 
         JavaFile javaFile = JavaFile.builder("io.vavr.jackson.generated", pojoTest.build())
                 .indent("    ")
+                .skipJavaLangImports(true)
                 .build();
 
         javaFile.writeTo(new File("src/test/java"));
