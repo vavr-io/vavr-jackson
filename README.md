@@ -31,15 +31,18 @@ Just register a new instance of <code>VavrModule</code>
 ObjectMapper mapper = new ObjectMapper();
 mapper.registerModule(new VavrModule());
 ```
+
 ### Serialization/deserialization
+
+<!-- see io.vavr.jackson.datatype.docs.ReadmeTest#testDeser -->
+
 ```java
-String json = mapper.writer().writeValueAsString(List.of(List.of(1)));
-// = [[1]]
-Object restored1 = mapper.readValue(json, List.class);
-// = List(java.util.ArrayList(1))
-Object restored2 = mapper.readValue(json, new TypeReference<List<List<?>>>() {});
-// = List(List(1))
+String json = mapper.writeValueAsString(List.of(1));
+// = [1]
+List<Integer> restored = mapper.readValue(json, new TypeReference<List<Integer>>() {});
+// = List(1)
 ```
+
 ## Using Developer Versions
 
 Developer versions can be found [here](https://oss.sonatype.org/content/repositories/snapshots/io/vavr/vavr-jackson).
