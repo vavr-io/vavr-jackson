@@ -152,25 +152,28 @@ public class VavrDeserializers extends Deserializers.Base {
     }
 
     @Override
-    public JsonDeserializer<?> findCollectionLikeDeserializer(CollectionLikeType type,
+    public JsonDeserializer<?> findCollectionLikeDeserializer(CollectionLikeType collectionType,
                                                               DeserializationConfig config, BeanDescription beanDesc,
                                                               TypeDeserializer elementTypeDeserializer, JsonDeserializer<?> elementDeserializer)
             throws JsonMappingException
     {
-        Class<?> raw = type.getRawClass();
+        Class<?> raw = collectionType.getRawClass();
         if (raw == CharSeq.class) {
-            return new CharSeqDeserializer(type);
+            return new CharSeqDeserializer(collectionType);
         }
         if (Seq.class.isAssignableFrom(raw)) {
-            return new SeqDeserializer(type, settings.deserializeNullAsEmptyCollection());
+            return new SeqDeserializer(collectionType, collectionType.getContentType(), elementTypeDeserializer,
+                    elementDeserializer, settings.deserializeNullAsEmptyCollection());
         }
         if (Set.class.isAssignableFrom(raw)) {
-            return new SetDeserializer(type, settings.deserializeNullAsEmptyCollection());
+            return new SetDeserializer(collectionType, collectionType.getContentType(), elementTypeDeserializer,
+                    elementDeserializer, settings.deserializeNullAsEmptyCollection());
         }
         if (PriorityQueue.class.isAssignableFrom(raw)) {
-            return new PriorityQueueDeserializer(type, settings.deserializeNullAsEmptyCollection());
+            return new PriorityQueueDeserializer(collectionType, collectionType.getContentType(),
+                    elementTypeDeserializer, elementDeserializer, settings.deserializeNullAsEmptyCollection());
         }
-        return super.findCollectionLikeDeserializer(type, config, beanDesc, elementTypeDeserializer, elementDeserializer);
+        return super.findCollectionLikeDeserializer(collectionType, config, beanDesc, elementTypeDeserializer, elementDeserializer);
     }
 
     @Override

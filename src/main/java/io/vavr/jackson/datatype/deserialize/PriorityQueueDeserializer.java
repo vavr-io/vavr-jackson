@@ -19,9 +19,8 @@
  */
 package io.vavr.jackson.datatype.deserialize;
 
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.databind.jsontype.TypeDeserializer;
 import io.vavr.collection.PriorityQueue;
 
 import java.io.Serializable;
@@ -32,17 +31,34 @@ class PriorityQueueDeserializer extends ArrayDeserializer<PriorityQueue<?>> {
 
     private static final long serialVersionUID = 1L;
 
-    private final JavaType javaType;
+    PriorityQueueDeserializer(JavaType collectionType, JavaType elementType, TypeDeserializer elementTypeDeserializer,
+                              JsonDeserializer<?> elementDeserializer, boolean deserializeNullAsEmptyCollection) {
+        super(collectionType, 1, elementType, elementTypeDeserializer, elementDeserializer, deserializeNullAsEmptyCollection);
+    }
 
-    PriorityQueueDeserializer(JavaType valueType, boolean deserializeNullAsEmptyCollection) {
-        super(valueType, 1, deserializeNullAsEmptyCollection);
-        javaType = valueType;
+    /**
+     * Creates a new deserializer from the original one.
+     *
+     * @param origin                  the original deserializer
+     * @param elementTypeDeserializer the new deserializer for the element type
+     * @param elementDeserializer     the new deserializer for the element itself
+     */
+    PriorityQueueDeserializer(PriorityQueueDeserializer origin, TypeDeserializer elementTypeDeserializer,
+                              JsonDeserializer<?> elementDeserializer) {
+        this(origin.collectionType, origin.elementType, elementTypeDeserializer, elementDeserializer,
+                origin.deserializeNullAsEmptyCollection);
     }
 
     @SuppressWarnings("unchecked")
     @Override
     PriorityQueue<?> create(List<Object> list, DeserializationContext ctxt) throws JsonMappingException {
-        checkContainedTypeIsComparable(ctxt, javaType.containedTypeOrUnknown(0));
+        checkContainedTypeIsComparable(ctxt, collectionType.containedTypeOrUnknown(0));
         return PriorityQueue.ofAll((Comparator<Object> & Serializable) (o1, o2) -> ((Comparable) o1).compareTo(o2), list);
     }
+
+    @Override
+    PriorityQueueDeserializer createDeserializer(TypeDeserializer elementTypeDeserializer, JsonDeserializer<?> elementDeserializer) {
+        return new PriorityQueueDeserializer(this, elementTypeDeserializer, elementDeserializer);
+    }
+
 }
