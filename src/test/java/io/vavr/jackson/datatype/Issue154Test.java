@@ -35,7 +35,7 @@ public class Issue154Test {
         mapper.registerModule(new VavrModule());
 
         String json = mapper.writeValueAsString(myClass);
-        assertEquals("{\"dates\":[1591221600000,1591308000000]}", json);
+        assertEquals("{\"dates\":[\"2020-06-04\",\"2020-06-05\"]}", json);
     }
 
     @Test
@@ -48,7 +48,7 @@ public class Issue154Test {
         mapper.registerModule(new JavaTimeModule());
 
         String json = mapper.writeValueAsString(myClass);
-        assertEquals("{\"dates\":[1591221600000,1591308000000]}", json);
+        assertEquals("{\"dates\":[\"2020-06-04\",\"2020-06-05\"]}", json);
     }
 
     @Test

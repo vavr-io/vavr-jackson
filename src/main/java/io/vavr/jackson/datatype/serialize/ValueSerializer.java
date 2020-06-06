@@ -20,6 +20,7 @@
 package io.vavr.jackson.datatype.serialize;
 
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.BeanProperty;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
@@ -33,11 +34,17 @@ abstract class ValueSerializer<T> extends StdSerializer<T> {
 
     private static final long serialVersionUID = 1L;
 
-    JavaType type;
+    final JavaType type;
+    final BeanProperty beanProperty;
 
     ValueSerializer(JavaType type) {
+        this(type, null);
+    }
+
+    ValueSerializer(JavaType type, BeanProperty property) {
         super(type);
         this.type = type;
+        this.beanProperty = property;
     }
 
     abstract Object toJavaObj(T value) throws IOException;
@@ -53,12 +60,12 @@ abstract class ValueSerializer<T> extends StdSerializer<T> {
             try {
                 JavaType emulated = emulatedJavaType(type, provider.getTypeFactory());
                 if (emulated.getRawClass() != Object.class) {
-                    ser = provider.findTypedValueSerializer(emulated, true, null);
+                    ser = provider.findTypedValueSerializer(emulated, true, beanProperty);
                 } else {
-                    ser = provider.findTypedValueSerializer(obj.getClass(), true, null);
+                    ser = provider.findTypedValueSerializer(obj.getClass(), true, beanProperty);
                 }
             } catch (Exception ignore) {
-                ser = provider.findTypedValueSerializer(obj.getClass(), true, null);
+                ser = provider.findTypedValueSerializer(obj.getClass(), true, beanProperty);
             }
             ser.serialize(obj, gen, provider);
         }

@@ -155,22 +155,22 @@ public class VavrSerializers extends Serializers.Base {
 
     @Override
     public JsonSerializer<?> findCollectionLikeSerializer(SerializationConfig config,
-                                                          CollectionLikeType type, BeanDescription beanDesc,
+                                                          CollectionLikeType collectionType, BeanDescription beanDesc,
                                                           TypeSerializer elementTypeSerializer, JsonSerializer<Object> elementValueSerializer) {
-        Class<?> raw = type.getRawClass();
+        Class<?> raw = collectionType.getRawClass();
         if (raw == CharSeq.class) {
-            return new CharSeqSerializer(type);
+            return new CharSeqSerializer(collectionType);
         }
         if (Seq.class.isAssignableFrom(raw)) {
-            return new ArraySerializer<>(type);
+            return new ArraySerializer<>(collectionType);
         }
         if (Set.class.isAssignableFrom(raw)) {
-            return new ArraySerializer<>(type);
+            return new ArraySerializer<>(collectionType);
         }
         if (PriorityQueue.class.isAssignableFrom(raw)) {
-            return new ArraySerializer<>(type);
+            return new ArraySerializer<>(collectionType);
         }
-        return super.findCollectionLikeSerializer(config, type, beanDesc, elementTypeSerializer, elementValueSerializer);
+        return super.findCollectionLikeSerializer(config, collectionType, beanDesc, elementTypeSerializer, elementValueSerializer);
     }
 
     @Override
