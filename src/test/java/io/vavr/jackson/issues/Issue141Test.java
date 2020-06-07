@@ -1,4 +1,4 @@
-package io.vavr.jackson.datatype;
+package io.vavr.jackson.issues;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.vavr.control.Option;
+import io.vavr.jackson.datatype.BaseTest;
+import io.vavr.jackson.datatype.VavrModule;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
