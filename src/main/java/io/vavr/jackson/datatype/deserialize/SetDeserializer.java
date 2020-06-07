@@ -21,7 +21,9 @@ package io.vavr.jackson.datatype.deserialize;
 
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.jsontype.TypeDeserializer;
 import io.vavr.collection.HashSet;
 import io.vavr.collection.Set;
 
@@ -33,24 +35,41 @@ class SetDeserializer extends ArrayDeserializer<Set<?>> {
 
     private static final long serialVersionUID = 1L;
 
-    private final JavaType javaType;
+    SetDeserializer(JavaType collectionType, JavaType elementType, TypeDeserializer elementTypeDeserializer,
+                    JsonDeserializer<?> elementDeserializer, boolean deserializeNullAsEmptyCollection) {
+        super(collectionType, 1, elementType, elementTypeDeserializer, elementDeserializer, deserializeNullAsEmptyCollection);
+    }
 
-    SetDeserializer(JavaType valueType, boolean deserializeNullAsEmptyCollection) {
-        super(valueType, 1, deserializeNullAsEmptyCollection);
-        javaType = valueType;
+    /**
+     * Creates a new deserializer from the original one.
+     *
+     * @param origin                  the original deserializer
+     * @param elementTypeDeserializer the new deserializer for the element type
+     * @param elementDeserializer     the new deserializer for the element itself
+     */
+    private SetDeserializer(SetDeserializer origin, TypeDeserializer elementTypeDeserializer,
+                            JsonDeserializer<?> elementDeserializer) {
+        this(origin.collectionType, origin.elementType, elementTypeDeserializer, elementDeserializer,
+                origin.deserializeNullAsEmptyCollection);
     }
 
     @SuppressWarnings("unchecked")
     @Override
     Set<?> create(List<Object> result, DeserializationContext ctx) throws JsonMappingException {
-        if (io.vavr.collection.SortedSet.class.isAssignableFrom(javaType.getRawClass())) {
-            checkContainedTypeIsComparable(ctx, javaType.containedTypeOrUnknown(0));
+        if (io.vavr.collection.SortedSet.class.isAssignableFrom(collectionType.getRawClass())) {
+            checkContainedTypeIsComparable(ctx, collectionType.containedTypeOrUnknown(0));
             return io.vavr.collection.TreeSet.ofAll((Comparator<Object> & Serializable) (o1, o2) -> ((Comparable) o1).compareTo(o2), result);
         }
-        if (io.vavr.collection.LinkedHashSet.class.isAssignableFrom(javaType.getRawClass())) {
+        if (io.vavr.collection.LinkedHashSet.class.isAssignableFrom(collectionType.getRawClass())) {
             return io.vavr.collection.LinkedHashSet.ofAll(result);
         }
         // default deserialization [...] -> Set
         return HashSet.ofAll(result);
     }
+
+    @Override
+    SetDeserializer createDeserializer(TypeDeserializer elementTypeDeserializer, JsonDeserializer<?> elementDeserializer) {
+        return new SetDeserializer(this, elementTypeDeserializer, elementDeserializer);
+    }
+
 }

@@ -1,7 +1,6 @@
 package io.vavr.jackson.datatype;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -9,6 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.vavr.collection.PriorityQueue;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -18,6 +18,9 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Date;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class PriorityQueueTest extends BaseTest {
 
@@ -130,5 +133,29 @@ public class PriorityQueueTest extends BaseTest {
         Assertions.assertEquals(mapper.writeValueAsString(new XmlSerializeJavaUtil().init(Arrays.asList(1, 2, 3))), javaUtilValue);
         XmlSerializeVavr restored = mapper.readValue(javaUtilValue, XmlSerializeVavr.class);
         Assertions.assertEquals(restored.transitTypes.size(), 3);
+    }
+
+    static class FrenchDates {
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", timezone = "Europe/Paris")
+        PriorityQueue<Date> dates;
+    }
+
+    @Test
+    void testSerializeWithContext() throws IOException {
+        // Given an object containing dates to serialize
+        FrenchDates src = new FrenchDates();
+        src.dates = PriorityQueue.of(new Date(1591308000000L));
+
+        // When serializing them using object mapper
+        // with VAVR module and Java Time module
+        ObjectMapper mapper = mapper().registerModule(new JavaTimeModule());
+        String json = mapper.writeValueAsString(src);
+
+        // Then the serialization is successful
+        Assertions.assertEquals("{\"dates\":[\"05/06/2020\"]}", json);
+
+        // And the deserialization is successful
+        FrenchDates restored = mapper.readValue(json, FrenchDates.class);
+        Assertions.assertEquals(src.dates, restored.dates);
     }
 }

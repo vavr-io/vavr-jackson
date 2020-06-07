@@ -21,10 +21,9 @@ package io.vavr.jackson.datatype.deserialize;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.databind.deser.ContextualDeserializer;
+import com.fasterxml.jackson.databind.jsontype.TypeDeserializer;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -34,33 +33,74 @@ import java.util.List;
 import static com.fasterxml.jackson.core.JsonToken.END_ARRAY;
 import static com.fasterxml.jackson.core.JsonToken.VALUE_NULL;
 
-abstract class ArrayDeserializer<T> extends ValueDeserializer<T> {
+abstract class ArrayDeserializer<T> extends ValueDeserializer<T> implements ContextualDeserializer {
 
     private static final long serialVersionUID = 1L;
 
-    private final JavaType valueType;
-    private final boolean deserializeNullAsEmptyCollection;
+    protected final JavaType collectionType;
+    protected final JavaType elementType;
+    protected final TypeDeserializer elementTypeDeserializer;
+    protected final JsonDeserializer<?> elementDeserializer;
+    protected final boolean deserializeNullAsEmptyCollection;
 
-    ArrayDeserializer(JavaType valueType, int typeCount, boolean deserializeNullAsEmptyCollection) {
-        super(valueType, typeCount);
-        this.valueType = valueType;
+    ArrayDeserializer(JavaType collectionType, int typeCount, JavaType elementType,
+                      TypeDeserializer elementTypeDeserializer, JsonDeserializer<?> elementDeserializer,
+                      boolean deserializeNullAsEmptyCollection) {
+        super(collectionType, typeCount);
+        this.collectionType = collectionType;
+        this.elementType = elementType;
+        this.elementTypeDeserializer = elementTypeDeserializer;
+        this.elementDeserializer = elementDeserializer;
         this.deserializeNullAsEmptyCollection = deserializeNullAsEmptyCollection;
     }
 
     abstract T create(List<Object> list, DeserializationContext ctxt) throws JsonMappingException;
 
+    /**
+     * Creates a new deserializer from the original one (this).
+     *
+     * @param elementTypeDeserializer the new deserializer for the element type
+     * @param elementDeserializer     the new deserializer for the element itself
+     * @return a new deserializer
+     */
+    abstract ArrayDeserializer<T> createDeserializer(TypeDeserializer elementTypeDeserializer,
+                                                     JsonDeserializer<?> elementDeserializer);
+
     @Override
-    public T deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
-        JsonDeserializer<?> deserializer = deserializer(0);
-        List<Object> list = new ArrayList<>();
-        if (!p.isExpectedStartArrayToken()) {
-            throw mappingException(ctxt, valueType.getRawClass(), p.getCurrentToken());
+    public JsonDeserializer<?> createContextual(DeserializationContext ctxt, BeanProperty property) throws JsonMappingException {
+        JsonDeserializer<?> elementDeser = elementDeserializer;
+        TypeDeserializer elementTypeDeser = elementTypeDeserializer;
+
+        if (elementDeser == null) {
+            elementDeser = ctxt.findContextualValueDeserializer(elementType, property);
+        } else {
+            elementDeser = ctxt.handleSecondaryContextualization(elementDeser, property, elementType);
         }
-        for (JsonToken jsonToken = p.nextToken(); jsonToken != END_ARRAY; jsonToken = p.nextToken()) {
-            Object value = (jsonToken != VALUE_NULL) ? deserializer.deserialize(p, ctxt) : deserializer.getNullValue(ctxt);
-            list.add(value);
+        if (elementTypeDeser != null) {
+            elementTypeDeser = elementTypeDeser.forProperty(property);
         }
-        return create(list, ctxt);
+        return createDeserializer(elementTypeDeser, elementDeser);
+    }
+
+    @Override
+    public T deserialize(JsonParser parser, DeserializationContext context) throws IOException {
+        if (!parser.isExpectedStartArrayToken()) {
+            throw mappingException(context, collectionType.getRawClass(), parser.getCurrentToken());
+        }
+
+        List<Object> elements = new ArrayList<>();
+        for (JsonToken jsonToken = parser.nextToken(); jsonToken != END_ARRAY; jsonToken = parser.nextToken()) {
+            Object element;
+            if (jsonToken == VALUE_NULL) {
+                element = elementDeserializer.getNullValue(context);
+            } else if (elementTypeDeserializer == null) {
+                element = elementDeserializer.deserialize(parser, context);
+            } else {
+                element = elementDeserializer.deserializeWithType(parser, context, elementTypeDeserializer);
+            }
+            elements.add(element);
+        }
+        return create(elements, context);
     }
 
     @Override
