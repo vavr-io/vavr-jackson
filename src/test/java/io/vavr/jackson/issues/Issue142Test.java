@@ -1,4 +1,4 @@
-package io.vavr.jackson.datatype;
+package io.vavr.jackson.issues;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -8,13 +8,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import io.vavr.collection.TreeMap;
 import io.vavr.collection.TreeMultimap;
+import io.vavr.jackson.datatype.BaseTest;
+import io.vavr.jackson.datatype.VavrModule;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
-public class Iss142Test extends BaseTest {
+public class Issue142Test extends BaseTest {
 
     public static class MyComparable implements Comparable<MyComparable> {
 

@@ -1,9 +1,10 @@
-package io.vavr.jackson.datatype;
+package io.vavr.jackson.issues;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.vavr.collection.List;
+import io.vavr.jackson.datatype.VavrModule;
 import org.junit.jupiter.api.Test;
 
 import java.util.Date;
