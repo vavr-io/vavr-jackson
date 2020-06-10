@@ -1,11 +1,16 @@
 package io.vavr.jackson.datatype.map;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import io.vavr.jackson.datatype.BaseTest;
 import io.vavr.Tuple;
@@ -168,5 +173,51 @@ public abstract class MapTest extends BaseTest {
         XmlSerializeVavr restored = mapper.readValue(slangJson, XmlSerializeVavr.class);
         Assertions.assertEquals(restored.transitTypes.get("key1").get(), "1");
         Assertions.assertEquals(restored.transitTypes.get("key2").get(), "2");
+    }
+
+    static class CustomKey {
+        private final int id;
+
+        CustomKey(int id) {
+            this.id = id;
+        }
+    }
+
+    static class Model {
+        private final Map<CustomKey, String> map;
+
+        @JsonCreator
+        Model(@JsonProperty("map") @JsonDeserialize(keyUsing = CustomKeyDeserializer.class) Map<CustomKey, String> map) {
+            this.map = map;
+        }
+
+        @JsonProperty
+        @JsonSerialize(keyUsing = CustomKeySerializer.class)
+        public Map<CustomKey, String> getMap() {
+            return map;
+        }
+    }
+
+    static class CustomKeySerializer extends JsonSerializer<CustomKey> {
+        @Override
+        public void serialize(CustomKey value, JsonGenerator jgen, SerializerProvider provider) throws IOException {
+            jgen.writeFieldName(String.valueOf(value.id));
+        }
+    }
+
+    static class CustomKeyDeserializer extends KeyDeserializer {
+        @Override
+        public CustomKey deserializeKey(String key, DeserializationContext ctxt) {
+            return new CustomKey(Integer.parseInt(key));
+        }
+    }
+
+    @Test
+    void testContextualSerialization() throws IOException {
+        Map<CustomKey, String> empty = emptyMap();
+        Map<CustomKey, String> map = empty.put(new CustomKey(123), "test");
+        Model model = new Model(map);
+        String json = mapper().writeValueAsString(model);
+        assertEquals("{\"map\":{\"123\":\"test\"}}", json);
     }
 }
