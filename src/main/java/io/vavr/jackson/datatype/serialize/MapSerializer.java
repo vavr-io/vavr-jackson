@@ -19,8 +19,8 @@
  */
 package io.vavr.jackson.datatype.serialize;
 
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.databind.ser.ContextualSerializer;
 import com.fasterxml.jackson.databind.type.MapLikeType;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import io.vavr.collection.Map;
@@ -28,12 +28,16 @@ import io.vavr.collection.Map;
 import java.io.IOException;
 import java.util.LinkedHashMap;
 
-class MapSerializer extends ValueSerializer<Map<?, ?>> {
+class MapSerializer extends ValueSerializer<Map<?, ?>> implements ContextualSerializer {
 
     private static final long serialVersionUID = 1L;
 
+    MapSerializer(JavaType type, BeanProperty beanProperty) {
+        super(type, beanProperty);
+    }
+
     MapSerializer(JavaType type) {
-        super(type);
+        this(type, null);
     }
 
     @Override
@@ -50,5 +54,13 @@ class MapSerializer extends ValueSerializer<Map<?, ?>> {
     @Override
     public boolean isEmpty(SerializerProvider provider, Map<?, ?> value) {
         return value.isEmpty();
+    }
+
+    @Override
+    public JsonSerializer<?> createContextual(SerializerProvider prov, BeanProperty property) throws JsonMappingException {
+        if (property == beanProperty) {
+            return this;
+        }
+        return new MapSerializer(type, property);
     }
 }
