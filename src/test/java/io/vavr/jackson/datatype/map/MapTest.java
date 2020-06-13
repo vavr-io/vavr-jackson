@@ -1,29 +1,31 @@
 package io.vavr.jackson.datatype.map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-import io.vavr.jackson.datatype.BaseTest;
 import io.vavr.Tuple;
 import io.vavr.collection.HashMap;
 import io.vavr.collection.List;
 import io.vavr.collection.Map;
 import io.vavr.control.Option;
+import io.vavr.jackson.datatype.BaseTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.IOException;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public abstract class MapTest extends BaseTest {
 
@@ -183,17 +185,27 @@ public abstract class MapTest extends BaseTest {
         }
     }
 
+    static class CustomValue {
+        private final String value;
+
+        CustomValue(String value) {
+            this.value = value;
+        }
+    }
+
     static class Model {
-        private final Map<CustomKey, String> map;
+        private final Map<CustomKey, CustomValue> map;
 
         @JsonCreator
-        Model(@JsonProperty("map") @JsonDeserialize(keyUsing = CustomKeyDeserializer.class) Map<CustomKey, String> map) {
+        Model(@JsonProperty("map")
+              @JsonDeserialize(keyUsing = CustomKeyDeserializer.class, contentUsing = CustomValueDeserializer.class)
+                      Map<CustomKey, CustomValue> map) {
             this.map = map;
         }
 
         @JsonProperty
-        @JsonSerialize(keyUsing = CustomKeySerializer.class)
-        public Map<CustomKey, String> getMap() {
+        @JsonSerialize(keyUsing = CustomKeySerializer.class, contentUsing = CustomValueSerializer.class)
+        public Map<CustomKey, CustomValue> getMap() {
             return map;
         }
     }
@@ -212,10 +224,29 @@ public abstract class MapTest extends BaseTest {
         }
     }
 
+    static class CustomValueSerializer extends JsonSerializer<CustomValue> {
+        @Override
+        public void serialize(CustomValue value, JsonGenerator jgen, SerializerProvider provider) throws IOException {
+            jgen.writeString(value.value);
+        }
+    }
+
+    static class CustomValueDeserializer extends StdDeserializer<CustomValue> {
+
+        CustomValueDeserializer() {
+            super(CustomValue.class);
+        }
+
+        @Override
+        public CustomValue deserialize(JsonParser p, DeserializationContext context) throws IOException {
+            return new CustomValue(p.getValueAsString());
+        }
+    }
+
     @Test
     void testContextualSerialization() throws IOException {
-        Map<CustomKey, String> empty = emptyMap();
-        Map<CustomKey, String> map = empty.put(new CustomKey(123), "test");
+        Map<CustomKey, CustomValue> empty = emptyMap();
+        Map<CustomKey, CustomValue> map = empty.put(new CustomKey(123), new CustomValue("test"));
 
         Model source = new Model(map);
         String json = mapper().writeValueAsString(source);
@@ -224,6 +255,6 @@ public abstract class MapTest extends BaseTest {
         Model restored = mapper().readValue(json, Model.class);
         assertEquals(1, restored.map.size());
         assertEquals(123, restored.map.get()._1.id);
-        assertEquals("test", restored.map.get()._2);
+        assertEquals("test", restored.map.get()._2.value);
     }
 }
