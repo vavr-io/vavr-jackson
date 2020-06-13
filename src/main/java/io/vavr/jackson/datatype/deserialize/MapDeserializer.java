@@ -38,6 +38,15 @@ class MapDeserializer extends MaplikeDeserializer<Map<?, ?>> {
         super(mapType, keyDeserializer);
     }
 
+    MapDeserializer(MapDeserializer origin, KeyDeserializer keyDeserializer) {
+        super(origin.mapType, origin.keyComparator, keyDeserializer, origin.valueDeserializer);
+    }
+
+    @Override
+    MaplikeDeserializer<Map<?, ?>> createDeserializer(KeyDeserializer keyDeserializer) {
+        return new MapDeserializer(this, keyDeserializer);
+    }
+
     @Override
     public Map<?, ?> deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
         final java.util.List<Tuple2<Object, Object>> result = new java.util.ArrayList<>();

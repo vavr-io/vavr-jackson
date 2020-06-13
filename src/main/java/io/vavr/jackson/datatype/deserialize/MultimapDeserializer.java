@@ -43,6 +43,16 @@ class MultimapDeserializer extends MaplikeDeserializer<Multimap<?, ?>> {
         super(mapType, keyDeserializer);
     }
 
+    MultimapDeserializer(MultimapDeserializer origin, KeyDeserializer keyDeserializer) {
+        super(origin.mapType, origin.keyComparator, keyDeserializer, origin.valueDeserializer);
+        containerDeserializer = origin.containerDeserializer;
+    }
+
+    @Override
+    MultimapDeserializer createDeserializer(KeyDeserializer keyDeserializer) {
+        return new MultimapDeserializer(this, keyDeserializer);
+    }
+
     @Override
     public void resolve(DeserializationContext ctxt) throws JsonMappingException {
         super.resolve(ctxt);
