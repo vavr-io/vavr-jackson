@@ -22,6 +22,7 @@ package io.vavr.jackson.datatype.deserialize;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.KeyDeserializer;
 import com.fasterxml.jackson.databind.type.MapLikeType;
 import io.vavr.Tuple;
@@ -38,13 +39,13 @@ class MapDeserializer extends MaplikeDeserializer<Map<?, ?>> {
         super(mapType, keyDeserializer);
     }
 
-    MapDeserializer(MapDeserializer origin, KeyDeserializer keyDeserializer) {
-        super(origin.mapType, origin.keyComparator, keyDeserializer, origin.valueDeserializer);
+    MapDeserializer(MapDeserializer origin, KeyDeserializer keyDeserializer, JsonDeserializer<?> valueDeserializer) {
+        super(origin.mapType, origin.keyComparator, keyDeserializer, valueDeserializer);
     }
 
     @Override
-    MaplikeDeserializer<Map<?, ?>> createDeserializer(KeyDeserializer keyDeserializer) {
-        return new MapDeserializer(this, keyDeserializer);
+    MaplikeDeserializer<Map<?, ?>> createDeserializer(KeyDeserializer keyDeserializer, JsonDeserializer<?> valueDeserializer) {
+        return new MapDeserializer(this, keyDeserializer, valueDeserializer);
     }
 
     @Override

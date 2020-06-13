@@ -43,14 +43,14 @@ class MultimapDeserializer extends MaplikeDeserializer<Multimap<?, ?>> {
         super(mapType, keyDeserializer);
     }
 
-    MultimapDeserializer(MultimapDeserializer origin, KeyDeserializer keyDeserializer) {
-        super(origin.mapType, origin.keyComparator, keyDeserializer, origin.valueDeserializer);
+    MultimapDeserializer(MultimapDeserializer origin, KeyDeserializer keyDeserializer, JsonDeserializer<?> valueDeserializer) {
+        super(origin.mapType, origin.keyComparator, keyDeserializer, valueDeserializer);
         containerDeserializer = origin.containerDeserializer;
     }
 
     @Override
-    MultimapDeserializer createDeserializer(KeyDeserializer keyDeserializer) {
-        return new MultimapDeserializer(this, keyDeserializer);
+    MultimapDeserializer createDeserializer(KeyDeserializer keyDeserializer, JsonDeserializer<?> valueDeserializer) {
+        return new MultimapDeserializer(this, keyDeserializer, valueDeserializer);
     }
 
     @Override

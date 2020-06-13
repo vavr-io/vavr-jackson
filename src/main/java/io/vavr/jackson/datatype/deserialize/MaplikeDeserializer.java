@@ -36,12 +36,13 @@ abstract class MaplikeDeserializer<T> extends StdDeserializer<T> implements Reso
 
     Comparator<Object> keyComparator;
     final KeyDeserializer keyDeserializer;
-    JsonDeserializer<?> valueDeserializer;
+    final JsonDeserializer<?> valueDeserializer;
 
     MaplikeDeserializer(MapLikeType mapType, KeyDeserializer keyDeserializer) {
         super(mapType);
         this.mapType = mapType;
         this.keyDeserializer = keyDeserializer;
+        this.valueDeserializer = null;
     }
 
     MaplikeDeserializer(MapLikeType mapType, Comparator<Object> keyComparator, KeyDeserializer keyDeserializer,
@@ -56,10 +57,11 @@ abstract class MaplikeDeserializer<T> extends StdDeserializer<T> implements Reso
     /**
      * Creates a new deserializer from the original one (this).
      *
-     * @param keyDeserializer the new deserializer for key
+     * @param keyDeserializer   the new deserializer for key
+     * @param valueDeserializer the new deserializer for value
      * @return a new deserializer
      */
-    abstract MaplikeDeserializer<T> createDeserializer(KeyDeserializer keyDeserializer);
+    abstract MaplikeDeserializer<T> createDeserializer(KeyDeserializer keyDeserializer, JsonDeserializer<?> valueDeserializer);
 
     @SuppressWarnings("unchecked")
     @Override
@@ -70,7 +72,6 @@ abstract class MaplikeDeserializer<T> extends StdDeserializer<T> implements Reso
         } else {
             keyComparator = (Comparator<Object> & Serializable) (o1, o2) -> o1.toString().compareTo(o2.toString());
         }
-        valueDeserializer = ctxt.findRootValueDeserializer(mapType.getContentType());
     }
 
     @Override
@@ -79,6 +80,11 @@ abstract class MaplikeDeserializer<T> extends StdDeserializer<T> implements Reso
         if (keyDeser == null) {
             keyDeser = context.findKeyDeserializer(mapType.getKeyType(), property);
         }
-        return createDeserializer(keyDeser);
+
+        JsonDeserializer<?> valueDeser = valueDeserializer;
+        if (valueDeser == null) {
+            valueDeser = context.findContextualValueDeserializer(mapType.getContentType(), property);
+        }
+        return createDeserializer(keyDeser, valueDeser);
     }
 }
