@@ -9,7 +9,9 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.deser.ContextualDeserializer;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
+import com.fasterxml.jackson.databind.deser.std.StdScalarDeserializer;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import io.vavr.Tuple;
 import io.vavr.collection.HashMap;
@@ -256,5 +258,40 @@ public abstract class MapTest extends BaseTest {
         assertEquals(1, restored.map.size());
         assertEquals(123, restored.map.get()._1.id);
         assertEquals("test", restored.map.get()._2.value);
+    }
+
+    static class MyBean {
+        @JsonDeserialize(contentUsing = ClassNameDeserializer.class)
+        Map<Integer, String> map;
+    }
+
+    static class ClassNameDeserializer extends StdScalarDeserializer<Object> implements ContextualDeserializer {
+
+        final String className;
+
+        ClassNameDeserializer() {
+            this("N/A");
+        }
+
+        ClassNameDeserializer(String className) {
+            super(String.class);
+            this.className = className;
+        }
+
+        @Override
+        public JsonDeserializer<?> createContextual(DeserializationContext ctxt, BeanProperty property) {
+            return new ClassNameDeserializer(ctxt.getContextualType().getRawClass().getSimpleName());
+        }
+
+        @Override
+        public String deserialize(JsonParser p, DeserializationContext context) {
+            return className;
+        }
+    }
+
+    @Test
+    void testSecondaryContextualization() throws IOException {
+        MyBean bean = mapper().readValue("{\"map\":{\"1\":\"Value will be replaced by class name\"}}", MyBean.class);
+        assertEquals("String", bean.map.get(1).get());
     }
 }

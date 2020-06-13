@@ -35,8 +35,8 @@ class MapDeserializer extends MaplikeDeserializer<Map<?, ?>> {
 
     private static final long serialVersionUID = 1L;
 
-    MapDeserializer(MapLikeType mapType, KeyDeserializer keyDeserializer) {
-        super(mapType, keyDeserializer);
+    MapDeserializer(MapLikeType mapType, KeyDeserializer keyDeserializer, JsonDeserializer<?> valueDeserializer) {
+        super(mapType, keyDeserializer, valueDeserializer);
     }
 
     MapDeserializer(MapDeserializer origin, KeyDeserializer keyDeserializer, JsonDeserializer<?> valueDeserializer) {
