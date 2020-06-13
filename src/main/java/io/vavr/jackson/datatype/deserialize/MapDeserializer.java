@@ -24,6 +24,7 @@ import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.KeyDeserializer;
+import com.fasterxml.jackson.databind.jsontype.TypeDeserializer;
 import com.fasterxml.jackson.databind.type.MapLikeType;
 import io.vavr.Tuple;
 import io.vavr.Tuple2;
@@ -35,17 +36,20 @@ class MapDeserializer extends MaplikeDeserializer<Map<?, ?>> {
 
     private static final long serialVersionUID = 1L;
 
-    MapDeserializer(MapLikeType mapType, KeyDeserializer keyDeserializer, JsonDeserializer<?> valueDeserializer) {
-        super(mapType, keyDeserializer, valueDeserializer);
+    MapDeserializer(MapLikeType mapType, KeyDeserializer keyDeserializer, TypeDeserializer elementTypeDeserializer,
+                    JsonDeserializer<?> elementDeserializer) {
+        super(mapType, null, keyDeserializer, elementTypeDeserializer, elementDeserializer);
     }
 
-    MapDeserializer(MapDeserializer origin, KeyDeserializer keyDeserializer, JsonDeserializer<?> valueDeserializer) {
-        super(origin.mapType, origin.keyComparator, keyDeserializer, valueDeserializer);
+    MapDeserializer(MapDeserializer origin, KeyDeserializer keyDeserializer, TypeDeserializer elementTypeDeserializer, JsonDeserializer<?> valueDeserializer) {
+        super(origin.mapType, origin.keyComparator, keyDeserializer, elementTypeDeserializer, valueDeserializer);
     }
 
     @Override
-    MaplikeDeserializer<Map<?, ?>> createDeserializer(KeyDeserializer keyDeserializer, JsonDeserializer<?> valueDeserializer) {
-        return new MapDeserializer(this, keyDeserializer, valueDeserializer);
+    MaplikeDeserializer<Map<?, ?>> createDeserializer(KeyDeserializer keyDeserializer,
+                                                      TypeDeserializer elementTypeDeserializer,
+                                                      JsonDeserializer<?> valueDeserializer) {
+        return new MapDeserializer(this, keyDeserializer, elementTypeDeserializer, valueDeserializer);
     }
 
     @Override
@@ -58,9 +62,11 @@ class MapDeserializer extends MaplikeDeserializer<Map<?, ?>> {
             // Note: must handle null explicitly here; value deserializers won't
             Object value;
             if (t == JsonToken.VALUE_NULL) {
-                value = valueDeserializer.getNullValue(ctxt);
+                value = elementDeserializer.getNullValue(ctxt);
+            } else if (elementTypeDeserializer == null) {
+                value = elementDeserializer.deserialize(p, ctxt);
             } else {
-                value = valueDeserializer.deserialize(p, ctxt);
+                value = elementDeserializer.deserializeWithType(p, ctxt, elementTypeDeserializer);
             }
             result.add(Tuple.of(key, value));
         }

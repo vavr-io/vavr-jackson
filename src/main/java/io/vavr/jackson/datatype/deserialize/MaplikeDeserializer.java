@@ -24,6 +24,7 @@ import com.fasterxml.jackson.databind.deser.ContextualDeserializer;
 import com.fasterxml.jackson.databind.deser.ContextualKeyDeserializer;
 import com.fasterxml.jackson.databind.deser.ResolvableDeserializer;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
+import com.fasterxml.jackson.databind.jsontype.TypeDeserializer;
 import com.fasterxml.jackson.databind.type.MapLikeType;
 
 import java.io.Serializable;
@@ -37,32 +38,30 @@ abstract class MaplikeDeserializer<T> extends StdDeserializer<T> implements Reso
 
     Comparator<Object> keyComparator;
     final KeyDeserializer keyDeserializer;
-    final JsonDeserializer<?> valueDeserializer;
-
-    MaplikeDeserializer(MapLikeType mapType, KeyDeserializer keyDeserializer, JsonDeserializer<?> valueDeserializer) {
-        super(mapType);
-        this.mapType = mapType;
-        this.keyDeserializer = keyDeserializer;
-        this.valueDeserializer = valueDeserializer;
-    }
+    final TypeDeserializer elementTypeDeserializer;
+    final JsonDeserializer<?> elementDeserializer;
 
     MaplikeDeserializer(MapLikeType mapType, Comparator<Object> keyComparator, KeyDeserializer keyDeserializer,
-                        JsonDeserializer<?> valueDeserializer) {
+                        TypeDeserializer elementTypeDeserializer, JsonDeserializer<?> elementDeserializer) {
         super(mapType);
         this.mapType = mapType;
         this.keyComparator = keyComparator;
         this.keyDeserializer = keyDeserializer;
-        this.valueDeserializer = valueDeserializer;
+        this.elementTypeDeserializer = elementTypeDeserializer;
+        this.elementDeserializer = elementDeserializer;
     }
 
     /**
      * Creates a new deserializer from the original one (this).
      *
-     * @param keyDeserializer   the new deserializer for key
-     * @param valueDeserializer the new deserializer for value
+     * @param keyDeserializer         the new deserializer for key
+     * @param elementTypeDeserializer the new deserializer for element type
+     * @param elementDeserializer     the new deserializer for element
      * @return a new deserializer
      */
-    abstract MaplikeDeserializer<T> createDeserializer(KeyDeserializer keyDeserializer, JsonDeserializer<?> valueDeserializer);
+    abstract MaplikeDeserializer<T> createDeserializer(KeyDeserializer keyDeserializer,
+                                                       TypeDeserializer elementTypeDeserializer,
+                                                       JsonDeserializer<?> elementDeserializer);
 
     @SuppressWarnings("unchecked")
     @Override
@@ -84,12 +83,16 @@ abstract class MaplikeDeserializer<T> extends StdDeserializer<T> implements Reso
             keyDeser = ((ContextualKeyDeserializer) keyDeser).createContextual(context, property);
         }
 
-        JsonDeserializer<?> valueDeser = valueDeserializer;
-        if (valueDeser == null) {
-            valueDeser = context.findContextualValueDeserializer(mapType.getContentType(), property);
-        } else {
-            valueDeser = context.handleSecondaryContextualization(valueDeser, property, mapType.getContentType());
+        TypeDeserializer elementTypeDeser = elementTypeDeserializer;
+        if (elementTypeDeser != null) {
+            elementTypeDeser = elementTypeDeser.forProperty(property);
         }
-        return createDeserializer(keyDeser, valueDeser);
+        JsonDeserializer<?> elementDeser = elementDeserializer;
+        if (elementDeser == null) {
+            elementDeser = context.findContextualValueDeserializer(mapType.getContentType(), property);
+        } else {
+            elementDeser = context.handleSecondaryContextualization(elementDeser, property, mapType.getContentType());
+        }
+        return createDeserializer(keyDeser, elementTypeDeser, elementDeser);
     }
 }

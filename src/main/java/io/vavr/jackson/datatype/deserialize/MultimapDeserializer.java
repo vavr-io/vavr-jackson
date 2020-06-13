@@ -22,6 +22,7 @@ package io.vavr.jackson.datatype.deserialize;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.databind.jsontype.TypeDeserializer;
 import com.fasterxml.jackson.databind.type.MapLikeType;
 import io.vavr.Tuple;
 import io.vavr.Tuple2;
@@ -39,18 +40,21 @@ class MultimapDeserializer extends MaplikeDeserializer<Multimap<?, ?>> {
 
     private JsonDeserializer<?> containerDeserializer;
 
-    MultimapDeserializer(MapLikeType mapType, KeyDeserializer keyDeserializer, JsonDeserializer<?> valueDeserializer) {
-        super(mapType, keyDeserializer, valueDeserializer);
+    MultimapDeserializer(MapLikeType mapType, KeyDeserializer keyDeserializer, TypeDeserializer elementTypeDeserializer,
+                         JsonDeserializer<?> elementDeserializer) {
+        super(mapType, null, keyDeserializer, elementTypeDeserializer, elementDeserializer);
     }
 
-    MultimapDeserializer(MultimapDeserializer origin, KeyDeserializer keyDeserializer, JsonDeserializer<?> valueDeserializer) {
-        super(origin.mapType, origin.keyComparator, keyDeserializer, valueDeserializer);
+    MultimapDeserializer(MultimapDeserializer origin, KeyDeserializer keyDeserializer,
+                         TypeDeserializer elementTypeDeserializer, JsonDeserializer<?> elementDeserializer) {
+        super(origin.mapType, origin.keyComparator, keyDeserializer, elementTypeDeserializer, elementDeserializer);
         containerDeserializer = origin.containerDeserializer;
     }
 
     @Override
-    MultimapDeserializer createDeserializer(KeyDeserializer keyDeserializer, JsonDeserializer<?> valueDeserializer) {
-        return new MultimapDeserializer(this, keyDeserializer, valueDeserializer);
+    MultimapDeserializer createDeserializer(KeyDeserializer keyDeserializer, TypeDeserializer elementTypeDeserializer,
+                                            JsonDeserializer<?> elementDeserializer) {
+        return new MultimapDeserializer(this, keyDeserializer, elementTypeDeserializer, elementDeserializer);
     }
 
     @Override
