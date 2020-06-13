@@ -25,6 +25,7 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.type.MapLikeType;
 import io.vavr.Tuple;
 import io.vavr.Tuple2;
 import io.vavr.collection.HashMultimap;
@@ -41,14 +42,14 @@ class MultimapDeserializer extends MaplikeDeserializer<Multimap<?, ?>> {
 
     private JsonDeserializer<?> containerDeserializer;
 
-    MultimapDeserializer(JavaType valueType) {
-        super(valueType);
+    MultimapDeserializer(MapLikeType mapType) {
+        super(mapType);
     }
 
     @Override
     public void resolve(DeserializationContext ctxt) throws JsonMappingException {
         super.resolve(ctxt);
-        JavaType containerType = ctxt.getTypeFactory().constructCollectionType(ArrayList.class, javaType.getContentType());
+        JavaType containerType = ctxt.getTypeFactory().constructCollectionType(ArrayList.class, mapType.getContentType());
         containerDeserializer = ctxt.findContextualValueDeserializer(containerType, null);
     }
 

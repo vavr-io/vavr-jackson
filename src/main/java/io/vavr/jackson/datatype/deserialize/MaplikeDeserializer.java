@@ -31,27 +31,28 @@ abstract class MaplikeDeserializer<T> extends StdDeserializer<T> implements Reso
 
     private static final long serialVersionUID = 1L;
 
-    final MapLikeType javaType;
+    final MapLikeType mapType;
 
     Comparator<Object> keyComparator;
     KeyDeserializer keyDeserializer;
     JsonDeserializer<?> valueDeserializer;
 
-    MaplikeDeserializer(JavaType valueType) {
-        super(valueType);
-        this.javaType = (MapLikeType) valueType;
+    MaplikeDeserializer(MapLikeType mapType) {
+        super(mapType);
+        this.mapType = mapType;
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public void resolve(DeserializationContext ctxt) throws JsonMappingException {
-        JavaType keyType = javaType.getKeyType();
+        JavaType keyType = mapType.getKeyType();
         if (Comparable.class.isAssignableFrom(keyType.getRawClass())) {
             keyComparator = (Comparator<Object> & Serializable) (o1, o2) -> ((Comparable<Object>) o1).compareTo(o2);
         } else {
             keyComparator = (Comparator<Object> & Serializable) (o1, o2) -> o1.toString().compareTo(o2.toString());
         }
         keyDeserializer = ctxt.findKeyDeserializer(keyType, null);
-        valueDeserializer = ctxt.findRootValueDeserializer(javaType.getContentType());
+        valueDeserializer = ctxt.findRootValueDeserializer(mapType.getContentType());
     }
+
 }
