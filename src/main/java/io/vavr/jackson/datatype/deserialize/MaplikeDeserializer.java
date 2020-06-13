@@ -21,6 +21,7 @@ package io.vavr.jackson.datatype.deserialize;
 
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.deser.ContextualDeserializer;
+import com.fasterxml.jackson.databind.deser.ContextualKeyDeserializer;
 import com.fasterxml.jackson.databind.deser.ResolvableDeserializer;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.type.MapLikeType;
@@ -79,6 +80,8 @@ abstract class MaplikeDeserializer<T> extends StdDeserializer<T> implements Reso
         KeyDeserializer keyDeser = keyDeserializer;
         if (keyDeser == null) {
             keyDeser = context.findKeyDeserializer(mapType.getKeyType(), property);
+        } else if (keyDeser instanceof ContextualKeyDeserializer) {
+            keyDeser = ((ContextualKeyDeserializer) keyDeser).createContextual(context, property);
         }
 
         JsonDeserializer<?> valueDeser = valueDeserializer;

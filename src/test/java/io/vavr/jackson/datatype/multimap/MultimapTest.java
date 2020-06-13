@@ -8,6 +8,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.deser.ContextualKeyDeserializer;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import io.vavr.Tuple;
 import io.vavr.collection.HashMap;
@@ -19,11 +20,13 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 
 public abstract class MultimapTest extends BaseTest {
 
@@ -181,5 +184,39 @@ public abstract class MultimapTest extends BaseTest {
         assertEquals(1, restored.map.size());
         assertEquals(123, restored.map.get()._1.id);
         assertEquals("test", restored.map.get()._2.value);
+    }
+
+    static class MyBean {
+        @JsonDeserialize(keyUsing = ClassNameDeserializer.class)
+        Multimap<String, Integer> map;
+    }
+
+    static class ClassNameDeserializer extends KeyDeserializer implements ContextualKeyDeserializer {
+
+        final String className;
+
+        ClassNameDeserializer() {
+            this("N/A");
+        }
+
+        ClassNameDeserializer(String className) {
+            this.className = className;
+        }
+
+        @Override
+        public Object deserializeKey(String key, DeserializationContext ctxt) {
+            return className;
+        }
+
+        @Override
+        public ClassNameDeserializer createContextual(DeserializationContext ctxt, BeanProperty property) {
+            return new ClassNameDeserializer(ctxt.getContextualType().getKeyType().getRawClass().getSimpleName());
+        }
+    }
+
+    @Test
+    void testSecondaryContextualization() throws IOException {
+        MyBean bean = mapper().readValue("{\"map\":{\"Will be replaced\":[1,2,3]}}", MyBean.class);
+        assertIterableEquals(Arrays.asList(1, 2, 3), bean.map.get("String").get());
     }
 }

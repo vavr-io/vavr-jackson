@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.deser.ContextualDeserializer;
+import com.fasterxml.jackson.databind.deser.ContextualKeyDeserializer;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.deser.std.StdScalarDeserializer;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
@@ -17,6 +18,7 @@ import io.vavr.Tuple;
 import io.vavr.collection.HashMap;
 import io.vavr.collection.List;
 import io.vavr.collection.Map;
+import io.vavr.collection.Multimap;
 import io.vavr.control.Option;
 import io.vavr.jackson.datatype.BaseTest;
 import org.junit.jupiter.api.Assertions;
@@ -25,9 +27,9 @@ import org.junit.jupiter.api.Test;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.IOException;
+import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 public abstract class MapTest extends BaseTest {
 
@@ -260,27 +262,55 @@ public abstract class MapTest extends BaseTest {
         assertEquals("test", restored.map.get()._2.value);
     }
 
-    static class MyBean {
-        @JsonDeserialize(contentUsing = ClassNameDeserializer.class)
-        Map<Integer, String> map;
+    static class BeanWithModifiedKey {
+        @JsonDeserialize(keyUsing = ClassNameKeyDeserializer.class)
+        Multimap<String, Integer> map;
     }
 
-    static class ClassNameDeserializer extends StdScalarDeserializer<Object> implements ContextualDeserializer {
+    static class ClassNameKeyDeserializer extends KeyDeserializer implements ContextualKeyDeserializer {
 
         final String className;
 
-        ClassNameDeserializer() {
+        ClassNameKeyDeserializer() {
             this("N/A");
         }
 
-        ClassNameDeserializer(String className) {
+        ClassNameKeyDeserializer(String className) {
+            this.className = className;
+        }
+
+        @Override
+        public Object deserializeKey(String key, DeserializationContext ctxt) {
+            return className;
+        }
+
+        @Override
+        public ClassNameKeyDeserializer createContextual(DeserializationContext ctxt, BeanProperty property) {
+            return new ClassNameKeyDeserializer(ctxt.getContextualType().getKeyType().getRawClass().getSimpleName());
+        }
+    }
+
+    static class BeanWithModifiedContent {
+        @JsonDeserialize(contentUsing = ClassNameContentDeserializer.class)
+        Map<Integer, String> map;
+    }
+
+    static class ClassNameContentDeserializer extends StdScalarDeserializer<Object> implements ContextualDeserializer {
+
+        final String className;
+
+        ClassNameContentDeserializer() {
+            this("N/A");
+        }
+
+        ClassNameContentDeserializer(String className) {
             super(String.class);
             this.className = className;
         }
 
         @Override
         public JsonDeserializer<?> createContextual(DeserializationContext ctxt, BeanProperty property) {
-            return new ClassNameDeserializer(ctxt.getContextualType().getRawClass().getSimpleName());
+            return new ClassNameContentDeserializer(ctxt.getContextualType().getRawClass().getSimpleName());
         }
 
         @Override
@@ -290,8 +320,14 @@ public abstract class MapTest extends BaseTest {
     }
 
     @Test
-    void testSecondaryContextualization() throws IOException {
-        MyBean bean = mapper().readValue("{\"map\":{\"1\":\"Value will be replaced by class name\"}}", MyBean.class);
+    void testSecondaryKeyContextualization() throws IOException {
+        BeanWithModifiedKey bean = mapper().readValue("{\"map\":{\"Will be replaced\":[1,2,3]}}", BeanWithModifiedKey.class);
+        assertIterableEquals(Arrays.asList(1, 2, 3), bean.map.get("String").get());
+    }
+
+    @Test
+    void testSecondaryContentContextualization() throws IOException {
+        BeanWithModifiedContent bean = mapper().readValue("{\"map\":{\"1\":\"Will be replaced\"}}", BeanWithModifiedContent.class);
         assertEquals("String", bean.map.get(1).get());
     }
 }
