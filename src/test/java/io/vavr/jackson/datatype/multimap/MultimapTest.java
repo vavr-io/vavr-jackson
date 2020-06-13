@@ -1,8 +1,12 @@
 package io.vavr.jackson.datatype.multimap;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.vavr.Tuple;
 import io.vavr.collection.HashMap;
 import io.vavr.collection.Multimap;
@@ -17,6 +21,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static java.util.Arrays.asList;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public abstract class MultimapTest extends BaseTest {
 
@@ -61,5 +66,57 @@ public abstract class MultimapTest extends BaseTest {
         String json = genJsonMap(HashMap.of("1", asList(1, null)).toJavaMap());
 
         verifySerialization(typeReferenceWithOption(), io.vavr.collection.List.of(Tuple.of(multimap, json)));
+    }
+
+    static class CustomKey {
+        private final int id;
+
+        CustomKey(int id) {
+            this.id = id;
+        }
+    }
+
+    static class Model {
+        private final Multimap<CustomKey, String> map;
+
+        @JsonCreator
+        Model(@JsonProperty("map") @JsonDeserialize(keyUsing = CustomKeyDeserializer.class) Multimap<CustomKey, String> map) {
+            this.map = map;
+        }
+
+        @JsonProperty
+        @JsonSerialize(keyUsing = CustomKeySerializer.class)
+        public Multimap<CustomKey, String> getMap() {
+            return map;
+        }
+    }
+
+    static class CustomKeySerializer extends JsonSerializer<CustomKey> {
+        @Override
+        public void serialize(CustomKey value, JsonGenerator jgen, SerializerProvider provider) throws IOException {
+            jgen.writeFieldName(String.valueOf(value.id));
+        }
+    }
+
+    static class CustomKeyDeserializer extends KeyDeserializer {
+        @Override
+        public CustomKey deserializeKey(String key, DeserializationContext ctxt) {
+            return new CustomKey(Integer.parseInt(key));
+        }
+    }
+
+    @Test
+    void testContextualSerialization() throws IOException {
+        Multimap<CustomKey, String> empty = emptyMap();
+        Multimap<CustomKey, String> map = empty.put(new CustomKey(123), "test");
+
+        Model source = new Model(map);
+        String json = mapper().writeValueAsString(source);
+        assertEquals("{\"map\":{\"123\":[\"test\"]}}", json);
+
+        Model restored = mapper().readValue(json, Model.class);
+        assertEquals(1, restored.map.size());
+        assertEquals(123, restored.map.get()._1.id);
+        assertEquals("test", restored.map.get()._2);
     }
 }
