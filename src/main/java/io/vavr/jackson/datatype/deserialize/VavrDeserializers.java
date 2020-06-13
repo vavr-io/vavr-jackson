@@ -185,10 +185,10 @@ public class VavrDeserializers extends Deserializers.Base {
     {
         Class<?> raw = type.getRawClass();
         if (Map.class.isAssignableFrom(raw)) {
-            return new MapDeserializer(type);
+            return new MapDeserializer(type, keyDeserializer);
         }
         if (Multimap.class.isAssignableFrom(raw)) {
-            return new MultimapDeserializer(type);
+            return new MultimapDeserializer(type, keyDeserializer);
         }
         return super.findMapLikeDeserializer(type, config, beanDesc, keyDeserializer, elementTypeDeserializer, elementDeserializer);
     }

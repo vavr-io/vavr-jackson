@@ -216,8 +216,14 @@ public abstract class MapTest extends BaseTest {
     void testContextualSerialization() throws IOException {
         Map<CustomKey, String> empty = emptyMap();
         Map<CustomKey, String> map = empty.put(new CustomKey(123), "test");
-        Model model = new Model(map);
-        String json = mapper().writeValueAsString(model);
+
+        Model source = new Model(map);
+        String json = mapper().writeValueAsString(source);
         assertEquals("{\"map\":{\"123\":\"test\"}}", json);
+
+        Model restored = mapper().readValue(json, Model.class);
+        assertEquals(1, restored.map.size());
+        assertEquals(123, restored.map.get()._1.id);
+        assertEquals("test", restored.map.get()._2);
     }
 }

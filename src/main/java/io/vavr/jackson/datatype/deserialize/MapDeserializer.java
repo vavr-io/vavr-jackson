@@ -22,6 +22,7 @@ package io.vavr.jackson.datatype.deserialize;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.KeyDeserializer;
 import com.fasterxml.jackson.databind.type.MapLikeType;
 import io.vavr.Tuple;
 import io.vavr.Tuple2;
@@ -33,8 +34,8 @@ class MapDeserializer extends MaplikeDeserializer<Map<?, ?>> {
 
     private static final long serialVersionUID = 1L;
 
-    MapDeserializer(MapLikeType mapType) {
-        super(mapType);
+    MapDeserializer(MapLikeType mapType, KeyDeserializer keyDeserializer) {
+        super(mapType, keyDeserializer);
     }
 
     @Override

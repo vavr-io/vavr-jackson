@@ -37,9 +37,10 @@ abstract class MaplikeDeserializer<T> extends StdDeserializer<T> implements Reso
     KeyDeserializer keyDeserializer;
     JsonDeserializer<?> valueDeserializer;
 
-    MaplikeDeserializer(MapLikeType mapType) {
+    MaplikeDeserializer(MapLikeType mapType, KeyDeserializer keyDeserializer) {
         super(mapType);
         this.mapType = mapType;
+        this.keyDeserializer = keyDeserializer;
     }
 
     @SuppressWarnings("unchecked")
@@ -51,7 +52,9 @@ abstract class MaplikeDeserializer<T> extends StdDeserializer<T> implements Reso
         } else {
             keyComparator = (Comparator<Object> & Serializable) (o1, o2) -> o1.toString().compareTo(o2.toString());
         }
-        keyDeserializer = ctxt.findKeyDeserializer(keyType, null);
+        if (keyDeserializer == null) {
+            keyDeserializer = ctxt.findKeyDeserializer(keyType, null);
+        }
         valueDeserializer = ctxt.findRootValueDeserializer(mapType.getContentType());
     }
 

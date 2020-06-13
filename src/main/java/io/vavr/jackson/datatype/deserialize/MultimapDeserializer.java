@@ -21,10 +21,7 @@ package io.vavr.jackson.datatype.deserialize;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.type.MapLikeType;
 import io.vavr.Tuple;
 import io.vavr.Tuple2;
@@ -42,8 +39,8 @@ class MultimapDeserializer extends MaplikeDeserializer<Multimap<?, ?>> {
 
     private JsonDeserializer<?> containerDeserializer;
 
-    MultimapDeserializer(MapLikeType mapType) {
-        super(mapType);
+    MultimapDeserializer(MapLikeType mapType, KeyDeserializer keyDeserializer) {
+        super(mapType, keyDeserializer);
     }
 
     @Override
