@@ -12,6 +12,7 @@ script:
   - ./gradlew clean check --refresh-dependencies
   - ./gradlew clean check --refresh-dependencies -PfasterxmlVersion=2.8.11
   - ./gradlew clean check --refresh-dependencies -PfasterxmlVersion=2.9.10
+  - ./gradlew clean check --refresh-dependencies -PfasterxmlVersion=2.10.4
   - ./gradlew codeCoverageReport
 after_success:
   - bash <(curl -s https://codecov.io/bash)
