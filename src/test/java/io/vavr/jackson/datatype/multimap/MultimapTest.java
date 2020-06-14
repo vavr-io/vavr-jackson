@@ -140,7 +140,7 @@ public abstract class MultimapTest extends BaseTest {
     static class CustomElementSerializer extends JsonSerializer<CustomElement> {
         @Override
         public void serialize(CustomElement value, JsonGenerator jgen, SerializerProvider provider) throws IOException {
-            jgen.writeFieldName(value.value);
+            jgen.writeString(value.value);
         }
     }
 
