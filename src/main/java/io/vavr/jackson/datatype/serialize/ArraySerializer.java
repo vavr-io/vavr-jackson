@@ -31,12 +31,14 @@ import java.util.ArrayList;
 class ArraySerializer<T extends Value<?>> extends ValueSerializer<T> implements ContextualSerializer {
 
     private static final long serialVersionUID = 1L;
+    private final CollectionLikeType collectionType;
 
-    ArraySerializer(JavaType collectionType, BeanProperty property) {
+    ArraySerializer(CollectionLikeType collectionType, BeanProperty property) {
         super(collectionType, property);
+        this.collectionType = collectionType;
     }
 
-    ArraySerializer(JavaType collectionType) {
+    ArraySerializer(CollectionLikeType collectionType) {
         this(collectionType, null);
     }
 
@@ -47,7 +49,7 @@ class ArraySerializer<T extends Value<?>> extends ValueSerializer<T> implements 
      * @param property the new bean property
      */
     ArraySerializer(ArraySerializer<T> origin, BeanProperty property) {
-        this(origin.type, property);
+        this(origin.collectionType, property);
     }
 
     @Override
@@ -56,9 +58,8 @@ class ArraySerializer<T extends Value<?>> extends ValueSerializer<T> implements 
     }
 
     @Override
-    JavaType emulatedJavaType(JavaType type, TypeFactory typeFactory) {
-        CollectionLikeType collectionLikeType = (CollectionLikeType) type;
-        return typeFactory.constructCollectionType(ArrayList.class, collectionLikeType.getContentType());
+    JavaType emulatedJavaType(TypeFactory typeFactory) {
+        return typeFactory.constructCollectionType(ArrayList.class, collectionType.getContentType());
     }
 
     @Override
