@@ -10,8 +10,8 @@ env:
   - secure: DTfPB0fMpchGnbeV5YVevVQBoqow1WCeSZqgjKigsVgkKTFhuX03Wnbjce7E669p2vioPclxrF6jvjegDZCexIjUYNRZhfNZtvaZ6/kzwOC9vlC9b+5WJ6XSG6gm7YZaQ2TP353c8bqBSyVW2LvECtwZZxM3x6pt8zA2UX100uh/+0Ftc3QbBoBXZkgaXfCT84P/OO52hPuZZl04u+TJabrwt3TPxRUIcxTrGUnW37wOPxyYt6qcFZplAmjorm6vFIcE0FNH90yViqEp3rKBtQGgDW0XnmoTYLRCEDDdRmTyGFoOjjnpZuaA41iiUJx6F3H63zAQOpB8mefjvYGKcnvIVHTHWfPOwNycSiATQ9g8QV5Z3y6HE+Kk5wDcL/USiOl4tn651s4eY+tE2sswpRyMfQa/f6x73xYT0Wqa22Xss4uzLtVJhxcZIku8pxDSJg40XQxSUXwuwfU3OJvNjsKVPjXnZ3QYrvQN7A6ZEDRw60BLQ+XVvlHSdLAeWPbtUWeUc1ke/x7QhTGIskkGlvV9AlW6LQDkfX5YwjQ9ZYCyAmfSjmN4J01oBQbbj+/XoS1iIna7VpWEEPbMw6sG+CF3jyk14EwmU2l8G3ZxtXBkzzCH5joIOTQZh8iUZ1BxTqBWlExHlcaUHJxG12udc/MLzkKUDIcOEIOlkzuwfhU=
 script:
   - ./gradlew clean check --refresh-dependencies
-  - ./gradlew clean check --refresh-dependencies -PfasterxmlVersion=2.8.4
-  - ./gradlew clean check --refresh-dependencies -PfasterxmlVersion=2.9.1
+  - ./gradlew clean check --refresh-dependencies -PfasterxmlVersion=2.8.11
+  - ./gradlew clean check --refresh-dependencies -PfasterxmlVersion=2.9.10
   - ./gradlew codeCoverageReport
 after_success:
   - bash <(curl -s https://codecov.io/bash)
