@@ -19,8 +19,9 @@
  */
 package io.vavr.jackson.datatype.serialize;
 
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.databind.ser.ContextualSerializer;
+import com.fasterxml.jackson.databind.type.MapLikeType;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import io.vavr.collection.Multimap;
 
@@ -29,12 +30,16 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-class MultimapSerializer extends ValueSerializer<Multimap<?, ?>> {
+class MultimapSerializer extends ValueSerializer<Multimap<?, ?>> implements ContextualSerializer {
 
     private static final long serialVersionUID = 1L;
 
     MultimapSerializer(JavaType type) {
-        super(type);
+        this(type, null);
+    }
+
+    MultimapSerializer(JavaType type, BeanProperty beanProperty) {
+        super(type, beanProperty);
     }
 
     @Override
@@ -53,12 +58,21 @@ class MultimapSerializer extends ValueSerializer<Multimap<?, ?>> {
 
     @Override
     JavaType emulatedJavaType(JavaType type, TypeFactory typeFactory) {
-        JavaType containerType = typeFactory.constructCollectionType(ArrayList.class, type.containedType(1));
-        return typeFactory.constructMapType(LinkedHashMap.class, type.containedType(0), containerType);
+        MapLikeType mapType = (MapLikeType) type;
+        JavaType containerType = typeFactory.constructCollectionType(ArrayList.class, mapType.getContentType());
+        return typeFactory.constructMapType(LinkedHashMap.class, mapType.getKeyType(), containerType);
     }
 
     @Override
     public boolean isEmpty(SerializerProvider provider, Multimap<?, ?> value) {
         return value.isEmpty();
+    }
+
+    @Override
+    public JsonSerializer<?> createContextual(SerializerProvider prov, BeanProperty property) throws JsonMappingException {
+        if (property == beanProperty) {
+            return this;
+        }
+        return new MultimapSerializer(type, property);
     }
 }

@@ -21,10 +21,9 @@ package io.vavr.jackson.datatype.deserialize;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.databind.jsontype.TypeDeserializer;
+import com.fasterxml.jackson.databind.type.MapLikeType;
 import io.vavr.Tuple;
 import io.vavr.Tuple2;
 import io.vavr.collection.HashMultimap;
@@ -41,14 +40,27 @@ class MultimapDeserializer extends MaplikeDeserializer<Multimap<?, ?>> {
 
     private JsonDeserializer<?> containerDeserializer;
 
-    MultimapDeserializer(JavaType valueType) {
-        super(valueType);
+    MultimapDeserializer(MapLikeType mapType, KeyDeserializer keyDeserializer, TypeDeserializer elementTypeDeserializer,
+                         JsonDeserializer<?> elementDeserializer) {
+        super(mapType, null, keyDeserializer, elementTypeDeserializer, elementDeserializer);
+    }
+
+    MultimapDeserializer(MultimapDeserializer origin, KeyDeserializer keyDeserializer,
+                         TypeDeserializer elementTypeDeserializer, JsonDeserializer<?> elementDeserializer) {
+        super(origin.mapType, origin.keyComparator, keyDeserializer, elementTypeDeserializer, elementDeserializer);
+        containerDeserializer = origin.containerDeserializer;
+    }
+
+    @Override
+    MultimapDeserializer createDeserializer(KeyDeserializer keyDeserializer, TypeDeserializer elementTypeDeserializer,
+                                            JsonDeserializer<?> elementDeserializer) {
+        return new MultimapDeserializer(this, keyDeserializer, elementTypeDeserializer, elementDeserializer);
     }
 
     @Override
     public void resolve(DeserializationContext ctxt) throws JsonMappingException {
         super.resolve(ctxt);
-        JavaType containerType = ctxt.getTypeFactory().constructCollectionType(ArrayList.class, javaType.getContentType());
+        JavaType containerType = ctxt.getTypeFactory().constructCollectionType(ArrayList.class, mapType.getContentType());
         containerDeserializer = ctxt.findContextualValueDeserializer(containerType, null);
     }
 
