@@ -40,7 +40,7 @@ class CharSeqSerializer extends ValueSerializer<CharSeq> {
     }
 
     @Override
-    JavaType emulatedJavaType(JavaType type, TypeFactory typeFactory) {
+    JavaType emulatedJavaType(TypeFactory typeFactory) {
         return typeFactory.constructType(String.class);
     }
 

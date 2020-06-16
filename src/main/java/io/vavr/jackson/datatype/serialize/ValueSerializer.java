@@ -48,7 +48,7 @@ abstract class ValueSerializer<T> extends StdSerializer<T> {
     }
 
     abstract Object toJavaObj(T value) throws IOException;
-    abstract JavaType emulatedJavaType(JavaType type, TypeFactory typeFactory);
+    abstract JavaType emulatedJavaType(TypeFactory typeFactory);
 
     @Override
     public void serialize(T value, JsonGenerator gen, SerializerProvider provider) throws IOException {
@@ -58,7 +58,7 @@ abstract class ValueSerializer<T> extends StdSerializer<T> {
         } else {
             JsonSerializer<Object> ser;
             try {
-                JavaType emulated = emulatedJavaType(type, provider.getTypeFactory());
+                JavaType emulated = emulatedJavaType(provider.getTypeFactory());
                 if (emulated.getRawClass() != Object.class) {
                     ser = provider.findTypedValueSerializer(emulated, true, beanProperty);
                 } else {

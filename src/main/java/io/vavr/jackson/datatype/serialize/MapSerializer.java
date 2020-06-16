@@ -31,13 +31,15 @@ import java.util.LinkedHashMap;
 class MapSerializer extends ValueSerializer<Map<?, ?>> implements ContextualSerializer {
 
     private static final long serialVersionUID = 1L;
+    private final MapLikeType mapType;
 
-    MapSerializer(JavaType type, BeanProperty beanProperty) {
-        super(type, beanProperty);
+    MapSerializer(MapLikeType mapType, BeanProperty beanProperty) {
+        super(mapType, beanProperty);
+        this.mapType = mapType;
     }
 
-    MapSerializer(JavaType type) {
-        this(type, null);
+    MapSerializer(MapLikeType mapType) {
+        this(mapType, null);
     }
 
     @Override
@@ -46,9 +48,8 @@ class MapSerializer extends ValueSerializer<Map<?, ?>> implements ContextualSeri
     }
 
     @Override
-    JavaType emulatedJavaType(JavaType type, TypeFactory typeFactory) {
-        MapLikeType mapLikeType = (MapLikeType) type;
-        return typeFactory.constructMapType(LinkedHashMap.class, mapLikeType.getKeyType(), mapLikeType.getContentType());
+    JavaType emulatedJavaType(TypeFactory typeFactory) {
+        return typeFactory.constructMapType(LinkedHashMap.class, mapType.getKeyType(), mapType.getContentType());
     }
 
     @Override
@@ -61,6 +62,6 @@ class MapSerializer extends ValueSerializer<Map<?, ?>> implements ContextualSeri
         if (property == beanProperty) {
             return this;
         }
-        return new MapSerializer(type, property);
+        return new MapSerializer(mapType, property);
     }
 }

@@ -43,7 +43,7 @@ class SerializableSerializer<T> extends ValueSerializer<T> {
     }
 
     @Override
-    JavaType emulatedJavaType(JavaType type, TypeFactory typeFactory) {
+    JavaType emulatedJavaType(TypeFactory typeFactory) {
         return typeFactory.constructArrayType(byte.class);
     }
 

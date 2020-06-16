@@ -33,13 +33,15 @@ import java.util.List;
 class MultimapSerializer extends ValueSerializer<Multimap<?, ?>> implements ContextualSerializer {
 
     private static final long serialVersionUID = 1L;
+    private final MapLikeType mapType;
 
-    MultimapSerializer(JavaType type) {
-        this(type, null);
+    MultimapSerializer(MapLikeType mapType) {
+        this(mapType, null);
     }
 
-    MultimapSerializer(JavaType type, BeanProperty beanProperty) {
-        super(type, beanProperty);
+    MultimapSerializer(MapLikeType mapType, BeanProperty beanProperty) {
+        super(mapType, beanProperty);
+        this.mapType = mapType;
     }
 
     @Override
@@ -57,8 +59,7 @@ class MultimapSerializer extends ValueSerializer<Multimap<?, ?>> implements Cont
     }
 
     @Override
-    JavaType emulatedJavaType(JavaType type, TypeFactory typeFactory) {
-        MapLikeType mapType = (MapLikeType) type;
+    JavaType emulatedJavaType(TypeFactory typeFactory) {
         JavaType containerType = typeFactory.constructCollectionType(ArrayList.class, mapType.getContentType());
         return typeFactory.constructMapType(LinkedHashMap.class, mapType.getKeyType(), containerType);
     }
@@ -73,6 +74,6 @@ class MultimapSerializer extends ValueSerializer<Multimap<?, ?>> implements Cont
         if (property == beanProperty) {
             return this;
         }
-        return new MultimapSerializer(type, property);
+        return new MultimapSerializer(mapType, property);
     }
 }
