@@ -22,7 +22,6 @@ package io.vavr.jackson.datatype.deserialize;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.deser.ContextualDeserializer;
 import com.fasterxml.jackson.databind.deser.ContextualKeyDeserializer;
-import com.fasterxml.jackson.databind.deser.ResolvableDeserializer;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.jsontype.TypeDeserializer;
 import com.fasterxml.jackson.databind.type.MapLikeType;
@@ -30,7 +29,7 @@ import com.fasterxml.jackson.databind.type.MapLikeType;
 import java.io.Serializable;
 import java.util.Comparator;
 
-abstract class MaplikeDeserializer<T> extends StdDeserializer<T> implements ResolvableDeserializer, ContextualDeserializer {
+abstract class MaplikeDeserializer<T> extends StdDeserializer<T> implements ContextualDeserializer {
 
     private static final long serialVersionUID = 1L;
 
@@ -72,10 +71,6 @@ abstract class MaplikeDeserializer<T> extends StdDeserializer<T> implements Reso
     abstract MaplikeDeserializer<T> createDeserializer(KeyDeserializer keyDeserializer,
                                                        TypeDeserializer elementTypeDeserializer,
                                                        JsonDeserializer<?> elementDeserializer);
-
-    @Override
-    public void resolve(DeserializationContext ctxt) throws JsonMappingException {
-    }
 
     @Override
     public JsonDeserializer<?> createContextual(DeserializationContext context, BeanProperty property) throws JsonMappingException {
