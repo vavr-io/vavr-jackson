@@ -22,6 +22,7 @@ package io.vavr.jackson.datatype.deserialize;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.databind.deser.ResolvableDeserializer;
 import com.fasterxml.jackson.databind.jsontype.TypeDeserializer;
 import com.fasterxml.jackson.databind.type.MapLikeType;
 import io.vavr.Tuple;
@@ -34,7 +35,7 @@ import io.vavr.collection.TreeMultimap;
 import java.io.IOException;
 import java.util.ArrayList;
 
-class MultimapDeserializer extends MaplikeDeserializer<Multimap<?, ?>> {
+class MultimapDeserializer extends MaplikeDeserializer<Multimap<?, ?>> implements ResolvableDeserializer {
 
     private static final long serialVersionUID = 1L;
 
@@ -42,12 +43,12 @@ class MultimapDeserializer extends MaplikeDeserializer<Multimap<?, ?>> {
 
     MultimapDeserializer(MapLikeType mapType, KeyDeserializer keyDeserializer, TypeDeserializer elementTypeDeserializer,
                          JsonDeserializer<?> elementDeserializer) {
-        super(mapType, null, keyDeserializer, elementTypeDeserializer, elementDeserializer);
+        super(mapType, keyDeserializer, elementTypeDeserializer, elementDeserializer);
     }
 
     MultimapDeserializer(MultimapDeserializer origin, KeyDeserializer keyDeserializer,
                          TypeDeserializer elementTypeDeserializer, JsonDeserializer<?> elementDeserializer) {
-        super(origin.mapType, origin.keyComparator, keyDeserializer, elementTypeDeserializer, elementDeserializer);
+        super(origin.mapType, keyDeserializer, elementTypeDeserializer, elementDeserializer);
         containerDeserializer = origin.containerDeserializer;
     }
 
@@ -59,7 +60,6 @@ class MultimapDeserializer extends MaplikeDeserializer<Multimap<?, ?>> {
 
     @Override
     public void resolve(DeserializationContext ctxt) throws JsonMappingException {
-        super.resolve(ctxt);
         JavaType containerType = ctxt.getTypeFactory().constructCollectionType(ArrayList.class, mapType.getContentType());
         containerDeserializer = ctxt.findContextualValueDeserializer(containerType, null);
     }

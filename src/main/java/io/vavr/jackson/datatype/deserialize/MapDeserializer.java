@@ -38,11 +38,11 @@ class MapDeserializer extends MaplikeDeserializer<Map<?, ?>> {
 
     MapDeserializer(MapLikeType mapType, KeyDeserializer keyDeserializer, TypeDeserializer elementTypeDeserializer,
                     JsonDeserializer<?> elementDeserializer) {
-        super(mapType, null, keyDeserializer, elementTypeDeserializer, elementDeserializer);
+        super(mapType, keyDeserializer, elementTypeDeserializer, elementDeserializer);
     }
 
     MapDeserializer(MapDeserializer origin, KeyDeserializer keyDeserializer, TypeDeserializer elementTypeDeserializer, JsonDeserializer<?> valueDeserializer) {
-        super(origin.mapType, origin.keyComparator, keyDeserializer, elementTypeDeserializer, valueDeserializer);
+        super(origin.mapType, keyDeserializer, elementTypeDeserializer, valueDeserializer);
     }
 
     @Override
@@ -79,4 +79,5 @@ class MapDeserializer extends MaplikeDeserializer<Map<?, ?>> {
         // default deserialization [...] -> Map
         return HashMap.ofEntries(result);
     }
+
 }
