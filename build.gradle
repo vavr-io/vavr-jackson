@@ -10,7 +10,7 @@ sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
 group = 'io.vavr'
-version = '1.0.0-SNAPSHOT'
+version = '0.10.3'
 
 repositories {
     mavenCentral()
@@ -85,6 +85,11 @@ modifyPom {
                 name 'Ruslan Sennov'
                 email 'ruslan.sennov@gmail.com'
             }
+            developer {
+                id 'minconghuang'
+                name 'Mincong Huang'
+                email 'mincong.h@gmail.com'
+            }
         }
     }
 }
@@ -95,4 +100,8 @@ nexus {
 
 test {
     useJUnitPlatform()
+}
+
+tasks.named('wrapper') {
+    distributionType = Wrapper.DistributionType.ALL
 }
