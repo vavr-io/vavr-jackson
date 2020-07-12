@@ -185,10 +185,12 @@ public class VavrDeserializers extends Deserializers.Base {
     {
         Class<?> raw = type.getRawClass();
         if (Map.class.isAssignableFrom(raw)) {
-            return new MapDeserializer(type, keyDeserializer, elementTypeDeserializer, elementDeserializer);
+            return new MapDeserializer(type, keyDeserializer, elementTypeDeserializer, elementDeserializer,
+                    settings.deserializeNullAsEmptyCollection());
         }
         if (Multimap.class.isAssignableFrom(raw)) {
-            return new MultimapDeserializer(type, keyDeserializer, elementTypeDeserializer, elementDeserializer);
+            return new MultimapDeserializer(type, keyDeserializer, elementTypeDeserializer, elementDeserializer,
+                    settings.deserializeNullAsEmptyCollection());
         }
         return super.findMapLikeDeserializer(type, config, beanDesc, keyDeserializer, elementTypeDeserializer, elementDeserializer);
     }

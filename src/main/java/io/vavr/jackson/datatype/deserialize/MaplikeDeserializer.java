@@ -39,15 +39,18 @@ abstract class MaplikeDeserializer<T> extends StdDeserializer<T> implements Cont
     final KeyDeserializer keyDeserializer;
     final TypeDeserializer elementTypeDeserializer;
     final JsonDeserializer<?> elementDeserializer;
+    final boolean deserializeNullAsEmpty;
 
     MaplikeDeserializer(MapLikeType mapType, KeyDeserializer keyDeserializer,
-                        TypeDeserializer elementTypeDeserializer, JsonDeserializer<?> elementDeserializer) {
+                        TypeDeserializer elementTypeDeserializer, JsonDeserializer<?> elementDeserializer,
+                        boolean deserializeNullAsEmpty) {
         super(mapType);
         this.mapType = mapType;
         this.keyComparator = createKeyComparator(mapType.getKeyType());
         this.keyDeserializer = keyDeserializer;
         this.elementTypeDeserializer = elementTypeDeserializer;
         this.elementDeserializer = elementDeserializer;
+        this.deserializeNullAsEmpty = deserializeNullAsEmpty;
     }
 
     private Comparator<Object> createKeyComparator(JavaType keyType) {
@@ -93,4 +96,5 @@ abstract class MaplikeDeserializer<T> extends StdDeserializer<T> implements Cont
         }
         return createDeserializer(keyDeser, elementTypeDeser, elementDeser);
     }
+
 }
