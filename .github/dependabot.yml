@@ -4,6 +4,8 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
+    ignore:
+      - dependency-name: "com.fasterxml.jackson*"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
