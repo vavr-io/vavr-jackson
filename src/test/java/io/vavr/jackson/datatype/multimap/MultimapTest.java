@@ -12,9 +12,11 @@ import com.fasterxml.jackson.databind.deser.ContextualKeyDeserializer;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import io.vavr.Tuple;
 import io.vavr.collection.HashMap;
+import io.vavr.collection.HashMultimap;
 import io.vavr.collection.Multimap;
 import io.vavr.control.Option;
 import io.vavr.jackson.datatype.BaseTest;
+import io.vavr.jackson.datatype.VavrModule.Settings;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -25,8 +27,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static java.util.Arrays.asList;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertIterableEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public abstract class MultimapTest extends BaseTest {
 
@@ -218,5 +219,33 @@ public abstract class MultimapTest extends BaseTest {
     void testSecondaryContextualization() throws IOException {
         MyBean bean = mapper().readValue("{\"map\":{\"Will be replaced\":[1,2,3]}}", MyBean.class);
         assertIterableEquals(Arrays.asList(1, 2, 3), bean.map.get("String").get());
+    }
+
+    static class MultimapContainer {
+        private final Multimap<String, String> multimap;
+
+        MultimapContainer(@JsonProperty("multimap") Multimap<String, String> multimap) {
+            this.multimap = multimap;
+        }
+    }
+
+    @Test
+    void testDeserializeNullAsEmptyWhenFlagEnabled() throws IOException {
+        Settings settings = new Settings().deserializeNullAsEmptyCollection(true);
+        MultimapContainer container = mapper(settings).readValue("{\"multimap\":null}", MultimapContainer.class);
+        assertEquals(HashMultimap.withSeq().empty(), container.multimap);
+    }
+
+    @Test
+    void testDeserializeNullAsEmptyWhenFlagDisabled() throws IOException {
+        Settings settings = new Settings().deserializeNullAsEmptyCollection(false);
+        MultimapContainer container = mapper(settings).readValue("{\"multimap\":null}", MultimapContainer.class);
+        assertNull(container.multimap);
+    }
+
+    @Test
+    void testDeserializeNullAsEmptyWhenDefault() throws IOException {
+        MultimapContainer container = mapper().readValue("{\"multimap\":null}", MultimapContainer.class);
+        assertNull(container.multimap);
     }
 }

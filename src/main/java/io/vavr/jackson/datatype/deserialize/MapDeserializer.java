@@ -23,6 +23,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.KeyDeserializer;
 import com.fasterxml.jackson.databind.jsontype.TypeDeserializer;
 import com.fasterxml.jackson.databind.type.MapLikeType;
@@ -37,12 +38,12 @@ class MapDeserializer extends MaplikeDeserializer<Map<?, ?>> {
     private static final long serialVersionUID = 1L;
 
     MapDeserializer(MapLikeType mapType, KeyDeserializer keyDeserializer, TypeDeserializer elementTypeDeserializer,
-                    JsonDeserializer<?> elementDeserializer) {
-        super(mapType, keyDeserializer, elementTypeDeserializer, elementDeserializer);
+                    JsonDeserializer<?> elementDeserializer, boolean deserializeNullAsEmpty) {
+        super(mapType, keyDeserializer, elementTypeDeserializer, elementDeserializer, deserializeNullAsEmpty);
     }
 
     MapDeserializer(MapDeserializer origin, KeyDeserializer keyDeserializer, TypeDeserializer elementTypeDeserializer, JsonDeserializer<?> valueDeserializer) {
-        super(origin.mapType, keyDeserializer, elementTypeDeserializer, valueDeserializer);
+        super(origin.mapType, keyDeserializer, elementTypeDeserializer, valueDeserializer, origin.deserializeNullAsEmpty);
     }
 
     @Override
@@ -80,4 +81,11 @@ class MapDeserializer extends MaplikeDeserializer<Map<?, ?>> {
         return HashMap.ofEntries(result);
     }
 
+    @Override
+    public Map<?, ?> getNullValue(DeserializationContext context) throws JsonMappingException {
+        if (deserializeNullAsEmpty) {
+            return HashMap.empty();
+        }
+        return super.getNullValue(context);
+    }
 }

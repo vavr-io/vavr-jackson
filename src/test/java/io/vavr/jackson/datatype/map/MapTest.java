@@ -21,6 +21,7 @@ import io.vavr.collection.Map;
 import io.vavr.collection.Multimap;
 import io.vavr.control.Option;
 import io.vavr.jackson.datatype.BaseTest;
+import io.vavr.jackson.datatype.VavrModule.Settings;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -329,5 +330,33 @@ public abstract class MapTest extends BaseTest {
     void testSecondaryContentContextualization() throws IOException {
         BeanWithModifiedContent bean = mapper().readValue("{\"map\":{\"1\":\"Will be replaced\"}}", BeanWithModifiedContent.class);
         assertEquals("String", bean.map.get(1).get());
+    }
+
+    static class MapContainer {
+        private final Map<String, String> map;
+
+        MapContainer(@JsonProperty("map") Map<String, String> map) {
+            this.map = map;
+        }
+    }
+
+    @Test
+    void testDeserializeNullAsEmptyWhenFlagEnabled() throws IOException {
+        Settings settings = new Settings().deserializeNullAsEmptyCollection(true);
+        MapContainer container = mapper(settings).readValue("{\"map\":null}", MapContainer.class);
+        assertEquals(HashMap.empty(), container.map);
+    }
+
+    @Test
+    void testDeserializeNullAsEmptyWhenFlagDisabled() throws IOException {
+        Settings settings = new Settings().deserializeNullAsEmptyCollection(false);
+        MapContainer container = mapper(settings).readValue("{\"map\":null}", MapContainer.class);
+        assertNull(container.map);
+    }
+
+    @Test
+    void testDeserializeNullAsEmptyWhenDefault() throws IOException {
+        MapContainer container = mapper().readValue("{\"map\":null}", MapContainer.class);
+        assertNull(container.map);
     }
 }

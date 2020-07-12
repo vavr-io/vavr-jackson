@@ -27,10 +27,7 @@ import com.fasterxml.jackson.databind.jsontype.TypeDeserializer;
 import com.fasterxml.jackson.databind.type.MapLikeType;
 import io.vavr.Tuple;
 import io.vavr.Tuple2;
-import io.vavr.collection.HashMultimap;
-import io.vavr.collection.LinkedHashMultimap;
-import io.vavr.collection.Multimap;
-import io.vavr.collection.TreeMultimap;
+import io.vavr.collection.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -42,13 +39,13 @@ class MultimapDeserializer extends MaplikeDeserializer<Multimap<?, ?>> implement
     private JsonDeserializer<?> containerDeserializer;
 
     MultimapDeserializer(MapLikeType mapType, KeyDeserializer keyDeserializer, TypeDeserializer elementTypeDeserializer,
-                         JsonDeserializer<?> elementDeserializer) {
-        super(mapType, keyDeserializer, elementTypeDeserializer, elementDeserializer);
+                         JsonDeserializer<?> elementDeserializer, boolean deserializeNullAsEmpty) {
+        super(mapType, keyDeserializer, elementTypeDeserializer, elementDeserializer, deserializeNullAsEmpty);
     }
 
     MultimapDeserializer(MultimapDeserializer origin, KeyDeserializer keyDeserializer,
                          TypeDeserializer elementTypeDeserializer, JsonDeserializer<?> elementDeserializer) {
-        super(origin.mapType, keyDeserializer, elementTypeDeserializer, elementDeserializer);
+        super(origin.mapType, keyDeserializer, elementTypeDeserializer, elementDeserializer, origin.deserializeNullAsEmpty);
         containerDeserializer = origin.containerDeserializer;
     }
 
@@ -84,5 +81,13 @@ class MultimapDeserializer extends MaplikeDeserializer<Multimap<?, ?>> implement
         }
         // default deserialization [...] -> Map
         return HashMultimap.withSeq().ofEntries(result);
+    }
+
+    @Override
+    public Multimap<?, ?> getNullValue(DeserializationContext context) throws JsonMappingException {
+        if (deserializeNullAsEmpty) {
+            return HashMultimap.withSeq().empty();
+        }
+        return super.getNullValue(context);
     }
 }
