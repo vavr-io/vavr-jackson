@@ -145,7 +145,7 @@ public class VavrDeserializers extends Deserializers.Base {
         if (raw == Lazy.class) {
             return new LazyDeserializer(type, type.getContentType(), contentTypeDeserializer, contentDeserializer);
         }
-        if (raw == Option.class) {
+        if (Option.class.isAssignableFrom(raw)) {
             return new OptionDeserializer(type, type.getContentType(), contentTypeDeserializer, contentDeserializer, settings.useOptionInPlainFormat());
         }
         return super.findReferenceDeserializer(type, config, beanDesc, contentTypeDeserializer, contentDeserializer);
