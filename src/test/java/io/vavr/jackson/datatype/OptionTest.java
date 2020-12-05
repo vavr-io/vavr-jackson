@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.vavr.control.Option;
@@ -121,5 +122,15 @@ class OptionTest extends BaseTest {
         Assertions.assertEquals("{\"f\":[\"defined\",{\"card\":{\"type\":\"hello\"}}]}", javaUtilValue);
         A restored = mapper.readValue(javaUtilValue, A.class);
         Assertions.assertEquals("hello", restored.f.get().type);
+    }
+
+    @Test
+    void testNestedOption() throws IOException {
+        ObjectMapper mapper = mapper();
+        Option<Option<String>> thing = Option.some(Option.some("abc123"));
+        String jsonString = mapper.writeValueAsString(thing);
+        Assertions.assertEquals("\"abc123\"", jsonString);
+        Option<Option<String>> restored = mapper.readValue(jsonString, new TypeReference<Option<Option<String>>>() { });
+        Assertions.assertEquals("abc123", restored.get().get());
     }
 }
