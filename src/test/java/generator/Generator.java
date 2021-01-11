@@ -76,6 +76,7 @@ public class Generator {
         cases.put("RightEitherOfTuple", Either.right(Tuple.of("A", "B")));
 
         SimplePojo.generate(cases);
+        JsonCreatorPojo.generate(cases);
         ParameterizedPojo.generate(cases);
         PolymorphicPojo.generate();
         ExtFieldsPojo.generate();
