@@ -64,7 +64,10 @@ class MultimapDeserializer extends MaplikeDeserializer<Multimap<?, ?>> implement
     @Override
     public Multimap<?, ?> deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
         final java.util.List<Tuple2<Object, Object>> result = new java.util.ArrayList<>();
-        while (p.nextToken() != JsonToken.END_OBJECT) {
+        if (p.getCurrentToken() != JsonToken.FIELD_NAME) {
+            p.nextToken();
+        }
+        while (p.getCurrentToken() != JsonToken.END_OBJECT) {
             String name = p.getCurrentName();
             Object key = keyDeserializer.deserializeKey(name, ctxt);
             p.nextToken();
@@ -72,6 +75,7 @@ class MultimapDeserializer extends MaplikeDeserializer<Multimap<?, ?>> implement
             for (Object elem : list) {
                 result.add(Tuple.of(key, elem));
             }
+            p.nextToken();
         }
         if (TreeMultimap.class.isAssignableFrom(handledType())) {
             return TreeMultimap.withSeq().ofEntries(keyComparator, result);

@@ -56,7 +56,10 @@ class MapDeserializer extends MaplikeDeserializer<Map<?, ?>> {
     @Override
     public Map<?, ?> deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
         final java.util.List<Tuple2<Object, Object>> result = new java.util.ArrayList<>();
-        while (p.nextToken() != JsonToken.END_OBJECT) {
+        if (p.getCurrentToken() != JsonToken.FIELD_NAME) {
+            p.nextToken();
+        }
+        while (p.getCurrentToken() != JsonToken.END_OBJECT) {
             String name = p.getCurrentName();
             Object key = keyDeserializer.deserializeKey(name, ctxt);
             JsonToken t = p.nextToken();
@@ -70,6 +73,7 @@ class MapDeserializer extends MaplikeDeserializer<Map<?, ?>> {
                 value = elementDeserializer.deserializeWithType(p, ctxt, elementTypeDeserializer);
             }
             result.add(Tuple.of(key, value));
+            p.nextToken();
         }
         if (SortedMap.class.isAssignableFrom(handledType())) {
             return TreeMap.ofEntries(keyComparator, result);
