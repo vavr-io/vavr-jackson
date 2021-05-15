@@ -64,6 +64,7 @@ import io.vavr.collection.Seq;
 import io.vavr.collection.Set;
 import io.vavr.control.Either;
 import io.vavr.control.Option;
+import io.vavr.control.Try;
 import io.vavr.jackson.datatype.VavrModule;
 
 public class VavrSerializers extends Serializers.Base {
@@ -81,6 +82,9 @@ public class VavrSerializers extends Serializers.Base {
         Class<?> raw = type.getRawClass();
         if (Either.class.isAssignableFrom(raw)) {
             return new EitherSerializer(type);
+        }
+        if (Try.class.isAssignableFrom(raw)) {
+            return new TrySerializer(type);
         }
 
         if (Tuple0.class.isAssignableFrom(raw)) {

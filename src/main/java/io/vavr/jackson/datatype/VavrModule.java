@@ -21,6 +21,7 @@ package io.vavr.jackson.datatype;
 
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import io.vavr.jackson.datatype.deserialize.VavrDeserializers;
+import io.vavr.jackson.datatype.mixins.StackTraceElementMixin;
 import io.vavr.jackson.datatype.serialize.VavrSerializers;
 
 public class VavrModule extends SimpleModule {
@@ -64,8 +65,11 @@ public class VavrModule extends SimpleModule {
     @Override
     public void setupModule(SetupContext context) {
         super.setupModule(context);
+
         context.addSerializers(new VavrSerializers(settings));
         context.addDeserializers(new VavrDeserializers(settings));
         context.addTypeModifier(new VavrTypeModifier());
+
+        context.setMixInAnnotations(StackTraceElement.class, StackTraceElementMixin.class);
     }
 }
