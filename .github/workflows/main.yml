@@ -24,6 +24,7 @@ jobs:
         ./gradlew clean check --refresh-dependencies -PfasterxmlVersion=2.10.4
         ./gradlew clean check --refresh-dependencies -PfasterxmlVersion=2.11.3
         ./gradlew clean check --refresh-dependencies -PfasterxmlVersion=2.12.3
+        ./gradlew clean check --refresh-dependencies -PfasterxmlVersion=2.13.4
         ./gradlew clean check --refresh-dependencies -PfasterxmlVersion=2.14.1
         ./gradlew codeCoverageReport
   validation:
