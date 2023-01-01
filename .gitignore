@@ -5,4 +5,7 @@ out
 *.iml
 *.ipr
 *.iws
+.vscode/
+bin
 .DS_Store
+
