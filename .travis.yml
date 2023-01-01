@@ -5,6 +5,7 @@ jdk:
   - openjdk11
   - openjdk14
   - openjdk17
+  - openjdk19
 
 env:
   global:
