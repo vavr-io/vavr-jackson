@@ -4,8 +4,7 @@ plugins {
     id 'signing'
     id 'jacoco'
     id 'checkstyle'
-    id 'net.researchgate.release' version '3.0.2'
-    id 'io.github.gradle-nexus.publish-plugin' version '1.1.0'
+    id 'io.github.gradle-nexus.publish-plugin' version "1.1.0"
 }
 
 sourceCompatibility = JavaVersion.VERSION_1_8
@@ -40,6 +39,10 @@ test {
     useJUnitPlatform()
 }
 
+tasks.named('wrapper') {
+    distributionType = Wrapper.DistributionType.ALL
+}
+
 task codeCoverageReport(type: JacocoReport) {
     executionData fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec")
 
@@ -47,12 +50,6 @@ task codeCoverageReport(type: JacocoReport) {
 
     reports {
         xml.destination file("${buildDir}/reports/jacoco/report.xml")
-    }
-}
-
-tasks.named('jacocoTestReport') {
-    reports {
-        xml.enabled = true
     }
 }
 
@@ -67,12 +64,6 @@ tasks.named('jar') {
     }
 }
 
-tasks.register('testSourcesJar', Jar) {
-    from sourceSets.test.allSource
-    archiveClassifier = 'test-sources'
-}
-
-
 codeCoverageReport.dependsOn {
     project.test
 }
@@ -85,7 +76,6 @@ jar {
     }
 }
 
-// What we want to publish
 publishing {
     repositories {
         maven {
@@ -100,8 +90,6 @@ publishing {
     publications {
         maven(MavenPublication) {
             from components.java
-            // vavr also publishes a test sources jar
-            artifact tasks.named('testSourcesJar')
             pom {
                 name = project.name
                 description = "Jackson datatype module for Vavr.io"
@@ -155,22 +143,10 @@ nexusPublishing {
     }
 }
 
-
-tasks.named('wrapper') {
-    distributionType = Wrapper.DistributionType.ALL
-}
-
-
-// Configure the "release" plugin
-tasks.named('afterReleaseBuild') {
-    dependsOn "publishToSonatype", "closeAndReleaseSonatypeStagingRepository"
-}
-
-// Remove  warning: no comment
+// Skip warnings when building with a higher version of java than 8
 if (JavaVersion.current().isJava8Compatible()) {
     allprojects {
-
-        def javadocs = tasks.withType(Javadoc).tap {
+        tasks.withType(Javadoc).tap {
             configureEach {
                 options.addStringOption('Xdoclint:none', '-quiet')
             }
