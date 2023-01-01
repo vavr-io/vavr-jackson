@@ -115,6 +115,11 @@ publishing {
                         name = "Mincong Huang"
                         email = "mincong.h@gmail.com"
                     }
+                    developer {
+                        id = "bmscomp"
+                        name = "Said Boudjelda"
+                        email = "bmscomp@gmail.com"
+                    }
                 }
 
                 scm {
