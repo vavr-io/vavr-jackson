@@ -46,10 +46,7 @@ task codeCoverageReport(type: JacocoReport) {
     sourceSets sourceSets.main
 
     reports {
-        xml.enabled = true
         xml.destination file("${buildDir}/reports/jacoco/report.xml")
-        html.enabled = true
-        csv.enabled = false
     }
 }
 
@@ -167,4 +164,16 @@ tasks.named('wrapper') {
 // Configure the "release" plugin
 tasks.named('afterReleaseBuild') {
     dependsOn "publishToSonatype", "closeAndReleaseSonatypeStagingRepository"
+}
+
+// Remove  warning: no comment
+if (JavaVersion.current().isJava8Compatible()) {
+    allprojects {
+
+        def javadocs = tasks.withType(Javadoc).tap {
+            configureEach {
+                options.addStringOption('Xdoclint:none', '-quiet')
+            }
+        }
+    }
 }
