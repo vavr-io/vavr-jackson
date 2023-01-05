@@ -1,9 +1,11 @@
 plugins {
     id 'java'
-    id 'maven'
+    id 'maven-publish'
+    id 'signing'
     id 'jacoco'
     id 'checkstyle'
-    id 'com.bmuschko.nexus' version '2.3.1'
+    id 'net.researchgate.release' version "${researchgateRelease}"
+    id 'io.github.gradle-nexus.publish-plugin' version "${nexusPublish}"
 }
 
 sourceCompatibility = JavaVersion.VERSION_1_8
@@ -20,19 +22,27 @@ repositories {
 }
 
 dependencies {
-    compile "io.vavr:vavr:${vavrVersion}"
-    compile "com.fasterxml.jackson.core:jackson-databind:${fasterxmlVersion}"
-    testCompile "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
+    implementation "io.vavr:vavr:${vavrVersion}"
+    implementation "com.fasterxml.jackson.core:jackson-databind:${fasterxmlVersion}"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junitJupiterVersion}"
-    testCompile "javax.xml.bind:jaxb-api:${jaxbVersion}"
-    testCompile "com.squareup:javapoet:${javapoetVersion}"
-    testCompile "com.fasterxml.jackson.dataformat:jackson-dataformat-csv:${fasterxmlVersion}"
-    testCompile "com.fasterxml.jackson.dataformat:jackson-dataformat-xml:${fasterxmlVersion}"
-    testCompile "com.fasterxml.jackson.datatype:jackson-datatype-joda:${fasterxmlVersion}"
-    testCompile "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${fasterxmlVersion}"
-    testCompile "com.fasterxml.jackson.datatype:jackson-datatype-jdk8:${fasterxmlVersion}"
-    testCompile "com.fasterxml.jackson.module:jackson-module-jaxb-annotations:${fasterxmlVersion}"
-    testCompile "com.fasterxml.jackson.module:jackson-module-scala_2.11:${fasterxmlVersion}"
+    testImplementation "javax.xml.bind:jaxb-api:${jaxbVersion}"
+    testImplementation "com.squareup:javapoet:${javapoetVersion}"
+    testImplementation "com.fasterxml.jackson.dataformat:jackson-dataformat-csv:${fasterxmlVersion}"
+    testImplementation "com.fasterxml.jackson.dataformat:jackson-dataformat-xml:${fasterxmlVersion}"
+    testImplementation "com.fasterxml.jackson.datatype:jackson-datatype-joda:${fasterxmlVersion}"
+    testImplementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${fasterxmlVersion}"
+    testImplementation "com.fasterxml.jackson.datatype:jackson-datatype-jdk8:${fasterxmlVersion}"
+    testImplementation "com.fasterxml.jackson.module:jackson-module-jaxb-annotations:${fasterxmlVersion}"
+    testImplementation "com.fasterxml.jackson.module:jackson-module-scala_2.11:${fasterxmlVersion}"
+}
+
+test {
+    useJUnitPlatform()
+}
+
+tasks.named('wrapper') {
+    distributionType = Wrapper.DistributionType.ALL
 }
 
 task codeCoverageReport(type: JacocoReport) {
@@ -41,10 +51,18 @@ task codeCoverageReport(type: JacocoReport) {
     sourceSets sourceSets.main
 
     reports {
-        xml.enabled = true
         xml.destination file("${buildDir}/reports/jacoco/report.xml")
-        html.enabled = true
-        csv.enabled = false
+    }
+}
+
+tasks.named('check') {
+    dependsOn jacocoTestReport
+    dependsOn javadoc
+}
+
+tasks.named('jar') {
+    manifest {
+        attributes('Automatic-Module-Name': 'io.vavr')
     }
 }
 
@@ -60,49 +78,85 @@ jar {
     }
 }
 
-modifyPom {
-    project {
-        name 'Vavr-Jackson'
-        description 'Jackson datatype module for Vavr.io'
-        url 'http://vavr.io'
-        inceptionYear '2016'
-
-        scm {
-            connection 'scm:git:git@github.com:vavr-io/vavr-jackson.git'
-            developerConnection 'scm:git:git@github.com:vavr-io/vavr-jackson.git'
-            url 'git@github.com:vavr-io/vavr-jackson.git'
+publishing {
+    repositories {
+        maven {
+            // A test repository which can be used to
+            // verify what is going to be uploaded by
+            // running ./gradlew publishAllPublicationsToTestRepo
+            name = "testRepo"
+            url = "${buildDir}/repo"
         }
+    }
 
-        licenses {
-            license {
-                name 'The Apache Software License, Version 2.0'
-                url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-            }
-        }
+    publications {
+        maven(MavenPublication) {
+            from components.java
+            pom {
+                name = project.name
+                description = "Jackson datatype module for Vavr.io"
+                url = 'https://www.vavr.io'
+                inceptionYear = "2016"
 
-        developers {
-            developer {
-                id 'ruslansennov'
-                name 'Ruslan Sennov'
-                email 'ruslan.sennov@gmail.com'
-            }
-            developer {
-                id 'minconghuang'
-                name 'Mincong Huang'
-                email 'mincong.h@gmail.com'
+                licenses {
+                    license {
+                        name = "The Apache Software License, Version 2.0"
+                        url = "https://www.apache.org/licenses/LICENSE-2.0.txt"
+                    }
+                }
+                developers {
+                    developer {
+                        id = "ruslansennov"
+                        name = "Ruslan Sennov"
+                        email = "ruslan.sennov@gmail.com"
+                    }
+                    developer {
+                        id = "minconghuang"
+                        name = "Mincong Huang"
+                        email = "mincong.h@gmail.com"
+                    }
+                    developer {
+                        id = "bmscomp"
+                        name = "Said Boudjelda"
+                        email = "bmscomp@gmail.com"
+                    }
+                }
+
+                scm {
+                    connection = "scm:git:git@github.com:vavr-io/vavr-jackson.git"
+                    developerConnection = "scm:git:git@github.com:vavr-io/vavr-jackson.git"
+                    url = "git@github.com:vavr-io/vavr-jackson.git"
+                }
             }
         }
     }
 }
 
-nexus {
-    sign = !version.endsWith("SNAPSHOT")
+// Signing configuration mandatory for Maven Central
+signing {
+    required { !version.endsWith("-SNAPSHOT") }
+    publishing.publications.configureEach {
+        sign(it)
+    }
 }
 
-test {
-    useJUnitPlatform()
+// Configure the publishing repositories for Maven Central
+nexusPublishing {
+    repositories {
+        sonatype {
+            username.set(providers.systemProperty("ossrhUsername").orElse("").forUseAtConfigurationTime())
+            password.set(providers.systemProperty("ossrhPassword").orElse("").forUseAtConfigurationTime())
+        }
+    }
 }
 
-tasks.named('wrapper') {
-    distributionType = Wrapper.DistributionType.ALL
+// Skip warnings when building with a higher version of java than 8
+if (JavaVersion.current().isJava8Compatible()) {
+    allprojects {
+        tasks.withType(Javadoc).tap {
+            configureEach {
+                options.addStringOption('Xdoclint:none', '-quiet')
+            }
+        }
+    }
 }

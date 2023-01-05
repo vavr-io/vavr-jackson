@@ -1,7 +1,29 @@
-build
-out
-.gradle
-.idea
+# -- Mac OS
+.DS_Store
+*.bak
+
+# -- Gradle
+.gradle/
+build/
+
+# -- Eclipse
+.classpath
+.project
+.settings
+bin/
+
+# -- IntelliJ IDEA
+.idea/
+out/
 *.iml
+
+# -- Visual Studio Code
+.vscode/
+
+# -- Emacs
+.#*
+
+# -- Others
 *.ipr
 *.iws
+*.swp
