@@ -48,7 +48,8 @@ class CharSeqDeserializer extends StdDeserializer<CharSeq> implements Resolvable
         if (obj instanceof String) {
             return CharSeq.of((String) obj);
         } else {
-            throw ctxt.wrongTokenException(p, JsonToken.VALUE_STRING, "CharSeq can only be deserialized from String");
+            throw ctxt.wrongTokenException(p, (JavaType) null,
+                JsonToken.VALUE_STRING, "CharSeq can only be deserialized from String");
         }
     }
 
