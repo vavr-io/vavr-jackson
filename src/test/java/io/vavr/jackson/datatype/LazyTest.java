@@ -16,8 +16,9 @@ import java.time.LocalDate;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class LazyTest extends BaseTest {
+
     @Test
-    void test1() throws IOException {
+    void shouldSerializeAndDeserializeLazyWithValue() throws IOException {
         Lazy<?> src = Lazy.of(() -> 1);
         String json = mapper().writer().writeValueAsString(src);
         assertEquals("1", json);
@@ -26,7 +27,7 @@ public class LazyTest extends BaseTest {
     }
 
     @Test
-    void test2() throws IOException {
+    void shouldSerializeAndDeserializeLazyWithNullValue() throws IOException {
         Lazy<?> src = Lazy.of(() -> null);
         String json = mapper().writer().writeValueAsString(src);
         assertEquals("null", json);
@@ -35,17 +36,16 @@ public class LazyTest extends BaseTest {
     }
 
     @Test
-    void testTwoLevelLazy() throws IOException {
+    void shouldSerializeAndDeserializeTwoLevelLazy() throws IOException {
         Lazy<Lazy<Integer>> src = Lazy.of(() -> Lazy.of(() -> 1));
         String json = mapper().writeValueAsString(src);
         assertEquals("1", json);
-        Lazy<?> restored = mapper().readValue(json, new TypeReference<Lazy<Lazy<Integer>>>() {
-        });
+        Lazy<?> restored = mapper().readValue(json, new TypeReference<Lazy<Lazy<Integer>>>() {});
         assertEquals(src, restored);
     }
 
     @Test
-    void testSerializeWithoutContext() throws IOException {
+    void shouldSerializeAndDeserializeLazyWithLocalDateWithoutContext() throws IOException {
         // Given a lazy date
         Lazy<?> src = Lazy.of(() -> LocalDate.of(2019, 12, 25));
 
@@ -58,10 +58,10 @@ public class LazyTest extends BaseTest {
         assertEquals("[2019,12,25]", json);
 
         // And the deserialization is successful
-        Lazy<?> src2 = mapper.readValue(json, new TypeReference<Lazy<LocalDate>>() {
-        });
+        Lazy<?> src2 = mapper.readValue(json, new TypeReference<Lazy<LocalDate>>() {});
         assertEquals(src, src2);
     }
+
 
     static class FrenchDate {
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
