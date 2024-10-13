@@ -34,6 +34,27 @@ dependencies {
     testImplementation "com.fasterxml.jackson.module:jackson-module-scala_2.11:${fasterxmlVersion}"
 }
 
+tasks.register('codeCoverageReport', JacocoReport) {
+    dependsOn tasks.test
+    executionData.setFrom(fileTree(project.rootDir).include("**/build/jacoco/*.exec"))
+
+    sourceDirectories.setFrom(files(sourceSets.main.allSource.srcDirs))
+    classDirectories.setFrom(fileTree("build/classes/java/main") {
+        exclude '**/SomeExcludedClass.class'
+    })
+
+    reports {
+        xml.required.set(true)
+        xml.outputLocation.set(file("${buildDir}/reports/jacoco/report.xml"))
+        html.required.set(true)
+        csv.required.set(false)
+    }
+}
+
+tasks.test {
+    finalizedBy tasks.codeCoverageReport
+}
+
 jar {
     manifest {
         attributes(
