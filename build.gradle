@@ -26,6 +26,7 @@ dependencies {
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junitJupiterVersion}"
     testImplementation "javax.xml.bind:jaxb-api:${jaxbVersion}"
     testImplementation "com.squareup:javapoet:${javapoetVersion}"
+    testImplementation "com.fasterxml.jackson.module:jackson-module-jaxb-annotations:${fasterxmlVersion}"
     testImplementation "com.fasterxml.jackson.dataformat:jackson-dataformat-csv:${fasterxmlVersion}"
     testImplementation "com.fasterxml.jackson.dataformat:jackson-dataformat-xml:${fasterxmlVersion}"
     testImplementation "com.fasterxml.jackson.datatype:jackson-datatype-joda:${fasterxmlVersion}"
