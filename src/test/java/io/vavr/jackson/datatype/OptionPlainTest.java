@@ -6,23 +6,25 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 class OptionPlainTest extends BaseTest {
 
     @Test
-    void test1() throws IOException {
+    void shouldSerializeAndDeserializeDefinedOptionPlainValue() throws IOException {
         Option<?> src = Option.of(1);
         String json = mapper().writer().writeValueAsString(src);
-        Assertions.assertEquals("1", json);
+        assertEquals("1", json);
         Option<?> restored = mapper().readValue(json, Option.class);
-        Assertions.assertEquals(src, restored);
+        assertEquals(src, restored);
     }
 
     @Test
-    void test2() throws IOException {
+    void shouldSerializeAndDeserializeNoneOptionPlainValue() throws IOException {
         Option<?> src = Option.none();
         String json = mapper().writer().writeValueAsString(src);
-        Assertions.assertEquals("null", json);
+        assertEquals("null", json);
         Option<?> restored = mapper().readValue(json, Option.class);
-        Assertions.assertEquals(src, restored);
+        assertEquals(src, restored);
     }
 }
