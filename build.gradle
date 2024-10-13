@@ -1,7 +1,7 @@
 plugins {
     id 'java'
-    id 'maven-publish'
     id 'jacoco'
+    id 'maven-publish'
     id 'checkstyle'
     id 'com.bmuschko.nexus' version '2.3.1'
 }
@@ -57,49 +57,6 @@ jar {
                 'Automatic-Module-Name': 'io.vavr.jackson'
         )
     }
-}
-
-modifyPom {
-    project {
-        name 'Vavr-Jackson'
-        description 'Jackson datatype module for Vavr.io'
-        url 'http://vavr.io'
-        inceptionYear '2016'
-
-        scm {
-            connection 'scm:git:git@github.com:vavr-io/vavr-jackson.git'
-            developerConnection 'scm:git:git@github.com:vavr-io/vavr-jackson.git'
-            url 'git@github.com:vavr-io/vavr-jackson.git'
-        }
-
-        licenses {
-            license {
-                name 'The Apache Software License, Version 2.0'
-                url 'https://www.apache.org/licenses/LICENSE-2.0.txt'
-            }
-        }
-
-        developers {
-            developer {
-                id 'ruslansennov'
-                name 'Ruslan Sennov'
-                email 'ruslan.sennov@gmail.com'
-            }
-            developer {
-                id 'minconghuang'
-                name 'Mincong Huang'
-                email 'mincong.h@gmail.com'
-            }
-            developer {
-                id 'pivovarit'
-                name 'Grzegorz Piwowarek'
-                email 'gpiwowarek@gmail.com'
-        }
-    }
-}
-
-nexus {
-    sign = !version.endsWith("SNAPSHOT")
 }
 
 test {
