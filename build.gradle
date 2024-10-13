@@ -10,7 +10,7 @@ sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
 group = 'io.vavr'
-version = '0.10.3'
+version = '0.10.5-SNAPSHOT'
 
 repositories {
     mavenCentral()

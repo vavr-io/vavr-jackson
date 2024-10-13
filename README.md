@@ -1,11 +1,10 @@
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.vavr/vavr-jackson/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.vavr/vavr-jackson)
 [![Build Status](https://travis-ci.org/vavr-io/vavr-jackson.svg?branch=master)](https://travis-ci.org/vavr-io/vavr-jackson)
 [![Coverage Status](https://codecov.io/github/vavr-io/vavr-jackson/coverage.svg?branch=master)](https://codecov.io/github/vavr-io/vavr-jackson?branch=master)
-[![Gitter Chat](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/vavr-io/vavr)
 
 # vavr-jackson
 
-Jackson datatype module for [Vavr](http://vavr.io/) library
+Jackson datatype module for [Vavr](https://vavr.io/) library
 
 ## Usage
 
@@ -15,14 +14,14 @@ Jackson datatype module for [Vavr](http://vavr.io/) library
 <dependency>
   <groupId>io.vavr</groupId>
   <artifactId>vavr-jackson</artifactId>
-  <version>0.10.2</version>
+  <version>0.10.3</version>
 </dependency>
 ```
 
 ### Gradle
 
 ```groovy
-compile("io.vavr:vavr-jackson:0.10.2")
+compile("io.vavr:vavr-jackson:0.10.3")
 ```
 
 ### Registering module
