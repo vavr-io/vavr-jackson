@@ -21,6 +21,9 @@ jobs:
       matrix:
         os: [ ubuntu-latest, macos-latest ]
         java: [ 8, 11, 17, 19, 21, 22, 23 ]
+        exclude:
+          - java: 8
+            os: macos-latest
       fail-fast: false
     runs-on: ${{ matrix.os }}
     steps:
