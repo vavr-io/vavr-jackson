@@ -1,7 +1,5 @@
 package io.vavr.jackson.datatype;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -11,10 +9,12 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 class CharSeqTest extends BaseTest {
 
     @Test
-    void test1() throws IOException {
+    void shouldSerializeAndDeserializeCharSeq() throws IOException {
         ObjectWriter writer = mapper().writer();
         CharSeq src = CharSeq.of("abc");
         String json = writer.writeValueAsString(src);
@@ -24,7 +24,7 @@ class CharSeqTest extends BaseTest {
     }
 
     @Test
-    void test2() throws IOException {
+    void shouldSerializeAndDeserializeWrappedCharSeqAsObject() throws IOException {
         ObjectMapper mapper = mapper().addMixIn(CharSeq.class, WrapperObject.class);
         CharSeq src = CharSeq.of("abc");
         String plainJson = mapper().writeValueAsString(src);
@@ -35,7 +35,7 @@ class CharSeqTest extends BaseTest {
     }
 
     @Test
-    void test3() throws IOException {
+    void shouldSerializeAndDeserializeWrappedCharSeqAsArray() throws IOException {
         ObjectMapper mapper = mapper().addMixIn(CharSeq.class, WrapperArray.class);
         CharSeq src = CharSeq.of("abc");
         String plainJson = mapper().writeValueAsString(src);
@@ -46,7 +46,7 @@ class CharSeqTest extends BaseTest {
     }
 
     @Test
-    void test4() {
+    void shouldThrowExceptionWhenDeserializingInvalidCharSeq() {
         assertThrows(JsonMappingException.class, () -> mapper().readValue("42", CharSeq.class));
     }
 }
