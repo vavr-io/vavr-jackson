@@ -19,7 +19,6 @@ import io.vavr.Function5;
 import io.vavr.Function6;
 import io.vavr.Function7;
 import io.vavr.Function8;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
