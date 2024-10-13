@@ -1,6 +1,6 @@
 plugins {
     id 'java'
-    id 'maven'
+    id 'maven-publish'
     id 'jacoco'
     id 'checkstyle'
     id 'com.bmuschko.nexus' version '2.3.1'
@@ -75,7 +75,7 @@ modifyPom {
         licenses {
             license {
                 name 'The Apache Software License, Version 2.0'
-                url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                url 'https://www.apache.org/licenses/LICENSE-2.0.txt'
             }
         }
 
@@ -90,6 +90,10 @@ modifyPom {
                 name 'Mincong Huang'
                 email 'mincong.h@gmail.com'
             }
+            developer {
+                id 'pivovarit'
+                name 'Grzegorz Piwowarek'
+                email 'gpiwowarek@gmail.com'
         }
     }
 }
