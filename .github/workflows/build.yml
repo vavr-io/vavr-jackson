@@ -67,7 +67,7 @@ jobs:
     needs: [ test ]
     steps:
       - run: |
-          if [[ "${{ needs.build.result }}" == "success" || "${{ needs.build.result }}" == "skipped" ]]; then
+          if [[ "${{ needs.test.result }}" == "success" || "${{ needs.test.result }}" == "skipped" ]]; then
             exit 0
           else
             exit 1
