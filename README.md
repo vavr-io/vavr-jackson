@@ -1,10 +1,12 @@
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.vavr/vavr-jackson/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.vavr/vavr-jackson)
-[![Build Status](https://travis-ci.org/vavr-io/vavr-jackson.svg?branch=master)](https://travis-ci.org/vavr-io/vavr-jackson)
-[![Coverage Status](https://codecov.io/github/vavr-io/vavr-jackson/coverage.svg?branch=master)](https://codecov.io/github/vavr-io/vavr-jackson?branch=master)
-
 # vavr-jackson
 
+[![Build](https://github.com/vavr-io/vavr-jackson/actions/workflows/build.yml/badge.svg)](https://github.com/vavr-io/vavr-jackson/actions/workflows/build.yml)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.vavr/vavr-jackson/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.vavr/vavr-jackson)
+[![Coverage Status](https://codecov.io/github/vavr-io/vavr-jackson/coverage.svg?branch=master)](https://codecov.io/github/vavr-io/vavr-jackson?branch=master)
+
 Jackson datatype module for [Vavr](https://vavr.io/) library
+
+[![Stargazers over time](https://starchart.cc/vavr-io/vavr-jackson.svg?variant=adaptive)](https://starchart.cc/vavr-io/vavr-jackson)
 
 ## Usage
 
