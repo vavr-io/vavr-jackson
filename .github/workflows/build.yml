@@ -59,3 +59,16 @@ jobs:
       - run: |
           ./gradlew clean check --refresh-dependencies -PfasterxmlVersion=${{ matrix.fasterxmlVersion }}
           ./gradlew codeCoverageReport
+
+  results:
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    name: Verification Results
+    needs: [ test ]
+    steps:
+      - run: |
+          if [[ "${{ needs.build.result }}" == "success" || "${{ needs.build.result }}" == "skipped" ]]; then
+            exit 0
+          else
+            exit 1
+          fi
