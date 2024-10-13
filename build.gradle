@@ -3,11 +3,11 @@ plugins {
     id 'jacoco'
     id 'maven-publish'
     id 'checkstyle'
-    id 'com.bmuschko.nexus' version '2.3.1'
 }
 
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+}
 
 group = 'io.vavr'
 version = '0.10.5-SNAPSHOT'
@@ -20,35 +20,35 @@ repositories {
 }
 
 dependencies {
-    compile "io.vavr:vavr:${vavrVersion}"
-    compile "com.fasterxml.jackson.core:jackson-databind:${fasterxmlVersion}"
-    testCompile "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
+    implementation "io.vavr:vavr:${vavrVersion}"
+    implementation "com.fasterxml.jackson.core:jackson-databind:${fasterxmlVersion}"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junitJupiterVersion}"
-    testCompile "javax.xml.bind:jaxb-api:${jaxbVersion}"
-    testCompile "com.squareup:javapoet:${javapoetVersion}"
-    testCompile "com.fasterxml.jackson.dataformat:jackson-dataformat-csv:${fasterxmlVersion}"
-    testCompile "com.fasterxml.jackson.dataformat:jackson-dataformat-xml:${fasterxmlVersion}"
-    testCompile "com.fasterxml.jackson.datatype:jackson-datatype-joda:${fasterxmlVersion}"
-    testCompile "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${fasterxmlVersion}"
-    testCompile "com.fasterxml.jackson.datatype:jackson-datatype-jdk8:${fasterxmlVersion}"
-    testCompile "com.fasterxml.jackson.module:jackson-module-scala_2.11:${fasterxmlVersion}"
+    testImplementation "javax.xml.bind:jaxb-api:${jaxbVersion}"
+    testImplementation "com.squareup:javapoet:${javapoetVersion}"
+    testImplementation "com.fasterxml.jackson.dataformat:jackson-dataformat-csv:${fasterxmlVersion}"
+    testImplementation "com.fasterxml.jackson.dataformat:jackson-dataformat-xml:${fasterxmlVersion}"
+    testImplementation "com.fasterxml.jackson.datatype:jackson-datatype-joda:${fasterxmlVersion}"
+    testImplementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${fasterxmlVersion}"
+    testImplementation "com.fasterxml.jackson.datatype:jackson-datatype-jdk8:${fasterxmlVersion}"
+    testImplementation "com.fasterxml.jackson.module:jackson-module-scala_2.11:${fasterxmlVersion}"
 }
 
-task codeCoverageReport(type: JacocoReport) {
-    executionData fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec")
+tasks.register('codeCoverageReport', JacocoReport) {
+    executionData.setFrom(fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec"))
 
-    sourceSets sourceSets.main
+    sourceSets(sourceSets.main.get())
 
     reports {
-        xml.enabled = true
-        xml.destination file("${buildDir}/reports/jacoco/report.xml")
-        html.enabled = true
-        csv.enabled = false
+        xml.required.set(true)
+        xml.outputLocation.set(file("${buildDir}/reports/jacoco/report.xml"))
+        html.required.set(true)
+        csv.required.set(false)
     }
 }
 
-codeCoverageReport.dependsOn {
-    project.test
+tasks.named('codeCoverageReport') {
+    dependsOn(tasks.named('test'))
 }
 
 jar {
