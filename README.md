@@ -99,3 +99,9 @@ repositories {
     }
 }
 ```
+
+---
+
+```bash
+jwebserver -p 9000 -d "$(pwd)/build/reports/problems/"
+```
