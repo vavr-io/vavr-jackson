@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.OptBoolean;
 import java.util.List;
 import java.util.Map;
 
+import java.util.Objects;
+
 //TODO replace with record in the future, currently not supported by jackson
 public class ParentJava {
 
@@ -24,8 +26,9 @@ public class ParentJava {
   private ParentJava() {
   }
 
-  private ParentJava(List<String> list, Map<String, String> map, 
-          Map<String, Map<String, String>> deepMap, Child child) {
+  private ParentJava(
+    List<String> list, Map<String, String> map, 
+    Map<String, Map<String, String>> deepMap, Child child) {
     this.list = list;
     this.map = map;
     this.deepMap = deepMap;
@@ -36,22 +39,16 @@ public class ParentJava {
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
-    
     ParentJava that = (ParentJava) o;
-    
-    if (list != null ? !list.equals(that.list) : that.list != null) return false;
-    if (map != null ? !map.equals(that.map) : that.map != null) return false;
-    if (deepMap != null ? !deepMap.equals(that.deepMap) : that.deepMap != null) return false;
-    return child != null ? child.equals(that.child) : that.child == null;
+    return Objects.equals(list, that.list) &&
+            Objects.equals(map, that.map) &&
+            Objects.equals(deepMap, that.deepMap) &&
+            Objects.equals(child, that.child);
   }
 
   @Override
   public int hashCode() {
-    int result = list != null ? list.hashCode() : 0;
-    result = 31 * result + (map != null ? map.hashCode() : 0);
-    result = 31 * result + (deepMap != null ? deepMap.hashCode() : 0);
-    result = 31 * result + (child != null ? child.hashCode() : 0);
-    return result;
+    return Objects.hash(list, map, deepMap, child);
   }
 
   @Override

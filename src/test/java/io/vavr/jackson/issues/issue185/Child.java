@@ -1,10 +1,14 @@
 package io.vavr.jackson.issues.issue185;
 
 import java.util.Objects;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Child {
-  String name;
-  String description;
+  @JsonProperty("name")
+  private String name;
+  
+  @JsonProperty("description")
+  private String description;
 
   private Child() {
     // Private no-args constructor

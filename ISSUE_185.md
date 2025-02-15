@@ -14,7 +14,7 @@ ParentJava {
     deepMap={
         first_key={first_nested_key=first_nested_value, first_overridden_nested_key=first_overridden_nested_value}, 
         second_key={second_nested_key=second_nested_value}, third_key={third_nested_key=third_nested_value}}, 
-    child=Child{name='null', description='null'}
+    child=Child{name='overridden_name', description='original_description'}
 }
 
 Issue185Test > shouldMergeVavrTypes() FAILED
@@ -25,7 +25,7 @@ Issue185Test > shouldMergeVavrTypes() FAILED
     deepMap=HashMap(
         (third_key, HashMap((third_nested_key, third_nested_value))), 
         (first_key, HashMap((first_overridden_nested_key, first_overridden_nested_value)))), 
-    child=Child{name='null', description='null'}}
+    child=Child{name='overridden_name', description='original_description'}}
 > but was: 
 <ParentVavr{
     list=List(first, third), 
@@ -33,7 +33,7 @@ Issue185Test > shouldMergeVavrTypes() FAILED
     deepMap=HashMap(
         (third_key, HashMap((third_nested_key, third_nested_value))), 
         (first_key, HashMap((first_nested_key, first_nested_value), (first_overridden_nested_key, first_overridden_nested_value))), (second_key, HashMap((second_nested_key, second_nested_value)))), 
-    child=Child{name='null', description='null'}}
+    child=Child{name='overridden_name', description='original_description'}}
 >
 at app//org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
 at app//org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
