@@ -1,4 +1,4 @@
-package io.vavr.jackson.issues;
+package io.vavr.jackson.issues.issue185;
 
 import java.io.IOException;
 

@@ -1,9 +1,10 @@
-package io.vavr.jackson.issues;
+package io.vavr.jackson.issues.issue185;
 
 import com.fasterxml.jackson.annotation.JsonMerge;
 import com.fasterxml.jackson.annotation.OptBoolean;
 import io.vavr.collection.List;
 import io.vavr.collection.Map;
+
 import java.util.Objects;
 
 //TODO replace with record in the future, currently not supported by jackson
