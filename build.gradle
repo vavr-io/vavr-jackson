@@ -57,7 +57,8 @@ tasks.register('codeCoverageReport', JacocoReport) {
 tasks.test {
     finalizedBy tasks.codeCoverageReport
     testLogging {
-        events "failed"
+        events "passed", "skipped", "failed"
+        showStandardStreams = true
         exceptionFormat "full"
         showExceptions true
         showCauses true

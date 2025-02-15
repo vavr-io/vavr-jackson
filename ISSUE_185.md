@@ -8,6 +8,15 @@ jwebserver -p 9000 -d "$(pwd)/build/reports/problems/"
 ```
 
 ```bash
+ParentJava {
+    list=[first, third], 
+    map={first_key=first_overridden_value, second_key=second_value, third_key=third_value}, 
+    deepMap={
+        first_key={first_nested_key=first_nested_value, first_overridden_nested_key=first_overridden_nested_value}, 
+        second_key={second_nested_key=second_nested_value}, third_key={third_nested_key=third_nested_value}}, 
+    child=Child{name='null', description='null'}
+}
+
 Issue185Test > shouldMergeVavrTypes() FAILED
     org.opentest4j.AssertionFailedError: expected: 
 <ParentVavr{

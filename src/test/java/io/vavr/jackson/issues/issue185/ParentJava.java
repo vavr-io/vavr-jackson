@@ -56,7 +56,7 @@ public class ParentJava {
 
   @Override
   public String toString() {
-    return "ParentVavr{" +
+    return "ParentJava{" +
            "list=" + list +
            ", map=" + map +
            ", deepMap=" + deepMap +
