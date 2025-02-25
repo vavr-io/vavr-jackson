@@ -288,8 +288,8 @@ public class ComplexClass implements Serializable {
                     42.42d,
                     42.42f,
                     '4',
-                    new Integer(42).byteValue(),
-                    new Integer(42).shortValue(),
+                    Integer.valueOf(42).byteValue(),
+                    Integer.valueOf(42).shortValue(),
                     false,
                     "42");
         }
@@ -300,8 +300,8 @@ public class ComplexClass implements Serializable {
                     87.87d,
                     87.87f,
                     '8',
-                    new Integer(87).byteValue(),
-                    new Integer(87).shortValue(),
+                    Integer.valueOf(87).byteValue(),
+                    Integer.valueOf(87).shortValue(),
                     false,
                     "87");
         }

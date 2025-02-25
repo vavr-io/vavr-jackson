@@ -1,0 +1,21 @@
+{
+    "list": [
+      "first",
+      "third"
+    ],
+    "map": {
+      "first_key": "first_overridden_value",
+      "third_key": "third_value"
+    },
+    "deepMap": {
+      "first_key": {
+        "first_overridden_nested_key": "first_overridden_nested_value"
+      },
+      "third_key": {
+        "third_nested_key": "third_nested_value"
+      }
+    },
+    "child": {
+      "name": "overridden_name"
+    }
+  }

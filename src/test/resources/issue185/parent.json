@@ -1,0 +1,22 @@
+{
+    "list": [
+      "first",
+      "second"
+    ],
+    "map": {
+      "first_key": "first_value",
+      "second_key": "second_value"
+    },
+    "deepMap": {
+      "first_key": {
+        "first_nested_key": "first_nested_value"
+      },
+      "second_key": {
+        "second_nested_key": "second_nested_value"
+      }
+    },
+    "child": {
+      "name": "original_name",
+      "description": "original_description"
+    }
+  }
