@@ -8,7 +8,7 @@ import java.util.Map;
 
 import java.util.Objects;
 
-//TODO replace with record in the future, currently not supported by jackson
+//TODO replace with record in the future
 public class ParentJava {
 
   @JsonMerge(OptBoolean.FALSE)

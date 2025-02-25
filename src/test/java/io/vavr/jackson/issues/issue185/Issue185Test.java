@@ -38,8 +38,6 @@ class Issue185Test {
     ParentJava updated = mapper.readerForUpdating(parentObject).readValue(toMerge);
 
     //Then
-    System.out.println(expectedObject);
-    System.out.println(updated);
     Assertions.assertEquals(updated, expectedObject);
   }
 
@@ -63,8 +61,6 @@ class Issue185Test {
     ParentVavr updated = mapper.readerForUpdating(parentObject).readValue(toMerge);
     
     //Then
-    System.out.println(expectedObject);
-    System.out.println(updated);
     Assertions.assertEquals(updated,expectedObject);
   }
 
