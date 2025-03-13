@@ -24,7 +24,14 @@ import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonDeserializer;
-import io.vavr.*;
+import io.vavr.Tuple0;
+import io.vavr.Tuple1;
+import io.vavr.Tuple2;
+import io.vavr.Tuple3;
+import io.vavr.Tuple4;
+import io.vavr.Tuple5;
+import io.vavr.Tuple6;
+import io.vavr.Tuple7;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -43,28 +50,6 @@ abstract class TupleDeserializer<T> extends ValueDeserializer<T> {
         super(valueType, arity(valueType));
         this.javaType = valueType;
     }
-
-    @Override
-    public T deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
-        List<Object> list = new ArrayList<>();
-        int ptr = 0;
-
-        for (JsonToken jsonToken = p.nextToken(); jsonToken != END_ARRAY; jsonToken = p.nextToken()) {
-            if (ptr >= deserializersCount()) {
-                throw mappingException(ctxt, javaType.getRawClass(), jsonToken);
-            }
-            JsonDeserializer<?> deserializer = deserializer(ptr++);
-            Object value = (jsonToken != VALUE_NULL) ? deserializer.deserialize(p, ctxt) : deserializer.getNullValue(ctxt);
-            list.add(value);
-        }
-        if (list.size() == deserializersCount()) {
-            return create(list, ctxt);
-        } else {
-            throw mappingException(ctxt, javaType.getRawClass(), null);
-        }
-    }
-
-    abstract T create(List<Object> list, DeserializationContext ctxt);
 
     private static int arity(JavaType valueType) {
         Class<?> clz = valueType.getRawClass();
@@ -88,4 +73,26 @@ abstract class TupleDeserializer<T> extends ValueDeserializer<T> {
             return 8;
         }
     }
+
+    @Override
+    public T deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+        List<Object> list = new ArrayList<>();
+        int ptr = 0;
+
+        for (JsonToken jsonToken = p.nextToken(); jsonToken != END_ARRAY; jsonToken = p.nextToken()) {
+            if (ptr >= deserializersCount()) {
+                throw mappingException(ctxt, javaType.getRawClass(), jsonToken);
+            }
+            JsonDeserializer<?> deserializer = deserializer(ptr++);
+            Object value = (jsonToken != VALUE_NULL) ? deserializer.deserialize(p, ctxt) : deserializer.getNullValue(ctxt);
+            list.add(value);
+        }
+        if (list.size() == deserializersCount()) {
+            return create(list, ctxt);
+        } else {
+            throw mappingException(ctxt, javaType.getRawClass(), null);
+        }
+    }
+
+    abstract T create(List<Object> list, DeserializationContext ctxt);
 }

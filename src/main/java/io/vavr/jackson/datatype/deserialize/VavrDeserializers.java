@@ -19,14 +19,51 @@
  */
 package io.vavr.jackson.datatype.deserialize;
 
-import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.databind.BeanDescription;
+import com.fasterxml.jackson.databind.DeserializationConfig;
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.KeyDeserializer;
 import com.fasterxml.jackson.databind.deser.Deserializers;
 import com.fasterxml.jackson.databind.jsontype.TypeDeserializer;
 import com.fasterxml.jackson.databind.type.CollectionLikeType;
 import com.fasterxml.jackson.databind.type.MapLikeType;
 import com.fasterxml.jackson.databind.type.ReferenceType;
-import io.vavr.*;
-import io.vavr.collection.*;
+import io.vavr.CheckedFunction0;
+import io.vavr.CheckedFunction1;
+import io.vavr.CheckedFunction2;
+import io.vavr.CheckedFunction3;
+import io.vavr.CheckedFunction4;
+import io.vavr.CheckedFunction5;
+import io.vavr.CheckedFunction6;
+import io.vavr.CheckedFunction7;
+import io.vavr.CheckedFunction8;
+import io.vavr.Function0;
+import io.vavr.Function1;
+import io.vavr.Function2;
+import io.vavr.Function3;
+import io.vavr.Function4;
+import io.vavr.Function5;
+import io.vavr.Function6;
+import io.vavr.Function7;
+import io.vavr.Function8;
+import io.vavr.Lazy;
+import io.vavr.Tuple0;
+import io.vavr.Tuple1;
+import io.vavr.Tuple2;
+import io.vavr.Tuple3;
+import io.vavr.Tuple4;
+import io.vavr.Tuple5;
+import io.vavr.Tuple6;
+import io.vavr.Tuple7;
+import io.vavr.Tuple8;
+import io.vavr.collection.CharSeq;
+import io.vavr.collection.Map;
+import io.vavr.collection.Multimap;
+import io.vavr.collection.PriorityQueue;
+import io.vavr.collection.Seq;
+import io.vavr.collection.Set;
 import io.vavr.control.Either;
 import io.vavr.control.Option;
 import io.vavr.jackson.datatype.VavrModule;
@@ -140,7 +177,7 @@ public class VavrDeserializers extends Deserializers.Base {
     public JsonDeserializer<?> findReferenceDeserializer(ReferenceType type,
                                                          DeserializationConfig config, BeanDescription beanDesc,
                                                          TypeDeserializer contentTypeDeserializer, JsonDeserializer<?> contentDeserializer)
-            throws JsonMappingException {
+        throws JsonMappingException {
         Class<?> raw = type.getRawClass();
         if (raw == Lazy.class) {
             return new LazyDeserializer(type, type.getContentType(), contentTypeDeserializer, contentDeserializer);
@@ -155,23 +192,22 @@ public class VavrDeserializers extends Deserializers.Base {
     public JsonDeserializer<?> findCollectionLikeDeserializer(CollectionLikeType collectionType,
                                                               DeserializationConfig config, BeanDescription beanDesc,
                                                               TypeDeserializer elementTypeDeserializer, JsonDeserializer<?> elementDeserializer)
-            throws JsonMappingException
-    {
+        throws JsonMappingException {
         Class<?> raw = collectionType.getRawClass();
         if (raw == CharSeq.class) {
             return new CharSeqDeserializer(collectionType);
         }
         if (Seq.class.isAssignableFrom(raw)) {
             return new SeqDeserializer(collectionType, collectionType.getContentType(), elementTypeDeserializer,
-                    elementDeserializer, settings.deserializeNullAsEmptyCollection());
+                elementDeserializer, settings.deserializeNullAsEmptyCollection());
         }
         if (Set.class.isAssignableFrom(raw)) {
             return new SetDeserializer(collectionType, collectionType.getContentType(), elementTypeDeserializer,
-                    elementDeserializer, settings.deserializeNullAsEmptyCollection());
+                elementDeserializer, settings.deserializeNullAsEmptyCollection());
         }
         if (PriorityQueue.class.isAssignableFrom(raw)) {
             return new PriorityQueueDeserializer(collectionType, collectionType.getContentType(),
-                    elementTypeDeserializer, elementDeserializer, settings.deserializeNullAsEmptyCollection());
+                elementTypeDeserializer, elementDeserializer, settings.deserializeNullAsEmptyCollection());
         }
         return super.findCollectionLikeDeserializer(collectionType, config, beanDesc, elementTypeDeserializer, elementDeserializer);
     }
@@ -181,8 +217,7 @@ public class VavrDeserializers extends Deserializers.Base {
                                                        DeserializationConfig config, BeanDescription beanDesc,
                                                        KeyDeserializer keyDeserializer,
                                                        TypeDeserializer elementTypeDeserializer, JsonDeserializer<?> elementDeserializer)
-            throws JsonMappingException
-    {
+        throws JsonMappingException {
         Class<?> raw = type.getRawClass();
         if (Map.class.isAssignableFrom(raw)) {
             return new MapDeserializer(type, keyDeserializer, elementTypeDeserializer, elementDeserializer);

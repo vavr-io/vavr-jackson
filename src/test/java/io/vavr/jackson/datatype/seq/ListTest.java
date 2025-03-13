@@ -25,7 +25,8 @@ public class ListTest extends SeqTest {
 
     @Override
     protected TypeReference<List<Option<String>>> typeReferenceWithOption() {
-        return new TypeReference<List<Option<String>>>() {};
+        return new TypeReference<List<Option<String>>>() {
+        };
     }
 
     @Override
@@ -43,34 +44,12 @@ public class ListTest extends SeqTest {
         Assertions.assertEquals(mapper().readValue("[1]", Seq.class), List.of(1));
     }
 
-    @JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.WRAPPER_OBJECT,
-        property = "type")
-    @JsonTypeName("card")
-    private static class TestSerialize {
-        public String type = "hello";
-    }
-
-    private static class A {
-        public List<TestSerialize> f = List.of(new TestSerialize());
-    }
-
-    private static class B {
-        public java.util.List<TestSerialize> f = List.of(new TestSerialize()).toJavaList();
-    }
-
     @Test
     void testJsonTypeInfo() throws IOException {
         String javaUtilValue = mapper().writeValueAsString(new A());
         Assertions.assertEquals(mapper().writeValueAsString(new B()), javaUtilValue);
         A restored = mapper().readValue(javaUtilValue, A.class);
         Assertions.assertEquals("hello", restored.f.head().type);
-    }
-
-    static class FrenchDates {
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", timezone = "Europe/Paris")
-        List<Date> dates;
     }
 
     @Test
@@ -92,4 +71,25 @@ public class ListTest extends SeqTest {
         Assertions.assertEquals(src.dates, restored.dates);
     }
 
+    @JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.WRAPPER_OBJECT,
+        property = "type")
+    @JsonTypeName("card")
+    private static class TestSerialize {
+        public String type = "hello";
+    }
+
+    private static class A {
+        public List<TestSerialize> f = List.of(new TestSerialize());
+    }
+
+    private static class B {
+        public java.util.List<TestSerialize> f = List.of(new TestSerialize()).toJavaList();
+    }
+
+    static class FrenchDates {
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", timezone = "Europe/Paris")
+        List<Date> dates;
+    }
 }

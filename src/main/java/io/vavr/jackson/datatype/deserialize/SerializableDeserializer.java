@@ -37,13 +37,6 @@ class SerializableDeserializer<T> extends StdDeserializer<T> {
         super(valueType);
     }
 
-    @Override
-    public T deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
-        JsonDeserializer<Object> deserializer = ctxt.findRootValueDeserializer(ctxt.constructType(byte[].class));
-        byte[] bytes = (byte[]) deserializer.deserialize(p, ctxt);
-        return deserialize(bytes);
-    }
-
     @SuppressWarnings("unchecked")
     private static <T> T deserialize(byte[] objectData) {
         try {
@@ -52,5 +45,12 @@ class SerializableDeserializer<T> extends StdDeserializer<T> {
         } catch (Exception x) {
             throw new IllegalStateException("Error deserializing object", x);
         }
+    }
+
+    @Override
+    public T deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+        JsonDeserializer<Object> deserializer = ctxt.findRootValueDeserializer(ctxt.constructType(byte[].class));
+        byte[] bytes = (byte[]) deserializer.deserialize(p, ctxt);
+        return deserialize(bytes);
     }
 }

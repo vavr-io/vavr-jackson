@@ -1,16 +1,20 @@
 package io.vavr.jackson.datatype.tuples;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import io.vavr.*;
+import io.vavr.Tuple;
+import io.vavr.Tuple0;
+import io.vavr.Tuple2;
+import io.vavr.Tuple3;
+import io.vavr.Tuple8;
 import io.vavr.jackson.datatype.BaseTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class TupleXTest extends BaseTest {
 
@@ -45,19 +49,6 @@ class TupleXTest extends BaseTest {
         });
     }
 
-    @JsonTypeInfo(
-            use = JsonTypeInfo.Id.NAME,
-            include = JsonTypeInfo.As.WRAPPER_OBJECT,
-            property = "type")
-    @JsonTypeName("card")
-    private static class TestSerialize {
-        public String type = "hello";
-    }
-
-    private static class A {
-        public Tuple2<TestSerialize, TestSerialize> f = Tuple.of(new TestSerialize(), new TestSerialize());
-    }
-
     @Test
     void testJsonTypeInfo1() throws IOException {
         String javaUtilValue = mapper().writeValueAsString(new A());
@@ -65,5 +56,18 @@ class TupleXTest extends BaseTest {
         A restored = mapper().readValue(javaUtilValue, A.class);
         Assertions.assertEquals("hello", restored.f._1.type);
         Assertions.assertEquals("hello", restored.f._2.type);
+    }
+
+    @JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.WRAPPER_OBJECT,
+        property = "type")
+    @JsonTypeName("card")
+    private static class TestSerialize {
+        public String type = "hello";
+    }
+
+    private static class A {
+        public Tuple2<TestSerialize, TestSerialize> f = Tuple.of(new TestSerialize(), new TestSerialize());
     }
 }

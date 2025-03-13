@@ -23,12 +23,14 @@ public class HashSetTest extends SetTest {
 
     @Override
     protected TypeReference<HashSet<Integer>> typeReference() {
-        return new TypeReference<HashSet<Integer>>() {};
+        return new TypeReference<HashSet<Integer>>() {
+        };
     }
 
     @Override
     protected TypeReference<HashSet<Option<String>>> typeReferenceWithOption() {
-        return new TypeReference<HashSet<Option<String>>>() {};
+        return new TypeReference<HashSet<Option<String>>>() {
+        };
     }
 
     @Override
@@ -39,11 +41,6 @@ public class HashSetTest extends SetTest {
     @Test
     void testDefaultDeserialization() throws IOException {
         Assertions.assertEquals(mapper().readValue("[1]", Set.class), HashSet.of(1));
-    }
-
-    static class FrenchDates {
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", timezone = "Europe/Paris")
-        Set<Date> dates;
     }
 
     @Test
@@ -63,5 +60,10 @@ public class HashSetTest extends SetTest {
         // And the deserialization is successful
         FrenchDates restored = mapper.readValue(json, FrenchDates.class);
         Assertions.assertEquals(src.dates, restored.dates);
+    }
+
+    static class FrenchDates {
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", timezone = "Europe/Paris")
+        Set<Date> dates;
     }
 }

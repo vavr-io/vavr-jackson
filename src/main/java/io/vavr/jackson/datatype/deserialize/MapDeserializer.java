@@ -28,7 +28,11 @@ import com.fasterxml.jackson.databind.jsontype.TypeDeserializer;
 import com.fasterxml.jackson.databind.type.MapLikeType;
 import io.vavr.Tuple;
 import io.vavr.Tuple2;
-import io.vavr.collection.*;
+import io.vavr.collection.HashMap;
+import io.vavr.collection.LinkedHashMap;
+import io.vavr.collection.Map;
+import io.vavr.collection.SortedMap;
+import io.vavr.collection.TreeMap;
 
 import java.io.IOException;
 
@@ -79,5 +83,4 @@ class MapDeserializer extends MaplikeDeserializer<Map<?, ?>> {
         // default deserialization [...] -> Map
         return HashMap.ofEntries(result);
     }
-
 }

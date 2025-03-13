@@ -453,8 +453,8 @@ public class ExtFieldsPojoTest {
     }
 
     @JsonTypeInfo(
-            use = JsonTypeInfo.Id.NAME,
-            include = JsonTypeInfo.As.WRAPPER_OBJECT
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.WRAPPER_OBJECT
     )
     @JsonSubTypes(@JsonSubTypes.Type(B.class))
     public abstract static class A implements Comparable<A> {

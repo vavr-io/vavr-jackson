@@ -1,9 +1,31 @@
 package generator.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.squareup.javapoet.*;
-import io.vavr.*;
-import io.vavr.collection.*;
+import com.squareup.javapoet.ClassName;
+import com.squareup.javapoet.FieldSpec;
+import com.squareup.javapoet.MethodSpec;
+import com.squareup.javapoet.ParameterizedTypeName;
+import com.squareup.javapoet.TypeName;
+import com.squareup.javapoet.TypeSpec;
+import io.vavr.Lazy;
+import io.vavr.Tuple;
+import io.vavr.Tuple0;
+import io.vavr.Tuple1;
+import io.vavr.Tuple2;
+import io.vavr.Tuple3;
+import io.vavr.Tuple4;
+import io.vavr.Tuple5;
+import io.vavr.Tuple6;
+import io.vavr.Tuple7;
+import io.vavr.Tuple8;
+import io.vavr.Value;
+import io.vavr.collection.List;
+import io.vavr.collection.Map;
+import io.vavr.collection.Multimap;
+import io.vavr.collection.PriorityQueue;
+import io.vavr.collection.Seq;
+import io.vavr.collection.Set;
+import io.vavr.collection.Stream;
 import io.vavr.control.Either;
 import io.vavr.control.Option;
 import io.vavr.jackson.datatype.VavrModule;
@@ -20,24 +42,24 @@ public class Initializer {
     }
 
     public static void initMapper(TypeSpec.Builder builder, String name, VavrModule.Settings settings) {
-        Modifier[] mods = new Modifier[] { Modifier.PRIVATE, Modifier.STATIC, Modifier.FINAL };
+        Modifier[] mods = new Modifier[]{Modifier.PRIVATE, Modifier.STATIC, Modifier.FINAL};
         if (settings != null) {
             builder.addField(FieldSpec.builder(ClassName.get(VavrModule.Settings.class), name + "_SETTINGS", mods)
-                    .initializer("new $T()\n        .useOptionInPlainFormat($L).deserializeNullAsEmptyCollection($L)",
-                            ClassName.get(VavrModule.Settings.class),
-                            settings.useOptionInPlainFormat(), settings.deserializeNullAsEmptyCollection())
-                    .build());
+                .initializer("new $T()\n        .useOptionInPlainFormat($L).deserializeNullAsEmptyCollection($L)",
+                    ClassName.get(VavrModule.Settings.class),
+                    settings.useOptionInPlainFormat(), settings.deserializeNullAsEmptyCollection())
+                .build());
             builder.addField(FieldSpec.builder(ClassName.get(VavrModule.class), name + "_MODULE", mods)
-                    .initializer("new $T($L)", ClassName.get(VavrModule.class), name + "_SETTINGS")
-                    .build());
+                .initializer("new $T($L)", ClassName.get(VavrModule.class), name + "_SETTINGS")
+                .build());
         } else {
             builder.addField(FieldSpec.builder(ClassName.get(VavrModule.class), name + "_MODULE", mods)
-                    .initializer("new $T()", ClassName.get(VavrModule.class))
-                    .build());
+                .initializer("new $T()", ClassName.get(VavrModule.class))
+                .build());
         }
         builder.addField(FieldSpec.builder(ClassName.get(ObjectMapper.class), name, mods)
-                .initializer("new $T().registerModule($L)", ClassName.get(ObjectMapper.class), name + "_MODULE")
-                .build());
+            .initializer("new $T().registerModule($L)", ClassName.get(ObjectMapper.class), name + "_MODULE")
+            .build());
     }
 
     public static Class<?> publicVavrClass(Class<?> clz) {

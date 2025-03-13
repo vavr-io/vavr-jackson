@@ -93,19 +93,6 @@ class OptionTest extends BaseTest {
         Assertions.assertTrue(option.isEmpty());
     }
 
-    @JsonTypeInfo(
-      use = JsonTypeInfo.Id.NAME,
-      include = JsonTypeInfo.As.WRAPPER_OBJECT,
-      property = "type")
-    @JsonTypeName("card")
-    private static class TestSerialize {
-        public String type = "hello";
-    }
-
-    private static class A {
-        public Option<TestSerialize> f = Option.of(new TestSerialize());
-    }
-
     @Test
     void shouldSerializeAndDeserializeWithDefaultJsonTypeInfo() throws IOException {
         String javaUtilValue = mapper().writeValueAsString(new A());
@@ -121,5 +108,18 @@ class OptionTest extends BaseTest {
         assertEquals("{\"f\":[\"defined\",{\"card\":{\"type\":\"hello\"}}]}", javaUtilValue);
         A restored = mapper.readValue(javaUtilValue, A.class);
         assertEquals("hello", restored.f.get().type);
+    }
+
+    @JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.WRAPPER_OBJECT,
+        property = "type")
+    @JsonTypeName("card")
+    private static class TestSerialize {
+        public String type = "hello";
+    }
+
+    private static class A {
+        public Option<TestSerialize> f = Option.of(new TestSerialize());
     }
 }

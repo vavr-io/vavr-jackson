@@ -17,16 +17,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 public class Issue154Test {
 
-    private static class MyVavrClass {
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Europe/Paris")
-        private List<Date> dates;
-    }
-
-    private static class MyJavaClass {
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Europe/Paris")
-        private java.util.List<Date> dates;
-    }
-
     @Test
     void itShouldSerializeVavrListWithVavrModule() throws Exception {
         MyVavrClass myClass = new MyVavrClass();
@@ -73,5 +63,15 @@ public class Issue154Test {
 
         String json = mapper.writeValueAsString(myClass);
         assertEquals("{\"dates\":[\"2020-06-04\",\"2020-06-05\"]}", json);
+    }
+
+    private static class MyVavrClass {
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Europe/Paris")
+        private List<Date> dates;
+    }
+
+    private static class MyJavaClass {
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Europe/Paris")
+        private java.util.List<Date> dates;
     }
 }

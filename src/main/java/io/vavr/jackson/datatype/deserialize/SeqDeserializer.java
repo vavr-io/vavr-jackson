@@ -19,9 +19,17 @@
  */
 package io.vavr.jackson.datatype.deserialize;
 
-import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.jsontype.TypeDeserializer;
-import io.vavr.collection.*;
+import io.vavr.collection.Array;
+import io.vavr.collection.IndexedSeq;
+import io.vavr.collection.Queue;
+import io.vavr.collection.Seq;
+import io.vavr.collection.Stream;
+import io.vavr.collection.Vector;
 
 import java.util.List;
 
@@ -44,7 +52,7 @@ class SeqDeserializer extends ArrayDeserializer<Seq<?>> {
     private SeqDeserializer(SeqDeserializer origin, TypeDeserializer elementTypeDeserializer,
                             JsonDeserializer<?> elementDeserializer) {
         this(origin.collectionType, origin.elementType, elementTypeDeserializer, elementDeserializer,
-                origin.deserializeNullAsEmptyCollection);
+            origin.deserializeNullAsEmptyCollection);
     }
 
     @Override
@@ -72,5 +80,4 @@ class SeqDeserializer extends ArrayDeserializer<Seq<?>> {
     SeqDeserializer createDeserializer(TypeDeserializer elementTypeDeserializer, JsonDeserializer<?> elementDeserializer) {
         return new SeqDeserializer(this, elementTypeDeserializer, elementDeserializer);
     }
-
 }

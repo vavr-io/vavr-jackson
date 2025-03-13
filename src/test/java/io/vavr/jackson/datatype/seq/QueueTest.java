@@ -1,12 +1,11 @@
 package io.vavr.jackson.datatype.seq;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-
-import java.util.Arrays;
-
 import io.vavr.collection.Queue;
 import io.vavr.collection.Seq;
 import io.vavr.control.Option;
+
+import java.util.Arrays;
 
 public class QueueTest extends SeqTest {
     @Override
@@ -16,7 +15,8 @@ public class QueueTest extends SeqTest {
 
     @Override
     protected TypeReference<Queue<Option<String>>> typeReferenceWithOption() {
-        return new TypeReference<Queue<Option<String>>>() {};
+        return new TypeReference<Queue<Option<String>>>() {
+        };
     }
 
     @Override

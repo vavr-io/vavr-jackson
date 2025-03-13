@@ -18,14 +18,16 @@ class MixedTest extends BaseTest {
     void shouldSerializeAndDeserializeVavrHashMapWithListValues() throws IOException {
         Object src = HashMap.empty().put("key1", List.of(1, 2)).put("key2", List.of(3, 4));
         String json = mapper().writer().writeValueAsString(src);
-        assertEquals(mapper().readValue(json, new TypeReference<HashMap<?, List<?>>>() {}), src);
+        assertEquals(mapper().readValue(json, new TypeReference<HashMap<?, List<?>>>() {
+        }), src);
     }
 
     @Test
     void shouldSerializeAndDeserializeListOfVavrHashMaps() throws IOException {
         Object src = List.of(HashMap.empty().put("key1", 1), HashMap.empty().put("key2", 2));
         String json = mapper().writer().writeValueAsString(src);
-        assertEquals(mapper().readValue(json, new TypeReference<List<HashMap<?, ?>>>() {}), src);
+        assertEquals(mapper().readValue(json, new TypeReference<List<HashMap<?, ?>>>() {
+        }), src);
     }
 
     @Test
@@ -40,7 +42,8 @@ class MixedTest extends BaseTest {
     @Test
     void shouldThrowJsonMappingExceptionForInvalidListElements() {
         Assertions.assertThrows(JsonMappingException.class, () -> {
-            mapper().readValue("[\"s\"]", new TypeReference<List<Integer>>() {});
+            mapper().readValue("[\"s\"]", new TypeReference<List<Integer>>() {
+            });
         });
     }
 
@@ -48,14 +51,16 @@ class MixedTest extends BaseTest {
     void shouldSerializeAndDeserializeNestedVavrLists() throws IOException {
         Object src = List.of(List.of(1));
         String json = mapper().writer().writeValueAsString(src);
-        assertEquals(mapper().readValue(json, new TypeReference<List<List<?>>>() {}), src);
+        assertEquals(mapper().readValue(json, new TypeReference<List<List<?>>>() {
+        }), src);
     }
 
     @Test
     void shouldSerializeAndDeserializeVavrHashMapWithNestedHashMapValues() throws IOException {
         Object src = HashMap.empty().put("1", HashMap.empty().put("X", "Y"));
         String json = mapper().writer().writeValueAsString(src);
-        assertEquals(mapper().readValue(json, new TypeReference<HashMap<?, HashMap<?, ?>>>() {}), src);
+        assertEquals(mapper().readValue(json, new TypeReference<HashMap<?, HashMap<?, ?>>>() {
+        }), src);
     }
 
     @Test
@@ -63,6 +68,7 @@ class MixedTest extends BaseTest {
         Object src = List.of(Arrays.asList(1, 2));
         String json = mapper().writer().writeValueAsString(src);
         assertEquals(mapper().readValue(json, List.class), src);
-        assertEquals(mapper().readValue(json, new TypeReference<List<java.util.List<?>>>() {}), src);
+        assertEquals(mapper().readValue(json, new TypeReference<List<java.util.List<?>>>() {
+        }), src);
     }
 }

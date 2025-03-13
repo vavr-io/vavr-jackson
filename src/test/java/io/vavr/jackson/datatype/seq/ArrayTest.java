@@ -22,17 +22,13 @@ public class ArrayTest extends SeqTest {
 
     @Override
     protected TypeReference<Array<Option<String>>> typeReferenceWithOption() {
-        return new TypeReference<Array<Option<String>>>() {};
+        return new TypeReference<Array<Option<String>>>() {
+        };
     }
 
     @Override
     protected Seq<?> of(Object... objects) {
         return Array.ofAll(Arrays.asList(objects));
-    }
-
-    static class FrenchDates {
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", timezone = "Europe/Paris")
-        Array<Date> dates;
     }
 
     @Test
@@ -52,5 +48,10 @@ public class ArrayTest extends SeqTest {
         // And the deserialization is successful
         FrenchDates restored = mapper.readValue(json, FrenchDates.class);
         Assertions.assertEquals(src.dates, restored.dates);
+    }
+
+    static class FrenchDates {
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", timezone = "Europe/Paris")
+        Array<Date> dates;
     }
 }

@@ -1,13 +1,57 @@
 package io.vavr.jackson.datatype.bean;
 
-import io.vavr.jackson.datatype.BaseTest;
 import io.vavr.collection.List;
+import io.vavr.jackson.datatype.BaseTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
 public class BeanTest extends BaseTest {
+
+    @Test
+    void test1() throws IOException {
+        BeanObject src = new BeanObject();
+        src.scalar = "s";
+        src.value = List.of(1);
+        String json = mapper().writer().writeValueAsString(src);
+        Assertions.assertEquals(mapper().readValue(json, BeanObject.class), src);
+    }
+
+    @Test
+    void test2() throws IOException {
+        ComplexInnerClass innerSrc = new ComplexInnerClass();
+        innerSrc.setScalar(10);
+        innerSrc.setValues(List.of("Data1", "Data2", "Data3"));
+
+        ComplexBeanObject src = new ComplexBeanObject();
+        src.setScalar("Data Scalar");
+        src.setValues(List.of(
+            new ComplexInnerClass(10, List.of("Data1", "Data2", "Data3")),
+            new ComplexInnerClass(12, List.of("Data3", "Data4", "Data5"))
+        ));
+
+        String json = mapper().writeValueAsString(src);
+
+        ComplexBeanObject restored = mapper().readValue(json, ComplexBeanObject.class);
+        restored.getValues().forEach(innerClass -> {
+            Assertions.assertTrue(innerClass instanceof ComplexInnerClass, "Instance of ComplexInnerClass");
+        });
+
+        Assertions.assertEquals(restored, src);
+    }
+
+    @Test
+    public void testDeserializeScalarNull() throws IOException {
+        // language=JSON
+        String json = "{\"scalar\":null,\"value\":[]}";
+
+        BeanObject actual = mapper().readValue(json, BeanObject.class);
+
+        BeanObject expected = new BeanObject();
+        expected.value = List.empty();
+        Assertions.assertEquals(expected, actual);
+    }
 
     static class BeanObject {
         public String scalar;
@@ -22,7 +66,6 @@ public class BeanTest extends BaseTest {
 
             if (scalar != null ? !scalar.equals(that.scalar) : that.scalar != null) return false;
             return !(value != null ? !value.equals(that.value) : that.value != null);
-
         }
 
         @Override
@@ -31,15 +74,6 @@ public class BeanTest extends BaseTest {
             result = 31 * result + (value != null ? value.hashCode() : 0);
             return result;
         }
-    }
-
-    @Test
-    void test1() throws IOException {
-        BeanObject src = new BeanObject();
-        src.scalar = "s";
-        src.value = List.of(1);
-        String json = mapper().writer().writeValueAsString(src);
-        Assertions.assertEquals(mapper().readValue(json, BeanObject.class), src);
     }
 
     static class ComplexInnerClass {
@@ -79,7 +113,6 @@ public class BeanTest extends BaseTest {
 
             if (scalar != null ? !scalar.equals(that.scalar) : that.scalar != null) return false;
             return !(values != null ? !values.equals(that.values) : that.values != null);
-
         }
 
         @Override
@@ -119,7 +152,6 @@ public class BeanTest extends BaseTest {
 
             if (scalar != null ? !scalar.equals(that.scalar) : that.scalar != null) return false;
             return !(values != null ? !values.equals(that.values) : that.values != null);
-
         }
 
         @Override
@@ -128,40 +160,5 @@ public class BeanTest extends BaseTest {
             result = 31 * result + (values != null ? values.hashCode() : 0);
             return result;
         }
-    }
-
-    @Test
-    void test2() throws IOException {
-        ComplexInnerClass innerSrc = new ComplexInnerClass();
-        innerSrc.setScalar(10);
-        innerSrc.setValues(List.of("Data1", "Data2", "Data3"));
-
-        ComplexBeanObject src = new ComplexBeanObject();
-        src.setScalar("Data Scalar");
-        src.setValues(List.of(
-                new ComplexInnerClass(10, List.of("Data1", "Data2", "Data3")),
-                new ComplexInnerClass(12, List.of("Data3", "Data4", "Data5"))
-        ));
-
-        String json = mapper().writeValueAsString(src);
-
-        ComplexBeanObject restored = mapper().readValue(json, ComplexBeanObject.class);
-        restored.getValues().forEach(innerClass -> {
-            Assertions.assertTrue(innerClass instanceof ComplexInnerClass, "Instance of ComplexInnerClass");
-        });
-
-        Assertions.assertEquals(restored, src);
-    }
-
-    @Test
-    public void testDeserializeScalarNull() throws IOException {
-        // language=JSON
-        String json = "{\"scalar\":null,\"value\":[]}";
-
-        BeanObject actual = mapper().readValue(json, BeanObject.class);
-
-        BeanObject expected = new BeanObject();
-        expected.value = List.empty();
-        Assertions.assertEquals(expected, actual);
     }
 }

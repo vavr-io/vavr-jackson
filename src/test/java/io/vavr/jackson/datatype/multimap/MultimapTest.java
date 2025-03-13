@@ -5,7 +5,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.databind.BeanProperty;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.KeyDeserializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.deser.ContextualKeyDeserializer;
@@ -67,10 +73,47 @@ public abstract class MultimapTest extends BaseTest {
 
     @Test
     void testWithOption() throws Exception {
-        Multimap<String, Option<Integer>> multimap = this.<String, Option<Integer>>emptyMap().put("1", Option.some(1)).put("1", Option.none());
+        Multimap<String, Option<Integer>> multimap = this.<String, Option<Integer>>emptyMap().put("1", Option.some(1))
+            .put("1", Option.none());
         String json = genJsonMap(HashMap.of("1", asList(1, null)).toJavaMap());
 
         verifySerialization(typeReferenceWithOption(), io.vavr.collection.List.of(Tuple.of(multimap, json)));
+    }
+
+    @Test
+    void testContextualizationOfKey() throws IOException {
+        Multimap<CustomKey, String> empty = emptyMap();
+        Multimap<CustomKey, String> map = empty.put(new CustomKey(123), "test");
+
+        ModelWithCustomKey source = new ModelWithCustomKey(map);
+        String json = mapper().writeValueAsString(source);
+        assertEquals("{\"map\":{\"123\":[\"test\"]}}", json);
+
+        ModelWithCustomKey restored = mapper().readValue(json, ModelWithCustomKey.class);
+        assertEquals(1, restored.map.size());
+        assertEquals(123, restored.map.get()._1.id);
+        assertEquals("test", restored.map.get()._2);
+    }
+
+    @Test
+    void testContextualizationOfKeyAndElement() throws IOException {
+        Multimap<CustomKey, CustomElement> empty = emptyMap();
+        Multimap<CustomKey, CustomElement> map = empty.put(new CustomKey(123), new CustomElement("test"));
+
+        ModelWithCustomKeyAndElement source = new ModelWithCustomKeyAndElement(map);
+        String json = mapper().writeValueAsString(source);
+        assertEquals("{\"map\":{\"123\":[\"test\"]}}", json);
+
+        ModelWithCustomKeyAndElement restored = mapper().readValue(json, ModelWithCustomKeyAndElement.class);
+        assertEquals(1, restored.map.size());
+        assertEquals(123, restored.map.get()._1.id);
+        assertEquals("test", restored.map.get()._2.value);
+    }
+
+    @Test
+    void testSecondaryContextualization() throws IOException {
+        MyBean bean = mapper().readValue("{\"map\":{\"Will be replaced\":[1,2,3]}}", MyBean.class);
+        assertIterableEquals(Arrays.asList(1, 2, 3), bean.map.get("String").get());
     }
 
     static class CustomKey {
@@ -96,7 +139,7 @@ public abstract class MultimapTest extends BaseTest {
 
         @JsonCreator
         ModelWithCustomKey(@JsonProperty("map")
-              @JsonDeserialize(keyUsing = CustomKeyDeserializer.class) Multimap<CustomKey, String> map) {
+                           @JsonDeserialize(keyUsing = CustomKeyDeserializer.class) Multimap<CustomKey, String> map) {
             this.map = map;
         }
 
@@ -112,7 +155,7 @@ public abstract class MultimapTest extends BaseTest {
 
         @JsonCreator
         ModelWithCustomKeyAndElement(@JsonProperty("map")
-              @JsonDeserialize(keyUsing = CustomKeyDeserializer.class) Multimap<CustomKey, CustomElement> map) {
+                                     @JsonDeserialize(keyUsing = CustomKeyDeserializer.class) Multimap<CustomKey, CustomElement> map) {
             this.map = map;
         }
 
@@ -156,36 +199,6 @@ public abstract class MultimapTest extends BaseTest {
         }
     }
 
-    @Test
-    void testContextualizationOfKey() throws IOException {
-        Multimap<CustomKey, String> empty = emptyMap();
-        Multimap<CustomKey, String> map = empty.put(new CustomKey(123), "test");
-
-        ModelWithCustomKey source = new ModelWithCustomKey(map);
-        String json = mapper().writeValueAsString(source);
-        assertEquals("{\"map\":{\"123\":[\"test\"]}}", json);
-
-        ModelWithCustomKey restored = mapper().readValue(json, ModelWithCustomKey.class);
-        assertEquals(1, restored.map.size());
-        assertEquals(123, restored.map.get()._1.id);
-        assertEquals("test", restored.map.get()._2);
-    }
-
-    @Test
-    void testContextualizationOfKeyAndElement() throws IOException {
-        Multimap<CustomKey, CustomElement> empty = emptyMap();
-        Multimap<CustomKey, CustomElement> map = empty.put(new CustomKey(123), new CustomElement("test"));
-
-        ModelWithCustomKeyAndElement source = new ModelWithCustomKeyAndElement(map);
-        String json = mapper().writeValueAsString(source);
-        assertEquals("{\"map\":{\"123\":[\"test\"]}}", json);
-
-        ModelWithCustomKeyAndElement restored = mapper().readValue(json, ModelWithCustomKeyAndElement.class);
-        assertEquals(1, restored.map.size());
-        assertEquals(123, restored.map.get()._1.id);
-        assertEquals("test", restored.map.get()._2.value);
-    }
-
     static class MyBean {
         @JsonDeserialize(keyUsing = ClassNameDeserializer.class)
         Multimap<String, Integer> map;
@@ -212,11 +225,5 @@ public abstract class MultimapTest extends BaseTest {
         public ClassNameDeserializer createContextual(DeserializationContext ctxt, BeanProperty property) {
             return new ClassNameDeserializer(ctxt.getContextualType().getKeyType().getRawClass().getSimpleName());
         }
-    }
-
-    @Test
-    void testSecondaryContextualization() throws IOException {
-        MyBean bean = mapper().readValue("{\"map\":{\"Will be replaced\":[1,2,3]}}", MyBean.class);
-        assertIterableEquals(Arrays.asList(1, 2, 3), bean.map.get("String").get());
     }
 }

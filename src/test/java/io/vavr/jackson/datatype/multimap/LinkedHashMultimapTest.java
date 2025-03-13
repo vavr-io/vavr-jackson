@@ -1,16 +1,14 @@
 package io.vavr.jackson.datatype.multimap;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-
+import io.vavr.collection.LinkedHashMultimap;
+import io.vavr.collection.Multimap;
+import io.vavr.control.Option;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.Collections;
-
-import io.vavr.collection.LinkedHashMultimap;
-import io.vavr.collection.Multimap;
-import io.vavr.control.Option;
 
 public class LinkedHashMultimapTest extends MultimapTest {
     @Override
@@ -25,7 +23,8 @@ public class LinkedHashMultimapTest extends MultimapTest {
 
     @Override
     protected TypeReference<LinkedHashMultimap<String, Option<Integer>>> typeReferenceWithOption() {
-        return new TypeReference<LinkedHashMultimap<String, Option<Integer>>>() {};
+        return new TypeReference<LinkedHashMultimap<String, Option<Integer>>>() {
+        };
     }
 
     @Test

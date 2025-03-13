@@ -26,6 +26,23 @@ import io.vavr.jackson.datatype.serialize.VavrSerializers;
 public class VavrModule extends SimpleModule {
 
     private static final long serialVersionUID = 1L;
+    private final Settings settings;
+
+    public VavrModule() {
+        this(new Settings());
+    }
+
+    public VavrModule(Settings settings) {
+        this.settings = settings;
+    }
+
+    @Override
+    public void setupModule(SetupContext context) {
+        super.setupModule(context);
+        context.addSerializers(new VavrSerializers(settings));
+        context.addDeserializers(new VavrDeserializers(settings));
+        context.addTypeModifier(new VavrTypeModifier());
+    }
 
     public static class Settings {
 
@@ -49,23 +66,5 @@ public class VavrModule extends SimpleModule {
         public boolean deserializeNullAsEmptyCollection() {
             return deserializeNullAsEmptyCollection;
         }
-    }
-
-    private final Settings settings;
-
-    public VavrModule() {
-        this(new Settings());
-    }
-
-    public VavrModule(Settings settings) {
-        this.settings = settings;
-    }
-
-    @Override
-    public void setupModule(SetupContext context) {
-        super.setupModule(context);
-        context.addSerializers(new VavrSerializers(settings));
-        context.addDeserializers(new VavrDeserializers(settings));
-        context.addTypeModifier(new VavrTypeModifier());
     }
 }

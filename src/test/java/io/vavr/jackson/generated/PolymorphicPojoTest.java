@@ -354,13 +354,13 @@ public class PolymorphicPojoTest {
     }
 
     @JsonTypeInfo(
-            use = JsonTypeInfo.Id.NAME,
-            include = JsonTypeInfo.As.PROPERTY,
-            property = "type"
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "type"
     )
     @JsonSubTypes({
-            @JsonSubTypes.Type(value = A.class, name = "a"),
-            @JsonSubTypes.Type(value = B.class, name = "b")
+        @JsonSubTypes.Type(value = A.class, name = "a"),
+        @JsonSubTypes.Type(value = B.class, name = "b")
     })
     public interface I extends Comparable<I> {
         default int compareTo(I o) {

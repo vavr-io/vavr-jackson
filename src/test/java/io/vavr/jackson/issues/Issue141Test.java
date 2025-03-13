@@ -17,12 +17,6 @@ import java.util.Optional;
 
 public class Issue141Test extends BaseTest {
 
-    static class MyJavaOptionalClass {
-        @JsonProperty("operatingMonth")
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM-yyyy")
-        Optional<YearMonth> operatingMonth;
-    }
-
     @Test
     public void itShouldSerializeJavaOptionalYearMonthAsString() throws IOException {
         // Given an instance with java.util.Optional
@@ -42,11 +36,6 @@ public class Issue141Test extends BaseTest {
         // And deserialization is successful
         MyJavaOptionalClass obj2 = objectMapper.readValue(json, MyJavaOptionalClass.class);
         Assertions.assertEquals(Optional.of(YearMonth.of(2019, 12)), obj2.operatingMonth);
-    }
-
-    static class MyVavrOptionalClassWithoutFormat {
-        @JsonProperty("operatingMonth")
-        Option<YearMonth> operatingMonth;
     }
 
     @Test
@@ -70,12 +59,6 @@ public class Issue141Test extends BaseTest {
         Assertions.assertEquals(Option.of(YearMonth.of(2019, 12)), obj2.operatingMonth);
     }
 
-    static class MyVavrOptionClassWithFormat {
-        @JsonProperty("operatingMonth")
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM-yyyy")
-        Option<YearMonth> operatingMonth;
-    }
-
     @Test
     public void itShouldSerializeVavrOptionYearMonthAsString() throws IOException {
         // Given an instance with io.vavr.control.Option
@@ -95,5 +78,22 @@ public class Issue141Test extends BaseTest {
 
         // And deserialization is failed
         Assertions.assertEquals(Option.of(YearMonth.of(2019, 12)), obj2.operatingMonth);
+    }
+
+    static class MyJavaOptionalClass {
+        @JsonProperty("operatingMonth")
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM-yyyy")
+        Optional<YearMonth> operatingMonth;
+    }
+
+    static class MyVavrOptionalClassWithoutFormat {
+        @JsonProperty("operatingMonth")
+        Option<YearMonth> operatingMonth;
+    }
+
+    static class MyVavrOptionClassWithFormat {
+        @JsonProperty("operatingMonth")
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM-yyyy")
+        Option<YearMonth> operatingMonth;
     }
 }

@@ -1,7 +1,5 @@
 package io.vavr.jackson.datatype.seq;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -9,13 +7,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-import io.vavr.jackson.datatype.BaseTest;
-import io.vavr.jackson.datatype.VavrModule;
 import io.vavr.Tuple;
 import io.vavr.collection.List;
 import io.vavr.collection.Seq;
 import io.vavr.control.Option;
-import org.junit.jupiter.api.Assertions;
+import io.vavr.jackson.datatype.BaseTest;
+import io.vavr.jackson.datatype.VavrModule;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -24,6 +21,8 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.IOException;
 import java.util.Arrays;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public abstract class SeqTest extends BaseTest {
 
@@ -112,9 +111,29 @@ public abstract class SeqTest extends BaseTest {
     @Test
     void testWithOption() throws Exception {
         verifySerialization(typeReferenceWithOption(), List.of(
-                Tuple.of(of(Option.some("value")), genJsonList("value")),
-                Tuple.of(of(Option.none()), genJsonList((Object) null))
+            Tuple.of(of(Option.some("value")), genJsonList("value")),
+            Tuple.of(of(Option.none()), genJsonList((Object) null))
         ));
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void testJaxbXmlSerialization() throws IOException {
+        ObjectMapper mapper = xmlMapperJaxb();
+        String javaUtilValue = mapper.writeValueAsString(new JaxbXmlSerializeVavr().init((Seq<Integer>) of(1, 2, 3)));
+        Assertions.assertEquals(mapper.writeValueAsString(new JaxbXmlSerializeJavaUtil().init(Arrays.asList(1, 2, 3))), javaUtilValue);
+        JaxbXmlSerializeVavr restored = mapper.readValue(javaUtilValue, JaxbXmlSerializeVavr.class);
+        Assertions.assertEquals(restored.transitTypes.size(), 3);
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void testXmlSerialization() throws IOException {
+        ObjectMapper mapper = xmlMapper();
+        String javaUtilValue = mapper.writeValueAsString(new XmlSerializeVavr().init((Seq<Integer>) of(1, 2, 3)));
+        Assertions.assertEquals(mapper.writeValueAsString(new XmlSerializeJavaUtil().init(Arrays.asList(1, 2, 3))), javaUtilValue);
+        XmlSerializeVavr restored = mapper.readValue(javaUtilValue, XmlSerializeVavr.class);
+        Assertions.assertEquals(restored.transitTypes.size(), 3);
     }
 
     @XmlRootElement(name = "xmlSerialize")
@@ -141,16 +160,6 @@ public abstract class SeqTest extends BaseTest {
         }
     }
 
-    @Test
-    @SuppressWarnings("unchecked")
-    void testJaxbXmlSerialization() throws IOException {
-        ObjectMapper mapper = xmlMapperJaxb();
-        String javaUtilValue = mapper.writeValueAsString(new JaxbXmlSerializeVavr().init((Seq<Integer>) of(1, 2, 3)));
-        Assertions.assertEquals(mapper.writeValueAsString(new JaxbXmlSerializeJavaUtil().init(Arrays.asList(1, 2, 3))), javaUtilValue);
-        JaxbXmlSerializeVavr restored = mapper.readValue(javaUtilValue, JaxbXmlSerializeVavr.class);
-        Assertions.assertEquals(restored.transitTypes.size(), 3);
-    }
-
     @JacksonXmlRootElement(localName = "xmlSerialize")
     private static class XmlSerializeVavr {
         @JacksonXmlElementWrapper(localName = "transitTypes")
@@ -173,15 +182,5 @@ public abstract class SeqTest extends BaseTest {
             transitTypes = javaSet;
             return this;
         }
-    }
-
-    @Test
-    @SuppressWarnings("unchecked")
-    void testXmlSerialization() throws IOException {
-        ObjectMapper mapper = xmlMapper();
-        String javaUtilValue = mapper.writeValueAsString(new XmlSerializeVavr().init((Seq<Integer>) of(1, 2, 3)));
-        Assertions.assertEquals(mapper.writeValueAsString(new XmlSerializeJavaUtil().init(Arrays.asList(1, 2, 3))), javaUtilValue);
-        XmlSerializeVavr restored = mapper.readValue(javaUtilValue, XmlSerializeVavr.class);
-        Assertions.assertEquals(restored.transitTypes.size(), 3);
     }
 }

@@ -17,6 +17,41 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class AbstractContentTest {
 
+    public static <T> void json_roundtrip_test(T value, Class<T> valueType) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new VavrModule());
+        String asString = mapper.writeValueAsString(value);
+        assertNotNull(asString);
+        final T value_decoded = mapper.readValue(asString, valueType);
+        assertEquals(value, value_decoded);
+    }
+
+    @Test
+    void testList() throws IOException {
+        L l = new L(List.of(new X("a", 1), new X("bbb", 42)));
+        json_roundtrip_test(l, L.class);
+    }
+
+    @Test
+    void testMap() throws IOException {
+        M m = new M(HashMap.of(1, new X("a", 1), 42, new X("bbb", 42)));
+        json_roundtrip_test(m, M.class);
+    }
+
+    @Test
+    void testValue() throws IOException {
+        V v = new V()
+            .setLazy(Lazy.of(() -> new X("b", 2)))
+            .setOption(Option.of(new X("c", 3)));
+        json_roundtrip_test(v, V.class);
+    }
+
+    public interface AX {
+        String getaString();
+
+        int getAnInt();
+    }
+
     public static class L {
         @JsonDeserialize(contentAs = X.class)
         private List<AX> xs;
@@ -93,24 +128,25 @@ public class AbstractContentTest {
         @JsonDeserialize(contentAs = X.class)
         private Option<AX> option;
 
-        public V() {}
-
-        public V setLazy(Lazy<AX> lazy) {
-            this.lazy = lazy;
-            return this;
-        }
-
-        public V setOption(Option<AX> option) {
-            this.option = option;
-            return this;
+        public V() {
         }
 
         public Lazy<AX> getLazy() {
             return lazy;
         }
 
+        public V setLazy(Lazy<AX> lazy) {
+            this.lazy = lazy;
+            return this;
+        }
+
         public Option<AX> getOption() {
             return option;
+        }
+
+        public V setOption(Option<AX> option) {
+            this.option = option;
+            return this;
         }
 
         @Override
@@ -132,14 +168,9 @@ public class AbstractContentTest {
         }
     }
 
-    public interface  AX {
-        String getaString();
-        int getAnInt();
-    }
-
     public static class X implements AX {
-        String aString ;
-        int anInt ;
+        String aString;
+        int anInt;
 
         public X() {
         }
@@ -182,34 +213,5 @@ public class AbstractContentTest {
             result = 31 * result + anInt;
             return result;
         }
-    }
-
-    @Test
-    void testList() throws IOException {
-        L l = new L(List.of(new X("a", 1), new X("bbb", 42)));
-        json_roundtrip_test(l, L.class);
-    }
-
-    @Test
-    void testMap() throws IOException {
-        M m = new M(HashMap.of(1, new X("a", 1), 42, new X("bbb", 42)));
-        json_roundtrip_test(m, M.class);
-    }
-
-    @Test
-    void testValue() throws IOException {
-        V v = new V()
-                .setLazy(Lazy.of(() -> new X("b", 2)))
-                .setOption(Option.of(new X("c", 3)));
-        json_roundtrip_test(v, V.class);
-    }
-
-    public static <T> void json_roundtrip_test(T value, Class<T> valueType) throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.registerModule(new VavrModule());
-        String asString = mapper.writeValueAsString(value);
-        assertNotNull(asString);
-        final T value_decoded = mapper.readValue(asString, valueType);
-        assertEquals(value, value_decoded);
     }
 }

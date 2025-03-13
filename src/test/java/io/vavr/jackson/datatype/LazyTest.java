@@ -40,7 +40,8 @@ public class LazyTest extends BaseTest {
         Lazy<Lazy<Integer>> src = Lazy.of(() -> Lazy.of(() -> 1));
         String json = mapper().writeValueAsString(src);
         assertEquals("1", json);
-        Lazy<?> restored = mapper().readValue(json, new TypeReference<Lazy<Lazy<Integer>>>() {});
+        Lazy<?> restored = mapper().readValue(json, new TypeReference<Lazy<Lazy<Integer>>>() {
+        });
         assertEquals(src, restored);
     }
 
@@ -58,15 +59,9 @@ public class LazyTest extends BaseTest {
         assertEquals("[2019,12,25]", json);
 
         // And the deserialization is successful
-        Lazy<?> src2 = mapper.readValue(json, new TypeReference<Lazy<LocalDate>>() {});
+        Lazy<?> src2 = mapper.readValue(json, new TypeReference<Lazy<LocalDate>>() {
+        });
         assertEquals(src, src2);
-    }
-
-
-    static class FrenchDate {
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
-        @JsonProperty("date")
-        Lazy<LocalDate> value;
     }
 
     @Test
@@ -86,6 +81,36 @@ public class LazyTest extends BaseTest {
         // And the deserialization is successful
         FrenchDate src2 = mapper.readValue(json, FrenchDate.class);
         assertEquals(src.value, src2.value);
+    }
+
+    @Test
+    void testSerializeWithStaticTyping() throws IOException {
+        // Given an instance with lazy value configured with static typing
+        WrapperForStaticTyping src = new WrapperForStaticTyping();
+
+        // When serializing it using object mapper with VAVR Module
+        String json = mapper().writeValueAsString(src);
+
+        // Then the serialization is successful
+        assertEquals("{\"value\":{\"a\":1}}", json);
+    }
+
+    @Test
+    void testSerializeWithDynamicTyping() throws IOException {
+        // Given an instance with lazy value configured with dynamic typing
+        WrapperForDynamicTyping src = new WrapperForDynamicTyping();
+
+        // When serializing it using object mapper with VAVR Module
+        String json = mapper().writeValueAsString(src);
+
+        // Then the serialization is successful
+        assertEquals("{\"value\":{\"a\":1,\"b\":2}}", json);
+    }
+
+    static class FrenchDate {
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+        @JsonProperty("date")
+        Lazy<LocalDate> value;
     }
 
     static class WrapperForStaticTyping {
@@ -113,29 +138,5 @@ public class LazyTest extends BaseTest {
         public int getB() {
             return 2;
         }
-    }
-
-    @Test
-    void testSerializeWithStaticTyping() throws IOException {
-        // Given an instance with lazy value configured with static typing
-        WrapperForStaticTyping src = new WrapperForStaticTyping();
-
-        // When serializing it using object mapper with VAVR Module
-        String json = mapper().writeValueAsString(src);
-
-        // Then the serialization is successful
-        assertEquals("{\"value\":{\"a\":1}}", json);
-    }
-
-    @Test
-    void testSerializeWithDynamicTyping() throws IOException {
-        // Given an instance with lazy value configured with dynamic typing
-        WrapperForDynamicTyping src = new WrapperForDynamicTyping();
-
-        // When serializing it using object mapper with VAVR Module
-        String json = mapper().writeValueAsString(src);
-
-        // Then the serialization is successful
-        assertEquals("{\"value\":{\"a\":1,\"b\":2}}", json);
     }
 }

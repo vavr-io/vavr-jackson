@@ -18,6 +18,49 @@ import java.io.IOException;
 
 public class Issue142Test extends BaseTest {
 
+    private ObjectMapper mapper;
+
+    @BeforeEach
+    public void before() {
+        mapper = new ObjectMapper();
+        SimpleModule module = new VavrModule()
+            .addKeyDeserializer(MyComparable.class, new KeyDeserializer() {
+                @Override
+                public Object deserializeKey(String key, DeserializationContext ctxt) {
+                    return new MyComparable(Integer.parseInt(key));
+                }
+            });
+        mapper.registerModule(module);
+    }
+
+    @Test
+    public void testMap() throws IOException {
+
+        TreeMap<MyComparable, Integer> mp = TreeMap.<MyComparable, Integer>empty()
+            .put(new MyComparable(1), 1)
+            .put(new MyComparable(2), 2);
+
+        String json = mapper.writeValueAsString(mp);
+        Assertions.assertEquals("{\"2\":2,\"1\":1}", json);
+        TreeMap<MyComparable, Integer> restored = mapper.readValue(json, new TypeReference<TreeMap<MyComparable, Integer>>() {
+        });
+        Assertions.assertEquals(restored, mp);
+    }
+
+    @Test
+    public void testMultimap() throws IOException {
+
+        TreeMultimap<MyComparable, Integer> mp = TreeMultimap.<Integer>withSeq().<MyComparable, Integer>empty()
+            .put(new MyComparable(1), 1)
+            .put(new MyComparable(2), 2);
+
+        String json = mapper.writeValueAsString(mp);
+        Assertions.assertEquals("{\"2\":[2],\"1\":[1]}", json);
+        TreeMultimap<MyComparable, Integer> restored = mapper.readValue(json, new TypeReference<TreeMultimap<MyComparable, Integer>>() {
+        });
+        Assertions.assertEquals(restored, mp);
+    }
+
     public static class MyComparable implements Comparable<MyComparable> {
 
         private int v;
@@ -40,46 +83,5 @@ public class Issue142Test extends BaseTest {
         public String toString() {
             return "ke";  // the correct comparator should be used
         }
-    }
-
-    private ObjectMapper mapper;
-
-    @BeforeEach
-    public void before() {
-        mapper = new ObjectMapper();
-        SimpleModule module = new VavrModule()
-                .addKeyDeserializer(MyComparable.class, new KeyDeserializer() {
-                    @Override
-                    public Object deserializeKey(String key, DeserializationContext ctxt) {
-                        return new MyComparable(Integer.parseInt(key));
-                    }
-                });
-        mapper.registerModule(module);
-    }
-
-    @Test
-    public void testMap() throws IOException {
-
-        TreeMap<MyComparable, Integer> mp = TreeMap.<MyComparable, Integer>empty()
-                .put(new MyComparable(1), 1)
-                .put(new MyComparable(2), 2);
-
-        String json = mapper.writeValueAsString(mp);
-        Assertions.assertEquals("{\"2\":2,\"1\":1}", json);
-        TreeMap<MyComparable, Integer> restored = mapper.readValue(json, new TypeReference<TreeMap<MyComparable, Integer>>() {});
-        Assertions.assertEquals(restored, mp);
-    }
-
-    @Test
-    public void testMultimap() throws IOException {
-
-        TreeMultimap<MyComparable, Integer> mp = TreeMultimap.<Integer>withSeq().<MyComparable, Integer>empty()
-                .put(new MyComparable(1), 1)
-                .put(new MyComparable(2), 2);
-
-        String json = mapper.writeValueAsString(mp);
-        Assertions.assertEquals("{\"2\":[2],\"1\":[1]}", json);
-        TreeMultimap<MyComparable, Integer> restored = mapper.readValue(json, new TypeReference<TreeMultimap<MyComparable, Integer>>() {});
-        Assertions.assertEquals(restored, mp);
     }
 }
