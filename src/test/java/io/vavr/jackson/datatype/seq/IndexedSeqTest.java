@@ -1,12 +1,12 @@
 package io.vavr.jackson.datatype.seq;
 
-import java.util.Arrays;
-
 import com.fasterxml.jackson.core.type.TypeReference;
 import io.vavr.collection.Array;
 import io.vavr.collection.IndexedSeq;
 import io.vavr.collection.Seq;
 import io.vavr.control.Option;
+
+import java.util.Arrays;
 
 public class IndexedSeqTest extends SeqTest {
     @Override
@@ -16,7 +16,8 @@ public class IndexedSeqTest extends SeqTest {
 
     @Override
     protected TypeReference<IndexedSeq<Option<String>>> typeReferenceWithOption() {
-        return new TypeReference<IndexedSeq<Option<String>>>() {};
+        return new TypeReference<IndexedSeq<Option<String>>>() {
+        };
     }
 
     @Override

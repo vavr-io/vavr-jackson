@@ -6,7 +6,13 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.databind.BeanProperty;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.KeyDeserializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.deser.ContextualDeserializer;
@@ -29,7 +35,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.io.IOException;
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertIterableEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public abstract class MapTest extends BaseTest {
 
@@ -79,8 +87,10 @@ public abstract class MapTest extends BaseTest {
     // https://github.com/vavr-io/vavr-jackson/issues/138
     @Test
     public void testDeserializeNullValue() throws IOException {
-        Map<String, String> stringStringMap = mapper().readValue("{\"1\":null}", new TypeReference<Map<String, String>>() {});
-        Map<String, Object> stringObjectMap = mapper().readValue("{\"1\":null}", new TypeReference<Map<String, Object>>() {});
+        Map<String, String> stringStringMap = mapper().readValue("{\"1\":null}", new TypeReference<Map<String, String>>() {
+        });
+        Map<String, Object> stringObjectMap = mapper().readValue("{\"1\":null}", new TypeReference<Map<String, Object>>() {
+        });
 
         Assertions.assertEquals(emptyMap().put("1", null), stringStringMap);
         Assertions.assertEquals(emptyMap().put("1", null), stringObjectMap);
@@ -102,8 +112,8 @@ public abstract class MapTest extends BaseTest {
     @Test
     void testWithOption() throws Exception {
         verifySerialization(typeReferenceWithOption(), List.of(
-                Tuple.of(emptyMap().put("1", Option.some(1)), genJsonMap(HashMap.of("1", 1).toJavaMap())),
-                Tuple.of(emptyMap().put("1", Option.none()), genJsonMap(HashMap.of("1", null).toJavaMap()))
+            Tuple.of(emptyMap().put("1", Option.some(1)), genJsonMap(HashMap.of("1", 1).toJavaMap())),
+            Tuple.of(emptyMap().put("1", Option.none()), genJsonMap(HashMap.of("1", null).toJavaMap()))
         ));
     }
 
@@ -129,7 +139,7 @@ public abstract class MapTest extends BaseTest {
         }
     }
 
-//    @Test
+    //    @Test
     void testJaxbXmlSerialization() throws IOException {
         java.util.Map<String, String> javaInit = new java.util.HashMap<>();
         javaInit.put("key1", "1");
@@ -166,7 +176,7 @@ public abstract class MapTest extends BaseTest {
         }
     }
 
-//    @Test
+    //    @Test
     void testXmlSerialization() throws IOException {
         java.util.Map<String, String> javaInit = new java.util.HashMap<>();
         javaInit.put("key1", "1");
@@ -203,7 +213,7 @@ public abstract class MapTest extends BaseTest {
         @JsonCreator
         Model(@JsonProperty("map")
               @JsonDeserialize(keyUsing = CustomKeyDeserializer.class, contentUsing = CustomValueDeserializer.class)
-                      Map<CustomKey, CustomValue> map) {
+              Map<CustomKey, CustomValue> map) {
             this.map = map;
         }
 

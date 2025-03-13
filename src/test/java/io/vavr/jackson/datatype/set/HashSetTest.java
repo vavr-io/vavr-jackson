@@ -23,12 +23,14 @@ public class HashSetTest extends SetTest {
 
     @Override
     protected TypeReference<HashSet<Integer>> typeReference() {
-        return new TypeReference<HashSet<Integer>>() {};
+        return new TypeReference<HashSet<Integer>>() {
+        };
     }
 
     @Override
     protected TypeReference<HashSet<Option<String>>> typeReferenceWithOption() {
-        return new TypeReference<HashSet<Option<String>>>() {};
+        return new TypeReference<HashSet<Option<String>>>() {
+        };
     }
 
     @Override

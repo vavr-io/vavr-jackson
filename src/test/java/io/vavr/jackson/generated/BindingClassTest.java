@@ -98,14 +98,14 @@ public class BindingClassTest {
     }
 
     @JsonTypeInfo(
-            use = JsonTypeInfo.Id.CLASS,
-            include = JsonTypeInfo.As.PROPERTY,
-            property = "@class"
+        use = JsonTypeInfo.Id.CLASS,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "@class"
     )
     @JsonAutoDetect(
-            fieldVisibility = JsonAutoDetect.Visibility.ANY,
-            getterVisibility = JsonAutoDetect.Visibility.NONE,
-            setterVisibility = JsonAutoDetect.Visibility.NONE
+        fieldVisibility = JsonAutoDetect.Visibility.ANY,
+        getterVisibility = JsonAutoDetect.Visibility.NONE,
+        setterVisibility = JsonAutoDetect.Visibility.NONE
     )
     public interface MyInterface<T> {
         boolean myMethod(T value);

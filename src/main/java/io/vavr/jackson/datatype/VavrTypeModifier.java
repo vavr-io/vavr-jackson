@@ -20,9 +20,19 @@
 package io.vavr.jackson.datatype;
 
 import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.type.*;
+import com.fasterxml.jackson.databind.type.CollectionLikeType;
+import com.fasterxml.jackson.databind.type.MapLikeType;
+import com.fasterxml.jackson.databind.type.ReferenceType;
+import com.fasterxml.jackson.databind.type.TypeBindings;
+import com.fasterxml.jackson.databind.type.TypeFactory;
+import com.fasterxml.jackson.databind.type.TypeModifier;
 import io.vavr.Lazy;
-import io.vavr.collection.*;
+import io.vavr.collection.CharSeq;
+import io.vavr.collection.Map;
+import io.vavr.collection.Multimap;
+import io.vavr.collection.PriorityQueue;
+import io.vavr.collection.Seq;
+import io.vavr.collection.Set;
 import io.vavr.control.Option;
 
 import java.lang.reflect.Type;
@@ -30,8 +40,7 @@ import java.lang.reflect.Type;
 public class VavrTypeModifier extends TypeModifier {
 
     @Override
-    public JavaType modifyType(JavaType type, Type jdkType, TypeBindings bindings, TypeFactory typeFactory)
-    {
+    public JavaType modifyType(JavaType type, Type jdkType, TypeBindings bindings, TypeFactory typeFactory) {
         final Class<?> raw = type.getRawClass();
         if (Seq.class.isAssignableFrom(raw) && CharSeq.class != raw) {
             return CollectionLikeType.upgradeFrom(type, type.containedTypeOrUnknown(0));

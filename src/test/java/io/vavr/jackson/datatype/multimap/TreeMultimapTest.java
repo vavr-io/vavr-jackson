@@ -1,7 +1,6 @@
 package io.vavr.jackson.datatype.multimap;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-
 import io.vavr.collection.Multimap;
 import io.vavr.collection.TreeMultimap;
 import io.vavr.control.Option;
@@ -19,6 +18,7 @@ public class TreeMultimapTest extends MultimapTest {
 
     @Override
     protected TypeReference<TreeMultimap<String, Option<Integer>>> typeReferenceWithOption() {
-        return new TypeReference<TreeMultimap<String, Option<Integer>>>() {};
+        return new TypeReference<TreeMultimap<String, Option<Integer>>>() {
+        };
     }
 }

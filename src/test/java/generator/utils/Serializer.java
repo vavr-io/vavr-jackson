@@ -1,7 +1,21 @@
 package generator.utils;
 
-import io.vavr.*;
-import io.vavr.collection.*;
+import io.vavr.Lazy;
+import io.vavr.Tuple0;
+import io.vavr.Tuple1;
+import io.vavr.Tuple2;
+import io.vavr.Tuple3;
+import io.vavr.Tuple4;
+import io.vavr.Tuple5;
+import io.vavr.Tuple6;
+import io.vavr.Tuple7;
+import io.vavr.Tuple8;
+import io.vavr.collection.Map;
+import io.vavr.collection.Multimap;
+import io.vavr.collection.PriorityQueue;
+import io.vavr.collection.Seq;
+import io.vavr.collection.Set;
+import io.vavr.collection.Stream;
 import io.vavr.control.Either;
 import io.vavr.control.Option;
 
@@ -70,15 +84,18 @@ public class Serializer {
         }
         if (o instanceof Tuple6) {
             Tuple6<?, ?, ?, ?, ?, ?> t = (Tuple6<?, ?, ?, ?, ?, ?>) o;
-            return Stream.of(t._1, t._2, t._3, t._4, t._5, t._6).map(e -> expectedJson(e, opts)).mkString("[", ",", "]");
+            return Stream.of(t._1, t._2, t._3, t._4, t._5, t._6).map(e -> expectedJson(e, opts))
+                .mkString("[", ",", "]");
         }
         if (o instanceof Tuple7) {
             Tuple7<?, ?, ?, ?, ?, ?, ?> t = (Tuple7<?, ?, ?, ?, ?, ?, ?>) o;
-            return Stream.of(t._1, t._2, t._3, t._4, t._5, t._6, t._7).map(e -> expectedJson(e, opts)).mkString("[", ",", "]");
+            return Stream.of(t._1, t._2, t._3, t._4, t._5, t._6, t._7).map(e -> expectedJson(e, opts))
+                .mkString("[", ",", "]");
         }
         if (o instanceof Tuple8) {
             Tuple8<?, ?, ?, ?, ?, ?, ?, ?> t = (Tuple8<?, ?, ?, ?, ?, ?, ?, ?>) o;
-            return Stream.of(t._1, t._2, t._3, t._4, t._5, t._6, t._7, t._8).map(e -> expectedJson(e, opts)).mkString("[", ",", "]");
+            return Stream.of(t._1, t._2, t._3, t._4, t._5, t._6, t._7, t._8).map(e -> expectedJson(e, opts))
+                .mkString("[", ",", "]");
         }
         if (o instanceof String) {
             return "\"" + o.toString().replace("\"", "\\\"") + "\"";
@@ -123,7 +140,8 @@ public class Serializer {
     }
 
     private static String expectedMapJson(Map<?, ?> map, int opts) {
-        return map.toStream().map(o -> expectedJson(o._1.toString(), opts) + ":" + expectedJson(o._2, opts)).mkString("{", ",", "}");
+        return map.toStream().map(o -> expectedJson(o._1.toString(), opts) + ":" + expectedJson(o._2, opts))
+            .mkString("{", ",", "}");
     }
 
     private static String expectedMultimapJson(Multimap<?, ?> multimap, int opts) {
@@ -133,9 +151,9 @@ public class Serializer {
             list.add(e._2);
         });
         StringBuilder sb = new StringBuilder("{");
-        map.forEach((k, l) -> sb.append(expectedJson(k.toString(), opts)).append(":").append(expectedJson(io.vavr.collection.Stream.ofAll(l))));
+        map.forEach((k, l) -> sb.append(expectedJson(k.toString(), opts)).append(":")
+            .append(expectedJson(io.vavr.collection.Stream.ofAll(l))));
         sb.append("}");
         return sb.toString();
     }
-
 }

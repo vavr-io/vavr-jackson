@@ -5,7 +5,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.databind.BeanProperty;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.KeyDeserializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.deser.ContextualKeyDeserializer;
@@ -67,7 +73,8 @@ public abstract class MultimapTest extends BaseTest {
 
     @Test
     void testWithOption() throws Exception {
-        Multimap<String, Option<Integer>> multimap = this.<String, Option<Integer>>emptyMap().put("1", Option.some(1)).put("1", Option.none());
+        Multimap<String, Option<Integer>> multimap = this.<String, Option<Integer>>emptyMap().put("1", Option.some(1))
+            .put("1", Option.none());
         String json = genJsonMap(HashMap.of("1", asList(1, null)).toJavaMap());
 
         verifySerialization(typeReferenceWithOption(), io.vavr.collection.List.of(Tuple.of(multimap, json)));
@@ -96,7 +103,7 @@ public abstract class MultimapTest extends BaseTest {
 
         @JsonCreator
         ModelWithCustomKey(@JsonProperty("map")
-              @JsonDeserialize(keyUsing = CustomKeyDeserializer.class) Multimap<CustomKey, String> map) {
+                           @JsonDeserialize(keyUsing = CustomKeyDeserializer.class) Multimap<CustomKey, String> map) {
             this.map = map;
         }
 
@@ -112,7 +119,7 @@ public abstract class MultimapTest extends BaseTest {
 
         @JsonCreator
         ModelWithCustomKeyAndElement(@JsonProperty("map")
-              @JsonDeserialize(keyUsing = CustomKeyDeserializer.class) Multimap<CustomKey, CustomElement> map) {
+                                     @JsonDeserialize(keyUsing = CustomKeyDeserializer.class) Multimap<CustomKey, CustomElement> map) {
             this.map = map;
         }
 

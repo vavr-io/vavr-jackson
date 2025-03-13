@@ -48,6 +48,7 @@ abstract class ValueSerializer<T> extends StdSerializer<T> {
     }
 
     abstract Object toJavaObj(T value) throws IOException;
+
     abstract JavaType emulatedJavaType(TypeFactory typeFactory);
 
     @Override
@@ -78,5 +79,4 @@ abstract class ValueSerializer<T> extends StdSerializer<T> {
         serialize(value, gen, serializers);
         typeSer.writeTypeSuffixForScalar(value, gen);
     }
-
 }

@@ -2,7 +2,21 @@ package generator;
 
 import io.vavr.Lazy;
 import io.vavr.Tuple;
-import io.vavr.collection.*;
+import io.vavr.collection.Array;
+import io.vavr.collection.HashMap;
+import io.vavr.collection.HashMultimap;
+import io.vavr.collection.HashSet;
+import io.vavr.collection.LinkedHashMap;
+import io.vavr.collection.LinkedHashMultimap;
+import io.vavr.collection.LinkedHashSet;
+import io.vavr.collection.List;
+import io.vavr.collection.PriorityQueue;
+import io.vavr.collection.Queue;
+import io.vavr.collection.Stream;
+import io.vavr.collection.TreeMap;
+import io.vavr.collection.TreeMultimap;
+import io.vavr.collection.TreeSet;
+import io.vavr.collection.Vector;
 import io.vavr.control.Either;
 import io.vavr.control.Option;
 
@@ -59,11 +73,14 @@ public class Generator {
         cases.put("TreeMapOfTuple", TreeMap.of(1, Tuple.of("A", "B")));
 
         cases.put("HashMultimapOfSeqString", HashMultimap.withSeq().of("A", "B", "A", "C"));
-        cases.put("HashMultimapOfSeqTuple", HashMultimap.withSeq().of("A", Tuple.of("A", "B"), "A", Tuple.of("C", "D")));
+        cases.put("HashMultimapOfSeqTuple", HashMultimap.withSeq()
+            .of("A", Tuple.of("A", "B"), "A", Tuple.of("C", "D")));
         cases.put("LinkedHashMultimapOfSeqString", LinkedHashMultimap.withSeq().of("A", "B", "A", "C"));
-        cases.put("LinkedHashMultimapOfSeqTuple", LinkedHashMultimap.withSeq().of("A", Tuple.of("A", "B"), "A", Tuple.of("C", "D")));
+        cases.put("LinkedHashMultimapOfSeqTuple", LinkedHashMultimap.withSeq()
+            .of("A", Tuple.of("A", "B"), "A", Tuple.of("C", "D")));
         cases.put("TreeMultimapOfSeqString", TreeMultimap.withSet().of("A", "B", "A", "C"));
-        cases.put("TreeMultimapOfSeqTuple", TreeMultimap.withSet().of("A", Tuple.of("A", "B"), "A", Tuple.of("C", "D")));
+        cases.put("TreeMultimapOfSeqTuple", TreeMultimap.withSet()
+            .of("A", Tuple.of("A", "B"), "A", Tuple.of("C", "D")));
 
         cases.put("OptionOfString", Option.of("A"));
         cases.put("OptionOfTuple", Option.of(Tuple.of("A", "B")));

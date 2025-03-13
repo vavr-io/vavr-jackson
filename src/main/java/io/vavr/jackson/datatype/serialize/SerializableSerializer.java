@@ -46,5 +46,4 @@ class SerializableSerializer<T> extends ValueSerializer<T> {
     JavaType emulatedJavaType(TypeFactory typeFactory) {
         return typeFactory.constructArrayType(byte.class);
     }
-
 }

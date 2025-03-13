@@ -6,12 +6,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-import io.vavr.jackson.datatype.BaseTest;
-import io.vavr.jackson.datatype.VavrModule;
 import io.vavr.Tuple;
 import io.vavr.collection.List;
 import io.vavr.collection.Set;
 import io.vavr.control.Option;
+import io.vavr.jackson.datatype.BaseTest;
+import io.vavr.jackson.datatype.VavrModule;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -98,8 +98,8 @@ public abstract class SetTest extends BaseTest {
     @Test
     void testWithOption() throws Exception {
         verifySerialization(typeReferenceWithOption(), List.of(
-                Tuple.of(of(Option.some("value")), genJsonList("value")),
-                Tuple.of(of(Option.none()), genJsonList((Object) null))
+            Tuple.of(of(Option.some("value")), genJsonList("value")),
+            Tuple.of(of(Option.none()), genJsonList((Object) null))
         ));
     }
 

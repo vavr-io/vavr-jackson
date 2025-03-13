@@ -1,15 +1,13 @@
 package io.vavr.jackson.datatype.map;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-
+import io.vavr.collection.LinkedHashMap;
+import io.vavr.collection.Map;
+import io.vavr.control.Option;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-
-import io.vavr.collection.LinkedHashMap;
-import io.vavr.collection.Map;
-import io.vavr.control.Option;
 
 public class LinkedHashMapTest extends MapTest {
     @Override
@@ -24,7 +22,8 @@ public class LinkedHashMapTest extends MapTest {
 
     @Override
     protected TypeReference<LinkedHashMap<String, Option<Integer>>> typeReferenceWithOption() {
-        return new TypeReference<LinkedHashMap<String, Option<Integer>>>() {};
+        return new TypeReference<LinkedHashMap<String, Option<Integer>>>() {
+        };
     }
 
     @Test

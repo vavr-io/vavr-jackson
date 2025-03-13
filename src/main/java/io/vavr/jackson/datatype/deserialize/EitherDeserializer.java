@@ -25,12 +25,14 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import io.vavr.control.Either;
 
 import java.io.IOException;
 
-import io.vavr.control.Either;
-
-import static com.fasterxml.jackson.core.JsonToken.*;
+import static com.fasterxml.jackson.core.JsonToken.END_ARRAY;
+import static com.fasterxml.jackson.core.JsonToken.START_ARRAY;
+import static com.fasterxml.jackson.core.JsonToken.START_OBJECT;
+import static com.fasterxml.jackson.core.JsonToken.VALUE_NULL;
 
 class EitherDeserializer extends ValueDeserializer<Either<?, ?>> {
 

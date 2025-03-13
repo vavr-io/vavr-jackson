@@ -50,7 +50,7 @@ class SetDeserializer extends ArrayDeserializer<Set<?>> {
     private SetDeserializer(SetDeserializer origin, TypeDeserializer elementTypeDeserializer,
                             JsonDeserializer<?> elementDeserializer) {
         this(origin.collectionType, origin.elementType, elementTypeDeserializer, elementDeserializer,
-                origin.deserializeNullAsEmptyCollection);
+            origin.deserializeNullAsEmptyCollection);
     }
 
     @SuppressWarnings("unchecked")
@@ -71,5 +71,4 @@ class SetDeserializer extends ArrayDeserializer<Set<?>> {
     SetDeserializer createDeserializer(TypeDeserializer elementTypeDeserializer, JsonDeserializer<?> elementDeserializer) {
         return new SetDeserializer(this, elementTypeDeserializer, elementDeserializer);
     }
-
 }

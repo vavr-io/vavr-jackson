@@ -1,7 +1,5 @@
 package io.vavr.jackson.datatype.seq;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -9,13 +7,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-import io.vavr.jackson.datatype.BaseTest;
-import io.vavr.jackson.datatype.VavrModule;
 import io.vavr.Tuple;
 import io.vavr.collection.List;
 import io.vavr.collection.Seq;
 import io.vavr.control.Option;
-import org.junit.jupiter.api.Assertions;
+import io.vavr.jackson.datatype.BaseTest;
+import io.vavr.jackson.datatype.VavrModule;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -24,6 +21,8 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.IOException;
 import java.util.Arrays;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public abstract class SeqTest extends BaseTest {
 
@@ -112,8 +111,8 @@ public abstract class SeqTest extends BaseTest {
     @Test
     void testWithOption() throws Exception {
         verifySerialization(typeReferenceWithOption(), List.of(
-                Tuple.of(of(Option.some("value")), genJsonList("value")),
-                Tuple.of(of(Option.none()), genJsonList((Object) null))
+            Tuple.of(of(Option.some("value")), genJsonList("value")),
+            Tuple.of(of(Option.none()), genJsonList((Object) null))
         ));
     }
 

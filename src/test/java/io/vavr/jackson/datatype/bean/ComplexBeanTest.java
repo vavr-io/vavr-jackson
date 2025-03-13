@@ -33,7 +33,5 @@ public class ComplexBeanTest extends BaseTest {
         final ComplexClass.ComplexInnerClass srcInnerClassFromTuple2 = src.getComplexInnerClassTuple2()._2;
         final ComplexClass.ComplexInnerClass fromJsonInnerClassFromTuple2 = fromJson.getComplexInnerClassTuple2()._2;
         Assertions.assertEquals(srcInnerClassFromTuple2, fromJsonInnerClassFromTuple2);
-
     }
-
 }

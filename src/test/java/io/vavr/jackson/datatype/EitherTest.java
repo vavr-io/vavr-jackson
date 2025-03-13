@@ -121,10 +121,10 @@ public class EitherTest extends BaseTest {
         TypeReference<Either<Option<String>, Option<String>>> typeReference = new TypeReference<Either<Option<String>, Option<String>>>() {
         };
         verifySerialization(typeReference, List.of(
-          Tuple.of(Either.left(none()), genJsonList("left", null)),
-          Tuple.of(Either.right(none()), genJsonList("right", null)),
-          Tuple.of(Either.left(some("value")), genJsonList("left", "value")),
-          Tuple.of(Either.right(some("value")), genJsonList("right", "value"))
+            Tuple.of(Either.left(none()), genJsonList("left", null)),
+            Tuple.of(Either.right(none()), genJsonList("right", null)),
+            Tuple.of(Either.left(some("value")), genJsonList("left", "value")),
+            Tuple.of(Either.right(some("value")), genJsonList("right", "value"))
         ));
     }
 
@@ -149,21 +149,21 @@ public class EitherTest extends BaseTest {
 
         final String serializedLeft = mapper.writeValueAsString(left);
         final Either<String, BigInteger> deserializedLeft =
-          mapper.readValue(serializedLeft, new TypeReference<Either<String, BigInteger>>() {
-          });
+            mapper.readValue(serializedLeft, new TypeReference<Either<String, BigInteger>>() {
+            });
         Assertions.assertEquals("test", deserializedLeft.getLeft());
 
         final String serializedRight = mapper.writeValueAsString(right);
         final Either<String, BigInteger> deserializedRight =
-          mapper.readValue(serializedRight, new TypeReference<Either<String, BigInteger>>() {
-          });
+            mapper.readValue(serializedRight, new TypeReference<Either<String, BigInteger>>() {
+            });
         Assertions.assertEquals(BigInteger.ONE, deserializedRight.get());
     }
 
     @JsonTypeInfo(
-      use = JsonTypeInfo.Id.NAME,
-      include = JsonTypeInfo.As.WRAPPER_OBJECT,
-      property = "type")
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.WRAPPER_OBJECT,
+        property = "type")
     @JsonTypeName("card")
     private static class TestSerialize {
         public String type = "hello";

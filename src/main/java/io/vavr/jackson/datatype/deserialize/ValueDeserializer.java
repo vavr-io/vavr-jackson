@@ -70,15 +70,14 @@ abstract class ValueDeserializer<T> extends StdDeserializer<T> implements Resolv
     static JsonMappingException mappingException(DeserializationContext ctxt, Class<?> targetClass, JsonToken token) {
         String tokenDesc = (token == null) ? "<end of input>" : String.format("%s token", token);
         return JsonMappingException.from(ctxt.getParser(),
-                String.format("Can not deserialize instance of %s out of %s",
-                        _calcName(targetClass), tokenDesc));
+            String.format("Can not deserialize instance of %s out of %s",
+                _calcName(targetClass), tokenDesc));
     }
 
     private static String _calcName(Class<?> cls) {
         if (cls.isArray()) {
-            return _calcName(cls.getComponentType())+"[]";
+            return _calcName(cls.getComponentType()) + "[]";
         }
         return cls.getName();
     }
-
 }

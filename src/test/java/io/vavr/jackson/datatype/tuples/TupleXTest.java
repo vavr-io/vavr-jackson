@@ -1,16 +1,20 @@
 package io.vavr.jackson.datatype.tuples;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import io.vavr.*;
+import io.vavr.Tuple;
+import io.vavr.Tuple0;
+import io.vavr.Tuple2;
+import io.vavr.Tuple3;
+import io.vavr.Tuple8;
 import io.vavr.jackson.datatype.BaseTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class TupleXTest extends BaseTest {
 
@@ -46,9 +50,9 @@ class TupleXTest extends BaseTest {
     }
 
     @JsonTypeInfo(
-            use = JsonTypeInfo.Id.NAME,
-            include = JsonTypeInfo.As.WRAPPER_OBJECT,
-            property = "type")
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.WRAPPER_OBJECT,
+        property = "type")
     @JsonTypeName("card")
     private static class TestSerialize {
         public String type = "hello";

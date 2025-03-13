@@ -93,7 +93,8 @@ public class AbstractContentTest {
         @JsonDeserialize(contentAs = X.class)
         private Option<AX> option;
 
-        public V() {}
+        public V() {
+        }
 
         public V setLazy(Lazy<AX> lazy) {
             this.lazy = lazy;
@@ -132,14 +133,15 @@ public class AbstractContentTest {
         }
     }
 
-    public interface  AX {
+    public interface AX {
         String getaString();
+
         int getAnInt();
     }
 
     public static class X implements AX {
-        String aString ;
-        int anInt ;
+        String aString;
+        int anInt;
 
         public X() {
         }
@@ -199,8 +201,8 @@ public class AbstractContentTest {
     @Test
     void testValue() throws IOException {
         V v = new V()
-                .setLazy(Lazy.of(() -> new X("b", 2)))
-                .setOption(Option.of(new X("c", 3)));
+            .setLazy(Lazy.of(() -> new X("b", 2)))
+            .setOption(Option.of(new X("c", 3)));
         json_roundtrip_test(v, V.class);
     }
 

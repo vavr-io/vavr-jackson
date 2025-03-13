@@ -1,7 +1,6 @@
 package io.vavr.jackson.datatype.map;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-
 import io.vavr.collection.Map;
 import io.vavr.collection.SortedMap;
 import io.vavr.collection.TreeMap;
@@ -21,7 +20,8 @@ public class TreeMapTest extends MapTest {
 
     @Override
     protected TypeReference<TreeMap<String, Option<Integer>>> typeReferenceWithOption() {
-        return new TypeReference<TreeMap<String, Option<Integer>>>() {};
+        return new TypeReference<TreeMap<String, Option<Integer>>>() {
+        };
     }
 
     @Override
@@ -29,14 +29,22 @@ public class TreeMapTest extends MapTest {
         return TreeMap.empty((o1, o2) -> o1.toString().compareTo(o2.toString()));
     }
 
-    static class Clazz{
+    static class Clazz {
         private SortedMap<Integer, Integer> set;
-        public SortedMap<Integer, Integer> getSet() {return set;}
-        public void setSet(SortedMap<Integer, Integer> set) {this.set = set;}
-        public boolean equals(Object o){
-            return Objects.equals(set, ((Clazz)o).set);
+
+        public SortedMap<Integer, Integer> getSet() {
+            return set;
         }
-        public int hashCode(){
+
+        public void setSet(SortedMap<Integer, Integer> set) {
+            this.set = set;
+        }
+
+        public boolean equals(Object o) {
+            return Objects.equals(set, ((Clazz) o).set);
+        }
+
+        public int hashCode() {
             return set.hashCode();
         }
     }
