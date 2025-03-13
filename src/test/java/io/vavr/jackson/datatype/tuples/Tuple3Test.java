@@ -1,7 +1,6 @@
 package io.vavr.jackson.datatype.tuples;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-
 import io.vavr.Tuple;
 import io.vavr.Tuple3;
 import io.vavr.control.Option;
@@ -25,6 +24,7 @@ public class Tuple3Test extends TupleTest<Tuple3<?, ?, ?>> {
 
     @Override
     protected TypeReference<Tuple3<Option<String>, Option<String>, Option<String>>> typeReferenceWithOption() {
-        return new TypeReference<Tuple3<Option<String>, Option<String>, Option<String>>>() {};
+        return new TypeReference<Tuple3<Option<String>, Option<String>, Option<String>>>() {
+        };
     }
 }

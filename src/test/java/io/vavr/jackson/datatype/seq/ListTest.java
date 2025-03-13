@@ -25,7 +25,8 @@ public class ListTest extends SeqTest {
 
     @Override
     protected TypeReference<List<Option<String>>> typeReferenceWithOption() {
-        return new TypeReference<List<Option<String>>>() {};
+        return new TypeReference<List<Option<String>>>() {
+        };
     }
 
     @Override
@@ -91,5 +92,4 @@ public class ListTest extends SeqTest {
         FrenchDates restored = mapper.readValue(json, FrenchDates.class);
         Assertions.assertEquals(src.dates, restored.dates);
     }
-
 }

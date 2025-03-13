@@ -40,7 +40,8 @@ public class LazyTest extends BaseTest {
         Lazy<Lazy<Integer>> src = Lazy.of(() -> Lazy.of(() -> 1));
         String json = mapper().writeValueAsString(src);
         assertEquals("1", json);
-        Lazy<?> restored = mapper().readValue(json, new TypeReference<Lazy<Lazy<Integer>>>() {});
+        Lazy<?> restored = mapper().readValue(json, new TypeReference<Lazy<Lazy<Integer>>>() {
+        });
         assertEquals(src, restored);
     }
 
@@ -58,10 +59,10 @@ public class LazyTest extends BaseTest {
         assertEquals("[2019,12,25]", json);
 
         // And the deserialization is successful
-        Lazy<?> src2 = mapper.readValue(json, new TypeReference<Lazy<LocalDate>>() {});
+        Lazy<?> src2 = mapper.readValue(json, new TypeReference<Lazy<LocalDate>>() {
+        });
         assertEquals(src, src2);
     }
-
 
     static class FrenchDate {
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")

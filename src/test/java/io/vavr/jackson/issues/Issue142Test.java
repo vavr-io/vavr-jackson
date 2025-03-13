@@ -48,12 +48,12 @@ public class Issue142Test extends BaseTest {
     public void before() {
         mapper = new ObjectMapper();
         SimpleModule module = new VavrModule()
-                .addKeyDeserializer(MyComparable.class, new KeyDeserializer() {
-                    @Override
-                    public Object deserializeKey(String key, DeserializationContext ctxt) {
-                        return new MyComparable(Integer.parseInt(key));
-                    }
-                });
+            .addKeyDeserializer(MyComparable.class, new KeyDeserializer() {
+                @Override
+                public Object deserializeKey(String key, DeserializationContext ctxt) {
+                    return new MyComparable(Integer.parseInt(key));
+                }
+            });
         mapper.registerModule(module);
     }
 
@@ -61,12 +61,13 @@ public class Issue142Test extends BaseTest {
     public void testMap() throws IOException {
 
         TreeMap<MyComparable, Integer> mp = TreeMap.<MyComparable, Integer>empty()
-                .put(new MyComparable(1), 1)
-                .put(new MyComparable(2), 2);
+            .put(new MyComparable(1), 1)
+            .put(new MyComparable(2), 2);
 
         String json = mapper.writeValueAsString(mp);
         Assertions.assertEquals("{\"2\":2,\"1\":1}", json);
-        TreeMap<MyComparable, Integer> restored = mapper.readValue(json, new TypeReference<TreeMap<MyComparable, Integer>>() {});
+        TreeMap<MyComparable, Integer> restored = mapper.readValue(json, new TypeReference<TreeMap<MyComparable, Integer>>() {
+        });
         Assertions.assertEquals(restored, mp);
     }
 
@@ -74,12 +75,13 @@ public class Issue142Test extends BaseTest {
     public void testMultimap() throws IOException {
 
         TreeMultimap<MyComparable, Integer> mp = TreeMultimap.<Integer>withSeq().<MyComparable, Integer>empty()
-                .put(new MyComparable(1), 1)
-                .put(new MyComparable(2), 2);
+            .put(new MyComparable(1), 1)
+            .put(new MyComparable(2), 2);
 
         String json = mapper.writeValueAsString(mp);
         Assertions.assertEquals("{\"2\":[2],\"1\":[1]}", json);
-        TreeMultimap<MyComparable, Integer> restored = mapper.readValue(json, new TypeReference<TreeMultimap<MyComparable, Integer>>() {});
+        TreeMultimap<MyComparable, Integer> restored = mapper.readValue(json, new TypeReference<TreeMultimap<MyComparable, Integer>>() {
+        });
         Assertions.assertEquals(restored, mp);
     }
 }

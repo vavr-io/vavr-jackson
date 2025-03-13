@@ -1,10 +1,18 @@
 package io.vavr.jackson.datatype.bean;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import io.vavr.jackson.datatype.BaseTest;
-import io.vavr.collection.*;
+import io.vavr.collection.CharSeq;
+import io.vavr.collection.HashMap;
+import io.vavr.collection.HashMultimap;
+import io.vavr.collection.HashSet;
+import io.vavr.collection.List;
+import io.vavr.collection.Map;
+import io.vavr.collection.Multimap;
+import io.vavr.collection.Seq;
+import io.vavr.collection.Set;
 import io.vavr.control.Either;
 import io.vavr.control.Option;
+import io.vavr.jackson.datatype.BaseTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -74,5 +82,4 @@ public class BeanAnnotationTest extends BaseTest {
         String json = mapper().writer().writeValueAsString(bean);
         Assertions.assertEquals(EMPTY_JSON, json);
     }
-
 }

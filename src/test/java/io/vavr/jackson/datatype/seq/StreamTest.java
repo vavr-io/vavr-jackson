@@ -1,12 +1,11 @@
 package io.vavr.jackson.datatype.seq;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-
-import java.util.Arrays;
-
 import io.vavr.collection.Seq;
 import io.vavr.collection.Stream;
 import io.vavr.control.Option;
+
+import java.util.Arrays;
 
 public class StreamTest extends SeqTest {
     @Override
@@ -16,7 +15,8 @@ public class StreamTest extends SeqTest {
 
     @Override
     protected TypeReference<Stream<Option<String>>> typeReferenceWithOption() {
-        return new TypeReference<Stream<Option<String>>>() {};
+        return new TypeReference<Stream<Option<String>>>() {
+        };
     }
 
     @Override

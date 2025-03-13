@@ -94,9 +94,9 @@ class OptionTest extends BaseTest {
     }
 
     @JsonTypeInfo(
-      use = JsonTypeInfo.Id.NAME,
-      include = JsonTypeInfo.As.WRAPPER_OBJECT,
-      property = "type")
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.WRAPPER_OBJECT,
+        property = "type")
     @JsonTypeName("card")
     private static class TestSerialize {
         public String type = "hello";

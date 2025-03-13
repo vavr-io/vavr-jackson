@@ -19,7 +19,10 @@
  */
 package io.vavr.jackson.datatype.deserialize;
 
-import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.jsontype.TypeDeserializer;
 import io.vavr.collection.PriorityQueue;
 
@@ -46,7 +49,7 @@ class PriorityQueueDeserializer extends ArrayDeserializer<PriorityQueue<?>> {
     PriorityQueueDeserializer(PriorityQueueDeserializer origin, TypeDeserializer elementTypeDeserializer,
                               JsonDeserializer<?> elementDeserializer) {
         this(origin.collectionType, origin.elementType, elementTypeDeserializer, elementDeserializer,
-                origin.deserializeNullAsEmptyCollection);
+            origin.deserializeNullAsEmptyCollection);
     }
 
     @SuppressWarnings("unchecked")
@@ -60,5 +63,4 @@ class PriorityQueueDeserializer extends ArrayDeserializer<PriorityQueue<?>> {
     PriorityQueueDeserializer createDeserializer(TypeDeserializer elementTypeDeserializer, JsonDeserializer<?> elementDeserializer) {
         return new PriorityQueueDeserializer(this, elementTypeDeserializer, elementDeserializer);
     }
-
 }

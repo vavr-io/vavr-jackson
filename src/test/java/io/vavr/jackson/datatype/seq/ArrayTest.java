@@ -22,7 +22,8 @@ public class ArrayTest extends SeqTest {
 
     @Override
     protected TypeReference<Array<Option<String>>> typeReferenceWithOption() {
-        return new TypeReference<Array<Option<String>>>() {};
+        return new TypeReference<Array<Option<String>>>() {
+        };
     }
 
     @Override

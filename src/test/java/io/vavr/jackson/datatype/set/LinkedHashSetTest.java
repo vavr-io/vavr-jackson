@@ -1,16 +1,14 @@
 package io.vavr.jackson.datatype.set;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-
+import io.vavr.collection.LinkedHashSet;
+import io.vavr.collection.Set;
+import io.vavr.control.Option;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.Arrays;
-
-import io.vavr.collection.LinkedHashSet;
-import io.vavr.collection.Set;
-import io.vavr.control.Option;
 
 public class LinkedHashSetTest extends SetTest {
 
@@ -21,12 +19,14 @@ public class LinkedHashSetTest extends SetTest {
 
     @Override
     protected TypeReference<LinkedHashSet<Integer>> typeReference() {
-        return new TypeReference<LinkedHashSet<Integer>>() {};
+        return new TypeReference<LinkedHashSet<Integer>>() {
+        };
     }
 
     @Override
     protected TypeReference<LinkedHashSet<Option<String>>> typeReferenceWithOption() {
-        return new TypeReference<LinkedHashSet<Option<String>>>() {};
+        return new TypeReference<LinkedHashSet<Option<String>>>() {
+        };
     }
 
     @Override

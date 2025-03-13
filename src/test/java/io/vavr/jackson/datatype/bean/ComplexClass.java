@@ -2,7 +2,17 @@ package io.vavr.jackson.datatype.bean;
 
 import io.vavr.Tuple;
 import io.vavr.Tuple2;
-import io.vavr.collection.*;
+import io.vavr.collection.Array;
+import io.vavr.collection.HashMap;
+import io.vavr.collection.HashMultimap;
+import io.vavr.collection.HashSet;
+import io.vavr.collection.List;
+import io.vavr.collection.Queue;
+import io.vavr.collection.Stream;
+import io.vavr.collection.TreeMap;
+import io.vavr.collection.TreeMultimap;
+import io.vavr.collection.TreeSet;
+import io.vavr.collection.Vector;
 import io.vavr.control.Option;
 
 import java.io.Serializable;
@@ -62,19 +72,19 @@ public class ComplexClass implements Serializable {
     @SuppressWarnings("unchecked")
     public static ComplexClass build() {
         return new ComplexClass(
-                HashMap.of(Tuple.of("42", ComplexInnerClass.build())),
-                TreeMap.of(Tuple.of(42, ComplexInnerClass.buildAnother())),
-                HashMultimap.withSeq().of(Tuple.of("42", ComplexInnerClass.build())),
-                TreeMultimap.withSeq().of(Tuple.of(42, ComplexInnerClass.buildAnother())),
-                Array.of(ComplexInnerClass.build(), ComplexInnerClass.buildAnother()),
-                List.of(ComplexInnerClass.build(), ComplexInnerClass.buildAnother()),
-                Queue.of(ComplexInnerClass.build(), ComplexInnerClass.buildAnother()),
-                Stream.of(ComplexInnerClass.build(), ComplexInnerClass.buildAnother()),
-                Vector.of(ComplexInnerClass.build(), ComplexInnerClass.buildAnother()),
-                HashSet.of(ComplexInnerClass.build(), ComplexInnerClass.buildAnother()),
-                TreeSet.of(ComplexInnerClass.build(), ComplexInnerClass.buildAnother()),
-                Tuple.of("42", ComplexInnerClass.build()),
-                Option.of(42), Option.none()
+            HashMap.of(Tuple.of("42", ComplexInnerClass.build())),
+            TreeMap.of(Tuple.of(42, ComplexInnerClass.buildAnother())),
+            HashMultimap.withSeq().of(Tuple.of("42", ComplexInnerClass.build())),
+            TreeMultimap.withSeq().of(Tuple.of(42, ComplexInnerClass.buildAnother())),
+            Array.of(ComplexInnerClass.build(), ComplexInnerClass.buildAnother()),
+            List.of(ComplexInnerClass.build(), ComplexInnerClass.buildAnother()),
+            Queue.of(ComplexInnerClass.build(), ComplexInnerClass.buildAnother()),
+            Stream.of(ComplexInnerClass.build(), ComplexInnerClass.buildAnother()),
+            Vector.of(ComplexInnerClass.build(), ComplexInnerClass.buildAnother()),
+            HashSet.of(ComplexInnerClass.build(), ComplexInnerClass.buildAnother()),
+            TreeSet.of(ComplexInnerClass.build(), ComplexInnerClass.buildAnother()),
+            Tuple.of("42", ComplexInnerClass.build()),
+            Option.of(42), Option.none()
         );
     }
 
@@ -223,7 +233,6 @@ public class ComplexClass implements Serializable {
             return false;
         if (opt1 != null ? !opt1.equals(that.opt1) : that.opt1 != null) return false;
         return !(opt2 != null ? !opt2.equals(that.opt2) : that.opt2 != null);
-
     }
 
     @Override
@@ -284,26 +293,26 @@ public class ComplexClass implements Serializable {
 
         public static ComplexInnerClass build() {
             return new ComplexInnerClass(42,
-                    42L,
-                    42.42d,
-                    42.42f,
-                    '4',
-                    Integer.valueOf(42).byteValue(),
-                    Integer.valueOf(42).shortValue(),
-                    false,
-                    "42");
+                42L,
+                42.42d,
+                42.42f,
+                '4',
+                Integer.valueOf(42).byteValue(),
+                Integer.valueOf(42).shortValue(),
+                false,
+                "42");
         }
 
         public static ComplexInnerClass buildAnother() {
             return new ComplexInnerClass(87,
-                    87L,
-                    87.87d,
-                    87.87f,
-                    '8',
-                    Integer.valueOf(87).byteValue(),
-                    Integer.valueOf(87).shortValue(),
-                    false,
-                    "87");
+                87L,
+                87.87d,
+                87.87f,
+                '8',
+                Integer.valueOf(87).byteValue(),
+                Integer.valueOf(87).shortValue(),
+                false,
+                "87");
         }
 
         public int getIntField() {
@@ -382,6 +391,7 @@ public class ComplexClass implements Serializable {
          * Only to Satisfy Comparable requirement
          *
          * @param o Object to Compare
+         *
          * @return Always return 0
          */
         @Override
@@ -405,7 +415,6 @@ public class ComplexClass implements Serializable {
             if (shortField != that.shortField) return false;
             if (booleanField != that.booleanField) return false;
             return !(stringField != null ? !stringField.equals(that.stringField) : that.stringField != null);
-
         }
 
         @Override
@@ -424,7 +433,5 @@ public class ComplexClass implements Serializable {
             result = 31 * result + (stringField != null ? stringField.hashCode() : 0);
             return result;
         }
-
-
     }
 }

@@ -1,7 +1,7 @@
 package io.vavr.jackson.datatype.bean;
 
-import io.vavr.jackson.datatype.BaseTest;
 import io.vavr.collection.List;
+import io.vavr.jackson.datatype.BaseTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -22,7 +22,6 @@ public class BeanTest extends BaseTest {
 
             if (scalar != null ? !scalar.equals(that.scalar) : that.scalar != null) return false;
             return !(value != null ? !value.equals(that.value) : that.value != null);
-
         }
 
         @Override
@@ -79,7 +78,6 @@ public class BeanTest extends BaseTest {
 
             if (scalar != null ? !scalar.equals(that.scalar) : that.scalar != null) return false;
             return !(values != null ? !values.equals(that.values) : that.values != null);
-
         }
 
         @Override
@@ -119,7 +117,6 @@ public class BeanTest extends BaseTest {
 
             if (scalar != null ? !scalar.equals(that.scalar) : that.scalar != null) return false;
             return !(values != null ? !values.equals(that.values) : that.values != null);
-
         }
 
         @Override
@@ -139,8 +136,8 @@ public class BeanTest extends BaseTest {
         ComplexBeanObject src = new ComplexBeanObject();
         src.setScalar("Data Scalar");
         src.setValues(List.of(
-                new ComplexInnerClass(10, List.of("Data1", "Data2", "Data3")),
-                new ComplexInnerClass(12, List.of("Data3", "Data4", "Data5"))
+            new ComplexInnerClass(10, List.of("Data1", "Data2", "Data3")),
+            new ComplexInnerClass(12, List.of("Data3", "Data4", "Data5"))
         ));
 
         String json = mapper().writeValueAsString(src);

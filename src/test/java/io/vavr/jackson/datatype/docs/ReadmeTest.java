@@ -16,7 +16,8 @@ class ReadmeTest extends BaseTest {
 
         // readme: Serialization/deserialization
         String json = mapper.writeValueAsString(List.of(1));
-        List<Integer> restored = mapper.readValue(json, new TypeReference<List<Integer>>() {});
+        List<Integer> restored = mapper.readValue(json, new TypeReference<List<Integer>>() {
+        });
         // end of readme
 
         assertEquals("[1]", json);

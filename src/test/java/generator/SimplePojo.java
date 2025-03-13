@@ -1,6 +1,10 @@
 package generator;
 
-import com.squareup.javapoet.*;
+import com.squareup.javapoet.ClassName;
+import com.squareup.javapoet.JavaFile;
+import com.squareup.javapoet.MethodSpec;
+import com.squareup.javapoet.TypeName;
+import com.squareup.javapoet.TypeSpec;
 import io.vavr.collection.PriorityQueue;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -28,16 +32,16 @@ public class SimplePojo {
     static void generate(java.util.Map<String, Object> cases) throws IOException {
 
         TypeSpec.Builder pojoTest = TypeSpec.classBuilder("SimplePojoTest")
-                .addJavadoc("generated\n")
-                .addModifiers(Modifier.PUBLIC);
+            .addJavadoc("generated\n")
+            .addModifiers(Modifier.PUBLIC);
         initMapper(pojoTest, "MAPPER");
 
         cases.forEach((k, v) -> addCase(pojoTest, k, v));
 
         JavaFile javaFile = JavaFile.builder("io.vavr.jackson.generated", pojoTest.build())
-                .indent("    ")
-                .skipJavaLangImports(true)
-                .build();
+            .indent("    ")
+            .skipJavaLangImports(true)
+            .build();
 
         javaFile.writeTo(new File("src/test/java"));
     }
@@ -49,15 +53,15 @@ public class SimplePojo {
     private static void addCase(TypeSpec.Builder builder, String pojoName, Object value, int opts) {
 
         MethodSpec.Builder testBuilder = MethodSpec.methodBuilder("test" + pojoName)
-                .addAnnotation(Test.class)
-                .addException(ClassName.get(Exception.class));
+            .addAnnotation(Test.class)
+            .addException(ClassName.get(Exception.class));
         TypeName valueTypeName = initValue(testBuilder, "src", value);
         MethodSpec testSpec = testBuilder
-                .addStatement("$T json = MAPPER.writeValueAsString(new $L().setValue(src))", ClassName.get(String.class), pojoName)
-                .addStatement("$T.assertEquals(json, $S)", ClassName.get(Assertions.class), "{\"value\":"+ expectedJson(value, opts) + "}")
-                .addStatement("$L restored = MAPPER.readValue(json, $L.class)", pojoName, pojoName)
-                .addStatement("$T.assertEquals(src, restored.getValue())", ClassName.get(Assertions.class))
-                .build();
+            .addStatement("$T json = MAPPER.writeValueAsString(new $L().setValue(src))", ClassName.get(String.class), pojoName)
+            .addStatement("$T.assertEquals(json, $S)", ClassName.get(Assertions.class), "{\"value\":" + expectedJson(value, opts) + "}")
+            .addStatement("$L restored = MAPPER.readValue(json, $L.class)", pojoName, pojoName)
+            .addStatement("$T.assertEquals(src, restored.getValue())", ClassName.get(Assertions.class))
+            .build();
         builder.addMethod(testSpec);
         builder.addType(simplePojo(pojoName, valueTypeName));
     }

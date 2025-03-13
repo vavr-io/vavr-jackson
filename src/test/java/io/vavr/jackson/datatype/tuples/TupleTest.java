@@ -2,17 +2,15 @@ package io.vavr.jackson.datatype.tuples;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
+import io.vavr.Tuple;
+import io.vavr.collection.List;
+import io.vavr.control.Option;
+import io.vavr.jackson.datatype.BaseTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.ArrayList;
-
-import io.vavr.Tuple;
-import io.vavr.collection.List;
-import io.vavr.control.Option;
-import io.vavr.jackson.datatype.BaseTest;
 
 public abstract class TupleTest<T> extends BaseTest {
 
@@ -68,10 +66,10 @@ public abstract class TupleTest<T> extends BaseTest {
     @Test
     void testWithOption() throws IOException {
         verifySerialization(typeReferenceWithOption(), List.of(
-                Tuple.of(ofObjects(Option.some("1"), Option.none()), genJsonTuple("1", null)),
-                Tuple.of(ofObjects(Option.some("1"), Option.some("17")), genJsonTuple("1", "17")),
-                Tuple.of(ofObjects(Option.none(), Option.some("17")), genJsonTuple(null, "17")),
-                Tuple.of(ofObjects(Option.none(), Option.none()), genJsonTuple(null, null))
+            Tuple.of(ofObjects(Option.some("1"), Option.none()), genJsonTuple("1", null)),
+            Tuple.of(ofObjects(Option.some("1"), Option.some("17")), genJsonTuple("1", "17")),
+            Tuple.of(ofObjects(Option.none(), Option.some("17")), genJsonTuple(null, "17")),
+            Tuple.of(ofObjects(Option.none(), Option.none()), genJsonTuple(null, null))
         ));
     }
 }

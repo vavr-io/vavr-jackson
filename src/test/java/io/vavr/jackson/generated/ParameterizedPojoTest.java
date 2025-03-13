@@ -48,7 +48,8 @@ public class ParameterizedPojoTest {
         String json = MAPPER.writeValueAsString(new ParameterizedTuple1Pojo<>(src));
         Assertions.assertEquals(json, "{\"value\":[\"A\"]}");
         ParameterizedTuple1Pojo<java.lang.String> restored =
-                MAPPER.readValue(json, new TypeReference<ParameterizedTuple1Pojo<java.lang.String>>(){});
+            MAPPER.readValue(json, new TypeReference<ParameterizedTuple1Pojo<java.lang.String>>() {
+            });
         Assertions.assertEquals(src, restored.getValue());
     }
 
@@ -60,7 +61,8 @@ public class ParameterizedPojoTest {
         String json = MAPPER.writeValueAsString(new ParameterizedTuple1Pojo<>(src));
         Assertions.assertEquals(json, "{\"value\":[[\"B\"]]}");
         ParameterizedTuple1Pojo<io.vavr.Tuple1<java.lang.String>> restored =
-                MAPPER.readValue(json, new TypeReference<ParameterizedTuple1Pojo<io.vavr.Tuple1<java.lang.String>>>(){});
+            MAPPER.readValue(json, new TypeReference<ParameterizedTuple1Pojo<io.vavr.Tuple1<java.lang.String>>>() {
+            });
         Assertions.assertEquals(src, restored.getValue());
     }
 
@@ -72,7 +74,8 @@ public class ParameterizedPojoTest {
         String json = MAPPER.writeValueAsString(new ParameterizedTuple2Pojo<>(src));
         Assertions.assertEquals(json, "{\"value\":[\"A\",\"B\"]}");
         ParameterizedTuple2Pojo<java.lang.String, java.lang.String> restored =
-                MAPPER.readValue(json, new TypeReference<ParameterizedTuple2Pojo<java.lang.String, java.lang.String>>(){});
+            MAPPER.readValue(json, new TypeReference<ParameterizedTuple2Pojo<java.lang.String, java.lang.String>>() {
+            });
         Assertions.assertEquals(src, restored.getValue());
     }
 
@@ -86,7 +89,8 @@ public class ParameterizedPojoTest {
         String json = MAPPER.writeValueAsString(new ParameterizedTuple2Pojo<>(src));
         Assertions.assertEquals(json, "{\"value\":[\"A\",[\"B\",\"C\"]]}");
         ParameterizedTuple2Pojo<java.lang.String, io.vavr.Tuple2<java.lang.String, java.lang.String>> restored =
-                MAPPER.readValue(json, new TypeReference<ParameterizedTuple2Pojo<java.lang.String, io.vavr.Tuple2<java.lang.String, java.lang.String>>>(){});
+            MAPPER.readValue(json, new TypeReference<ParameterizedTuple2Pojo<java.lang.String, io.vavr.Tuple2<java.lang.String, java.lang.String>>>() {
+            });
         Assertions.assertEquals(src, restored.getValue());
     }
 
@@ -99,7 +103,8 @@ public class ParameterizedPojoTest {
         String json = MAPPER.writeValueAsString(new ParameterizedTuple3Pojo<>(src));
         Assertions.assertEquals(json, "{\"value\":[\"A\",\"B\",\"C\"]}");
         ParameterizedTuple3Pojo<java.lang.String, java.lang.String, java.lang.String> restored =
-                MAPPER.readValue(json, new TypeReference<ParameterizedTuple3Pojo<java.lang.String, java.lang.String, java.lang.String>>(){});
+            MAPPER.readValue(json, new TypeReference<ParameterizedTuple3Pojo<java.lang.String, java.lang.String, java.lang.String>>() {
+            });
         Assertions.assertEquals(src, restored.getValue());
     }
 
@@ -116,7 +121,8 @@ public class ParameterizedPojoTest {
         String json = MAPPER.writeValueAsString(new ParameterizedTuple3Pojo<>(src));
         Assertions.assertEquals(json, "{\"value\":[\"A\",[\"B\",\"C\"],[\"D\",\"E\"]]}");
         ParameterizedTuple3Pojo<java.lang.String, io.vavr.Tuple2<java.lang.String, java.lang.String>, io.vavr.Tuple2<java.lang.String, java.lang.String>> restored =
-                MAPPER.readValue(json, new TypeReference<ParameterizedTuple3Pojo<java.lang.String, io.vavr.Tuple2<java.lang.String, java.lang.String>, io.vavr.Tuple2<java.lang.String, java.lang.String>>>(){});
+            MAPPER.readValue(json, new TypeReference<ParameterizedTuple3Pojo<java.lang.String, io.vavr.Tuple2<java.lang.String, java.lang.String>, io.vavr.Tuple2<java.lang.String, java.lang.String>>>() {
+            });
         Assertions.assertEquals(src, restored.getValue());
     }
 
@@ -130,7 +136,8 @@ public class ParameterizedPojoTest {
         String json = MAPPER.writeValueAsString(new ParameterizedTuple4Pojo<>(src));
         Assertions.assertEquals(json, "{\"value\":[\"A\",\"B\",\"C\",\"D\"]}");
         ParameterizedTuple4Pojo<java.lang.String, java.lang.String, java.lang.String, java.lang.String> restored =
-                MAPPER.readValue(json, new TypeReference<ParameterizedTuple4Pojo<java.lang.String, java.lang.String, java.lang.String, java.lang.String>>(){});
+            MAPPER.readValue(json, new TypeReference<ParameterizedTuple4Pojo<java.lang.String, java.lang.String, java.lang.String, java.lang.String>>() {
+            });
         Assertions.assertEquals(src, restored.getValue());
     }
 
@@ -150,7 +157,8 @@ public class ParameterizedPojoTest {
         String json = MAPPER.writeValueAsString(new ParameterizedTuple4Pojo<>(src));
         Assertions.assertEquals(json, "{\"value\":[\"A\",[\"B\",\"C\"],[\"D\",\"E\"],[\"F\",\"1\"]]}");
         ParameterizedTuple4Pojo<java.lang.String, io.vavr.Tuple2<java.lang.String, java.lang.String>, io.vavr.Tuple2<java.lang.String, java.lang.String>, io.vavr.Tuple2<java.lang.String, java.lang.String>> restored =
-                MAPPER.readValue(json, new TypeReference<ParameterizedTuple4Pojo<java.lang.String, io.vavr.Tuple2<java.lang.String, java.lang.String>, io.vavr.Tuple2<java.lang.String, java.lang.String>, io.vavr.Tuple2<java.lang.String, java.lang.String>>>(){});
+            MAPPER.readValue(json, new TypeReference<ParameterizedTuple4Pojo<java.lang.String, io.vavr.Tuple2<java.lang.String, java.lang.String>, io.vavr.Tuple2<java.lang.String, java.lang.String>, io.vavr.Tuple2<java.lang.String, java.lang.String>>>() {
+            });
         Assertions.assertEquals(src, restored.getValue());
     }
 
@@ -165,7 +173,8 @@ public class ParameterizedPojoTest {
         String json = MAPPER.writeValueAsString(new ParameterizedTuple5Pojo<>(src));
         Assertions.assertEquals(json, "{\"value\":[\"A\",\"B\",\"C\",\"D\",\"E\"]}");
         ParameterizedTuple5Pojo<java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String> restored =
-                MAPPER.readValue(json, new TypeReference<ParameterizedTuple5Pojo<java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String>>(){});
+            MAPPER.readValue(json, new TypeReference<ParameterizedTuple5Pojo<java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String>>() {
+            });
         Assertions.assertEquals(src, restored.getValue());
     }
 
@@ -186,7 +195,8 @@ public class ParameterizedPojoTest {
         String json = MAPPER.writeValueAsString(new ParameterizedTuple5Pojo<>(src));
         Assertions.assertEquals(json, "{\"value\":[\"A\",[\"B\",\"C\"],[\"D\",\"E\"],[\"F\",\"1\"],\"A\"]}");
         ParameterizedTuple5Pojo<java.lang.String, io.vavr.Tuple2<java.lang.String, java.lang.String>, io.vavr.Tuple2<java.lang.String, java.lang.String>, io.vavr.Tuple2<java.lang.String, java.lang.String>, java.lang.String> restored =
-                MAPPER.readValue(json, new TypeReference<ParameterizedTuple5Pojo<java.lang.String, io.vavr.Tuple2<java.lang.String, java.lang.String>, io.vavr.Tuple2<java.lang.String, java.lang.String>, io.vavr.Tuple2<java.lang.String, java.lang.String>, java.lang.String>>(){});
+            MAPPER.readValue(json, new TypeReference<ParameterizedTuple5Pojo<java.lang.String, io.vavr.Tuple2<java.lang.String, java.lang.String>, io.vavr.Tuple2<java.lang.String, java.lang.String>, io.vavr.Tuple2<java.lang.String, java.lang.String>, java.lang.String>>() {
+            });
         Assertions.assertEquals(src, restored.getValue());
     }
 
@@ -202,7 +212,8 @@ public class ParameterizedPojoTest {
         String json = MAPPER.writeValueAsString(new ParameterizedTuple6Pojo<>(src));
         Assertions.assertEquals(json, "{\"value\":[\"A\",\"B\",\"C\",\"D\",\"E\",\"F\"]}");
         ParameterizedTuple6Pojo<java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String> restored =
-                MAPPER.readValue(json, new TypeReference<ParameterizedTuple6Pojo<java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String>>(){});
+            MAPPER.readValue(json, new TypeReference<ParameterizedTuple6Pojo<java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String>>() {
+            });
         Assertions.assertEquals(src, restored.getValue());
     }
 
@@ -226,7 +237,8 @@ public class ParameterizedPojoTest {
         String json = MAPPER.writeValueAsString(new ParameterizedTuple6Pojo<>(src));
         Assertions.assertEquals(json, "{\"value\":[\"A\",[\"B\",\"C\"],[\"D\",\"E\"],[\"F\",\"1\"],\"A\",[\"B\",\"C\"]]}");
         ParameterizedTuple6Pojo<java.lang.String, io.vavr.Tuple2<java.lang.String, java.lang.String>, io.vavr.Tuple2<java.lang.String, java.lang.String>, io.vavr.Tuple2<java.lang.String, java.lang.String>, java.lang.String, io.vavr.Tuple2<java.lang.String, java.lang.String>> restored =
-                MAPPER.readValue(json, new TypeReference<ParameterizedTuple6Pojo<java.lang.String, io.vavr.Tuple2<java.lang.String, java.lang.String>, io.vavr.Tuple2<java.lang.String, java.lang.String>, io.vavr.Tuple2<java.lang.String, java.lang.String>, java.lang.String, io.vavr.Tuple2<java.lang.String, java.lang.String>>>(){});
+            MAPPER.readValue(json, new TypeReference<ParameterizedTuple6Pojo<java.lang.String, io.vavr.Tuple2<java.lang.String, java.lang.String>, io.vavr.Tuple2<java.lang.String, java.lang.String>, io.vavr.Tuple2<java.lang.String, java.lang.String>, java.lang.String, io.vavr.Tuple2<java.lang.String, java.lang.String>>>() {
+            });
         Assertions.assertEquals(src, restored.getValue());
     }
 
@@ -243,7 +255,8 @@ public class ParameterizedPojoTest {
         String json = MAPPER.writeValueAsString(new ParameterizedTuple7Pojo<>(src));
         Assertions.assertEquals(json, "{\"value\":[\"A\",\"B\",\"C\",\"D\",\"E\",\"F\",\"1\"]}");
         ParameterizedTuple7Pojo<java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String> restored =
-                MAPPER.readValue(json, new TypeReference<ParameterizedTuple7Pojo<java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String>>(){});
+            MAPPER.readValue(json, new TypeReference<ParameterizedTuple7Pojo<java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String>>() {
+            });
         Assertions.assertEquals(src, restored.getValue());
     }
 
@@ -270,7 +283,8 @@ public class ParameterizedPojoTest {
         String json = MAPPER.writeValueAsString(new ParameterizedTuple7Pojo<>(src));
         Assertions.assertEquals(json, "{\"value\":[\"A\",[\"B\",\"C\"],[\"D\",\"E\"],[\"F\",\"1\"],\"A\",[\"B\",\"C\"],[\"D\",\"E\"]]}");
         ParameterizedTuple7Pojo<java.lang.String, io.vavr.Tuple2<java.lang.String, java.lang.String>, io.vavr.Tuple2<java.lang.String, java.lang.String>, io.vavr.Tuple2<java.lang.String, java.lang.String>, java.lang.String, io.vavr.Tuple2<java.lang.String, java.lang.String>, io.vavr.Tuple2<java.lang.String, java.lang.String>> restored =
-                MAPPER.readValue(json, new TypeReference<ParameterizedTuple7Pojo<java.lang.String, io.vavr.Tuple2<java.lang.String, java.lang.String>, io.vavr.Tuple2<java.lang.String, java.lang.String>, io.vavr.Tuple2<java.lang.String, java.lang.String>, java.lang.String, io.vavr.Tuple2<java.lang.String, java.lang.String>, io.vavr.Tuple2<java.lang.String, java.lang.String>>>(){});
+            MAPPER.readValue(json, new TypeReference<ParameterizedTuple7Pojo<java.lang.String, io.vavr.Tuple2<java.lang.String, java.lang.String>, io.vavr.Tuple2<java.lang.String, java.lang.String>, io.vavr.Tuple2<java.lang.String, java.lang.String>, java.lang.String, io.vavr.Tuple2<java.lang.String, java.lang.String>, io.vavr.Tuple2<java.lang.String, java.lang.String>>>() {
+            });
         Assertions.assertEquals(src, restored.getValue());
     }
 
@@ -288,7 +302,8 @@ public class ParameterizedPojoTest {
         String json = MAPPER.writeValueAsString(new ParameterizedTuple8Pojo<>(src));
         Assertions.assertEquals(json, "{\"value\":[\"A\",\"B\",\"C\",\"D\",\"E\",\"F\",\"1\",\"2\"]}");
         ParameterizedTuple8Pojo<java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String> restored =
-                MAPPER.readValue(json, new TypeReference<ParameterizedTuple8Pojo<java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String>>(){});
+            MAPPER.readValue(json, new TypeReference<ParameterizedTuple8Pojo<java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String>>() {
+            });
         Assertions.assertEquals(src, restored.getValue());
     }
 
@@ -318,7 +333,8 @@ public class ParameterizedPojoTest {
         String json = MAPPER.writeValueAsString(new ParameterizedTuple8Pojo<>(src));
         Assertions.assertEquals(json, "{\"value\":[\"A\",[\"B\",\"C\"],[\"D\",\"E\"],[\"F\",\"1\"],\"A\",[\"B\",\"C\"],[\"D\",\"E\"],[\"F\",\"1\"]]}");
         ParameterizedTuple8Pojo<java.lang.String, io.vavr.Tuple2<java.lang.String, java.lang.String>, io.vavr.Tuple2<java.lang.String, java.lang.String>, io.vavr.Tuple2<java.lang.String, java.lang.String>, java.lang.String, io.vavr.Tuple2<java.lang.String, java.lang.String>, io.vavr.Tuple2<java.lang.String, java.lang.String>, io.vavr.Tuple2<java.lang.String, java.lang.String>> restored =
-                MAPPER.readValue(json, new TypeReference<ParameterizedTuple8Pojo<java.lang.String, io.vavr.Tuple2<java.lang.String, java.lang.String>, io.vavr.Tuple2<java.lang.String, java.lang.String>, io.vavr.Tuple2<java.lang.String, java.lang.String>, java.lang.String, io.vavr.Tuple2<java.lang.String, java.lang.String>, io.vavr.Tuple2<java.lang.String, java.lang.String>, io.vavr.Tuple2<java.lang.String, java.lang.String>>>(){});
+            MAPPER.readValue(json, new TypeReference<ParameterizedTuple8Pojo<java.lang.String, io.vavr.Tuple2<java.lang.String, java.lang.String>, io.vavr.Tuple2<java.lang.String, java.lang.String>, io.vavr.Tuple2<java.lang.String, java.lang.String>, java.lang.String, io.vavr.Tuple2<java.lang.String, java.lang.String>, io.vavr.Tuple2<java.lang.String, java.lang.String>, io.vavr.Tuple2<java.lang.String, java.lang.String>>>() {
+            });
         Assertions.assertEquals(src, restored.getValue());
     }
 
@@ -331,7 +347,8 @@ public class ParameterizedPojoTest {
         String json = MAPPER.writeValueAsString(new ParameterizedArrayPojo<>(src));
         Assertions.assertEquals(json, "{\"value\":[\"A\",\"B\",\"C\"]}");
         ParameterizedArrayPojo<java.lang.String> restored =
-                MAPPER.readValue(json, new TypeReference<ParameterizedArrayPojo<java.lang.String>>(){});
+            MAPPER.readValue(json, new TypeReference<ParameterizedArrayPojo<java.lang.String>>() {
+            });
         Assertions.assertEquals(src, restored.getValue());
     }
 
@@ -344,7 +361,8 @@ public class ParameterizedPojoTest {
         String json = MAPPER.writeValueAsString(new ParameterizedArrayPojo<>(src));
         Assertions.assertEquals(json, "{\"value\":[[\"A\",\"B\"]]}");
         ParameterizedArrayPojo<io.vavr.Tuple2<java.lang.String, java.lang.String>> restored =
-                MAPPER.readValue(json, new TypeReference<ParameterizedArrayPojo<io.vavr.Tuple2<java.lang.String, java.lang.String>>>(){});
+            MAPPER.readValue(json, new TypeReference<ParameterizedArrayPojo<io.vavr.Tuple2<java.lang.String, java.lang.String>>>() {
+            });
         Assertions.assertEquals(src, restored.getValue());
     }
 
@@ -357,7 +375,8 @@ public class ParameterizedPojoTest {
         String json = MAPPER.writeValueAsString(new ParameterizedListPojo<>(src));
         Assertions.assertEquals(json, "{\"value\":[\"A\",\"B\",\"C\"]}");
         ParameterizedListPojo<java.lang.String> restored =
-                MAPPER.readValue(json, new TypeReference<ParameterizedListPojo<java.lang.String>>(){});
+            MAPPER.readValue(json, new TypeReference<ParameterizedListPojo<java.lang.String>>() {
+            });
         Assertions.assertEquals(src, restored.getValue());
     }
 
@@ -370,7 +389,8 @@ public class ParameterizedPojoTest {
         String json = MAPPER.writeValueAsString(new ParameterizedListPojo<>(src));
         Assertions.assertEquals(json, "{\"value\":[[\"A\",\"B\"]]}");
         ParameterizedListPojo<io.vavr.Tuple2<java.lang.String, java.lang.String>> restored =
-                MAPPER.readValue(json, new TypeReference<ParameterizedListPojo<io.vavr.Tuple2<java.lang.String, java.lang.String>>>(){});
+            MAPPER.readValue(json, new TypeReference<ParameterizedListPojo<io.vavr.Tuple2<java.lang.String, java.lang.String>>>() {
+            });
         Assertions.assertEquals(src, restored.getValue());
     }
 
@@ -383,7 +403,8 @@ public class ParameterizedPojoTest {
         String json = MAPPER.writeValueAsString(new ParameterizedQueuePojo<>(src));
         Assertions.assertEquals(json, "{\"value\":[\"A\",\"B\",\"C\"]}");
         ParameterizedQueuePojo<java.lang.String> restored =
-                MAPPER.readValue(json, new TypeReference<ParameterizedQueuePojo<java.lang.String>>(){});
+            MAPPER.readValue(json, new TypeReference<ParameterizedQueuePojo<java.lang.String>>() {
+            });
         Assertions.assertEquals(src, restored.getValue());
     }
 
@@ -396,7 +417,8 @@ public class ParameterizedPojoTest {
         String json = MAPPER.writeValueAsString(new ParameterizedQueuePojo<>(src));
         Assertions.assertEquals(json, "{\"value\":[[\"A\",\"B\"]]}");
         ParameterizedQueuePojo<io.vavr.Tuple2<java.lang.String, java.lang.String>> restored =
-                MAPPER.readValue(json, new TypeReference<ParameterizedQueuePojo<io.vavr.Tuple2<java.lang.String, java.lang.String>>>(){});
+            MAPPER.readValue(json, new TypeReference<ParameterizedQueuePojo<io.vavr.Tuple2<java.lang.String, java.lang.String>>>() {
+            });
         Assertions.assertEquals(src, restored.getValue());
     }
 
@@ -409,7 +431,8 @@ public class ParameterizedPojoTest {
         String json = MAPPER.writeValueAsString(new ParameterizedStreamPojo<>(src));
         Assertions.assertEquals(json, "{\"value\":[\"A\",\"B\",\"C\"]}");
         ParameterizedStreamPojo<java.lang.String> restored =
-                MAPPER.readValue(json, new TypeReference<ParameterizedStreamPojo<java.lang.String>>(){});
+            MAPPER.readValue(json, new TypeReference<ParameterizedStreamPojo<java.lang.String>>() {
+            });
         Assertions.assertEquals(src, restored.getValue());
     }
 
@@ -422,7 +445,8 @@ public class ParameterizedPojoTest {
         String json = MAPPER.writeValueAsString(new ParameterizedStreamPojo<>(src));
         Assertions.assertEquals(json, "{\"value\":[[\"A\",\"B\"]]}");
         ParameterizedStreamPojo<io.vavr.Tuple2<java.lang.String, java.lang.String>> restored =
-                MAPPER.readValue(json, new TypeReference<ParameterizedStreamPojo<io.vavr.Tuple2<java.lang.String, java.lang.String>>>(){});
+            MAPPER.readValue(json, new TypeReference<ParameterizedStreamPojo<io.vavr.Tuple2<java.lang.String, java.lang.String>>>() {
+            });
         Assertions.assertEquals(src, restored.getValue());
     }
 
@@ -435,7 +459,8 @@ public class ParameterizedPojoTest {
         String json = MAPPER.writeValueAsString(new ParameterizedVectorPojo<>(src));
         Assertions.assertEquals(json, "{\"value\":[\"A\",\"B\",\"C\"]}");
         ParameterizedVectorPojo<java.lang.String> restored =
-                MAPPER.readValue(json, new TypeReference<ParameterizedVectorPojo<java.lang.String>>(){});
+            MAPPER.readValue(json, new TypeReference<ParameterizedVectorPojo<java.lang.String>>() {
+            });
         Assertions.assertEquals(src, restored.getValue());
     }
 
@@ -448,7 +473,8 @@ public class ParameterizedPojoTest {
         String json = MAPPER.writeValueAsString(new ParameterizedVectorPojo<>(src));
         Assertions.assertEquals(json, "{\"value\":[[\"A\",\"B\"]]}");
         ParameterizedVectorPojo<io.vavr.Tuple2<java.lang.String, java.lang.String>> restored =
-                MAPPER.readValue(json, new TypeReference<ParameterizedVectorPojo<io.vavr.Tuple2<java.lang.String, java.lang.String>>>(){});
+            MAPPER.readValue(json, new TypeReference<ParameterizedVectorPojo<io.vavr.Tuple2<java.lang.String, java.lang.String>>>() {
+            });
         Assertions.assertEquals(src, restored.getValue());
     }
 
@@ -461,7 +487,8 @@ public class ParameterizedPojoTest {
         String json = MAPPER.writeValueAsString(new ParameterizedPriorityQueuePojo<>(src));
         Assertions.assertEquals(json, "{\"value\":[\"A\",\"B\",\"C\"]}");
         ParameterizedPriorityQueuePojo<java.lang.String> restored =
-                MAPPER.readValue(json, new TypeReference<ParameterizedPriorityQueuePojo<java.lang.String>>(){});
+            MAPPER.readValue(json, new TypeReference<ParameterizedPriorityQueuePojo<java.lang.String>>() {
+            });
         Assertions.assertEquals(src, restored.getValue());
     }
 
@@ -474,7 +501,8 @@ public class ParameterizedPojoTest {
         String json = MAPPER.writeValueAsString(new ParameterizedHashSetPojo<>(src));
         Assertions.assertEquals(json, "{\"value\":[\"A\",\"B\",\"C\"]}");
         ParameterizedHashSetPojo<java.lang.String> restored =
-                MAPPER.readValue(json, new TypeReference<ParameterizedHashSetPojo<java.lang.String>>(){});
+            MAPPER.readValue(json, new TypeReference<ParameterizedHashSetPojo<java.lang.String>>() {
+            });
         Assertions.assertEquals(src, restored.getValue());
     }
 
@@ -487,7 +515,8 @@ public class ParameterizedPojoTest {
         String json = MAPPER.writeValueAsString(new ParameterizedHashSetPojo<>(src));
         Assertions.assertEquals(json, "{\"value\":[[\"A\",\"B\"]]}");
         ParameterizedHashSetPojo<io.vavr.Tuple2<java.lang.String, java.lang.String>> restored =
-                MAPPER.readValue(json, new TypeReference<ParameterizedHashSetPojo<io.vavr.Tuple2<java.lang.String, java.lang.String>>>(){});
+            MAPPER.readValue(json, new TypeReference<ParameterizedHashSetPojo<io.vavr.Tuple2<java.lang.String, java.lang.String>>>() {
+            });
         Assertions.assertEquals(src, restored.getValue());
     }
 
@@ -500,7 +529,8 @@ public class ParameterizedPojoTest {
         String json = MAPPER.writeValueAsString(new ParameterizedLinkedHashSetPojo<>(src));
         Assertions.assertEquals(json, "{\"value\":[\"A\",\"B\",\"C\"]}");
         ParameterizedLinkedHashSetPojo<java.lang.String> restored =
-                MAPPER.readValue(json, new TypeReference<ParameterizedLinkedHashSetPojo<java.lang.String>>(){});
+            MAPPER.readValue(json, new TypeReference<ParameterizedLinkedHashSetPojo<java.lang.String>>() {
+            });
         Assertions.assertEquals(src, restored.getValue());
     }
 
@@ -513,7 +543,8 @@ public class ParameterizedPojoTest {
         String json = MAPPER.writeValueAsString(new ParameterizedLinkedHashSetPojo<>(src));
         Assertions.assertEquals(json, "{\"value\":[[\"A\",\"B\"]]}");
         ParameterizedLinkedHashSetPojo<io.vavr.Tuple2<java.lang.String, java.lang.String>> restored =
-                MAPPER.readValue(json, new TypeReference<ParameterizedLinkedHashSetPojo<io.vavr.Tuple2<java.lang.String, java.lang.String>>>(){});
+            MAPPER.readValue(json, new TypeReference<ParameterizedLinkedHashSetPojo<io.vavr.Tuple2<java.lang.String, java.lang.String>>>() {
+            });
         Assertions.assertEquals(src, restored.getValue());
     }
 
@@ -526,7 +557,8 @@ public class ParameterizedPojoTest {
         String json = MAPPER.writeValueAsString(new ParameterizedTreeSetPojo<>(src));
         Assertions.assertEquals(json, "{\"value\":[\"A\",\"B\",\"C\"]}");
         ParameterizedTreeSetPojo<java.lang.String> restored =
-                MAPPER.readValue(json, new TypeReference<ParameterizedTreeSetPojo<java.lang.String>>(){});
+            MAPPER.readValue(json, new TypeReference<ParameterizedTreeSetPojo<java.lang.String>>() {
+            });
         Assertions.assertEquals(src, restored.getValue());
     }
 
@@ -539,7 +571,8 @@ public class ParameterizedPojoTest {
         String json = MAPPER.writeValueAsString(new ParameterizedHashMapPojo<>(src));
         Assertions.assertEquals(json, "{\"value\":{\"1\":\"A\"}}");
         ParameterizedHashMapPojo<java.lang.Integer, java.lang.String> restored =
-                MAPPER.readValue(json, new TypeReference<ParameterizedHashMapPojo<java.lang.Integer, java.lang.String>>(){});
+            MAPPER.readValue(json, new TypeReference<ParameterizedHashMapPojo<java.lang.Integer, java.lang.String>>() {
+            });
         Assertions.assertEquals(src, restored.getValue());
     }
 
@@ -554,7 +587,8 @@ public class ParameterizedPojoTest {
         String json = MAPPER.writeValueAsString(new ParameterizedHashMapPojo<>(src));
         Assertions.assertEquals(json, "{\"value\":{\"1\":[\"A\",\"B\"]}}");
         ParameterizedHashMapPojo<java.lang.Integer, io.vavr.Tuple2<java.lang.String, java.lang.String>> restored =
-                MAPPER.readValue(json, new TypeReference<ParameterizedHashMapPojo<java.lang.Integer, io.vavr.Tuple2<java.lang.String, java.lang.String>>>(){});
+            MAPPER.readValue(json, new TypeReference<ParameterizedHashMapPojo<java.lang.Integer, io.vavr.Tuple2<java.lang.String, java.lang.String>>>() {
+            });
         Assertions.assertEquals(src, restored.getValue());
     }
 
@@ -567,7 +601,8 @@ public class ParameterizedPojoTest {
         String json = MAPPER.writeValueAsString(new ParameterizedLinkedHashMapPojo<>(src));
         Assertions.assertEquals(json, "{\"value\":{\"1\":\"A\"}}");
         ParameterizedLinkedHashMapPojo<java.lang.Integer, java.lang.String> restored =
-                MAPPER.readValue(json, new TypeReference<ParameterizedLinkedHashMapPojo<java.lang.Integer, java.lang.String>>(){});
+            MAPPER.readValue(json, new TypeReference<ParameterizedLinkedHashMapPojo<java.lang.Integer, java.lang.String>>() {
+            });
         Assertions.assertEquals(src, restored.getValue());
     }
 
@@ -582,7 +617,8 @@ public class ParameterizedPojoTest {
         String json = MAPPER.writeValueAsString(new ParameterizedLinkedHashMapPojo<>(src));
         Assertions.assertEquals(json, "{\"value\":{\"1\":[\"A\",\"B\"]}}");
         ParameterizedLinkedHashMapPojo<java.lang.Integer, io.vavr.Tuple2<java.lang.String, java.lang.String>> restored =
-                MAPPER.readValue(json, new TypeReference<ParameterizedLinkedHashMapPojo<java.lang.Integer, io.vavr.Tuple2<java.lang.String, java.lang.String>>>(){});
+            MAPPER.readValue(json, new TypeReference<ParameterizedLinkedHashMapPojo<java.lang.Integer, io.vavr.Tuple2<java.lang.String, java.lang.String>>>() {
+            });
         Assertions.assertEquals(src, restored.getValue());
     }
 
@@ -595,7 +631,8 @@ public class ParameterizedPojoTest {
         String json = MAPPER.writeValueAsString(new ParameterizedTreeMapPojo<>(src));
         Assertions.assertEquals(json, "{\"value\":{\"1\":\"A\"}}");
         ParameterizedTreeMapPojo<java.lang.Integer, java.lang.String> restored =
-                MAPPER.readValue(json, new TypeReference<ParameterizedTreeMapPojo<java.lang.Integer, java.lang.String>>(){});
+            MAPPER.readValue(json, new TypeReference<ParameterizedTreeMapPojo<java.lang.Integer, java.lang.String>>() {
+            });
         Assertions.assertEquals(src, restored.getValue());
     }
 
@@ -610,7 +647,8 @@ public class ParameterizedPojoTest {
         String json = MAPPER.writeValueAsString(new ParameterizedTreeMapPojo<>(src));
         Assertions.assertEquals(json, "{\"value\":{\"1\":[\"A\",\"B\"]}}");
         ParameterizedTreeMapPojo<java.lang.Integer, io.vavr.Tuple2<java.lang.String, java.lang.String>> restored =
-                MAPPER.readValue(json, new TypeReference<ParameterizedTreeMapPojo<java.lang.Integer, io.vavr.Tuple2<java.lang.String, java.lang.String>>>(){});
+            MAPPER.readValue(json, new TypeReference<ParameterizedTreeMapPojo<java.lang.Integer, io.vavr.Tuple2<java.lang.String, java.lang.String>>>() {
+            });
         Assertions.assertEquals(src, restored.getValue());
     }
 
@@ -626,7 +664,8 @@ public class ParameterizedPojoTest {
         String json = MAPPER.writeValueAsString(new ParameterizedHashMultimapPojo<>(src));
         Assertions.assertEquals(json, "{\"value\":{\"A\":[\"B\",\"C\"]}}");
         ParameterizedHashMultimapPojo<java.lang.String, java.lang.String> restored =
-                MAPPER.readValue(json, new TypeReference<ParameterizedHashMultimapPojo<java.lang.String, java.lang.String>>(){});
+            MAPPER.readValue(json, new TypeReference<ParameterizedHashMultimapPojo<java.lang.String, java.lang.String>>() {
+            });
         Assertions.assertEquals(src, restored.getValue());
     }
 
@@ -646,7 +685,8 @@ public class ParameterizedPojoTest {
         String json = MAPPER.writeValueAsString(new ParameterizedHashMultimapPojo<>(src));
         Assertions.assertEquals(json, "{\"value\":{\"A\":[[\"A\",\"B\"],[\"C\",\"D\"]]}}");
         ParameterizedHashMultimapPojo<java.lang.String, io.vavr.Tuple2<java.lang.String, java.lang.String>> restored =
-                MAPPER.readValue(json, new TypeReference<ParameterizedHashMultimapPojo<java.lang.String, io.vavr.Tuple2<java.lang.String, java.lang.String>>>(){});
+            MAPPER.readValue(json, new TypeReference<ParameterizedHashMultimapPojo<java.lang.String, io.vavr.Tuple2<java.lang.String, java.lang.String>>>() {
+            });
         Assertions.assertEquals(src, restored.getValue());
     }
 
@@ -662,7 +702,8 @@ public class ParameterizedPojoTest {
         String json = MAPPER.writeValueAsString(new ParameterizedLinkedHashMultimapPojo<>(src));
         Assertions.assertEquals(json, "{\"value\":{\"A\":[\"B\",\"C\"]}}");
         ParameterizedLinkedHashMultimapPojo<java.lang.String, java.lang.String> restored =
-                MAPPER.readValue(json, new TypeReference<ParameterizedLinkedHashMultimapPojo<java.lang.String, java.lang.String>>(){});
+            MAPPER.readValue(json, new TypeReference<ParameterizedLinkedHashMultimapPojo<java.lang.String, java.lang.String>>() {
+            });
         Assertions.assertEquals(src, restored.getValue());
     }
 
@@ -682,7 +723,8 @@ public class ParameterizedPojoTest {
         String json = MAPPER.writeValueAsString(new ParameterizedLinkedHashMultimapPojo<>(src));
         Assertions.assertEquals(json, "{\"value\":{\"A\":[[\"A\",\"B\"],[\"C\",\"D\"]]}}");
         ParameterizedLinkedHashMultimapPojo<java.lang.String, io.vavr.Tuple2<java.lang.String, java.lang.String>> restored =
-                MAPPER.readValue(json, new TypeReference<ParameterizedLinkedHashMultimapPojo<java.lang.String, io.vavr.Tuple2<java.lang.String, java.lang.String>>>(){});
+            MAPPER.readValue(json, new TypeReference<ParameterizedLinkedHashMultimapPojo<java.lang.String, io.vavr.Tuple2<java.lang.String, java.lang.String>>>() {
+            });
         Assertions.assertEquals(src, restored.getValue());
     }
 
@@ -698,7 +740,8 @@ public class ParameterizedPojoTest {
         String json = MAPPER.writeValueAsString(new ParameterizedTreeMultimapPojo<>(src));
         Assertions.assertEquals(json, "{\"value\":{\"A\":[\"B\",\"C\"]}}");
         ParameterizedTreeMultimapPojo<java.lang.String, java.lang.String> restored =
-                MAPPER.readValue(json, new TypeReference<ParameterizedTreeMultimapPojo<java.lang.String, java.lang.String>>(){});
+            MAPPER.readValue(json, new TypeReference<ParameterizedTreeMultimapPojo<java.lang.String, java.lang.String>>() {
+            });
         Assertions.assertEquals(src, restored.getValue());
     }
 
@@ -718,7 +761,8 @@ public class ParameterizedPojoTest {
         String json = MAPPER.writeValueAsString(new ParameterizedTreeMultimapPojo<>(src));
         Assertions.assertEquals(json, "{\"value\":{\"A\":[[\"A\",\"B\"],[\"C\",\"D\"]]}}");
         ParameterizedTreeMultimapPojo<java.lang.String, io.vavr.Tuple2<java.lang.String, java.lang.String>> restored =
-                MAPPER.readValue(json, new TypeReference<ParameterizedTreeMultimapPojo<java.lang.String, io.vavr.Tuple2<java.lang.String, java.lang.String>>>(){});
+            MAPPER.readValue(json, new TypeReference<ParameterizedTreeMultimapPojo<java.lang.String, io.vavr.Tuple2<java.lang.String, java.lang.String>>>() {
+            });
         Assertions.assertEquals(src, restored.getValue());
     }
 
@@ -729,7 +773,8 @@ public class ParameterizedPojoTest {
         String json = MAPPER.writeValueAsString(new ParameterizedOptionPojo<>(src));
         Assertions.assertEquals(json, "{\"value\":\"A\"}");
         ParameterizedOptionPojo<java.lang.String> restored =
-                MAPPER.readValue(json, new TypeReference<ParameterizedOptionPojo<java.lang.String>>(){});
+            MAPPER.readValue(json, new TypeReference<ParameterizedOptionPojo<java.lang.String>>() {
+            });
         Assertions.assertEquals(src, restored.getValue());
     }
 
@@ -742,7 +787,8 @@ public class ParameterizedPojoTest {
         String json = MAPPER.writeValueAsString(new ParameterizedOptionPojo<>(src));
         Assertions.assertEquals(json, "{\"value\":[\"A\",\"B\"]}");
         ParameterizedOptionPojo<io.vavr.Tuple2<java.lang.String, java.lang.String>> restored =
-                MAPPER.readValue(json, new TypeReference<ParameterizedOptionPojo<io.vavr.Tuple2<java.lang.String, java.lang.String>>>(){});
+            MAPPER.readValue(json, new TypeReference<ParameterizedOptionPojo<io.vavr.Tuple2<java.lang.String, java.lang.String>>>() {
+            });
         Assertions.assertEquals(src, restored.getValue());
     }
 
@@ -753,7 +799,8 @@ public class ParameterizedPojoTest {
         String json = MAPPER.writeValueAsString(new ParameterizedLazyPojo<>(src));
         Assertions.assertEquals(json, "{\"value\":\"A\"}");
         ParameterizedLazyPojo<java.lang.String> restored =
-                MAPPER.readValue(json, new TypeReference<ParameterizedLazyPojo<java.lang.String>>(){});
+            MAPPER.readValue(json, new TypeReference<ParameterizedLazyPojo<java.lang.String>>() {
+            });
         Assertions.assertEquals(src, restored.getValue());
     }
 
@@ -766,7 +813,8 @@ public class ParameterizedPojoTest {
         String json = MAPPER.writeValueAsString(new ParameterizedLazyPojo<>(src));
         Assertions.assertEquals(json, "{\"value\":[\"A\",\"B\"]}");
         ParameterizedLazyPojo<io.vavr.Tuple2<java.lang.String, java.lang.String>> restored =
-                MAPPER.readValue(json, new TypeReference<ParameterizedLazyPojo<io.vavr.Tuple2<java.lang.String, java.lang.String>>>(){});
+            MAPPER.readValue(json, new TypeReference<ParameterizedLazyPojo<io.vavr.Tuple2<java.lang.String, java.lang.String>>>() {
+            });
         Assertions.assertEquals(src, restored.getValue());
     }
 
@@ -777,7 +825,8 @@ public class ParameterizedPojoTest {
         String json = MAPPER.writeValueAsString(new ParameterizedEitherPojo<>(src));
         Assertions.assertEquals(json, "{\"value\":[\"left\",\"A\"]}");
         ParameterizedEitherPojo<java.lang.String, java.lang.Object> restored =
-                MAPPER.readValue(json, new TypeReference<ParameterizedEitherPojo<java.lang.String, java.lang.Object>>(){});
+            MAPPER.readValue(json, new TypeReference<ParameterizedEitherPojo<java.lang.String, java.lang.Object>>() {
+            });
         Assertions.assertEquals(src, restored.getValue());
     }
 
@@ -790,7 +839,8 @@ public class ParameterizedPojoTest {
         String json = MAPPER.writeValueAsString(new ParameterizedEitherPojo<>(src));
         Assertions.assertEquals(json, "{\"value\":[\"left\",[\"A\",\"B\"]]}");
         ParameterizedEitherPojo<io.vavr.Tuple2<java.lang.String, java.lang.String>, java.lang.Object> restored =
-                MAPPER.readValue(json, new TypeReference<ParameterizedEitherPojo<io.vavr.Tuple2<java.lang.String, java.lang.String>, java.lang.Object>>(){});
+            MAPPER.readValue(json, new TypeReference<ParameterizedEitherPojo<io.vavr.Tuple2<java.lang.String, java.lang.String>, java.lang.Object>>() {
+            });
         Assertions.assertEquals(src, restored.getValue());
     }
 
@@ -801,7 +851,8 @@ public class ParameterizedPojoTest {
         String json = MAPPER.writeValueAsString(new ParameterizedEitherPojo<>(src));
         Assertions.assertEquals(json, "{\"value\":[\"right\",\"A\"]}");
         ParameterizedEitherPojo<java.lang.Object, java.lang.String> restored =
-                MAPPER.readValue(json, new TypeReference<ParameterizedEitherPojo<java.lang.Object, java.lang.String>>(){});
+            MAPPER.readValue(json, new TypeReference<ParameterizedEitherPojo<java.lang.Object, java.lang.String>>() {
+            });
         Assertions.assertEquals(src, restored.getValue());
     }
 
@@ -814,7 +865,8 @@ public class ParameterizedPojoTest {
         String json = MAPPER.writeValueAsString(new ParameterizedEitherPojo<>(src));
         Assertions.assertEquals(json, "{\"value\":[\"right\",[\"A\",\"B\"]]}");
         ParameterizedEitherPojo<java.lang.Object, io.vavr.Tuple2<java.lang.String, java.lang.String>> restored =
-                MAPPER.readValue(json, new TypeReference<ParameterizedEitherPojo<java.lang.Object, io.vavr.Tuple2<java.lang.String, java.lang.String>>>(){});
+            MAPPER.readValue(json, new TypeReference<ParameterizedEitherPojo<java.lang.Object, io.vavr.Tuple2<java.lang.String, java.lang.String>>>() {
+            });
         Assertions.assertEquals(src, restored.getValue());
     }
 

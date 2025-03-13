@@ -32,14 +32,16 @@ public class PriorityQueueTest extends BaseTest {
     @Test
     void shouldThrowExceptionForGenericDeserializationWithTypeReference() throws IOException {
         assertThrows(JsonMappingException.class, () -> {
-            mapper().readValue("[1, 2]", new TypeReference<PriorityQueue<Object>>() {});
+            mapper().readValue("[1, 2]", new TypeReference<PriorityQueue<Object>>() {
+            });
         });
     }
 
     @Test
     void shouldThrowExceptionForIncomparableDeserialization() {
         assertThrows(JsonMappingException.class, () -> {
-            mapper().readValue("[{\"i\":1}, {\"i\":2}]", new TypeReference<PriorityQueue<PriorityQueueTest.Incomparable>>() {});
+            mapper().readValue("[{\"i\":1}, {\"i\":2}]", new TypeReference<PriorityQueue<PriorityQueueTest.Incomparable>>() {
+            });
         });
     }
 
@@ -49,7 +51,8 @@ public class PriorityQueueTest extends BaseTest {
         PriorityQueue<Integer> src = PriorityQueue.of(1, 5, 8);
         String json = writer.writeValueAsString(src);
         assertEquals(genJsonList(1, 5, 8), json);
-        PriorityQueue<Integer> dst = mapper().readValue(json, new TypeReference<PriorityQueue<Integer>>() {});
+        PriorityQueue<Integer> dst = mapper().readValue(json, new TypeReference<PriorityQueue<Integer>>() {
+        });
         assertEquals(src, dst);
     }
 
@@ -57,14 +60,21 @@ public class PriorityQueueTest extends BaseTest {
     void testSerializable() throws IOException {
         ObjectMapper mapper = mapper();
         PriorityQueue<Integer> src = PriorityQueue.of(1);
-        PriorityQueue<Integer> restored = mapper.readValue(mapper.writeValueAsString(src), new TypeReference<PriorityQueue<Integer>>() {});
+        PriorityQueue<Integer> restored = mapper.readValue(mapper.writeValueAsString(src), new TypeReference<PriorityQueue<Integer>>() {
+        });
         checkSerialization(restored);
     }
 
     static class Incomparable {
         private int i = 0;
-        int getI() { return i; }
-        void setI(int i) { this.i = i; }
+
+        int getI() {
+            return i;
+        }
+
+        void setI(int i) {
+            this.i = i;
+        }
     }
 
     @XmlRootElement(name = "xmlSerialize")

@@ -20,7 +20,13 @@
 package io.vavr.jackson.datatype.serialize;
 
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.databind.AnnotationIntrospector;
+import com.fasterxml.jackson.databind.BeanProperty;
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.MapperFeature;
+import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.introspect.Annotated;
 import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
@@ -104,5 +110,4 @@ class LazySerializer extends HListSerializer<Lazy<?>> implements ContextualSeria
         // and finally, may be forced by global static typing (unlikely...)
         return provider.isEnabled(MapperFeature.USE_STATIC_TYPING);
     }
-
 }
