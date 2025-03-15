@@ -132,4 +132,8 @@ public class BaseTest {
             sb.append(o);
         }
     }
+
+    protected String asJson(String json) {
+        return json.replace("'", "\"");
+    }
 }
