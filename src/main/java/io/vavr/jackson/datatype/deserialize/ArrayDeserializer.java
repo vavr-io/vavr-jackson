@@ -28,6 +28,7 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.deser.ContextualDeserializer;
 import com.fasterxml.jackson.databind.jsontype.TypeDeserializer;
+import io.vavr.collection.Traversable;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -88,12 +89,19 @@ abstract class ArrayDeserializer<T> extends ValueDeserializer<T> implements Cont
     }
 
     @Override
-    public T deserialize(JsonParser parser, DeserializationContext context) throws IOException {
+    public T deserialize(JsonParser parser, DeserializationContext context, T intoValue) throws IOException {
         if (!parser.isExpectedStartArrayToken()) {
             throw mappingException(context, collectionType.getRawClass(), parser.getCurrentToken());
         }
 
         List<Object> elements = new ArrayList<>();
+
+        if (intoValue instanceof Traversable) {
+            for (Object o : ((Traversable) intoValue)) {
+                elements.add(o);
+            }
+        }
+
         for (JsonToken jsonToken = parser.nextToken(); jsonToken != END_ARRAY; jsonToken = parser.nextToken()) {
             Object element;
             if (jsonToken == VALUE_NULL) {
@@ -106,6 +114,11 @@ abstract class ArrayDeserializer<T> extends ValueDeserializer<T> implements Cont
             elements.add(element);
         }
         return create(elements, context);
+    }
+
+    @Override
+    public T deserialize(JsonParser parser, DeserializationContext context) throws IOException {
+        return deserialize(parser, context, null);
     }
 
     @Override
