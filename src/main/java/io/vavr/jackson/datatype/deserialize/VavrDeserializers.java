@@ -76,7 +76,6 @@ public class VavrDeserializers extends Deserializers.Base {
         this.settings = settings;
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public JsonDeserializer<?> findBeanDeserializer(JavaType type,
                                                     DeserializationConfig config,

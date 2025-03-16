@@ -74,7 +74,6 @@ public class VavrSerializers extends Serializers.Base {
         this.settings = settings;
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public JsonSerializer<?> findSerializer(SerializationConfig config,
                                             JavaType type, BeanDescription beanDesc) {
