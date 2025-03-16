@@ -32,7 +32,7 @@ import io.vavr.control.Option;
 
 import java.io.IOException;
 
-class OptionDeserializer extends ValueDeserializer<Option<?>> implements ContextualDeserializer {
+class OptionDeserializer<T> extends ValueDeserializer<Option<T>> implements ContextualDeserializer {
 
     private static final long serialVersionUID = 1L;
 
@@ -40,10 +40,10 @@ class OptionDeserializer extends ValueDeserializer<Option<?>> implements Context
     private final JavaType valueType;
     private final boolean plainMode;
     private final TypeDeserializer valueTypeDeserializer;
-    private final JsonDeserializer<?> valueDeserializer;
+    private final JsonDeserializer<T> valueDeserializer;
     private JsonDeserializer<?> stringDeserializer;
 
-    OptionDeserializer(JavaType fullType, JavaType valueType, TypeDeserializer typeDeser, JsonDeserializer<?> valueDeser, boolean plainMode) {
+    OptionDeserializer(JavaType fullType, JavaType valueType, TypeDeserializer typeDeser, JsonDeserializer<T> valueDeser, boolean plainMode) {
         super(fullType, 1);
         this.fullType = fullType;
         this.valueType = valueType;
@@ -52,24 +52,26 @@ class OptionDeserializer extends ValueDeserializer<Option<?>> implements Context
         this.plainMode = plainMode;
     }
 
-    private OptionDeserializer(OptionDeserializer origin, TypeDeserializer typeDeser, JsonDeserializer<?> valueDeser) {
+    private OptionDeserializer(OptionDeserializer<T> origin, TypeDeserializer typeDeser, JsonDeserializer<T> valueDeser) {
         this(origin.fullType, origin.valueType, typeDeser, valueDeser, origin.plainMode);
         this.stringDeserializer = origin.stringDeserializer;
     }
 
     @Override
-    public Option<?> deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+    public Option<T> deserialize(JsonParser p, DeserializationContext ctxt, Option<T> intoValue) throws IOException {
         if (plainMode) {
             if (valueTypeDeserializer == null) {
-                Object obj = valueDeserializer.deserialize(p, ctxt);
-                return Option.of(obj);
+                return Boolean.TRUE.equals(valueDeserializer.supportsUpdate(ctxt.getConfig())) && intoValue != null
+                    ? Option.of(valueDeserializer.deserialize(p, ctxt, intoValue.getOrElse((T) null)))
+                    : Option.of(valueDeserializer.deserialize(p, ctxt));
             } else {
-                Object obj = valueDeserializer.deserializeWithType(p, ctxt, valueTypeDeserializer);
-                return Option.of(obj);
+                return Boolean.TRUE.equals(valueDeserializer.supportsUpdate(ctxt.getConfig())) && intoValue != null
+                    ? Option.of((T) valueDeserializer.deserializeWithType(p, ctxt, valueTypeDeserializer, intoValue.getOrElse((T) null)))
+                    : Option.of((T) valueDeserializer.deserializeWithType(p, ctxt, valueTypeDeserializer));
             }
         }
         boolean defined = false;
-        Object value = null;
+        T value = null;
         int cnt = 0;
         while (p.nextToken() != JsonToken.END_ARRAY) {
             cnt++;
@@ -87,9 +89,13 @@ class OptionDeserializer extends ValueDeserializer<Option<?>> implements Context
                     break;
                 case 2:
                     if (valueTypeDeserializer == null) {
-                        value = valueDeserializer.deserialize(p, ctxt);
+                        value = Boolean.TRUE.equals(valueDeserializer.supportsUpdate(ctxt.getConfig())) && intoValue != null
+                            ? valueDeserializer.deserialize(p, ctxt, intoValue.getOrElse((T) null))
+                            : valueDeserializer.deserialize(p, ctxt);
                     } else {
-                        value = valueDeserializer.deserializeWithType(p, ctxt, valueTypeDeserializer);
+                        value = Boolean.TRUE.equals(valueDeserializer.supportsUpdate(ctxt.getConfig())) && intoValue != null
+                            ? (T) valueDeserializer.deserializeWithType(p, ctxt, valueTypeDeserializer, intoValue.getOrElse((T) null))
+                            : (T) valueDeserializer.deserializeWithType(p, ctxt, valueTypeDeserializer);
                     }
                     break;
             }
@@ -108,13 +114,18 @@ class OptionDeserializer extends ValueDeserializer<Option<?>> implements Context
     }
 
     @Override
+    public Option<T> deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+        return deserialize(p, ctxt, null);
+    }
+
+    @Override
     public void resolve(DeserializationContext ctxt) throws JsonMappingException {
         super.resolve(ctxt);
         stringDeserializer = ctxt.findContextualValueDeserializer(ctxt.constructType(String.class), null);
     }
 
     @Override
-    public Option<?> getNullValue(DeserializationContext ctxt) throws JsonMappingException {
+    public Option<T> getNullValue(DeserializationContext ctxt) {
         return Option.none();
     }
 
@@ -139,7 +150,7 @@ class OptionDeserializer extends ValueDeserializer<Option<?>> implements Context
      * Overridable fluent factory method used for creating contextual
      * instances.
      */
-    private OptionDeserializer withResolved(JavaType refType, TypeDeserializer typeDeser, JsonDeserializer<?> valueDeser) {
+    private OptionDeserializer<?> withResolved(JavaType refType, TypeDeserializer typeDeser, JsonDeserializer<?> valueDeser) {
         if (refType == valueType && valueDeser == valueDeserializer && typeDeser == valueTypeDeserializer) {
             return this;
         }

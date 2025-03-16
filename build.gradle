@@ -23,6 +23,7 @@ dependencies {
     implementation "io.vavr:vavr:${vavrVersion}"
     implementation "com.fasterxml.jackson.core:jackson-databind:${fasterxmlVersion}"
     testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
+    testImplementation "org.assertj:assertj-core:${assertjVersion}"
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junitJupiterVersion}"
     testImplementation "javax.xml.bind:jaxb-api:${jaxbVersion}"
     testImplementation "com.squareup:javapoet:${javapoetVersion}"
