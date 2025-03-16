@@ -1,9 +1,10 @@
-package io.vavr.jackson.datatype;
+package io.vavr.jackson.datatype.seq;
 
 import com.fasterxml.jackson.annotation.JsonMerge;
 import com.fasterxml.jackson.annotation.OptBoolean;
 import io.vavr.collection.List;
 import io.vavr.collection.Seq;
+import io.vavr.jackson.datatype.BaseTest;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
