@@ -26,8 +26,6 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.KeyDeserializer;
 import com.fasterxml.jackson.databind.jsontype.TypeDeserializer;
 import com.fasterxml.jackson.databind.type.MapLikeType;
-import io.vavr.Tuple;
-import io.vavr.Tuple2;
 import io.vavr.collection.HashMap;
 import io.vavr.collection.LinkedHashMap;
 import io.vavr.collection.Map;
@@ -58,11 +56,9 @@ class MapDeserializer extends MaplikeDeserializer<Map<?, ?>> {
 
     @Override
     public Map<?, ?> deserialize(JsonParser p, DeserializationContext ctxt, Map<?, ?> intoValue) throws IOException {
-        final java.util.List<Tuple2<?, ?>> result = new java.util.ArrayList<>();
+        final java.util.LinkedHashMap<Object, Object> result = new java.util.LinkedHashMap<>();
         if (intoValue != null) {
-            intoValue.forEach(e -> {
-                result.add(Tuple.of(e._1, e._2));
-            });
+            result.putAll(intoValue.toJavaMap());
         }
         while (p.nextToken() != JsonToken.END_OBJECT) {
             String name = p.getCurrentName();
@@ -73,25 +69,36 @@ class MapDeserializer extends MaplikeDeserializer<Map<?, ?>> {
             if (t == JsonToken.VALUE_NULL) {
                 value = elementDeserializer.getNullValue(ctxt);
             } else if (elementTypeDeserializer == null) {
-                value = elementDeserializer.deserialize(p, ctxt);
+                if (intoValue != null) {
+                    value = elementDeserializer.deserialize(p, ctxt, cast(result.getOrDefault(key, null)));
+                } else {
+                    value = elementDeserializer.deserialize(p, ctxt);
+                }
             } else {
-                value = elementDeserializer.deserializeWithType(p, ctxt, elementTypeDeserializer);
+                if (intoValue != null) {
+                    value = elementDeserializer.deserializeWithType(p, ctxt, elementTypeDeserializer, cast(result.getOrDefault(key, null)));
+                } else {
+                    value = elementDeserializer.deserializeWithType(p, ctxt, elementTypeDeserializer);
+                }
             }
-            result.add(Tuple.of(key, value));
+            result.put(key, value);
         }
         if (SortedMap.class.isAssignableFrom(handledType())) {
-            return TreeMap.ofEntries(keyComparator, result);
+            return TreeMap.ofAll(keyComparator, result);
         }
         if (LinkedHashMap.class.isAssignableFrom(handledType())) {
-            return LinkedHashMap.ofEntries(result);
+            return LinkedHashMap.ofAll(result);
         }
         // default deserialization [...] -> Map
-        return HashMap.ofEntries(result);
-
+        return HashMap.ofAll(result);
     }
 
     @Override
     public Map<?, ?> deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
         return deserialize(p, ctxt, null);
+    }
+
+    private static <T> T cast(Object o) {
+        return (T) o;
     }
 }
