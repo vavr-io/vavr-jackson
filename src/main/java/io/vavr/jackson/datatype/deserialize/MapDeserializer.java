@@ -57,8 +57,13 @@ class MapDeserializer extends MaplikeDeserializer<Map<?, ?>> {
     }
 
     @Override
-    public Map<?, ?> deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
-        final java.util.List<Tuple2<Object, Object>> result = new java.util.ArrayList<>();
+    public Map<?, ?> deserialize(JsonParser p, DeserializationContext ctxt, Map<?, ?> intoValue) throws IOException {
+        final java.util.List<Tuple2<?, ?>> result = new java.util.ArrayList<>();
+        if (intoValue != null) {
+            intoValue.forEach(e -> {
+                result.add(Tuple.of(e._1, e._2));
+            });
+        }
         while (p.nextToken() != JsonToken.END_OBJECT) {
             String name = p.getCurrentName();
             Object key = keyDeserializer.deserializeKey(name, ctxt);
@@ -82,5 +87,11 @@ class MapDeserializer extends MaplikeDeserializer<Map<?, ?>> {
         }
         // default deserialization [...] -> Map
         return HashMap.ofEntries(result);
+
+    }
+
+    @Override
+    public Map<?, ?> deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+        return deserialize(p, ctxt, null);
     }
 }
