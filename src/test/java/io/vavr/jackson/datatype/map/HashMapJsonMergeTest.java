@@ -35,7 +35,7 @@ public class HashMapJsonMergeTest extends BaseTest {
 
     @Test
     public void shouldMergeNested() throws JsonProcessingException {
-        TestJsonMergeWithNestedMap result = mapper().readValue(asJson("{'value': {'foo1': {'foo_nested': 'bar_nested', 'foo_nested2': 'bar_nested2'}}}"), TestJsonMergeWithNestedMap.class);
+        TestJsonMergeWithNestedMap result = mapper().readValue(asJson("{'value': {'foo1': {'foo_nested2': 'bar_nested2'}}}"), TestJsonMergeWithNestedMap.class);
 
         assertThat(result.value)
             .hasSize(1)
