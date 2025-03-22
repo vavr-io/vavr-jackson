@@ -64,23 +64,7 @@ class MapDeserializer extends MaplikeDeserializer<Map<?, ?>> {
             String name = p.getCurrentName();
             Object key = keyDeserializer.deserializeKey(name, ctxt);
             JsonToken t = p.nextToken();
-            // Note: must handle null explicitly here; value deserializers won't
-            Object value;
-            if (t == JsonToken.VALUE_NULL) {
-                value = elementDeserializer.getNullValue(ctxt);
-            } else if (elementTypeDeserializer == null) {
-                if (intoValue != null) {
-                    value = elementDeserializer.deserialize(p, ctxt, cast(result.getOrDefault(key, null)));
-                } else {
-                    value = elementDeserializer.deserialize(p, ctxt);
-                }
-            } else {
-                if (intoValue != null) {
-                    value = elementDeserializer.deserializeWithType(p, ctxt, elementTypeDeserializer, cast(result.getOrDefault(key, null)));
-                } else {
-                    value = elementDeserializer.deserializeWithType(p, ctxt, elementTypeDeserializer);
-                }
-            }
+            Object value = deserializeValue(p, ctxt, intoValue, t, result, key);
             result.put(key, value);
         }
         if (SortedMap.class.isAssignableFrom(handledType())) {
@@ -91,6 +75,28 @@ class MapDeserializer extends MaplikeDeserializer<Map<?, ?>> {
         }
         // default deserialization [...] -> Map
         return HashMap.ofAll(result);
+    }
+
+    private Object deserializeValue(JsonParser p, DeserializationContext ctxt, Map<?, ?> intoValue, JsonToken t, java.util.LinkedHashMap<Object, Object> result, Object key) throws IOException {
+        if (t == JsonToken.VALUE_NULL) {
+            return elementDeserializer.getNullValue(ctxt);
+        }
+
+        if (elementTypeDeserializer == null) {
+            if (intoValue != null) {
+                return result.containsKey(key)
+                    ? elementDeserializer.deserialize(p, ctxt, cast(result.get(key)))
+                    : elementDeserializer.deserialize(p, ctxt);
+            } else {
+                return elementDeserializer.deserialize(p, ctxt);
+            }
+        }
+
+        if (intoValue != null) {
+            return elementDeserializer.deserializeWithType(p, ctxt, elementTypeDeserializer, cast(result.getOrDefault(key, null)));
+        } else {
+            return elementDeserializer.deserializeWithType(p, ctxt, elementTypeDeserializer);
+        }
     }
 
     @Override
