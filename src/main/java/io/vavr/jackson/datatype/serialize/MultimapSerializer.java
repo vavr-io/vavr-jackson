@@ -50,14 +50,7 @@ class MultimapSerializer extends ValueSerializer<Multimap<?, ?>> implements Cont
     @Override
     Object toJavaObj(Multimap<?, ?> value) {
         final LinkedHashMap<Object, List<Object>> result = new LinkedHashMap<>();
-        value.forEach(e -> {
-            List<Object> list = result.get(e._1);
-            if (list == null) {
-                list = new ArrayList<>();
-                result.put(e._1, list);
-            }
-            list.add(e._2);
-        });
+        value.forEach(e -> result.computeIfAbsent(e._1, k -> new ArrayList<>()).add(e._2));
         return result;
     }
 
