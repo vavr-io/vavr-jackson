@@ -29,7 +29,6 @@ import com.fasterxml.jackson.databind.type.CollectionLikeType;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import io.vavr.Value;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 class ArraySerializer<T extends Value<?>> extends ValueSerializer<T> implements ContextualSerializer {
@@ -57,7 +56,7 @@ class ArraySerializer<T extends Value<?>> extends ValueSerializer<T> implements 
     }
 
     @Override
-    Object toJavaObj(T value) throws IOException {
+    Object toJavaObj(T value) {
         return value.toJavaList();
     }
 

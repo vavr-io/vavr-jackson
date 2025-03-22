@@ -29,7 +29,6 @@ import com.fasterxml.jackson.databind.type.MapLikeType;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import io.vavr.collection.Map;
 
-import java.io.IOException;
 import java.util.LinkedHashMap;
 
 class MapSerializer extends ValueSerializer<Map<?, ?>> implements ContextualSerializer {
@@ -47,7 +46,7 @@ class MapSerializer extends ValueSerializer<Map<?, ?>> implements ContextualSeri
     }
 
     @Override
-    Object toJavaObj(Map<?, ?> value) throws IOException {
+    Object toJavaObj(Map<?, ?> value) {
         return value.toJavaMap();
     }
 

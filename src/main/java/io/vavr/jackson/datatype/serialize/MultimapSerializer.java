@@ -29,7 +29,6 @@ import com.fasterxml.jackson.databind.type.MapLikeType;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import io.vavr.collection.Multimap;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -49,7 +48,7 @@ class MultimapSerializer extends ValueSerializer<Multimap<?, ?>> implements Cont
     }
 
     @Override
-    Object toJavaObj(Multimap<?, ?> value) throws IOException {
+    Object toJavaObj(Multimap<?, ?> value) {
         final LinkedHashMap<Object, List<Object>> result = new LinkedHashMap<>();
         value.forEach(e -> {
             List<Object> list = result.get(e._1);
