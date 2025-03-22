@@ -20,6 +20,7 @@
 package io.vavr.jackson.datatype.serialize;
 
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.BeanProperty;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonSerializer;
@@ -75,8 +76,8 @@ abstract class ValueSerializer<T> extends StdSerializer<T> {
     @Override
     public void serializeWithType(T value, JsonGenerator gen, SerializerProvider serializers,
                                   TypeSerializer typeSer) throws IOException {
-        typeSer.writeTypePrefixForScalar(value, gen);
+        typeSer.writeTypePrefix(gen, typeSer.typeId(value, JsonToken.VALUE_STRING));
         serialize(value, gen, serializers);
-        typeSer.writeTypeSuffixForScalar(value, gen);
+        typeSer.writeTypeSuffix(gen, typeSer.typeId(value, JsonToken.VALUE_STRING));
     }
 }
