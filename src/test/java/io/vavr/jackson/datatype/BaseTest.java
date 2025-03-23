@@ -9,13 +9,14 @@ import com.fasterxml.jackson.module.jaxb.JaxbAnnotationModule;
 import io.vavr.Tuple2;
 import io.vavr.collection.List;
 import io.vavr.collection.Seq;
-import org.junit.jupiter.api.Assertions;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.Collection;
 import java.util.Map;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class BaseTest {
 
@@ -34,10 +35,10 @@ public class BaseTest {
             String expectedJson = testValue._2();
 
             String json = writer.writeValueAsString(src);
-            Assertions.assertEquals(expectedJson, json);
+            assertThat(json).isEqualTo(expectedJson);
 
             Object dst = mapper().readValue(json, typeReference);
-            Assertions.assertEquals(src, dst);
+            assertThat(dst).isEqualTo(src);
         }
     }
 

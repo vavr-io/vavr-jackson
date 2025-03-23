@@ -21,7 +21,6 @@ import io.vavr.collection.HashMap;
 import io.vavr.collection.Multimap;
 import io.vavr.control.Option;
 import io.vavr.jackson.datatype.BaseTest;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -31,7 +30,8 @@ import java.util.Collections;
 import java.util.List;
 
 import static java.util.Arrays.asList;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 
 public abstract class MultimapTest extends BaseTest {
@@ -52,14 +52,14 @@ public abstract class MultimapTest extends BaseTest {
         javaObject.put("2", list);
 
         String json = mapper().writer().writeValueAsString(vavrObject);
-        Assertions.assertEquals(genJsonMap(javaObject), json);
+        assertThat(json).isEqualTo(genJsonMap(javaObject));
 
         Multimap<?, ?> restored = (Multimap<?, ?>) mapper().readValue(json, clz());
-        Assertions.assertEquals(restored, vavrObject);
+        assertThat(vavrObject).isEqualTo(restored);
     }
 
     @Test
-    void testSerializable() throws IOException {
+    void serializable() throws IOException {
         ObjectMapper mapper = mapper();
         Multimap<Object, Object> src = emptyMap().put("1", 2).put("2", 3).put("2", 4);
         Multimap<?, ?> restored = (Multimap<?, ?>) mapper.readValue(mapper.writeValueAsString(src), clz());
@@ -67,12 +67,12 @@ public abstract class MultimapTest extends BaseTest {
     }
 
     @Test
-    public void testDeserializeValueNull() {
-        Assertions.assertThrows(JsonMappingException.class, () -> mapper().readValue("{\"k\":null}", clz()));
+    public void deserializeValueNull() {
+        assertThatExceptionOfType(JsonMappingException.class).isThrownBy(() -> mapper().readValue("{\"k\":null}", clz()));
     }
 
     @Test
-    void testWithOption() throws Exception {
+    void withOption() throws Exception {
         Multimap<String, Option<Integer>> multimap = this.<String, Option<Integer>>emptyMap().put("1", Option.some(1))
             .put("1", Option.none());
         String json = genJsonMap(HashMap.of("1", asList(1, null)).toJavaMap());
@@ -164,33 +164,33 @@ public abstract class MultimapTest extends BaseTest {
     }
 
     @Test
-    void testContextualizationOfKey() throws IOException {
+    void contextualizationOfKey() throws IOException {
         Multimap<CustomKey, String> empty = emptyMap();
         Multimap<CustomKey, String> map = empty.put(new CustomKey(123), "test");
 
         ModelWithCustomKey source = new ModelWithCustomKey(map);
         String json = mapper().writeValueAsString(source);
-        assertEquals("{\"map\":{\"123\":[\"test\"]}}", json);
+        assertThat(json).isEqualTo("{\"map\":{\"123\":[\"test\"]}}");
 
         ModelWithCustomKey restored = mapper().readValue(json, ModelWithCustomKey.class);
-        assertEquals(1, restored.map.size());
-        assertEquals(123, restored.map.get()._1.id);
-        assertEquals("test", restored.map.get()._2);
+        assertThat(restored.map.size()).isEqualTo(1);
+        assertThat(restored.map.get()._1.id).isEqualTo(123);
+        assertThat(restored.map.get()._2).isEqualTo("test");
     }
 
     @Test
-    void testContextualizationOfKeyAndElement() throws IOException {
+    void contextualizationOfKeyAndElement() throws IOException {
         Multimap<CustomKey, CustomElement> empty = emptyMap();
         Multimap<CustomKey, CustomElement> map = empty.put(new CustomKey(123), new CustomElement("test"));
 
         ModelWithCustomKeyAndElement source = new ModelWithCustomKeyAndElement(map);
         String json = mapper().writeValueAsString(source);
-        assertEquals("{\"map\":{\"123\":[\"test\"]}}", json);
+        assertThat(json).isEqualTo("{\"map\":{\"123\":[\"test\"]}}");
 
         ModelWithCustomKeyAndElement restored = mapper().readValue(json, ModelWithCustomKeyAndElement.class);
-        assertEquals(1, restored.map.size());
-        assertEquals(123, restored.map.get()._1.id);
-        assertEquals("test", restored.map.get()._2.value);
+        assertThat(restored.map.size()).isEqualTo(1);
+        assertThat(restored.map.get()._1.id).isEqualTo(123);
+        assertThat(restored.map.get()._2.value).isEqualTo("test");
     }
 
     static class MyBean {
@@ -222,7 +222,7 @@ public abstract class MultimapTest extends BaseTest {
     }
 
     @Test
-    void testSecondaryContextualization() throws IOException {
+    void secondaryContextualization() throws IOException {
         MyBean bean = mapper().readValue("{\"map\":{\"Will be replaced\":[1,2,3]}}", MyBean.class);
         assertIterableEquals(Arrays.asList(1, 2, 3), bean.map.get("String").get());
     }

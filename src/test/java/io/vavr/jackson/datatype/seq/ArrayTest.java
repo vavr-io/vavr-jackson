@@ -7,14 +7,15 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.vavr.collection.Array;
 import io.vavr.collection.Seq;
 import io.vavr.control.Option;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 
-public class ArrayTest extends SeqTest {
+import static org.assertj.core.api.Assertions.assertThat;
+
+class ArrayTest extends SeqTest {
     @Override
     protected Class<?> clz() {
         return Array.class;
@@ -37,7 +38,7 @@ public class ArrayTest extends SeqTest {
     }
 
     @Test
-    void testSerializeWithContext() throws IOException {
+    void serializeWithContext() throws IOException {
         // Given an object containing dates to serialize
         FrenchDates src = new FrenchDates();
         src.dates = Array.of(new Date(1591308000000L));
@@ -48,10 +49,10 @@ public class ArrayTest extends SeqTest {
         String json = mapper.writeValueAsString(src);
 
         // Then the serialization is successful
-        Assertions.assertEquals("{\"dates\":[\"05/06/2020\"]}", json);
+        assertThat(json).isEqualTo("{\"dates\":[\"05/06/2020\"]}");
 
         // And the deserialization is successful
         FrenchDates restored = mapper.readValue(json, FrenchDates.class);
-        Assertions.assertEquals(src.dates, restored.dates);
+        assertThat(restored.dates).isEqualTo(src.dates);
     }
 }

@@ -27,7 +27,6 @@ import io.vavr.collection.Map;
 import io.vavr.collection.Multimap;
 import io.vavr.control.Option;
 import io.vavr.jackson.datatype.BaseTest;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -35,9 +34,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.io.IOException;
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public abstract class MapTest extends BaseTest {
 
@@ -54,10 +53,10 @@ public abstract class MapTest extends BaseTest {
         javaObject.put("1", 2);
 
         String json = mapper().writer().writeValueAsString(vavrObject);
-        Assertions.assertEquals(genJsonMap(javaObject), json);
+        assertThat(json).isEqualTo(genJsonMap(javaObject));
 
         Map<?, ?> restored = (Map<?, ?>) mapper().readValue(json, clz());
-        Assertions.assertEquals(restored, vavrObject);
+        assertThat(vavrObject).isEqualTo(restored);
     }
 
     @Test
@@ -66,9 +65,9 @@ public abstract class MapTest extends BaseTest {
         Map<?, ?> src = emptyMap().put("1", 2);
         String plainJson = mapper().writeValueAsString(src);
         String wrappedJson = mapper.writeValueAsString(src);
-        Assertions.assertEquals(wrappedJson, wrapToObject(clz().getName(), plainJson));
+        assertThat(wrapToObject(clz().getName(), plainJson)).isEqualTo(wrappedJson);
         Map<?, ?> restored = (Map<?, ?>) mapper.readValue(wrappedJson, clz());
-        Assertions.assertEquals(src, restored);
+        assertThat(restored).isEqualTo(src);
     }
 
     @Test
@@ -77,32 +76,32 @@ public abstract class MapTest extends BaseTest {
         Map<?, ?> src = emptyMap().put("1", 2);
         String plainJson = mapper().writeValueAsString(src);
         String wrappedJson = mapper.writeValueAsString(src);
-        Assertions.assertEquals(wrappedJson, wrapToArray(clz().getName(), plainJson));
+        assertThat(wrapToArray(clz().getName(), plainJson)).isEqualTo(wrappedJson);
         Map<?, ?> restored = (Map<?, ?>) mapper.readValue(wrappedJson, clz());
-        Assertions.assertEquals(src, restored);
-        Assertions.assertEquals(src, restored);
+        assertThat(restored).isEqualTo(src);
+        assertThat(restored).isEqualTo(src);
     }
 
     // Issue 138: Cannot deserialize to Map<String, String>
     // https://github.com/vavr-io/vavr-jackson/issues/138
     @Test
-    public void testDeserializeNullValue() throws IOException {
+    public void deserializeNullValue() throws IOException {
         Map<String, String> stringStringMap = mapper().readValue("{\"1\":null}", new TypeReference<Map<String, String>>() {
         });
         Map<String, Object> stringObjectMap = mapper().readValue("{\"1\":null}", new TypeReference<Map<String, Object>>() {
         });
 
-        Assertions.assertEquals(emptyMap().put("1", null), stringStringMap);
-        Assertions.assertEquals(emptyMap().put("1", null), stringObjectMap);
+        assertThat(stringStringMap).isEqualTo(emptyMap().put("1", null));
+        assertThat(stringObjectMap).isEqualTo(emptyMap().put("1", null));
     }
 
     @Test
     void test4() {
-        assertThrows(JsonParseException.class, () -> mapper().readValue("{1: 1}", clz()));
+        assertThatExceptionOfType(JsonParseException.class).isThrownBy(() -> mapper().readValue("{1: 1}", clz()));
     }
 
     @Test
-    void testSerializable() throws IOException {
+    void serializable() throws IOException {
         ObjectMapper mapper = mapper();
         Map<?, ?> src = emptyMap().put("1", 2);
         Map<?, ?> restored = (Map<?, ?>) mapper.readValue(mapper.writeValueAsString(src), clz());
@@ -110,7 +109,7 @@ public abstract class MapTest extends BaseTest {
     }
 
     @Test
-    void testWithOption() throws Exception {
+    void withOption() throws Exception {
         verifySerialization(typeReferenceWithOption(), List.of(
             Tuple.of(emptyMap().put("1", Option.some(1)), genJsonMap(HashMap.of("1", 1).toJavaMap())),
             Tuple.of(emptyMap().put("1", Option.none()), genJsonMap(HashMap.of("1", null).toJavaMap()))
@@ -148,10 +147,10 @@ public abstract class MapTest extends BaseTest {
         ObjectMapper mapper = xmlMapperJaxb();
         String javaJson = mapper.writeValueAsString(new JaxbXmlSerializeJavaUtil().init(javaInit));
         String slangJson = mapper.writeValueAsString(new JaxbXmlSerializeVavr().init(slangInit));
-        Assertions.assertEquals(javaJson, slangJson);
+        assertThat(slangJson).isEqualTo(javaJson);
         JaxbXmlSerializeVavr restored = mapper.readValue(slangJson, JaxbXmlSerializeVavr.class);
-        Assertions.assertEquals(restored.transitTypes.get("key1").get(), "1");
-        Assertions.assertEquals(restored.transitTypes.get("key2").get(), "2");
+        assertThat(restored.transitTypes.get("key1").get()).isEqualTo("1");
+        assertThat(restored.transitTypes.get("key2").get()).isEqualTo("2");
     }
 
     @JacksonXmlRootElement(localName = "xmlSerialize")
@@ -185,10 +184,10 @@ public abstract class MapTest extends BaseTest {
         ObjectMapper mapper = xmlMapper();
         String javaJson = mapper.writeValueAsString(new XmlSerializeJavaUtil().init(javaInit));
         String slangJson = mapper.writeValueAsString(new XmlSerializeVavr().init(slangInit));
-        Assertions.assertEquals(javaJson, slangJson);
+        assertThat(slangJson).isEqualTo(javaJson);
         XmlSerializeVavr restored = mapper.readValue(slangJson, XmlSerializeVavr.class);
-        Assertions.assertEquals(restored.transitTypes.get("key1").get(), "1");
-        Assertions.assertEquals(restored.transitTypes.get("key2").get(), "2");
+        assertThat(restored.transitTypes.get("key1").get()).isEqualTo("1");
+        assertThat(restored.transitTypes.get("key2").get()).isEqualTo("2");
     }
 
     static class CustomKey {
@@ -258,18 +257,18 @@ public abstract class MapTest extends BaseTest {
     }
 
     @Test
-    void testContextualSerialization() throws IOException {
+    void contextualSerialization() throws IOException {
         Map<CustomKey, CustomValue> empty = emptyMap();
         Map<CustomKey, CustomValue> map = empty.put(new CustomKey(123), new CustomValue("test"));
 
         Model source = new Model(map);
         String json = mapper().writeValueAsString(source);
-        assertEquals("{\"map\":{\"123\":\"test\"}}", json);
+        assertThat(json).isEqualTo("{\"map\":{\"123\":\"test\"}}");
 
         Model restored = mapper().readValue(json, Model.class);
-        assertEquals(1, restored.map.size());
-        assertEquals(123, restored.map.get()._1.id);
-        assertEquals("test", restored.map.get()._2.value);
+        assertThat(restored.map.size()).isEqualTo(1);
+        assertThat(restored.map.get()._1.id).isEqualTo(123);
+        assertThat(restored.map.get()._2.value).isEqualTo("test");
     }
 
     static class BeanWithModifiedKey {
@@ -330,14 +329,14 @@ public abstract class MapTest extends BaseTest {
     }
 
     @Test
-    void testSecondaryKeyContextualization() throws IOException {
+    void secondaryKeyContextualization() throws IOException {
         BeanWithModifiedKey bean = mapper().readValue("{\"map\":{\"Will be replaced\":[1,2,3]}}", BeanWithModifiedKey.class);
         assertIterableEquals(Arrays.asList(1, 2, 3), bean.map.get("String").get());
     }
 
     @Test
-    void testSecondaryContentContextualization() throws IOException {
+    void secondaryContentContextualization() throws IOException {
         BeanWithModifiedContent bean = mapper().readValue("{\"map\":{\"1\":\"Will be replaced\"}}", BeanWithModifiedContent.class);
-        assertEquals("String", bean.map.get(1).get());
+        assertThat(bean.map.get(1).get()).isEqualTo("String");
     }
 }

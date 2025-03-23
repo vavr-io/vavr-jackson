@@ -31,326 +31,327 @@ import io.vavr.collection.Vector;
 import io.vavr.control.Either;
 import io.vavr.control.Option;
 import io.vavr.jackson.datatype.VavrModule;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * generated
  */
-public class PolymorphicPojoTest {
+class PolymorphicPojoTest {
     private static final VavrModule MAPPER_MODULE = new VavrModule();
 
     private static final ObjectMapper MAPPER = new ObjectMapper().registerModule(MAPPER_MODULE);
 
     @Test
-    void testArray() throws Exception {
+    void array() throws Exception {
         Array<I> src = Array.of(new A(), new B());
         String json = MAPPER.writeValueAsString(new ArrayPojo().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":[{\"type\":\"a\"},{\"type\":\"b\"}]}");
+        assertThat(json).isEqualTo("{\"value\":[{\"type\":\"a\"},{\"type\":\"b\"}]}");
         ArrayPojo pojo = MAPPER.readValue(json, ArrayPojo.class);
         Array<I> restored = pojo.getValue();
-        Assertions.assertTrue(restored.get(0) instanceof A);
-        Assertions.assertTrue(restored.get(1) instanceof B);
+        assertThat(restored.get(0) instanceof A).isTrue();
+        assertThat(restored.get(1) instanceof B).isTrue();
     }
 
     @Test
-    void testList() throws Exception {
+    void list() throws Exception {
         List<I> src = List.of(new A(), new B());
         String json = MAPPER.writeValueAsString(new ListPojo().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":[{\"type\":\"a\"},{\"type\":\"b\"}]}");
+        assertThat(json).isEqualTo("{\"value\":[{\"type\":\"a\"},{\"type\":\"b\"}]}");
         ListPojo pojo = MAPPER.readValue(json, ListPojo.class);
         List<I> restored = pojo.getValue();
-        Assertions.assertTrue(restored.get(0) instanceof A);
-        Assertions.assertTrue(restored.get(1) instanceof B);
+        assertThat(restored.get(0) instanceof A).isTrue();
+        assertThat(restored.get(1) instanceof B).isTrue();
     }
 
     @Test
-    void testQueue() throws Exception {
+    void queue() throws Exception {
         Queue<I> src = Queue.of(new A(), new B());
         String json = MAPPER.writeValueAsString(new QueuePojo().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":[{\"type\":\"a\"},{\"type\":\"b\"}]}");
+        assertThat(json).isEqualTo("{\"value\":[{\"type\":\"a\"},{\"type\":\"b\"}]}");
         QueuePojo pojo = MAPPER.readValue(json, QueuePojo.class);
         Queue<I> restored = pojo.getValue();
-        Assertions.assertTrue(restored.get(0) instanceof A);
-        Assertions.assertTrue(restored.get(1) instanceof B);
+        assertThat(restored.get(0) instanceof A).isTrue();
+        assertThat(restored.get(1) instanceof B).isTrue();
     }
 
     @Test
-    void testStream() throws Exception {
+    void stream() throws Exception {
         Stream<I> src = Stream.of(new A(), new B());
         String json = MAPPER.writeValueAsString(new StreamPojo().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":[{\"type\":\"a\"},{\"type\":\"b\"}]}");
+        assertThat(json).isEqualTo("{\"value\":[{\"type\":\"a\"},{\"type\":\"b\"}]}");
         StreamPojo pojo = MAPPER.readValue(json, StreamPojo.class);
         Stream<I> restored = pojo.getValue();
-        Assertions.assertTrue(restored.get(0) instanceof A);
-        Assertions.assertTrue(restored.get(1) instanceof B);
+        assertThat(restored.get(0) instanceof A).isTrue();
+        assertThat(restored.get(1) instanceof B).isTrue();
     }
 
     @Test
-    void testVector() throws Exception {
+    void vector() throws Exception {
         Vector<I> src = Vector.of(new A(), new B());
         String json = MAPPER.writeValueAsString(new VectorPojo().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":[{\"type\":\"a\"},{\"type\":\"b\"}]}");
+        assertThat(json).isEqualTo("{\"value\":[{\"type\":\"a\"},{\"type\":\"b\"}]}");
         VectorPojo pojo = MAPPER.readValue(json, VectorPojo.class);
         Vector<I> restored = pojo.getValue();
-        Assertions.assertTrue(restored.get(0) instanceof A);
-        Assertions.assertTrue(restored.get(1) instanceof B);
+        assertThat(restored.get(0) instanceof A).isTrue();
+        assertThat(restored.get(1) instanceof B).isTrue();
     }
 
     @Test
-    void testHashSet() throws Exception {
+    void hashSet() throws Exception {
         HashSet<I> src = HashSet.of(new B());
         String json = MAPPER.writeValueAsString(new HashSetPojo().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":[{\"type\":\"b\"}]}");
+        assertThat(json).isEqualTo("{\"value\":[{\"type\":\"b\"}]}");
         HashSetPojo pojo = MAPPER.readValue(json, HashSetPojo.class);
         HashSet<I> restored = pojo.getValue();
-        Assertions.assertEquals(restored.filter(e -> e instanceof B).length(), 1);
+        assertThat(restored.filter(e -> e instanceof B).length()).isEqualTo(1);
     }
 
     @Test
-    void testLinkedHashSet() throws Exception {
+    void linkedHashSet() throws Exception {
         LinkedHashSet<I> src = LinkedHashSet.of(new B());
         String json = MAPPER.writeValueAsString(new LinkedHashSetPojo().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":[{\"type\":\"b\"}]}");
+        assertThat(json).isEqualTo("{\"value\":[{\"type\":\"b\"}]}");
         LinkedHashSetPojo pojo = MAPPER.readValue(json, LinkedHashSetPojo.class);
         LinkedHashSet<I> restored = pojo.getValue();
-        Assertions.assertEquals(restored.filter(e -> e instanceof B).length(), 1);
+        assertThat(restored.filter(e -> e instanceof B).length()).isEqualTo(1);
     }
 
     @Test
-    void testTreeSet() throws Exception {
+    void treeSet() throws Exception {
         TreeSet<I> src = TreeSet.of(new B());
         String json = MAPPER.writeValueAsString(new TreeSetPojo().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":[{\"type\":\"b\"}]}");
+        assertThat(json).isEqualTo("{\"value\":[{\"type\":\"b\"}]}");
         TreeSetPojo pojo = MAPPER.readValue(json, TreeSetPojo.class);
         TreeSet<I> restored = pojo.getValue();
-        Assertions.assertEquals(restored.filter(e -> e instanceof B).length(), 1);
+        assertThat(restored.filter(e -> e instanceof B).length()).isEqualTo(1);
     }
 
     @Test
-    void testPriorityQueue() throws Exception {
+    void priorityQueue() throws Exception {
         PriorityQueue<I> src = PriorityQueue.of(new B());
         String json = MAPPER.writeValueAsString(new PriorityQueuePojo().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":[{\"type\":\"b\"}]}");
+        assertThat(json).isEqualTo("{\"value\":[{\"type\":\"b\"}]}");
         PriorityQueuePojo pojo = MAPPER.readValue(json, PriorityQueuePojo.class);
         PriorityQueue<I> restored = pojo.getValue();
-        Assertions.assertEquals(restored.filter(e -> e instanceof B).length(), 1);
+        assertThat(restored.filter(e -> e instanceof B).length()).isEqualTo(1);
     }
 
     @Test
-    void testHashMap() throws Exception {
+    void hashMap() throws Exception {
         HashMap<String, I> src = HashMap.of("a", new A(), "b", new B());
         String json = MAPPER.writeValueAsString(new HashMapPojo().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":{\"a\":{\"type\":\"a\"},\"b\":{\"type\":\"b\"}}}");
+        assertThat(json).isEqualTo("{\"value\":{\"a\":{\"type\":\"a\"},\"b\":{\"type\":\"b\"}}}");
         HashMapPojo pojo = MAPPER.readValue(json, HashMapPojo.class);
         HashMap<String, I> restored = pojo.getValue();
-        Assertions.assertTrue(restored.get("a").get() instanceof A);
-        Assertions.assertTrue(restored.get("b").get() instanceof B);
+        assertThat(restored.get("a").get() instanceof A).isTrue();
+        assertThat(restored.get("b").get() instanceof B).isTrue();
     }
 
     @Test
-    void testLinkedHashMap() throws Exception {
+    void linkedHashMap() throws Exception {
         LinkedHashMap<String, I> src = LinkedHashMap.of("a", new A(), "b", new B());
         String json = MAPPER.writeValueAsString(new LinkedHashMapPojo().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":{\"a\":{\"type\":\"a\"},\"b\":{\"type\":\"b\"}}}");
+        assertThat(json).isEqualTo("{\"value\":{\"a\":{\"type\":\"a\"},\"b\":{\"type\":\"b\"}}}");
         LinkedHashMapPojo pojo = MAPPER.readValue(json, LinkedHashMapPojo.class);
         LinkedHashMap<String, I> restored = pojo.getValue();
-        Assertions.assertTrue(restored.get("a").get() instanceof A);
-        Assertions.assertTrue(restored.get("b").get() instanceof B);
+        assertThat(restored.get("a").get() instanceof A).isTrue();
+        assertThat(restored.get("b").get() instanceof B).isTrue();
     }
 
     @Test
-    void testTreeMap() throws Exception {
+    void treeMap() throws Exception {
         TreeMap<String, I> src = TreeMap.of("a", new A(), "b", new B());
         String json = MAPPER.writeValueAsString(new TreeMapPojo().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":{\"a\":{\"type\":\"a\"},\"b\":{\"type\":\"b\"}}}");
+        assertThat(json).isEqualTo("{\"value\":{\"a\":{\"type\":\"a\"},\"b\":{\"type\":\"b\"}}}");
         TreeMapPojo pojo = MAPPER.readValue(json, TreeMapPojo.class);
         TreeMap<String, I> restored = pojo.getValue();
-        Assertions.assertTrue(restored.get("a").get() instanceof A);
-        Assertions.assertTrue(restored.get("b").get() instanceof B);
+        assertThat(restored.get("a").get() instanceof A).isTrue();
+        assertThat(restored.get("b").get() instanceof B).isTrue();
     }
 
     @Test
-    void testHashMultimap() throws Exception {
+    void hashMultimap() throws Exception {
         HashMultimap<String, I> src = HashMultimap.withSeq().of("a", new A(), "b", new B());
         String json = MAPPER.writeValueAsString(new HashMultimapPojo().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":{\"a\":[{\"type\":\"a\"}],\"b\":[{\"type\":\"b\"}]}}");
+        assertThat(json).isEqualTo("{\"value\":{\"a\":[{\"type\":\"a\"}],\"b\":[{\"type\":\"b\"}]}}");
         HashMultimapPojo pojo = MAPPER.readValue(json, HashMultimapPojo.class);
         HashMultimap<String, I> restored = pojo.getValue();
-        Assertions.assertTrue(restored.get("a").get().head() instanceof A);
-        Assertions.assertTrue(restored.get("b").get().head() instanceof B);
+        assertThat(restored.get("a").get().head() instanceof A).isTrue();
+        assertThat(restored.get("b").get().head() instanceof B).isTrue();
     }
 
     @Test
-    void testLinkedHashMultimap() throws Exception {
+    void linkedHashMultimap() throws Exception {
         LinkedHashMultimap<String, I> src = LinkedHashMultimap.withSeq().of("a", new A(), "b", new B());
         String json = MAPPER.writeValueAsString(new LinkedHashMultimapPojo().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":{\"a\":[{\"type\":\"a\"}],\"b\":[{\"type\":\"b\"}]}}");
+        assertThat(json).isEqualTo("{\"value\":{\"a\":[{\"type\":\"a\"}],\"b\":[{\"type\":\"b\"}]}}");
         LinkedHashMultimapPojo pojo = MAPPER.readValue(json, LinkedHashMultimapPojo.class);
         LinkedHashMultimap<String, I> restored = pojo.getValue();
-        Assertions.assertTrue(restored.get("a").get().head() instanceof A);
-        Assertions.assertTrue(restored.get("b").get().head() instanceof B);
+        assertThat(restored.get("a").get().head() instanceof A).isTrue();
+        assertThat(restored.get("b").get().head() instanceof B).isTrue();
     }
 
     @Test
-    void testTreeMultimap() throws Exception {
+    void treeMultimap() throws Exception {
         TreeMultimap<String, I> src = TreeMultimap.withSeq().of("a", new A(), "b", new B());
         String json = MAPPER.writeValueAsString(new TreeMultimapPojo().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":{\"a\":[{\"type\":\"a\"}],\"b\":[{\"type\":\"b\"}]}}");
+        assertThat(json).isEqualTo("{\"value\":{\"a\":[{\"type\":\"a\"}],\"b\":[{\"type\":\"b\"}]}}");
         TreeMultimapPojo pojo = MAPPER.readValue(json, TreeMultimapPojo.class);
         TreeMultimap<String, I> restored = pojo.getValue();
-        Assertions.assertTrue(restored.get("a").get().head() instanceof A);
-        Assertions.assertTrue(restored.get("b").get().head() instanceof B);
+        assertThat(restored.get("a").get().head() instanceof A).isTrue();
+        assertThat(restored.get("b").get().head() instanceof B).isTrue();
     }
 
     @Test
-    void testTuple1() throws Exception {
+    void tuple1() throws Exception {
         Tuple1<I> src = Tuple.of(new A());
         String json = MAPPER.writeValueAsString(new Tuple1Pojo().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":[{\"type\":\"a\"}]}");
+        assertThat(json).isEqualTo("{\"value\":[{\"type\":\"a\"}]}");
         Tuple1Pojo pojo = MAPPER.readValue(json, Tuple1Pojo.class);
         Tuple1<I> restored = pojo.getValue();
-        Assertions.assertTrue(restored._1 instanceof A);
+        assertThat(restored._1 instanceof A).isTrue();
     }
 
     @Test
-    void testTuple2() throws Exception {
+    void tuple2() throws Exception {
         Tuple2<I, I> src = Tuple.of(new A(), new B());
         String json = MAPPER.writeValueAsString(new Tuple2Pojo().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":[{\"type\":\"a\"},{\"type\":\"b\"}]}");
+        assertThat(json).isEqualTo("{\"value\":[{\"type\":\"a\"},{\"type\":\"b\"}]}");
         Tuple2Pojo pojo = MAPPER.readValue(json, Tuple2Pojo.class);
         Tuple2<I, I> restored = pojo.getValue();
-        Assertions.assertTrue(restored._1 instanceof A);
-        Assertions.assertTrue(restored._2 instanceof B);
+        assertThat(restored._1 instanceof A).isTrue();
+        assertThat(restored._2 instanceof B).isTrue();
     }
 
     @Test
-    void testTuple3() throws Exception {
+    void tuple3() throws Exception {
         Tuple3<I, I, I> src = Tuple.of(new A(), new B(), new A());
         String json = MAPPER.writeValueAsString(new Tuple3Pojo().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":[{\"type\":\"a\"},{\"type\":\"b\"},{\"type\":\"a\"}]}");
+        assertThat(json).isEqualTo("{\"value\":[{\"type\":\"a\"},{\"type\":\"b\"},{\"type\":\"a\"}]}");
         Tuple3Pojo pojo = MAPPER.readValue(json, Tuple3Pojo.class);
         Tuple3<I, I, I> restored = pojo.getValue();
-        Assertions.assertTrue(restored._1 instanceof A);
-        Assertions.assertTrue(restored._2 instanceof B);
-        Assertions.assertTrue(restored._3 instanceof A);
+        assertThat(restored._1 instanceof A).isTrue();
+        assertThat(restored._2 instanceof B).isTrue();
+        assertThat(restored._3 instanceof A).isTrue();
     }
 
     @Test
-    void testTuple4() throws Exception {
+    void tuple4() throws Exception {
         Tuple4<I, I, I, I> src = Tuple.of(new A(), new B(), new A(), new B());
         String json = MAPPER.writeValueAsString(new Tuple4Pojo().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":[{\"type\":\"a\"},{\"type\":\"b\"},{\"type\":\"a\"},{\"type\":\"b\"}]}");
+        assertThat(json).isEqualTo("{\"value\":[{\"type\":\"a\"},{\"type\":\"b\"},{\"type\":\"a\"},{\"type\":\"b\"}]}");
         Tuple4Pojo pojo = MAPPER.readValue(json, Tuple4Pojo.class);
         Tuple4<I, I, I, I> restored = pojo.getValue();
-        Assertions.assertTrue(restored._1 instanceof A);
-        Assertions.assertTrue(restored._2 instanceof B);
-        Assertions.assertTrue(restored._3 instanceof A);
-        Assertions.assertTrue(restored._4 instanceof B);
+        assertThat(restored._1 instanceof A).isTrue();
+        assertThat(restored._2 instanceof B).isTrue();
+        assertThat(restored._3 instanceof A).isTrue();
+        assertThat(restored._4 instanceof B).isTrue();
     }
 
     @Test
-    void testTuple5() throws Exception {
+    void tuple5() throws Exception {
         Tuple5<I, I, I, I, I> src = Tuple.of(new A(), new B(), new A(), new B(), new A());
         String json = MAPPER.writeValueAsString(new Tuple5Pojo().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":[{\"type\":\"a\"},{\"type\":\"b\"},{\"type\":\"a\"},{\"type\":\"b\"},{\"type\":\"a\"}]}");
+        assertThat(json).isEqualTo("{\"value\":[{\"type\":\"a\"},{\"type\":\"b\"},{\"type\":\"a\"},{\"type\":\"b\"},{\"type\":\"a\"}]}");
         Tuple5Pojo pojo = MAPPER.readValue(json, Tuple5Pojo.class);
         Tuple5<I, I, I, I, I> restored = pojo.getValue();
-        Assertions.assertTrue(restored._1 instanceof A);
-        Assertions.assertTrue(restored._2 instanceof B);
-        Assertions.assertTrue(restored._3 instanceof A);
-        Assertions.assertTrue(restored._4 instanceof B);
-        Assertions.assertTrue(restored._5 instanceof A);
+        assertThat(restored._1 instanceof A).isTrue();
+        assertThat(restored._2 instanceof B).isTrue();
+        assertThat(restored._3 instanceof A).isTrue();
+        assertThat(restored._4 instanceof B).isTrue();
+        assertThat(restored._5 instanceof A).isTrue();
     }
 
     @Test
-    void testTuple6() throws Exception {
+    void tuple6() throws Exception {
         Tuple6<I, I, I, I, I, I> src = Tuple.of(new A(), new B(), new A(), new B(), new A(), new B());
         String json = MAPPER.writeValueAsString(new Tuple6Pojo().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":[{\"type\":\"a\"},{\"type\":\"b\"},{\"type\":\"a\"},{\"type\":\"b\"},{\"type\":\"a\"},{\"type\":\"b\"}]}");
+        assertThat(json).isEqualTo("{\"value\":[{\"type\":\"a\"},{\"type\":\"b\"},{\"type\":\"a\"},{\"type\":\"b\"},{\"type\":\"a\"},{\"type\":\"b\"}]}");
         Tuple6Pojo pojo = MAPPER.readValue(json, Tuple6Pojo.class);
         Tuple6<I, I, I, I, I, I> restored = pojo.getValue();
-        Assertions.assertTrue(restored._1 instanceof A);
-        Assertions.assertTrue(restored._2 instanceof B);
-        Assertions.assertTrue(restored._3 instanceof A);
-        Assertions.assertTrue(restored._4 instanceof B);
-        Assertions.assertTrue(restored._5 instanceof A);
-        Assertions.assertTrue(restored._6 instanceof B);
+        assertThat(restored._1 instanceof A).isTrue();
+        assertThat(restored._2 instanceof B).isTrue();
+        assertThat(restored._3 instanceof A).isTrue();
+        assertThat(restored._4 instanceof B).isTrue();
+        assertThat(restored._5 instanceof A).isTrue();
+        assertThat(restored._6 instanceof B).isTrue();
     }
 
     @Test
-    void testTuple7() throws Exception {
+    void tuple7() throws Exception {
         Tuple7<I, I, I, I, I, I, I> src = Tuple.of(new A(), new B(), new A(), new B(), new A(), new B(), new A());
         String json = MAPPER.writeValueAsString(new Tuple7Pojo().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":[{\"type\":\"a\"},{\"type\":\"b\"},{\"type\":\"a\"},{\"type\":\"b\"},{\"type\":\"a\"},{\"type\":\"b\"},{\"type\":\"a\"}]}");
+        assertThat(json).isEqualTo("{\"value\":[{\"type\":\"a\"},{\"type\":\"b\"},{\"type\":\"a\"},{\"type\":\"b\"},{\"type\":\"a\"},{\"type\":\"b\"},{\"type\":\"a\"}]}");
         Tuple7Pojo pojo = MAPPER.readValue(json, Tuple7Pojo.class);
         Tuple7<I, I, I, I, I, I, I> restored = pojo.getValue();
-        Assertions.assertTrue(restored._1 instanceof A);
-        Assertions.assertTrue(restored._2 instanceof B);
-        Assertions.assertTrue(restored._3 instanceof A);
-        Assertions.assertTrue(restored._4 instanceof B);
-        Assertions.assertTrue(restored._5 instanceof A);
-        Assertions.assertTrue(restored._6 instanceof B);
-        Assertions.assertTrue(restored._7 instanceof A);
+        assertThat(restored._1 instanceof A).isTrue();
+        assertThat(restored._2 instanceof B).isTrue();
+        assertThat(restored._3 instanceof A).isTrue();
+        assertThat(restored._4 instanceof B).isTrue();
+        assertThat(restored._5 instanceof A).isTrue();
+        assertThat(restored._6 instanceof B).isTrue();
+        assertThat(restored._7 instanceof A).isTrue();
     }
 
     @Test
-    void testTuple8() throws Exception {
+    void tuple8() throws Exception {
         Tuple8<I, I, I, I, I, I, I, I> src = Tuple.of(new A(), new B(), new A(), new B(), new A(), new B(), new A(), new B());
         String json = MAPPER.writeValueAsString(new Tuple8Pojo().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":[{\"type\":\"a\"},{\"type\":\"b\"},{\"type\":\"a\"},{\"type\":\"b\"},{\"type\":\"a\"},{\"type\":\"b\"},{\"type\":\"a\"},{\"type\":\"b\"}]}");
+        assertThat(json).isEqualTo("{\"value\":[{\"type\":\"a\"},{\"type\":\"b\"},{\"type\":\"a\"},{\"type\":\"b\"},{\"type\":\"a\"},{\"type\":\"b\"},{\"type\":\"a\"},{\"type\":\"b\"}]}");
         Tuple8Pojo pojo = MAPPER.readValue(json, Tuple8Pojo.class);
         Tuple8<I, I, I, I, I, I, I, I> restored = pojo.getValue();
-        Assertions.assertTrue(restored._1 instanceof A);
-        Assertions.assertTrue(restored._2 instanceof B);
-        Assertions.assertTrue(restored._3 instanceof A);
-        Assertions.assertTrue(restored._4 instanceof B);
-        Assertions.assertTrue(restored._5 instanceof A);
-        Assertions.assertTrue(restored._6 instanceof B);
-        Assertions.assertTrue(restored._7 instanceof A);
-        Assertions.assertTrue(restored._8 instanceof B);
+        assertThat(restored._1 instanceof A).isTrue();
+        assertThat(restored._2 instanceof B).isTrue();
+        assertThat(restored._3 instanceof A).isTrue();
+        assertThat(restored._4 instanceof B).isTrue();
+        assertThat(restored._5 instanceof A).isTrue();
+        assertThat(restored._6 instanceof B).isTrue();
+        assertThat(restored._7 instanceof A).isTrue();
+        assertThat(restored._8 instanceof B).isTrue();
     }
 
     @Test
-    void testLazy() throws Exception {
+    void lazy() throws Exception {
         Lazy<I> src = Lazy.of(A::new);
         String json = MAPPER.writeValueAsString(new LazyPojo().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":{\"type\":\"a\"}}");
+        assertThat(json).isEqualTo("{\"value\":{\"type\":\"a\"}}");
         LazyPojo pojo = MAPPER.readValue(json, LazyPojo.class);
         Lazy<I> restored = pojo.getValue();
-        Assertions.assertTrue(restored.get() instanceof A);
+        assertThat(restored.get() instanceof A).isTrue();
     }
 
     @Test
-    void testOption() throws Exception {
+    void option() throws Exception {
         Option<I> src = Option.some(new A());
         String json = MAPPER.writeValueAsString(new OptionPojo().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":{\"type\":\"a\"}}");
+        assertThat(json).isEqualTo("{\"value\":{\"type\":\"a\"}}");
         OptionPojo pojo = MAPPER.readValue(json, OptionPojo.class);
         Option<I> restored = pojo.getValue();
-        Assertions.assertTrue(restored.get() instanceof A);
+        assertThat(restored.get() instanceof A).isTrue();
     }
 
     @Test
-    void testEitherLeft() throws Exception {
+    void eitherLeft() throws Exception {
         Either<I, I> src = Either.left(new A());
         String json = MAPPER.writeValueAsString(new EitherPojo().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":[\"left\",{\"type\":\"a\"}]}");
+        assertThat(json).isEqualTo("{\"value\":[\"left\",{\"type\":\"a\"}]}");
         EitherPojo pojo = MAPPER.readValue(json, EitherPojo.class);
         Either<I, I> restored = pojo.getValue();
-        Assertions.assertTrue(restored.isLeft());
-        Assertions.assertTrue(restored.getLeft() instanceof A);
+        assertThat(restored.isLeft()).isTrue();
+        assertThat(restored.getLeft() instanceof A).isTrue();
     }
 
     @Test
-    void testEitherRight() throws Exception {
+    void eitherRight() throws Exception {
         Either<I, I> src = Either.right(new A());
         String json = MAPPER.writeValueAsString(new EitherPojo().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":[\"right\",{\"type\":\"a\"}]}");
+        assertThat(json).isEqualTo("{\"value\":[\"right\",{\"type\":\"a\"}]}");
         EitherPojo pojo = MAPPER.readValue(json, EitherPojo.class);
         Either<I, I> restored = pojo.getValue();
-        Assertions.assertTrue(restored.isRight());
-        Assertions.assertTrue(restored.get() instanceof A);
+        assertThat(restored.isRight()).isTrue();
+        assertThat(restored.get() instanceof A).isTrue();
     }
 
     @JsonTypeInfo(

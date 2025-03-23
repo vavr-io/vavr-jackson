@@ -13,10 +13,10 @@ import java.io.IOException;
 import java.util.Comparator;
 import java.util.Objects;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
 
-public class TreeSetTest extends SetTest {
+class TreeSetTest extends SetTest {
     @Override
     protected Class<?> clz() {
         return TreeSet.class;
@@ -62,30 +62,29 @@ public class TreeSetTest extends SetTest {
     }
 
     @Test
-    void testDeserializeToSortedSet() throws IOException {
+    void deserializeToSortedSet() throws IOException {
         Clazz c = new Clazz();
         c.setSet(TreeSet.of(1, 3, 5));
         Clazz dc = mapper().readValue(mapper().writeValueAsString(c), Clazz.class);
-        assertEquals(c, dc);
+        assertThat(dc).isEqualTo(c);
     }
 
     @Test
-    void testGeneric1() {
-        assertThrows(JsonMappingException.class, () -> {
-            mapper().readValue("[1, 2]", TreeSet.class);
-        });
+    void generic1() {
+        assertThatExceptionOfType(JsonMappingException.class).isThrownBy(() ->
+            mapper().readValue("[1, 2]", TreeSet.class));
     }
 
     @Test
-    void testGeneric2() {
-        assertThrows(JsonMappingException.class, () -> {
+    void generic2() {
+        assertThatExceptionOfType(JsonMappingException.class).isThrownBy(() ->
             mapper().readValue("[1, 2]", new TypeReference<TreeSet<Object>>() {
-            });
-        });
+            }));
     }
 
     @Override
-    void testWithOption() throws IOException {
+    @Test
+    void withOption() throws IOException {
         // there is nothing to test, because Option is not Comparable and we cannot deserialize a TreeSet<Option<? extends Comparable<?>>
     }
 
@@ -102,10 +101,9 @@ public class TreeSetTest extends SetTest {
     }
 
     @Test
-    void testGeneric3() {
-        assertThrows(JsonMappingException.class, () -> {
+    void generic3() {
+        assertThatExceptionOfType(JsonMappingException.class).isThrownBy(() ->
             mapper().readValue("[{\"i\":1}, {\"i\":2}]", new TypeReference<TreeSet<Incomparable>>() {
-            });
-        });
+            }));
     }
 }

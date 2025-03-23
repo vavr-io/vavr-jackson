@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class QueueJsonMergeTest extends BaseTest {
+class QueueJsonMergeTest extends BaseTest {
     static class TestJsonMergeWithSeq {
         @JsonMerge(OptBoolean.TRUE)
         public Queue<String> value = Queue.of("a", "b", "c");
@@ -28,21 +28,21 @@ public class QueueJsonMergeTest extends BaseTest {
     }
 
     @Test
-    public void shouldMergeSeq() throws Exception {
+    void shouldMergeSeq() throws Exception {
         TestJsonMergeWithSeq result = mapper().readValue(asJson("{'value':['d', 'e', 'f']}"), TestJsonMergeWithSeq.class);
 
         assertThat(result.value.toJavaList()).containsExactly("a", "b", "c", "d", "e", "f");
     }
 
     @Test
-    public void shouldMergeSeqConstructor() throws Exception {
+    void shouldMergeSeqConstructor() throws Exception {
         TestJsonMergeWithSeqConstructor result = mapper().readValue(asJson("{'value':['d', 'e', 'f']}"), TestJsonMergeWithSeqConstructor.class);
 
         assertThat(result.value.toJavaList()).containsExactly("a", "b", "c", "d", "e", "f");
     }
 
     @Test
-    public void shouldMergeWhileRetainingValues() throws Exception {
+    void shouldMergeWhileRetainingValues() throws Exception {
         TestJsonMergeWithSeqConstructor result = mapper().readerForUpdating(new TestJsonMergeWithSeqConstructor("a", "b"))
           .readValue(asJson("{'value':['c', 'd', 'e', 'f']}"));
 

@@ -12,7 +12,6 @@ import io.vavr.collection.Set;
 import io.vavr.control.Option;
 import io.vavr.jackson.datatype.BaseTest;
 import io.vavr.jackson.datatype.VavrModule;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -20,6 +19,8 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.IOException;
 import java.util.Arrays;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public abstract class SetTest extends BaseTest {
 
@@ -36,9 +37,9 @@ public abstract class SetTest extends BaseTest {
         ObjectWriter writer = mapper().writer();
         Set<?> src = of(1, 2, 5);
         String json = writer.writeValueAsString(src);
-        Assertions.assertEquals(genJsonList(1, 2, 5), json);
+        assertThat(json).isEqualTo(genJsonList(1, 2, 5));
         Set<?> dst = mapper().readValue(json, typeReference());
-        Assertions.assertEquals(src, dst);
+        assertThat(dst).isEqualTo(src);
     }
 
     @Test
@@ -47,9 +48,9 @@ public abstract class SetTest extends BaseTest {
         Set<?> src = of(1);
         String plainJson = mapper().writeValueAsString(src);
         String wrappedJson = mapper.writeValueAsString(src);
-        Assertions.assertEquals(wrappedJson, wrapToObject(clz().getName(), plainJson));
+        assertThat(wrapToObject(clz().getName(), plainJson)).isEqualTo(wrappedJson);
         Set<?> restored = mapper.readValue(wrappedJson, typeReference());
-        Assertions.assertEquals(src, restored);
+        assertThat(restored).isEqualTo(src);
     }
 
     @Test
@@ -58,9 +59,9 @@ public abstract class SetTest extends BaseTest {
         Set<?> src = of(1);
         String plainJson = mapper().writeValueAsString(src);
         String wrappedJson = mapper.writeValueAsString(src);
-        Assertions.assertEquals(wrappedJson, wrapToArray(clz().getName(), plainJson));
+        assertThat(wrapToArray(clz().getName(), plainJson)).isEqualTo(wrappedJson);
         Set<?> restored = mapper.readValue(wrappedJson, typeReference());
-        Assertions.assertEquals(src, restored);
+        assertThat(restored).isEqualTo(src);
     }
 
     @Test
@@ -69,26 +70,26 @@ public abstract class SetTest extends BaseTest {
         settings.deserializeNullAsEmptyCollection(true);
         ObjectMapper mapper = mapper(settings);
         Set<?> restored = mapper.readValue("null", typeReference());
-        Assertions.assertTrue(restored.isEmpty());
+        assertThat(restored.isEmpty()).isTrue();
     }
 
     @Test
     void test5() throws IOException {
         ObjectMapper mapper = mapper();
         Set<?> restored = mapper.readValue("null", typeReference());
-        Assertions.assertNull(restored);
+        assertThat(restored).isNull();
     }
 
     @Test
     void test6() throws IOException {
         ObjectMapper mapper = mapper();
         Set<?> restored = mapper.readValue("[]", typeReference());
-        Assertions.assertTrue(restored.isEmpty());
-        Assertions.assertTrue(clz().isAssignableFrom(restored.getClass()));
+        assertThat(restored.isEmpty()).isTrue();
+        assertThat(clz().isAssignableFrom(restored.getClass())).isTrue();
     }
 
     @Test
-    void testSerializable() throws IOException {
+    void serializable() throws IOException {
         ObjectMapper mapper = mapper();
         Set<?> src = of(1);
         Set<?> restored = mapper.readValue(mapper.writeValueAsString(src), typeReference());
@@ -96,7 +97,7 @@ public abstract class SetTest extends BaseTest {
     }
 
     @Test
-    void testWithOption() throws Exception {
+    void withOption() throws Exception {
         verifySerialization(typeReferenceWithOption(), List.of(
             Tuple.of(of(Option.some("value")), genJsonList("value")),
             Tuple.of(of(Option.none()), genJsonList((Object) null))
@@ -129,12 +130,12 @@ public abstract class SetTest extends BaseTest {
 
     @Test
     @SuppressWarnings("unchecked")
-    void testJaxbXmlSerialization() throws IOException {
+    void jaxbXmlSerialization() throws IOException {
         ObjectMapper mapper = xmlMapperJaxb();
         String javaUtilValue = mapper.writeValueAsString(new JaxbXmlSerializeVavr().init((Set<Integer>) of(1, 2, 3)));
-        Assertions.assertEquals(mapper.writeValueAsString(new JaxbXmlSerializeJavaUtil().init(new java.util.HashSet<>(Arrays.asList(1, 2, 3)))), javaUtilValue);
+        assertThat(javaUtilValue).isEqualTo(mapper.writeValueAsString(new JaxbXmlSerializeJavaUtil().init(new java.util.HashSet<>(Arrays.asList(1, 2, 3)))));
         JaxbXmlSerializeVavr restored = mapper.readValue(javaUtilValue, JaxbXmlSerializeVavr.class);
-        Assertions.assertEquals(restored.transitTypes.size(), 3);
+        assertThat(restored.transitTypes.size()).isEqualTo(3);
     }
 
     @JacksonXmlRootElement(localName = "xmlSerialize")
@@ -163,11 +164,11 @@ public abstract class SetTest extends BaseTest {
 
     @Test
     @SuppressWarnings("unchecked")
-    void testXmlSerialization() throws IOException {
+    void xmlSerialization() throws IOException {
         ObjectMapper mapper = xmlMapper();
         String javaUtilValue = mapper.writeValueAsString(new XmlSerializeVavr().init((Set<Integer>) of(1, 2, 3)));
-        Assertions.assertEquals(mapper.writeValueAsString(new XmlSerializeJavaUtil().init(new java.util.HashSet<>(Arrays.asList(1, 2, 3)))), javaUtilValue);
+        assertThat(javaUtilValue).isEqualTo(mapper.writeValueAsString(new XmlSerializeJavaUtil().init(new java.util.HashSet<>(Arrays.asList(1, 2, 3)))));
         XmlSerializeVavr restored = mapper.readValue(javaUtilValue, XmlSerializeVavr.class);
-        Assertions.assertEquals(restored.transitTypes.size(), 3);
+        assertThat(restored.transitTypes.size()).isEqualTo(3);
     }
 }

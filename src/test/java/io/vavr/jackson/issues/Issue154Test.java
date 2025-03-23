@@ -9,13 +9,13 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Date;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Serialize of List of Date does not follow pattern defined in {@code @JsonFormat}
  * https://github.com/vavr-io/vavr-jackson/issues/154
  */
-public class Issue154Test {
+class Issue154Test {
 
     private static class MyVavrClass {
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Europe/Paris")
@@ -36,7 +36,7 @@ public class Issue154Test {
         mapper.registerModule(new VavrModule());
 
         String json = mapper.writeValueAsString(myClass);
-        assertEquals("{\"dates\":[\"2020-06-04\",\"2020-06-05\"]}", json);
+        assertThat(json).isEqualTo("{\"dates\":[\"2020-06-04\",\"2020-06-05\"]}");
     }
 
     @Test
@@ -49,7 +49,7 @@ public class Issue154Test {
         mapper.registerModule(new JavaTimeModule());
 
         String json = mapper.writeValueAsString(myClass);
-        assertEquals("{\"dates\":[\"2020-06-04\",\"2020-06-05\"]}", json);
+        assertThat(json).isEqualTo("{\"dates\":[\"2020-06-04\",\"2020-06-05\"]}");
     }
 
     @Test
@@ -61,7 +61,7 @@ public class Issue154Test {
         mapper.registerModule(new JavaTimeModule());
 
         String json = mapper.writeValueAsString(myClass);
-        assertEquals("{\"dates\":[\"2020-06-04\",\"2020-06-05\"]}", json);
+        assertThat(json).isEqualTo("{\"dates\":[\"2020-06-04\",\"2020-06-05\"]}");
     }
 
     @Test
@@ -72,6 +72,6 @@ public class Issue154Test {
         ObjectMapper mapper = new ObjectMapper();
 
         String json = mapper.writeValueAsString(myClass);
-        assertEquals("{\"dates\":[\"2020-06-04\",\"2020-06-05\"]}", json);
+        assertThat(json).isEqualTo("{\"dates\":[\"2020-06-04\",\"2020-06-05\"]}");
     }
 }

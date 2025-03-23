@@ -2,12 +2,13 @@ package io.vavr.jackson.datatype.bean;
 
 import io.vavr.collection.List;
 import io.vavr.jackson.datatype.BaseTest;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
-public class BeanTest extends BaseTest {
+import static org.assertj.core.api.Assertions.assertThat;
+
+class BeanTest extends BaseTest {
 
     static class BeanObject {
         public String scalar;
@@ -38,7 +39,7 @@ public class BeanTest extends BaseTest {
         src.scalar = "s";
         src.value = List.of(1);
         String json = mapper().writer().writeValueAsString(src);
-        Assertions.assertEquals(mapper().readValue(json, BeanObject.class), src);
+        assertThat(src).isEqualTo(mapper().readValue(json, BeanObject.class));
     }
 
     static class ComplexInnerClass {
@@ -144,14 +145,14 @@ public class BeanTest extends BaseTest {
 
         ComplexBeanObject restored = mapper().readValue(json, ComplexBeanObject.class);
         restored.getValues().forEach(innerClass -> {
-            Assertions.assertTrue(innerClass instanceof ComplexInnerClass, "Instance of ComplexInnerClass");
+            assertThat(innerClass instanceof ComplexInnerClass).as("Instance of ComplexInnerClass").isTrue();
         });
 
-        Assertions.assertEquals(restored, src);
+        assertThat(src).isEqualTo(restored);
     }
 
     @Test
-    public void testDeserializeScalarNull() throws IOException {
+    void deserializeScalarNull() throws IOException {
         // language=JSON
         String json = "{\"scalar\":null,\"value\":[]}";
 
@@ -159,6 +160,6 @@ public class BeanTest extends BaseTest {
 
         BeanObject expected = new BeanObject();
         expected.value = List.empty();
-        Assertions.assertEquals(expected, actual);
+        assertThat(actual).isEqualTo(expected);
     }
 }

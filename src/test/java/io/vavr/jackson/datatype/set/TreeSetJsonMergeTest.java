@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class TreeSetJsonMergeTest extends BaseTest {
+class TreeSetJsonMergeTest extends BaseTest {
     static class TestJsonMergeWithTreeSet {
         @JsonMerge(OptBoolean.TRUE)
         public TreeSet<String> value = TreeSet.of("a", "b", "c");
@@ -28,21 +28,21 @@ public class TreeSetJsonMergeTest extends BaseTest {
     }
 
     @Test
-    public void shouldMergeSeq() throws Exception {
+    void shouldMergeSeq() throws Exception {
         TestJsonMergeWithTreeSet result = mapper().readValue(asJson("{'value':['d', 'e', 'f']}"), TestJsonMergeWithTreeSet.class);
 
         assertThat(result.value.toJavaList()).containsExactly("a", "b", "c", "d", "e", "f");
     }
 
     @Test
-    public void shouldMergeSeqConstructor() throws Exception {
+    void shouldMergeSeqConstructor() throws Exception {
         TestJsonMergeWithTreeSetConstructor result = mapper().readValue(asJson("{'value':['d', 'e', 'f']}"), TestJsonMergeWithTreeSetConstructor.class);
 
         assertThat(result.value.toJavaList()).containsExactly("a", "b", "c", "d", "e", "f");
     }
 
     @Test
-    public void shouldMergeWhileRetainingValues() throws Exception {
+    void shouldMergeWhileRetainingValues() throws Exception {
         TestJsonMergeWithTreeSetConstructor result = mapper().readerForUpdating(new TestJsonMergeWithTreeSetConstructor("a", "b"))
           .readValue(asJson("{'value':['c', 'd', 'e', 'f']}"));
 

@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class LinkedHashSetJsonMergeTest extends BaseTest {
+class LinkedHashSetJsonMergeTest extends BaseTest {
     static class TestJsonMergeWithLinkedHashSet {
         @JsonMerge(OptBoolean.TRUE)
         public LinkedHashSet<String> value = LinkedHashSet.of("a", "b", "c");
@@ -28,21 +28,21 @@ public class LinkedHashSetJsonMergeTest extends BaseTest {
     }
 
     @Test
-    public void shouldMergeSeq() throws Exception {
+    void shouldMergeSeq() throws Exception {
         TestJsonMergeWithLinkedHashSet result = mapper().readValue(asJson("{'value':['d', 'e', 'f']}"), TestJsonMergeWithLinkedHashSet.class);
 
         assertThat(result.value.toJavaList()).containsExactly("a", "b", "c", "d", "e", "f");
     }
 
     @Test
-    public void shouldMergeSeqConstructor() throws Exception {
+    void shouldMergeSeqConstructor() throws Exception {
         TestJsonMergeWithLinkedHashSetConstructor result = mapper().readValue(asJson("{'value':['d', 'e', 'f']}"), TestJsonMergeWithLinkedHashSetConstructor.class);
 
         assertThat(result.value.toJavaList()).containsExactly("a", "b", "c", "d", "e", "f");
     }
 
     @Test
-    public void shouldMergeWhileRetainingValues() throws Exception {
+    void shouldMergeWhileRetainingValues() throws Exception {
         TestJsonMergeWithLinkedHashSetConstructor result = mapper().readerForUpdating(new TestJsonMergeWithLinkedHashSetConstructor("a", "b"))
           .readValue(asJson("{'value':['c', 'd', 'e', 'f']}"));
 

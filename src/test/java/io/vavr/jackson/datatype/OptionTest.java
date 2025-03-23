@@ -5,13 +5,12 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.vavr.control.Option;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
 
 class OptionTest extends BaseTest {
 
@@ -21,76 +20,71 @@ class OptionTest extends BaseTest {
     void shouldSerializeAndDeserializeDefinedOptionWithValue() throws IOException {
         Option<?> src = Option.of(1);
         String json = mapper(optSettings).writer().writeValueAsString(src);
-        assertEquals("[\"defined\",1]", json);
+        assertThat(json).isEqualTo("[\"defined\",1]");
         Option<?> restored = mapper(optSettings).readValue(json, Option.class);
-        assertEquals(src, restored);
+        assertThat(restored).isEqualTo(src);
     }
 
     @Test
     void shouldSerializeAndDeserializeDefinedOptionWithNull() throws IOException {
         Option<?> src = Option.some(null);
         String json = mapper(optSettings).writer().writeValueAsString(src);
-        assertEquals("[\"defined\",null]", json);
+        assertThat(json).isEqualTo("[\"defined\",null]");
         Option<?> restored = mapper(optSettings).readValue(json, Option.class);
-        assertEquals(src, restored);
+        assertThat(restored).isEqualTo(src);
     }
 
     @Test
     void shouldSerializeAndDeserializeNoneOption() throws IOException {
         Option<?> src = Option.none();
         String json = mapper(optSettings).writer().writeValueAsString(src);
-        assertEquals("[\"undefined\"]", json);
+        assertThat(json).isEqualTo("[\"undefined\"]");
         Option<?> restored = mapper(optSettings).readValue(json, Option.class);
-        assertEquals(src, restored);
+        assertThat(restored).isEqualTo(src);
         Option<?> plain = mapper(optSettings).readValue("null", Option.class);
-        assertEquals(src, plain);
+        assertThat(plain).isEqualTo(src);
     }
 
     @Test
     void shouldThrowExceptionForInvalidOptionWithExtraValue() {
-        assertThrows(JsonMappingException.class, () -> {
-            String json = "[\"defined\", 2, 3]";
-            mapper(optSettings).readValue(json, Option.class);
-        });
+        String json = "[\"defined\", 2, 3]";
+        assertThatExceptionOfType(JsonMappingException.class).isThrownBy(() ->
+            mapper(optSettings).readValue(json, Option.class));
     }
 
     @Test
     void shouldThrowExceptionForDefinedOptionWithoutValue() {
-        assertThrows(JsonMappingException.class, () -> {
-            String json = "[\"defined\"]";
-            mapper(optSettings).readValue(json, Option.class);
-        });
+        String json = "[\"defined\"]";
+        assertThatExceptionOfType(JsonMappingException.class).isThrownBy(() ->
+            mapper(optSettings).readValue(json, Option.class));
     }
 
     @Test
     void shouldThrowExceptionForEmptyArrayOption() {
-        assertThrows(JsonMappingException.class, () -> {
-            String json = "[]";
-            mapper(optSettings).readValue(json, Option.class);
-        });
+        String json = "[]";
+        assertThatExceptionOfType(JsonMappingException.class).isThrownBy(() ->
+            mapper(optSettings).readValue(json, Option.class));
     }
 
     @Test
     void shouldThrowExceptionForUndefinedOptionWithExtraValues() {
-        assertThrows(JsonMappingException.class, () -> {
-            String json = "[\"undefined\", 2, 3]";
-            mapper(optSettings).readValue(json, Option.class);
-        });
+        String json = "[\"undefined\", 2, 3]";
+        assertThatExceptionOfType(JsonMappingException.class).isThrownBy(() ->
+            mapper(optSettings).readValue(json, Option.class));
     }
 
     @Test
     void shouldThrowExceptionForUnrecognizedOptionType() {
-        assertThrows(JsonMappingException.class, () -> {
-            String json = "[\"test\"]";
-            mapper(optSettings).readValue(json, Option.class);
-        });
+        String json = "[\"test\"]";
+        assertThatExceptionOfType(JsonMappingException.class).isThrownBy(() ->
+            mapper(optSettings).readValue(json, Option.class));
     }
 
     @Test
     void shouldDeserializeNullToEmptyOption() throws IOException {
         String json = "null";
         Option<?> option = mapper(optSettings).readValue(json, Option.class);
-        Assertions.assertTrue(option.isEmpty());
+        assertThat(option.isEmpty()).isTrue();
     }
 
     @JsonTypeInfo(
@@ -109,17 +103,17 @@ class OptionTest extends BaseTest {
     @Test
     void shouldSerializeAndDeserializeWithDefaultJsonTypeInfo() throws IOException {
         String javaUtilValue = mapper().writeValueAsString(new A());
-        assertEquals("{\"f\":{\"card\":{\"type\":\"hello\"}}}", javaUtilValue);
+        assertThat(javaUtilValue).isEqualTo("{\"f\":{\"card\":{\"type\":\"hello\"}}}");
         A restored = mapper().readValue(javaUtilValue, A.class);
-        assertEquals("hello", restored.f.get().type);
+        assertThat(restored.f.get().type).isEqualTo("hello");
     }
 
     @Test
     void shouldSerializeAndDeserializeWithOptionEnabledJsonTypeInfo() throws IOException {
         ObjectMapper mapper = mapper(optSettings);
         String javaUtilValue = mapper.writeValueAsString(new A());
-        assertEquals("{\"f\":[\"defined\",{\"card\":{\"type\":\"hello\"}}]}", javaUtilValue);
+        assertThat(javaUtilValue).isEqualTo("{\"f\":[\"defined\",{\"card\":{\"type\":\"hello\"}}]}");
         A restored = mapper.readValue(javaUtilValue, A.class);
-        assertEquals("hello", restored.f.get().type);
+        assertThat(restored.f.get().type).isEqualTo("hello");
     }
 }

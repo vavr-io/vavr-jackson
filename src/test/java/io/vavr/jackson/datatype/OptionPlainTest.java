@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class OptionPlainTest extends BaseTest {
 
@@ -13,17 +13,17 @@ class OptionPlainTest extends BaseTest {
     void shouldSerializeAndDeserializeDefinedOptionPlainValue() throws IOException {
         Option<?> src = Option.of(1);
         String json = mapper().writer().writeValueAsString(src);
-        assertEquals("1", json);
+        assertThat(json).isEqualTo("1");
         Option<?> restored = mapper().readValue(json, Option.class);
-        assertEquals(src, restored);
+        assertThat(restored).isEqualTo(src);
     }
 
     @Test
     void shouldSerializeAndDeserializeNoneOptionPlainValue() throws IOException {
         Option<?> src = Option.none();
         String json = mapper().writer().writeValueAsString(src);
-        assertEquals("null", json);
+        assertThat(json).isEqualTo("null");
         Option<?> restored = mapper().readValue(json, Option.class);
-        assertEquals(src, restored);
+        assertThat(restored).isEqualTo(src);
     }
 }

@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class OptionJsonMergeTest extends BaseTest {
+class OptionJsonMergeTest extends BaseTest {
     static class TestJsonMergeWithString {
         @JsonMerge(OptBoolean.TRUE)
         public Option<String> value = Option.of("default");
@@ -39,21 +39,21 @@ public class OptionJsonMergeTest extends BaseTest {
     }
 
     @Test
-    public void shouldMergeString() throws Exception {
+    void shouldMergeString() throws Exception {
         TestJsonMergeWithString result = mapper().readValue(asJson("{'value':'override'}"), TestJsonMergeWithString.class);
 
         assertThat(result.value.get()).isEqualTo("override");
     }
 
     @Test
-    public void shouldMergePojo() throws Exception {
+    void shouldMergePojo() throws Exception {
         TestJsonMergeWithPojo result = mapper().readValue(asJson("{'value':{'y':-6}}"), TestJsonMergeWithPojo.class);
         assertThat(result.value.get().x).isEqualTo(7);
         assertThat(result.value.get().y).isEqualTo(-6);
     }
 
     @Test
-    public void shouldMergeWhileRetainingValues() throws Exception {
+    void shouldMergeWhileRetainingValues() throws Exception {
         TestJsonMergeWithPojo result = mapper().readerForUpdating(new TestJsonMergeWithPojo(10, 20))
             .readValue(asJson("{'value':{'x':11}}"));
 

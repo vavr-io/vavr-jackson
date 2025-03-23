@@ -13,12 +13,12 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
-public class SerializationFeatureTest {
+class SerializationFeatureTest {
 
     @Test
-    public void shouldApplySerializationFeatureListDateTime() throws IOException {
+    void shouldApplySerializationFeatureListDateTime() throws IOException {
         DateTime dateTime = new DateTime(2016, 6, 6, 8, 0, DateTimeZone.forID("CET"));
         io.vavr.collection.List<DateTime> dateTimeList = List.of(dateTime);
         java.util.List<DateTime> dateTimeJavaList = new ArrayList<>();
@@ -33,11 +33,11 @@ public class SerializationFeatureTest {
         String serializedDateTimeJavaList = writer.writeValueAsString(dateTimeJavaList);
         String serializedDateTimeList = writer.writeValueAsString(dateTimeList);
 
-        assertEquals(serializedDateTime, serializedDateTimeJavaList);
-        assertEquals(serializedDateTimeJavaList, serializedDateTimeList);
+        assertThat(serializedDateTimeJavaList).isEqualTo(serializedDateTime);
+        assertThat(serializedDateTimeList).isEqualTo(serializedDateTimeJavaList);
 
         List<DateTime> restored = mapper.readValue(serializedDateTimeList, new TypeReference<List<DateTime>>() {
         });
-        assertEquals(restored.head().getMillis(), dateTime.getMillis());
+        assertThat(dateTime.getMillis()).isEqualTo(restored.head().getMillis());
     }
 }

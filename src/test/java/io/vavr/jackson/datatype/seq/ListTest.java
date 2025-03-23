@@ -9,14 +9,15 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.vavr.collection.List;
 import io.vavr.collection.Seq;
 import io.vavr.control.Option;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 
-public class ListTest extends SeqTest {
+import static org.assertj.core.api.Assertions.assertThat;
+
+class ListTest extends SeqTest {
 
     @Override
     protected Class<?> clz() {
@@ -40,8 +41,8 @@ public class ListTest extends SeqTest {
     }
 
     @Test
-    void testDefaultDeserialization() throws IOException {
-        Assertions.assertEquals(mapper().readValue("[1]", Seq.class), List.of(1));
+    void defaultDeserialization() throws IOException {
+        assertThat(List.of(1)).isEqualTo(mapper().readValue("[1]", Seq.class));
     }
 
     @JsonTypeInfo(
@@ -62,11 +63,11 @@ public class ListTest extends SeqTest {
     }
 
     @Test
-    void testJsonTypeInfo() throws IOException {
+    void jsonTypeInfo() throws IOException {
         String javaUtilValue = mapper().writeValueAsString(new A());
-        Assertions.assertEquals(mapper().writeValueAsString(new B()), javaUtilValue);
+        assertThat(javaUtilValue).isEqualTo(mapper().writeValueAsString(new B()));
         A restored = mapper().readValue(javaUtilValue, A.class);
-        Assertions.assertEquals("hello", restored.f.head().type);
+        assertThat(restored.f.head().type).isEqualTo("hello");
     }
 
     static class FrenchDates {
@@ -75,7 +76,7 @@ public class ListTest extends SeqTest {
     }
 
     @Test
-    void testSerializeWithContext() throws IOException {
+    void serializeWithContext() throws IOException {
         // Given an object containing dates to serialize
         FrenchDates src = new FrenchDates();
         src.dates = List.of(new Date(1591308000000L));
@@ -86,10 +87,10 @@ public class ListTest extends SeqTest {
         String json = mapper.writeValueAsString(src);
 
         // Then the serialization is successful
-        Assertions.assertEquals("{\"dates\":[\"05/06/2020\"]}", json);
+        assertThat(json).isEqualTo("{\"dates\":[\"05/06/2020\"]}");
 
         // And the deserialization is successful
         FrenchDates restored = mapper.readValue(json, FrenchDates.class);
-        Assertions.assertEquals(src.dates, restored.dates);
+        assertThat(restored.dates).isEqualTo(src.dates);
     }
 }
