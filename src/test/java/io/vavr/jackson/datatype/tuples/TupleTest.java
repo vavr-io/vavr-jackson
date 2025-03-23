@@ -6,11 +6,12 @@ import io.vavr.Tuple;
 import io.vavr.collection.List;
 import io.vavr.control.Option;
 import io.vavr.jackson.datatype.BaseTest;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.ArrayList;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public abstract class TupleTest<T> extends BaseTest {
 
@@ -35,8 +36,8 @@ public abstract class TupleTest<T> extends BaseTest {
     void test1() throws IOException {
         T src = ofObjects(1, 17);
         String json = mapper().writeValueAsString(src);
-        Assertions.assertEquals(genJsonTuple(1, 17), json);
-        Assertions.assertEquals(src, mapper().readValue(json, clz()));
+        assertThat(json).isEqualTo(genJsonTuple(1, 17));
+        assertThat(mapper().readValue(json, clz())).isEqualTo(src);
     }
 
     @SuppressWarnings("unchecked")
@@ -46,9 +47,9 @@ public abstract class TupleTest<T> extends BaseTest {
         T src = ofObjects(1, 17);
         String plainJson = mapper().writeValueAsString(src);
         String wrappedJson = mapper.writeValueAsString(src);
-        Assertions.assertEquals(wrappedJson, wrapToObject(clz().getName(), plainJson));
+        assertThat(wrapToObject(clz().getName(), plainJson)).isEqualTo(wrappedJson);
         T restored = (T) mapper.readValue(wrappedJson, clz());
-        Assertions.assertEquals(src, restored);
+        assertThat(restored).isEqualTo(src);
     }
 
     @SuppressWarnings("unchecked")
@@ -58,13 +59,13 @@ public abstract class TupleTest<T> extends BaseTest {
         T src = ofObjects(1, 17);
         String plainJson = mapper().writeValueAsString(src);
         String wrappedJson = mapper.writeValueAsString(src);
-        Assertions.assertEquals(wrappedJson, wrapToArray(clz().getName(), plainJson));
+        assertThat(wrapToArray(clz().getName(), plainJson)).isEqualTo(wrappedJson);
         T restored = (T) mapper.readValue(wrappedJson, clz());
-        Assertions.assertEquals(src, restored);
+        assertThat(restored).isEqualTo(src);
     }
 
     @Test
-    void testWithOption() throws IOException {
+    void withOption() throws IOException {
         verifySerialization(typeReferenceWithOption(), List.of(
             Tuple.of(ofObjects(Option.some("1"), Option.none()), genJsonTuple("1", null)),
             Tuple.of(ofObjects(Option.some("1"), Option.some("17")), genJsonTuple("1", "17")),

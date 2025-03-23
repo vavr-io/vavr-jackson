@@ -4,12 +4,13 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import io.vavr.collection.HashMap;
 import io.vavr.collection.Map;
 import io.vavr.control.Option;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
-public class HashMapTest extends MapTest {
+import static org.assertj.core.api.Assertions.assertThat;
+
+class HashMapTest extends MapTest {
     @Override
     Class<?> clz() {
         return HashMap.class;
@@ -27,7 +28,7 @@ public class HashMapTest extends MapTest {
     }
 
     @Test
-    void testDefaultDeserialization() throws IOException {
-        Assertions.assertEquals(mapper().readValue("{\"1\":\"2\"}", Map.class), HashMap.empty().put("1", "2"));
+    void defaultDeserialization() throws IOException {
+        assertThat(HashMap.empty().put("1", "2")).isEqualTo(mapper().readValue("{\"1\":\"2\"}", Map.class));
     }
 }

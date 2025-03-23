@@ -4,13 +4,14 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import io.vavr.collection.LinkedHashMultimap;
 import io.vavr.collection.Multimap;
 import io.vavr.control.Option;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.Collections;
 
-public class LinkedHashMultimapTest extends MultimapTest {
+import static org.assertj.core.api.Assertions.assertThat;
+
+class LinkedHashMultimapTest extends MultimapTest {
     @Override
     Class<?> clz() {
         return LinkedHashMultimap.class;
@@ -28,16 +29,16 @@ public class LinkedHashMultimapTest extends MultimapTest {
     }
 
     @Test
-    public void shouldKeepOrder() throws IOException {
+    void shouldKeepOrder() throws IOException {
         Multimap<Object, Object> vavrObject = emptyMap().put("2", 1).put("1", 2);
         java.util.Map<Object, Object> javaObject = new java.util.LinkedHashMap<>();
         javaObject.put("2", Collections.singletonList(1));
         javaObject.put("1", Collections.singletonList(2));
 
         String json = mapper().writer().writeValueAsString(vavrObject);
-        Assertions.assertEquals(genJsonMap(javaObject), json);
+        assertThat(json).isEqualTo(genJsonMap(javaObject));
 
         Multimap<?, ?> restored = (Multimap<?, ?>) mapper().readValue(json, clz());
-        Assertions.assertEquals(restored, vavrObject);
+        assertThat(vavrObject).isEqualTo(restored);
     }
 }

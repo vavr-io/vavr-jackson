@@ -7,14 +7,15 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.vavr.collection.HashSet;
 import io.vavr.collection.Set;
 import io.vavr.control.Option;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 
-public class HashSetTest extends SetTest {
+import static org.assertj.core.api.Assertions.assertThat;
+
+class HashSetTest extends SetTest {
 
     @Override
     protected Class<?> clz() {
@@ -39,8 +40,8 @@ public class HashSetTest extends SetTest {
     }
 
     @Test
-    void testDefaultDeserialization() throws IOException {
-        Assertions.assertEquals(mapper().readValue("[1]", Set.class), HashSet.of(1));
+    void defaultDeserialization() throws IOException {
+        assertThat(HashSet.of(1)).isEqualTo(mapper().readValue("[1]", Set.class));
     }
 
     static class FrenchDates {
@@ -49,7 +50,7 @@ public class HashSetTest extends SetTest {
     }
 
     @Test
-    void testSerializeWithContext() throws IOException {
+    void serializeWithContext() throws IOException {
         // Given an object containing dates to serialize
         FrenchDates src = new FrenchDates();
         src.dates = HashSet.of(new Date(1591308000000L));
@@ -60,10 +61,10 @@ public class HashSetTest extends SetTest {
         String json = mapper.writeValueAsString(src);
 
         // Then the serialization is successful
-        Assertions.assertEquals("{\"dates\":[\"05/06/2020\"]}", json);
+        assertThat(json).isEqualTo("{\"dates\":[\"05/06/2020\"]}");
 
         // And the deserialization is successful
         FrenchDates restored = mapper.readValue(json, FrenchDates.class);
-        Assertions.assertEquals(src.dates, restored.dates);
+        assertThat(restored.dates).isEqualTo(src.dates);
     }
 }

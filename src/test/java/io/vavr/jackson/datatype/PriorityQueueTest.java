@@ -19,30 +19,28 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
 
-public class PriorityQueueTest extends BaseTest {
+class PriorityQueueTest extends BaseTest {
 
     @Test
     void shouldThrowExceptionForGenericDeserializationWithIntegers() {
-        assertThrows(JsonMappingException.class, () -> mapper().readValue("[1, 2]", PriorityQueue.class));
+        assertThatExceptionOfType(JsonMappingException.class).isThrownBy(() -> mapper().readValue("[1, 2]", PriorityQueue.class));
     }
 
     @Test
     void shouldThrowExceptionForGenericDeserializationWithTypeReference() throws IOException {
-        assertThrows(JsonMappingException.class, () -> {
+        assertThatExceptionOfType(JsonMappingException.class).isThrownBy(() ->
             mapper().readValue("[1, 2]", new TypeReference<PriorityQueue<Object>>() {
-            });
-        });
+            }));
     }
 
     @Test
     void shouldThrowExceptionForIncomparableDeserialization() {
-        assertThrows(JsonMappingException.class, () -> {
+        assertThatExceptionOfType(JsonMappingException.class).isThrownBy(() ->
             mapper().readValue("[{\"i\":1}, {\"i\":2}]", new TypeReference<PriorityQueue<PriorityQueueTest.Incomparable>>() {
-            });
-        });
+            }));
     }
 
     @Test
@@ -50,14 +48,14 @@ public class PriorityQueueTest extends BaseTest {
         ObjectWriter writer = mapper().writer();
         PriorityQueue<Integer> src = PriorityQueue.of(1, 5, 8);
         String json = writer.writeValueAsString(src);
-        assertEquals(genJsonList(1, 5, 8), json);
+        assertThat(json).isEqualTo(genJsonList(1, 5, 8));
         PriorityQueue<Integer> dst = mapper().readValue(json, new TypeReference<PriorityQueue<Integer>>() {
         });
-        assertEquals(src, dst);
+        assertThat(dst).isEqualTo(src);
     }
 
     @Test
-    void testSerializable() throws IOException {
+    void serializable() throws IOException {
         ObjectMapper mapper = mapper();
         PriorityQueue<Integer> src = PriorityQueue.of(1);
         PriorityQueue<Integer> restored = mapper.readValue(mapper.writeValueAsString(src), new TypeReference<PriorityQueue<Integer>>() {
@@ -103,12 +101,12 @@ public class PriorityQueueTest extends BaseTest {
 
     @Test
     @SuppressWarnings("unchecked")
-    void testJaxbXmlSerialization() throws IOException {
+    void jaxbXmlSerialization() throws IOException {
         ObjectMapper mapper = xmlMapperJaxb();
         String javaUtilValue = mapper.writeValueAsString(new JaxbXmlSerializeVavr().init(PriorityQueue.of(1, 2, 3)));
-        assertEquals(mapper.writeValueAsString(new JaxbXmlSerializeJavaUtil().init(Arrays.asList(1, 2, 3))), javaUtilValue);
+        assertThat(javaUtilValue).isEqualTo(mapper.writeValueAsString(new JaxbXmlSerializeJavaUtil().init(Arrays.asList(1, 2, 3))));
         JaxbXmlSerializeVavr restored = mapper.readValue(javaUtilValue, JaxbXmlSerializeVavr.class);
-        assertEquals(restored.transitTypes.size(), 3);
+        assertThat(restored.transitTypes.size()).isEqualTo(3);
     }
 
     @JacksonXmlRootElement(localName = "xmlSerialize")
@@ -137,12 +135,12 @@ public class PriorityQueueTest extends BaseTest {
 
     @Test
     @SuppressWarnings("unchecked")
-    void testXmlSerialization() throws IOException {
+    void xmlSerialization() throws IOException {
         ObjectMapper mapper = xmlMapper();
         String javaUtilValue = mapper.writeValueAsString(new XmlSerializeVavr().init(PriorityQueue.of(1, 2, 3)));
-        assertEquals(mapper.writeValueAsString(new XmlSerializeJavaUtil().init(Arrays.asList(1, 2, 3))), javaUtilValue);
+        assertThat(javaUtilValue).isEqualTo(mapper.writeValueAsString(new XmlSerializeJavaUtil().init(Arrays.asList(1, 2, 3))));
         XmlSerializeVavr restored = mapper.readValue(javaUtilValue, XmlSerializeVavr.class);
-        assertEquals(restored.transitTypes.size(), 3);
+        assertThat(restored.transitTypes.size()).isEqualTo(3);
     }
 
     static class FrenchDates {
@@ -151,7 +149,7 @@ public class PriorityQueueTest extends BaseTest {
     }
 
     @Test
-    void testSerializeWithContext() throws IOException {
+    void serializeWithContext() throws IOException {
         // Given an object containing dates to serialize
         FrenchDates src = new FrenchDates();
         src.dates = PriorityQueue.of(new Date(1591308000000L));
@@ -162,10 +160,10 @@ public class PriorityQueueTest extends BaseTest {
         String json = mapper.writeValueAsString(src);
 
         // Then the serialization is successful
-        assertEquals("{\"dates\":[\"05/06/2020\"]}", json);
+        assertThat(json).isEqualTo("{\"dates\":[\"05/06/2020\"]}");
 
         // And the deserialization is successful
         FrenchDates restored = mapper.readValue(json, FrenchDates.class);
-        assertEquals(src.dates, restored.dates);
+        assertThat(restored.dates).isEqualTo(src.dates);
     }
 }

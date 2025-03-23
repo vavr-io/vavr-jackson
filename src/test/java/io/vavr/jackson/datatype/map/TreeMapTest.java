@@ -10,9 +10,9 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.util.Objects;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
-public class TreeMapTest extends MapTest {
+class TreeMapTest extends MapTest {
     @Override
     Class<?> clz() {
         return TreeMap.class;
@@ -50,10 +50,10 @@ public class TreeMapTest extends MapTest {
     }
 
     @Test
-    void testDeserializeToSortedMap() throws IOException {
+    void deserializeToSortedMap() throws IOException {
         Clazz c = new Clazz();
         c.setSet(TreeMap.of(1, 3, 5, 7));
         Clazz dc = mapper().readValue(mapper().writeValueAsString(c), Clazz.class);
-        assertEquals(c, dc);
+        assertThat(dc).isEqualTo(c);
     }
 }

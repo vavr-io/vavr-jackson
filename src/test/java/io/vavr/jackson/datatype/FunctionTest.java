@@ -1,5 +1,6 @@
 package io.vavr.jackson.datatype;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import io.vavr.CheckedFunction0;
 import io.vavr.CheckedFunction1;
@@ -23,20 +24,19 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
 
 class FunctionTest extends BaseTest {
 
     @Test
-    void shouldThrowExceptionForInvalidFunctionSerialization() {
-        assertThrows(IllegalStateException.class, () -> {
-            Function1<String, String> src = i1 -> i1 + 42;
-            String json = mapper().writer().writeValueAsString(src);
-            String broken = "\"00000000" + json.substring(1);
+    void shouldThrowExceptionForInvalidFunctionSerialization() throws JsonProcessingException {
+        Function1<String, String> src = i1 -> i1 + 42;
+        String json = mapper().writer().writeValueAsString(src);
+        String broken = "\"00000000" + json.substring(1);
+        assertThatExceptionOfType(IllegalStateException.class).isThrownBy(() ->
             mapper().readValue(broken, new TypeReference<Function1<String, String>>() {
-            });
-        });
+            }));
     }
 
     @Test
@@ -45,7 +45,7 @@ class FunctionTest extends BaseTest {
         String json = mapper().writer().writeValueAsString(src);
         Function0<String> res = mapper().readValue(json, new TypeReference<Function0<String>>() {
         });
-        assertEquals(res.apply(), "42");
+        assertThat(res.apply()).isEqualTo("42");
     }
 
     @Test
@@ -54,7 +54,7 @@ class FunctionTest extends BaseTest {
         String json = mapper().writer().writeValueAsString(src);
         Function1<String, String> res = mapper().readValue(json, new TypeReference<Function1<String, String>>() {
         });
-        assertEquals(res.apply("1/"), "1/42");
+        assertThat(res.apply("1/")).isEqualTo("1/42");
     }
 
     @Test
@@ -63,7 +63,7 @@ class FunctionTest extends BaseTest {
         String json = mapper().writer().writeValueAsString(src);
         Function2<String, String, String> res = mapper().readValue(json, new TypeReference<Function2<String, String, String>>() {
         });
-        assertEquals(res.apply("1/", "2/"), "1/2/42");
+        assertThat(res.apply("1/", "2/")).isEqualTo("1/2/42");
     }
 
     @Test
@@ -72,7 +72,7 @@ class FunctionTest extends BaseTest {
         String json = mapper().writer().writeValueAsString(src);
         Function3<String, String, String, String> res = mapper().readValue(json, new TypeReference<Function3<String, String, String, String>>() {
         });
-        assertEquals(res.apply("1/", "2/", "3/"), "1/2/3/42");
+        assertThat(res.apply("1/", "2/", "3/")).isEqualTo("1/2/3/42");
     }
 
     @Test
@@ -81,7 +81,7 @@ class FunctionTest extends BaseTest {
         String json = mapper().writer().writeValueAsString(src);
         Function4<String, String, String, String, String> res = mapper().readValue(json, new TypeReference<Function4<String, String, String, String, String>>() {
         });
-        assertEquals(res.apply("1/", "2/", "3/", "4/"), "1/2/3/4/42");
+        assertThat(res.apply("1/", "2/", "3/", "4/")).isEqualTo("1/2/3/4/42");
     }
 
     @Test
@@ -90,7 +90,7 @@ class FunctionTest extends BaseTest {
         String json = mapper().writer().writeValueAsString(src);
         Function5<String, String, String, String, String, String> res = mapper().readValue(json, new TypeReference<Function5<String, String, String, String, String, String>>() {
         });
-        assertEquals(res.apply("1/", "2/", "3/", "4/", "5/"), "1/2/3/4/5/42");
+        assertThat(res.apply("1/", "2/", "3/", "4/", "5/")).isEqualTo("1/2/3/4/5/42");
     }
 
     @Test
@@ -99,7 +99,7 @@ class FunctionTest extends BaseTest {
         String json = mapper().writer().writeValueAsString(src);
         Function6<String, String, String, String, String, String, String> res = mapper().readValue(json, new TypeReference<Function6<String, String, String, String, String, String, String>>() {
         });
-        assertEquals(res.apply("1/", "2/", "3/", "4/", "5/", "6/"), "1/2/3/4/5/6/42");
+        assertThat(res.apply("1/", "2/", "3/", "4/", "5/", "6/")).isEqualTo("1/2/3/4/5/6/42");
     }
 
     @Test
@@ -108,7 +108,7 @@ class FunctionTest extends BaseTest {
         String json = mapper().writer().writeValueAsString(src);
         Function7<String, String, String, String, String, String, String, String> res = mapper().readValue(json, new TypeReference<Function7<String, String, String, String, String, String, String, String>>() {
         });
-        assertEquals(res.apply("1/", "2/", "3/", "4/", "5/", "6/", "7/"), "1/2/3/4/5/6/7/42");
+        assertThat(res.apply("1/", "2/", "3/", "4/", "5/", "6/", "7/")).isEqualTo("1/2/3/4/5/6/7/42");
     }
 
     @Test
@@ -117,7 +117,7 @@ class FunctionTest extends BaseTest {
         String json = mapper().writer().writeValueAsString(src);
         Function8<String, String, String, String, String, String, String, String, String> res = mapper().readValue(json, new TypeReference<Function8<String, String, String, String, String, String, String, String, String>>() {
         });
-        assertEquals(res.apply("1/", "2/", "3/", "4/", "5/", "6/", "7/", "8/"), "1/2/3/4/5/6/7/8/42");
+        assertThat(res.apply("1/", "2/", "3/", "4/", "5/", "6/", "7/", "8/")).isEqualTo("1/2/3/4/5/6/7/8/42");
     }
 
     @Test
@@ -126,7 +126,7 @@ class FunctionTest extends BaseTest {
         String json = mapper().writer().writeValueAsString(src);
         CheckedFunction0<String> res = mapper().readValue(json, new TypeReference<CheckedFunction0<String>>() {
         });
-        assertEquals(res.apply(), "42");
+        assertThat(res.apply()).isEqualTo("42");
     }
 
     @Test
@@ -135,7 +135,7 @@ class FunctionTest extends BaseTest {
         String json = mapper().writer().writeValueAsString(src);
         CheckedFunction1<String, String> res = mapper().readValue(json, new TypeReference<CheckedFunction1<String, String>>() {
         });
-        assertEquals(res.apply("1/"), "1/42");
+        assertThat(res.apply("1/")).isEqualTo("1/42");
     }
 
     @Test
@@ -144,7 +144,7 @@ class FunctionTest extends BaseTest {
         String json = mapper().writer().writeValueAsString(src);
         CheckedFunction2<String, String, String> res = mapper().readValue(json, new TypeReference<CheckedFunction2<String, String, String>>() {
         });
-        assertEquals(res.apply("1/", "2/"), "1/2/42");
+        assertThat(res.apply("1/", "2/")).isEqualTo("1/2/42");
     }
 
     @Test
@@ -153,7 +153,7 @@ class FunctionTest extends BaseTest {
         String json = mapper().writer().writeValueAsString(src);
         CheckedFunction3<String, String, String, String> res = mapper().readValue(json, new TypeReference<CheckedFunction3<String, String, String, String>>() {
         });
-        assertEquals(res.apply("1/", "2/", "3/"), "1/2/3/42");
+        assertThat(res.apply("1/", "2/", "3/")).isEqualTo("1/2/3/42");
     }
 
     @Test
@@ -162,7 +162,7 @@ class FunctionTest extends BaseTest {
         String json = mapper().writer().writeValueAsString(src);
         CheckedFunction4<String, String, String, String, String> res = mapper().readValue(json, new TypeReference<CheckedFunction4<String, String, String, String, String>>() {
         });
-        assertEquals(res.apply("1/", "2/", "3/", "4/"), "1/2/3/4/42");
+        assertThat(res.apply("1/", "2/", "3/", "4/")).isEqualTo("1/2/3/4/42");
     }
 
     @Test
@@ -171,7 +171,7 @@ class FunctionTest extends BaseTest {
         String json = mapper().writer().writeValueAsString(src);
         CheckedFunction5<String, String, String, String, String, String> res = mapper().readValue(json, new TypeReference<CheckedFunction5<String, String, String, String, String, String>>() {
         });
-        assertEquals(res.apply("1/", "2/", "3/", "4/", "5/"), "1/2/3/4/5/42");
+        assertThat(res.apply("1/", "2/", "3/", "4/", "5/")).isEqualTo("1/2/3/4/5/42");
     }
 
     @Test
@@ -180,7 +180,7 @@ class FunctionTest extends BaseTest {
         String json = mapper().writer().writeValueAsString(src);
         CheckedFunction6<String, String, String, String, String, String, String> res = mapper().readValue(json, new TypeReference<CheckedFunction6<String, String, String, String, String, String, String>>() {
         });
-        assertEquals(res.apply("1/", "2/", "3/", "4/", "5/", "6/"), "1/2/3/4/5/6/42");
+        assertThat(res.apply("1/", "2/", "3/", "4/", "5/", "6/")).isEqualTo("1/2/3/4/5/6/42");
     }
 
     @Test
@@ -189,7 +189,7 @@ class FunctionTest extends BaseTest {
         String json = mapper().writer().writeValueAsString(src);
         CheckedFunction7<String, String, String, String, String, String, String, String> res = mapper().readValue(json, new TypeReference<CheckedFunction7<String, String, String, String, String, String, String, String>>() {
         });
-        assertEquals(res.apply("1/", "2/", "3/", "4/", "5/", "6/", "7/"), "1/2/3/4/5/6/7/42");
+        assertThat(res.apply("1/", "2/", "3/", "4/", "5/", "6/", "7/")).isEqualTo("1/2/3/4/5/6/7/42");
     }
 
     @Test
@@ -198,6 +198,6 @@ class FunctionTest extends BaseTest {
         String json = mapper().writer().writeValueAsString(src);
         CheckedFunction8<String, String, String, String, String, String, String, String, String> res = mapper().readValue(json, new TypeReference<CheckedFunction8<String, String, String, String, String, String, String, String, String>>() {
         });
-        assertEquals(res.apply("1/", "2/", "3/", "4/", "5/", "6/", "7/", "8/"), "1/2/3/4/5/6/7/8/42");
+        assertThat(res.apply("1/", "2/", "3/", "4/", "5/", "6/", "7/", "8/")).isEqualTo("1/2/3/4/5/6/7/8/42");
     }
 }

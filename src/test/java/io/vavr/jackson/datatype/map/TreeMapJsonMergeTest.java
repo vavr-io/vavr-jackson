@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class TreeMapJsonMergeTest extends BaseTest {
+class TreeMapJsonMergeTest extends BaseTest {
 
     static class TestJsonMergeWithTreeMap {
         @JsonMerge(OptBoolean.TRUE)
@@ -23,7 +23,7 @@ public class TreeMapJsonMergeTest extends BaseTest {
     }
 
     @Test
-    public void shouldMergeString() throws Exception {
+    void shouldMergeString() throws Exception {
         TestJsonMergeWithTreeMap result = mapper().readValue(asJson("{'value': {'foo2':'bar2'}}"), TestJsonMergeWithTreeMap.class);
 
         assertThat(result.value)
@@ -34,7 +34,7 @@ public class TreeMapJsonMergeTest extends BaseTest {
     }
 
     @Test
-    public void shouldMergeNested() throws JsonProcessingException {
+    void shouldMergeNested() throws JsonProcessingException {
         TestJsonMergeWithNestedMap result = mapper().readValue(asJson("{'value': {'foo1': {'foo_nested2': 'bar_nested2'}}}"), TestJsonMergeWithNestedMap.class);
 
         assertThat(result.value)

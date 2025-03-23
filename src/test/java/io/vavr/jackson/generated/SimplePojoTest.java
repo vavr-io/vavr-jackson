@@ -29,76 +29,77 @@ import io.vavr.collection.Vector;
 import io.vavr.control.Either;
 import io.vavr.control.Option;
 import io.vavr.jackson.datatype.VavrModule;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * generated
  */
-public class SimplePojoTest {
+class SimplePojoTest {
     private static final VavrModule MAPPER_MODULE = new VavrModule();
 
     private static final ObjectMapper MAPPER = new ObjectMapper().registerModule(MAPPER_MODULE);
 
     @Test
-    void testTuple1OfString() throws Exception {
+    void tuple1OfString() throws Exception {
         String src0 = "A";
         Tuple1<String> src = Tuple.of(src0);
         String json = MAPPER.writeValueAsString(new Tuple1OfString().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":[\"A\"]}");
+        assertThat(json).isEqualTo("{\"value\":[\"A\"]}");
         Tuple1OfString restored = MAPPER.readValue(json, Tuple1OfString.class);
-        Assertions.assertEquals(src, restored.getValue());
+        assertThat(restored.getValue()).isEqualTo(src);
     }
 
     @Test
-    void testTuple1OfTuple() throws Exception {
+    void tuple1OfTuple() throws Exception {
         String src00 = "B";
         Tuple1<String> src0 = Tuple.of(src00);
         Tuple1<Tuple1<String>> src = Tuple.of(src0);
         String json = MAPPER.writeValueAsString(new Tuple1OfTuple().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":[[\"B\"]]}");
+        assertThat(json).isEqualTo("{\"value\":[[\"B\"]]}");
         Tuple1OfTuple restored = MAPPER.readValue(json, Tuple1OfTuple.class);
-        Assertions.assertEquals(src, restored.getValue());
+        assertThat(restored.getValue()).isEqualTo(src);
     }
 
     @Test
-    void testTuple2OfString() throws Exception {
+    void tuple2OfString() throws Exception {
         String src0 = "A";
         String src1 = "B";
         Tuple2<String, String> src = Tuple.of(src0, src1);
         String json = MAPPER.writeValueAsString(new Tuple2OfString().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":[\"A\",\"B\"]}");
+        assertThat(json).isEqualTo("{\"value\":[\"A\",\"B\"]}");
         Tuple2OfString restored = MAPPER.readValue(json, Tuple2OfString.class);
-        Assertions.assertEquals(src, restored.getValue());
+        assertThat(restored.getValue()).isEqualTo(src);
     }
 
     @Test
-    void testTuple2OfTuple() throws Exception {
+    void tuple2OfTuple() throws Exception {
         String src0 = "A";
         String src10 = "B";
         String src11 = "C";
         Tuple2<String, String> src1 = Tuple.of(src10, src11);
         Tuple2<String, Tuple2<String, String>> src = Tuple.of(src0, src1);
         String json = MAPPER.writeValueAsString(new Tuple2OfTuple().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":[\"A\",[\"B\",\"C\"]]}");
+        assertThat(json).isEqualTo("{\"value\":[\"A\",[\"B\",\"C\"]]}");
         Tuple2OfTuple restored = MAPPER.readValue(json, Tuple2OfTuple.class);
-        Assertions.assertEquals(src, restored.getValue());
+        assertThat(restored.getValue()).isEqualTo(src);
     }
 
     @Test
-    void testTuple3OfString() throws Exception {
+    void tuple3OfString() throws Exception {
         String src0 = "A";
         String src1 = "B";
         String src2 = "C";
         Tuple3<String, String, String> src = Tuple.of(src0, src1, src2);
         String json = MAPPER.writeValueAsString(new Tuple3OfString().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":[\"A\",\"B\",\"C\"]}");
+        assertThat(json).isEqualTo("{\"value\":[\"A\",\"B\",\"C\"]}");
         Tuple3OfString restored = MAPPER.readValue(json, Tuple3OfString.class);
-        Assertions.assertEquals(src, restored.getValue());
+        assertThat(restored.getValue()).isEqualTo(src);
     }
 
     @Test
-    void testTuple3OfTuple() throws Exception {
+    void tuple3OfTuple() throws Exception {
         String src0 = "A";
         String src10 = "B";
         String src11 = "C";
@@ -108,26 +109,26 @@ public class SimplePojoTest {
         Tuple2<String, String> src2 = Tuple.of(src20, src21);
         Tuple3<String, Tuple2<String, String>, Tuple2<String, String>> src = Tuple.of(src0, src1, src2);
         String json = MAPPER.writeValueAsString(new Tuple3OfTuple().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":[\"A\",[\"B\",\"C\"],[\"D\",\"E\"]]}");
+        assertThat(json).isEqualTo("{\"value\":[\"A\",[\"B\",\"C\"],[\"D\",\"E\"]]}");
         Tuple3OfTuple restored = MAPPER.readValue(json, Tuple3OfTuple.class);
-        Assertions.assertEquals(src, restored.getValue());
+        assertThat(restored.getValue()).isEqualTo(src);
     }
 
     @Test
-    void testTuple4OfString() throws Exception {
+    void tuple4OfString() throws Exception {
         String src0 = "A";
         String src1 = "B";
         String src2 = "C";
         String src3 = "D";
         Tuple4<String, String, String, String> src = Tuple.of(src0, src1, src2, src3);
         String json = MAPPER.writeValueAsString(new Tuple4OfString().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":[\"A\",\"B\",\"C\",\"D\"]}");
+        assertThat(json).isEqualTo("{\"value\":[\"A\",\"B\",\"C\",\"D\"]}");
         Tuple4OfString restored = MAPPER.readValue(json, Tuple4OfString.class);
-        Assertions.assertEquals(src, restored.getValue());
+        assertThat(restored.getValue()).isEqualTo(src);
     }
 
     @Test
-    void testTuple4OfTuple() throws Exception {
+    void tuple4OfTuple() throws Exception {
         String src0 = "A";
         String src10 = "B";
         String src11 = "C";
@@ -140,13 +141,13 @@ public class SimplePojoTest {
         Tuple2<String, String> src3 = Tuple.of(src30, src31);
         Tuple4<String, Tuple2<String, String>, Tuple2<String, String>, Tuple2<String, String>> src = Tuple.of(src0, src1, src2, src3);
         String json = MAPPER.writeValueAsString(new Tuple4OfTuple().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":[\"A\",[\"B\",\"C\"],[\"D\",\"E\"],[\"F\",\"1\"]]}");
+        assertThat(json).isEqualTo("{\"value\":[\"A\",[\"B\",\"C\"],[\"D\",\"E\"],[\"F\",\"1\"]]}");
         Tuple4OfTuple restored = MAPPER.readValue(json, Tuple4OfTuple.class);
-        Assertions.assertEquals(src, restored.getValue());
+        assertThat(restored.getValue()).isEqualTo(src);
     }
 
     @Test
-    void testTuple5OfString() throws Exception {
+    void tuple5OfString() throws Exception {
         String src0 = "A";
         String src1 = "B";
         String src2 = "C";
@@ -154,13 +155,13 @@ public class SimplePojoTest {
         String src4 = "E";
         Tuple5<String, String, String, String, String> src = Tuple.of(src0, src1, src2, src3, src4);
         String json = MAPPER.writeValueAsString(new Tuple5OfString().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":[\"A\",\"B\",\"C\",\"D\",\"E\"]}");
+        assertThat(json).isEqualTo("{\"value\":[\"A\",\"B\",\"C\",\"D\",\"E\"]}");
         Tuple5OfString restored = MAPPER.readValue(json, Tuple5OfString.class);
-        Assertions.assertEquals(src, restored.getValue());
+        assertThat(restored.getValue()).isEqualTo(src);
     }
 
     @Test
-    void testTuple5OfTuple() throws Exception {
+    void tuple5OfTuple() throws Exception {
         String src0 = "A";
         String src10 = "B";
         String src11 = "C";
@@ -174,13 +175,13 @@ public class SimplePojoTest {
         String src4 = "A";
         Tuple5<String, Tuple2<String, String>, Tuple2<String, String>, Tuple2<String, String>, String> src = Tuple.of(src0, src1, src2, src3, src4);
         String json = MAPPER.writeValueAsString(new Tuple5OfTuple().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":[\"A\",[\"B\",\"C\"],[\"D\",\"E\"],[\"F\",\"1\"],\"A\"]}");
+        assertThat(json).isEqualTo("{\"value\":[\"A\",[\"B\",\"C\"],[\"D\",\"E\"],[\"F\",\"1\"],\"A\"]}");
         Tuple5OfTuple restored = MAPPER.readValue(json, Tuple5OfTuple.class);
-        Assertions.assertEquals(src, restored.getValue());
+        assertThat(restored.getValue()).isEqualTo(src);
     }
 
     @Test
-    void testTuple6OfString() throws Exception {
+    void tuple6OfString() throws Exception {
         String src0 = "A";
         String src1 = "B";
         String src2 = "C";
@@ -189,13 +190,13 @@ public class SimplePojoTest {
         String src5 = "F";
         Tuple6<String, String, String, String, String, String> src = Tuple.of(src0, src1, src2, src3, src4, src5);
         String json = MAPPER.writeValueAsString(new Tuple6OfString().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":[\"A\",\"B\",\"C\",\"D\",\"E\",\"F\"]}");
+        assertThat(json).isEqualTo("{\"value\":[\"A\",\"B\",\"C\",\"D\",\"E\",\"F\"]}");
         Tuple6OfString restored = MAPPER.readValue(json, Tuple6OfString.class);
-        Assertions.assertEquals(src, restored.getValue());
+        assertThat(restored.getValue()).isEqualTo(src);
     }
 
     @Test
-    void testTuple6OfTuple() throws Exception {
+    void tuple6OfTuple() throws Exception {
         String src0 = "A";
         String src10 = "B";
         String src11 = "C";
@@ -212,13 +213,13 @@ public class SimplePojoTest {
         Tuple2<String, String> src5 = Tuple.of(src50, src51);
         Tuple6<String, Tuple2<String, String>, Tuple2<String, String>, Tuple2<String, String>, String, Tuple2<String, String>> src = Tuple.of(src0, src1, src2, src3, src4, src5);
         String json = MAPPER.writeValueAsString(new Tuple6OfTuple().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":[\"A\",[\"B\",\"C\"],[\"D\",\"E\"],[\"F\",\"1\"],\"A\",[\"B\",\"C\"]]}");
+        assertThat(json).isEqualTo("{\"value\":[\"A\",[\"B\",\"C\"],[\"D\",\"E\"],[\"F\",\"1\"],\"A\",[\"B\",\"C\"]]}");
         Tuple6OfTuple restored = MAPPER.readValue(json, Tuple6OfTuple.class);
-        Assertions.assertEquals(src, restored.getValue());
+        assertThat(restored.getValue()).isEqualTo(src);
     }
 
     @Test
-    void testTuple7OfString() throws Exception {
+    void tuple7OfString() throws Exception {
         String src0 = "A";
         String src1 = "B";
         String src2 = "C";
@@ -228,13 +229,13 @@ public class SimplePojoTest {
         String src6 = "1";
         Tuple7<String, String, String, String, String, String, String> src = Tuple.of(src0, src1, src2, src3, src4, src5, src6);
         String json = MAPPER.writeValueAsString(new Tuple7OfString().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":[\"A\",\"B\",\"C\",\"D\",\"E\",\"F\",\"1\"]}");
+        assertThat(json).isEqualTo("{\"value\":[\"A\",\"B\",\"C\",\"D\",\"E\",\"F\",\"1\"]}");
         Tuple7OfString restored = MAPPER.readValue(json, Tuple7OfString.class);
-        Assertions.assertEquals(src, restored.getValue());
+        assertThat(restored.getValue()).isEqualTo(src);
     }
 
     @Test
-    void testTuple7OfTuple() throws Exception {
+    void tuple7OfTuple() throws Exception {
         String src0 = "A";
         String src10 = "B";
         String src11 = "C";
@@ -254,13 +255,13 @@ public class SimplePojoTest {
         Tuple2<String, String> src6 = Tuple.of(src60, src61);
         Tuple7<String, Tuple2<String, String>, Tuple2<String, String>, Tuple2<String, String>, String, Tuple2<String, String>, Tuple2<String, String>> src = Tuple.of(src0, src1, src2, src3, src4, src5, src6);
         String json = MAPPER.writeValueAsString(new Tuple7OfTuple().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":[\"A\",[\"B\",\"C\"],[\"D\",\"E\"],[\"F\",\"1\"],\"A\",[\"B\",\"C\"],[\"D\",\"E\"]]}");
+        assertThat(json).isEqualTo("{\"value\":[\"A\",[\"B\",\"C\"],[\"D\",\"E\"],[\"F\",\"1\"],\"A\",[\"B\",\"C\"],[\"D\",\"E\"]]}");
         Tuple7OfTuple restored = MAPPER.readValue(json, Tuple7OfTuple.class);
-        Assertions.assertEquals(src, restored.getValue());
+        assertThat(restored.getValue()).isEqualTo(src);
     }
 
     @Test
-    void testTuple8OfString() throws Exception {
+    void tuple8OfString() throws Exception {
         String src0 = "A";
         String src1 = "B";
         String src2 = "C";
@@ -271,13 +272,13 @@ public class SimplePojoTest {
         String src7 = "2";
         Tuple8<String, String, String, String, String, String, String, String> src = Tuple.of(src0, src1, src2, src3, src4, src5, src6, src7);
         String json = MAPPER.writeValueAsString(new Tuple8OfString().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":[\"A\",\"B\",\"C\",\"D\",\"E\",\"F\",\"1\",\"2\"]}");
+        assertThat(json).isEqualTo("{\"value\":[\"A\",\"B\",\"C\",\"D\",\"E\",\"F\",\"1\",\"2\"]}");
         Tuple8OfString restored = MAPPER.readValue(json, Tuple8OfString.class);
-        Assertions.assertEquals(src, restored.getValue());
+        assertThat(restored.getValue()).isEqualTo(src);
     }
 
     @Test
-    void testTuple8OfTuple() throws Exception {
+    void tuple8OfTuple() throws Exception {
         String src0 = "A";
         String src10 = "B";
         String src11 = "C";
@@ -300,217 +301,217 @@ public class SimplePojoTest {
         Tuple2<String, String> src7 = Tuple.of(src70, src71);
         Tuple8<String, Tuple2<String, String>, Tuple2<String, String>, Tuple2<String, String>, String, Tuple2<String, String>, Tuple2<String, String>, Tuple2<String, String>> src = Tuple.of(src0, src1, src2, src3, src4, src5, src6, src7);
         String json = MAPPER.writeValueAsString(new Tuple8OfTuple().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":[\"A\",[\"B\",\"C\"],[\"D\",\"E\"],[\"F\",\"1\"],\"A\",[\"B\",\"C\"],[\"D\",\"E\"],[\"F\",\"1\"]]}");
+        assertThat(json).isEqualTo("{\"value\":[\"A\",[\"B\",\"C\"],[\"D\",\"E\"],[\"F\",\"1\"],\"A\",[\"B\",\"C\"],[\"D\",\"E\"],[\"F\",\"1\"]]}");
         Tuple8OfTuple restored = MAPPER.readValue(json, Tuple8OfTuple.class);
-        Assertions.assertEquals(src, restored.getValue());
+        assertThat(restored.getValue()).isEqualTo(src);
     }
 
     @Test
-    void testArrayOfString() throws Exception {
+    void arrayOfString() throws Exception {
         String src0 = "A";
         String src1 = "B";
         String src2 = "C";
         Array<String> src = Array.of(src0, src1, src2);
         String json = MAPPER.writeValueAsString(new ArrayOfString().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":[\"A\",\"B\",\"C\"]}");
+        assertThat(json).isEqualTo("{\"value\":[\"A\",\"B\",\"C\"]}");
         ArrayOfString restored = MAPPER.readValue(json, ArrayOfString.class);
-        Assertions.assertEquals(src, restored.getValue());
+        assertThat(restored.getValue()).isEqualTo(src);
     }
 
     @Test
-    void testArrayOfTuple() throws Exception {
+    void arrayOfTuple() throws Exception {
         String src00 = "A";
         String src01 = "B";
         Tuple2<String, String> src0 = Tuple.of(src00, src01);
         Array<Tuple2<String, String>> src = Array.of(src0);
         String json = MAPPER.writeValueAsString(new ArrayOfTuple().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":[[\"A\",\"B\"]]}");
+        assertThat(json).isEqualTo("{\"value\":[[\"A\",\"B\"]]}");
         ArrayOfTuple restored = MAPPER.readValue(json, ArrayOfTuple.class);
-        Assertions.assertEquals(src, restored.getValue());
+        assertThat(restored.getValue()).isEqualTo(src);
     }
 
     @Test
-    void testListOfString() throws Exception {
+    void listOfString() throws Exception {
         String src0 = "A";
         String src1 = "B";
         String src2 = "C";
         List<String> src = List.of(src0, src1, src2);
         String json = MAPPER.writeValueAsString(new ListOfString().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":[\"A\",\"B\",\"C\"]}");
+        assertThat(json).isEqualTo("{\"value\":[\"A\",\"B\",\"C\"]}");
         ListOfString restored = MAPPER.readValue(json, ListOfString.class);
-        Assertions.assertEquals(src, restored.getValue());
+        assertThat(restored.getValue()).isEqualTo(src);
     }
 
     @Test
-    void testListOfTuple() throws Exception {
+    void listOfTuple() throws Exception {
         String src00 = "A";
         String src01 = "B";
         Tuple2<String, String> src0 = Tuple.of(src00, src01);
         List<Tuple2<String, String>> src = List.of(src0);
         String json = MAPPER.writeValueAsString(new ListOfTuple().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":[[\"A\",\"B\"]]}");
+        assertThat(json).isEqualTo("{\"value\":[[\"A\",\"B\"]]}");
         ListOfTuple restored = MAPPER.readValue(json, ListOfTuple.class);
-        Assertions.assertEquals(src, restored.getValue());
+        assertThat(restored.getValue()).isEqualTo(src);
     }
 
     @Test
-    void testQueueOfString() throws Exception {
+    void queueOfString() throws Exception {
         String src0 = "A";
         String src1 = "B";
         String src2 = "C";
         Queue<String> src = Queue.of(src0, src1, src2);
         String json = MAPPER.writeValueAsString(new QueueOfString().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":[\"A\",\"B\",\"C\"]}");
+        assertThat(json).isEqualTo("{\"value\":[\"A\",\"B\",\"C\"]}");
         QueueOfString restored = MAPPER.readValue(json, QueueOfString.class);
-        Assertions.assertEquals(src, restored.getValue());
+        assertThat(restored.getValue()).isEqualTo(src);
     }
 
     @Test
-    void testQueueOfTuple() throws Exception {
+    void queueOfTuple() throws Exception {
         String src00 = "A";
         String src01 = "B";
         Tuple2<String, String> src0 = Tuple.of(src00, src01);
         Queue<Tuple2<String, String>> src = Queue.of(src0);
         String json = MAPPER.writeValueAsString(new QueueOfTuple().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":[[\"A\",\"B\"]]}");
+        assertThat(json).isEqualTo("{\"value\":[[\"A\",\"B\"]]}");
         QueueOfTuple restored = MAPPER.readValue(json, QueueOfTuple.class);
-        Assertions.assertEquals(src, restored.getValue());
+        assertThat(restored.getValue()).isEqualTo(src);
     }
 
     @Test
-    void testStreamOfString() throws Exception {
+    void streamOfString() throws Exception {
         String src0 = "A";
         String src1 = "B";
         String src2 = "C";
         Stream<String> src = Stream.of(src0, src1, src2);
         String json = MAPPER.writeValueAsString(new StreamOfString().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":[\"A\",\"B\",\"C\"]}");
+        assertThat(json).isEqualTo("{\"value\":[\"A\",\"B\",\"C\"]}");
         StreamOfString restored = MAPPER.readValue(json, StreamOfString.class);
-        Assertions.assertEquals(src, restored.getValue());
+        assertThat(restored.getValue()).isEqualTo(src);
     }
 
     @Test
-    void testStreamOfTuple() throws Exception {
+    void streamOfTuple() throws Exception {
         String src00 = "A";
         String src01 = "B";
         Tuple2<String, String> src0 = Tuple.of(src00, src01);
         Stream<Tuple2<String, String>> src = Stream.of(src0);
         String json = MAPPER.writeValueAsString(new StreamOfTuple().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":[[\"A\",\"B\"]]}");
+        assertThat(json).isEqualTo("{\"value\":[[\"A\",\"B\"]]}");
         StreamOfTuple restored = MAPPER.readValue(json, StreamOfTuple.class);
-        Assertions.assertEquals(src, restored.getValue());
+        assertThat(restored.getValue()).isEqualTo(src);
     }
 
     @Test
-    void testVectorOfString() throws Exception {
+    void vectorOfString() throws Exception {
         String src0 = "A";
         String src1 = "B";
         String src2 = "C";
         Vector<String> src = Vector.of(src0, src1, src2);
         String json = MAPPER.writeValueAsString(new VectorOfString().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":[\"A\",\"B\",\"C\"]}");
+        assertThat(json).isEqualTo("{\"value\":[\"A\",\"B\",\"C\"]}");
         VectorOfString restored = MAPPER.readValue(json, VectorOfString.class);
-        Assertions.assertEquals(src, restored.getValue());
+        assertThat(restored.getValue()).isEqualTo(src);
     }
 
     @Test
-    void testVectorOfTuple() throws Exception {
+    void vectorOfTuple() throws Exception {
         String src00 = "A";
         String src01 = "B";
         Tuple2<String, String> src0 = Tuple.of(src00, src01);
         Vector<Tuple2<String, String>> src = Vector.of(src0);
         String json = MAPPER.writeValueAsString(new VectorOfTuple().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":[[\"A\",\"B\"]]}");
+        assertThat(json).isEqualTo("{\"value\":[[\"A\",\"B\"]]}");
         VectorOfTuple restored = MAPPER.readValue(json, VectorOfTuple.class);
-        Assertions.assertEquals(src, restored.getValue());
+        assertThat(restored.getValue()).isEqualTo(src);
     }
 
     @Test
-    void testPriorityQueueOfString() throws Exception {
+    void priorityQueueOfString() throws Exception {
         String src0 = "A";
         String src1 = "B";
         String src2 = "C";
         PriorityQueue<String> src = PriorityQueue.of(src0, src1, src2);
         String json = MAPPER.writeValueAsString(new PriorityQueueOfString().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":[\"A\",\"B\",\"C\"]}");
+        assertThat(json).isEqualTo("{\"value\":[\"A\",\"B\",\"C\"]}");
         PriorityQueueOfString restored = MAPPER.readValue(json, PriorityQueueOfString.class);
-        Assertions.assertEquals(src, restored.getValue());
+        assertThat(restored.getValue()).isEqualTo(src);
     }
 
     @Test
-    void testHashSetOfString() throws Exception {
+    void hashSetOfString() throws Exception {
         String src0 = "A";
         String src1 = "B";
         String src2 = "C";
         HashSet<String> src = HashSet.of(src0, src1, src2);
         String json = MAPPER.writeValueAsString(new HashSetOfString().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":[\"A\",\"B\",\"C\"]}");
+        assertThat(json).isEqualTo("{\"value\":[\"A\",\"B\",\"C\"]}");
         HashSetOfString restored = MAPPER.readValue(json, HashSetOfString.class);
-        Assertions.assertEquals(src, restored.getValue());
+        assertThat(restored.getValue()).isEqualTo(src);
     }
 
     @Test
-    void testHashSetOfTuple() throws Exception {
+    void hashSetOfTuple() throws Exception {
         String src00 = "A";
         String src01 = "B";
         Tuple2<String, String> src0 = Tuple.of(src00, src01);
         HashSet<Tuple2<String, String>> src = HashSet.of(src0);
         String json = MAPPER.writeValueAsString(new HashSetOfTuple().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":[[\"A\",\"B\"]]}");
+        assertThat(json).isEqualTo("{\"value\":[[\"A\",\"B\"]]}");
         HashSetOfTuple restored = MAPPER.readValue(json, HashSetOfTuple.class);
-        Assertions.assertEquals(src, restored.getValue());
+        assertThat(restored.getValue()).isEqualTo(src);
     }
 
     @Test
-    void testLinkedHashSetOfString() throws Exception {
+    void linkedHashSetOfString() throws Exception {
         String src0 = "A";
         String src1 = "B";
         String src2 = "C";
         LinkedHashSet<String> src = LinkedHashSet.of(src0, src1, src2);
         String json = MAPPER.writeValueAsString(new LinkedHashSetOfString().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":[\"A\",\"B\",\"C\"]}");
+        assertThat(json).isEqualTo("{\"value\":[\"A\",\"B\",\"C\"]}");
         LinkedHashSetOfString restored = MAPPER.readValue(json, LinkedHashSetOfString.class);
-        Assertions.assertEquals(src, restored.getValue());
+        assertThat(restored.getValue()).isEqualTo(src);
     }
 
     @Test
-    void testLinkedHashSetOfTuple() throws Exception {
+    void linkedHashSetOfTuple() throws Exception {
         String src00 = "A";
         String src01 = "B";
         Tuple2<String, String> src0 = Tuple.of(src00, src01);
         LinkedHashSet<Tuple2<String, String>> src = LinkedHashSet.of(src0);
         String json = MAPPER.writeValueAsString(new LinkedHashSetOfTuple().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":[[\"A\",\"B\"]]}");
+        assertThat(json).isEqualTo("{\"value\":[[\"A\",\"B\"]]}");
         LinkedHashSetOfTuple restored = MAPPER.readValue(json, LinkedHashSetOfTuple.class);
-        Assertions.assertEquals(src, restored.getValue());
+        assertThat(restored.getValue()).isEqualTo(src);
     }
 
     @Test
-    void testTreeSetOfString() throws Exception {
+    void treeSetOfString() throws Exception {
         String src0 = "A";
         String src1 = "B";
         String src2 = "C";
         TreeSet<String> src = TreeSet.of(src0, src1, src2);
         String json = MAPPER.writeValueAsString(new TreeSetOfString().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":[\"A\",\"B\",\"C\"]}");
+        assertThat(json).isEqualTo("{\"value\":[\"A\",\"B\",\"C\"]}");
         TreeSetOfString restored = MAPPER.readValue(json, TreeSetOfString.class);
-        Assertions.assertEquals(src, restored.getValue());
+        assertThat(restored.getValue()).isEqualTo(src);
     }
 
     @Test
-    void testHashMapOfString() throws Exception {
+    void hashMapOfString() throws Exception {
         Integer src00 = 1;
         String src01 = "A";
         Tuple2<Integer, String> src0 = Tuple.of(src00, src01);
         HashMap<Integer, String> src = HashMap.ofEntries(src0);
         String json = MAPPER.writeValueAsString(new HashMapOfString().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":{\"1\":\"A\"}}");
+        assertThat(json).isEqualTo("{\"value\":{\"1\":\"A\"}}");
         HashMapOfString restored = MAPPER.readValue(json, HashMapOfString.class);
-        Assertions.assertEquals(src, restored.getValue());
+        assertThat(restored.getValue()).isEqualTo(src);
     }
 
     @Test
-    void testHashMapOfTuple() throws Exception {
+    void hashMapOfTuple() throws Exception {
         Integer src00 = 1;
         String src010 = "A";
         String src011 = "B";
@@ -518,25 +519,25 @@ public class SimplePojoTest {
         Tuple2<Integer, Tuple2<String, String>> src0 = Tuple.of(src00, src01);
         HashMap<Integer, Tuple2<String, String>> src = HashMap.ofEntries(src0);
         String json = MAPPER.writeValueAsString(new HashMapOfTuple().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":{\"1\":[\"A\",\"B\"]}}");
+        assertThat(json).isEqualTo("{\"value\":{\"1\":[\"A\",\"B\"]}}");
         HashMapOfTuple restored = MAPPER.readValue(json, HashMapOfTuple.class);
-        Assertions.assertEquals(src, restored.getValue());
+        assertThat(restored.getValue()).isEqualTo(src);
     }
 
     @Test
-    void testLinkedHashMapOfString() throws Exception {
+    void linkedHashMapOfString() throws Exception {
         Integer src00 = 1;
         String src01 = "A";
         Tuple2<Integer, String> src0 = Tuple.of(src00, src01);
         LinkedHashMap<Integer, String> src = LinkedHashMap.ofEntries(src0);
         String json = MAPPER.writeValueAsString(new LinkedHashMapOfString().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":{\"1\":\"A\"}}");
+        assertThat(json).isEqualTo("{\"value\":{\"1\":\"A\"}}");
         LinkedHashMapOfString restored = MAPPER.readValue(json, LinkedHashMapOfString.class);
-        Assertions.assertEquals(src, restored.getValue());
+        assertThat(restored.getValue()).isEqualTo(src);
     }
 
     @Test
-    void testLinkedHashMapOfTuple() throws Exception {
+    void linkedHashMapOfTuple() throws Exception {
         Integer src00 = 1;
         String src010 = "A";
         String src011 = "B";
@@ -544,25 +545,25 @@ public class SimplePojoTest {
         Tuple2<Integer, Tuple2<String, String>> src0 = Tuple.of(src00, src01);
         LinkedHashMap<Integer, Tuple2<String, String>> src = LinkedHashMap.ofEntries(src0);
         String json = MAPPER.writeValueAsString(new LinkedHashMapOfTuple().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":{\"1\":[\"A\",\"B\"]}}");
+        assertThat(json).isEqualTo("{\"value\":{\"1\":[\"A\",\"B\"]}}");
         LinkedHashMapOfTuple restored = MAPPER.readValue(json, LinkedHashMapOfTuple.class);
-        Assertions.assertEquals(src, restored.getValue());
+        assertThat(restored.getValue()).isEqualTo(src);
     }
 
     @Test
-    void testTreeMapOfString() throws Exception {
+    void treeMapOfString() throws Exception {
         Integer src00 = 1;
         String src01 = "A";
         Tuple2<Integer, String> src0 = Tuple.of(src00, src01);
         TreeMap<Integer, String> src = TreeMap.ofEntries(src0);
         String json = MAPPER.writeValueAsString(new TreeMapOfString().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":{\"1\":\"A\"}}");
+        assertThat(json).isEqualTo("{\"value\":{\"1\":\"A\"}}");
         TreeMapOfString restored = MAPPER.readValue(json, TreeMapOfString.class);
-        Assertions.assertEquals(src, restored.getValue());
+        assertThat(restored.getValue()).isEqualTo(src);
     }
 
     @Test
-    void testTreeMapOfTuple() throws Exception {
+    void treeMapOfTuple() throws Exception {
         Integer src00 = 1;
         String src010 = "A";
         String src011 = "B";
@@ -570,13 +571,13 @@ public class SimplePojoTest {
         Tuple2<Integer, Tuple2<String, String>> src0 = Tuple.of(src00, src01);
         TreeMap<Integer, Tuple2<String, String>> src = TreeMap.ofEntries(src0);
         String json = MAPPER.writeValueAsString(new TreeMapOfTuple().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":{\"1\":[\"A\",\"B\"]}}");
+        assertThat(json).isEqualTo("{\"value\":{\"1\":[\"A\",\"B\"]}}");
         TreeMapOfTuple restored = MAPPER.readValue(json, TreeMapOfTuple.class);
-        Assertions.assertEquals(src, restored.getValue());
+        assertThat(restored.getValue()).isEqualTo(src);
     }
 
     @Test
-    void testHashMultimapOfSeqString() throws Exception {
+    void hashMultimapOfSeqString() throws Exception {
         String src00 = "A";
         String src01 = "B";
         Tuple2<String, String> src0 = Tuple.of(src00, src01);
@@ -585,13 +586,13 @@ public class SimplePojoTest {
         Tuple2<String, String> src1 = Tuple.of(src10, src11);
         HashMultimap<String, String> src = HashMultimap.withSeq().ofEntries(src0, src1);
         String json = MAPPER.writeValueAsString(new HashMultimapOfSeqString().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":{\"A\":[\"B\",\"C\"]}}");
+        assertThat(json).isEqualTo("{\"value\":{\"A\":[\"B\",\"C\"]}}");
         HashMultimapOfSeqString restored = MAPPER.readValue(json, HashMultimapOfSeqString.class);
-        Assertions.assertEquals(src, restored.getValue());
+        assertThat(restored.getValue()).isEqualTo(src);
     }
 
     @Test
-    void testHashMultimapOfSeqTuple() throws Exception {
+    void hashMultimapOfSeqTuple() throws Exception {
         String src00 = "A";
         String src010 = "A";
         String src011 = "B";
@@ -604,13 +605,13 @@ public class SimplePojoTest {
         Tuple2<String, Tuple2<String, String>> src1 = Tuple.of(src10, src11);
         HashMultimap<String, Tuple2<String, String>> src = HashMultimap.withSeq().ofEntries(src0, src1);
         String json = MAPPER.writeValueAsString(new HashMultimapOfSeqTuple().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":{\"A\":[[\"A\",\"B\"],[\"C\",\"D\"]]}}");
+        assertThat(json).isEqualTo("{\"value\":{\"A\":[[\"A\",\"B\"],[\"C\",\"D\"]]}}");
         HashMultimapOfSeqTuple restored = MAPPER.readValue(json, HashMultimapOfSeqTuple.class);
-        Assertions.assertEquals(src, restored.getValue());
+        assertThat(restored.getValue()).isEqualTo(src);
     }
 
     @Test
-    void testLinkedHashMultimapOfSeqString() throws Exception {
+    void linkedHashMultimapOfSeqString() throws Exception {
         String src00 = "A";
         String src01 = "B";
         Tuple2<String, String> src0 = Tuple.of(src00, src01);
@@ -619,13 +620,13 @@ public class SimplePojoTest {
         Tuple2<String, String> src1 = Tuple.of(src10, src11);
         LinkedHashMultimap<String, String> src = LinkedHashMultimap.withSeq().ofEntries(src0, src1);
         String json = MAPPER.writeValueAsString(new LinkedHashMultimapOfSeqString().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":{\"A\":[\"B\",\"C\"]}}");
+        assertThat(json).isEqualTo("{\"value\":{\"A\":[\"B\",\"C\"]}}");
         LinkedHashMultimapOfSeqString restored = MAPPER.readValue(json, LinkedHashMultimapOfSeqString.class);
-        Assertions.assertEquals(src, restored.getValue());
+        assertThat(restored.getValue()).isEqualTo(src);
     }
 
     @Test
-    void testLinkedHashMultimapOfSeqTuple() throws Exception {
+    void linkedHashMultimapOfSeqTuple() throws Exception {
         String src00 = "A";
         String src010 = "A";
         String src011 = "B";
@@ -638,13 +639,13 @@ public class SimplePojoTest {
         Tuple2<String, Tuple2<String, String>> src1 = Tuple.of(src10, src11);
         LinkedHashMultimap<String, Tuple2<String, String>> src = LinkedHashMultimap.withSeq().ofEntries(src0, src1);
         String json = MAPPER.writeValueAsString(new LinkedHashMultimapOfSeqTuple().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":{\"A\":[[\"A\",\"B\"],[\"C\",\"D\"]]}}");
+        assertThat(json).isEqualTo("{\"value\":{\"A\":[[\"A\",\"B\"],[\"C\",\"D\"]]}}");
         LinkedHashMultimapOfSeqTuple restored = MAPPER.readValue(json, LinkedHashMultimapOfSeqTuple.class);
-        Assertions.assertEquals(src, restored.getValue());
+        assertThat(restored.getValue()).isEqualTo(src);
     }
 
     @Test
-    void testTreeMultimapOfSeqString() throws Exception {
+    void treeMultimapOfSeqString() throws Exception {
         String src00 = "A";
         String src01 = "B";
         Tuple2<String, String> src0 = Tuple.of(src00, src01);
@@ -653,13 +654,13 @@ public class SimplePojoTest {
         Tuple2<String, String> src1 = Tuple.of(src10, src11);
         TreeMultimap<String, String> src = TreeMultimap.withSet().ofEntries(src0, src1);
         String json = MAPPER.writeValueAsString(new TreeMultimapOfSeqString().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":{\"A\":[\"B\",\"C\"]}}");
+        assertThat(json).isEqualTo("{\"value\":{\"A\":[\"B\",\"C\"]}}");
         TreeMultimapOfSeqString restored = MAPPER.readValue(json, TreeMultimapOfSeqString.class);
-        Assertions.assertEquals(src, restored.getValue());
+        assertThat(restored.getValue()).isEqualTo(src);
     }
 
     @Test
-    void testTreeMultimapOfSeqTuple() throws Exception {
+    void treeMultimapOfSeqTuple() throws Exception {
         String src00 = "A";
         String src010 = "A";
         String src011 = "B";
@@ -672,97 +673,97 @@ public class SimplePojoTest {
         Tuple2<String, Tuple2<String, String>> src1 = Tuple.of(src10, src11);
         TreeMultimap<String, Tuple2<String, String>> src = TreeMultimap.withSet().ofEntries(src0, src1);
         String json = MAPPER.writeValueAsString(new TreeMultimapOfSeqTuple().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":{\"A\":[[\"A\",\"B\"],[\"C\",\"D\"]]}}");
+        assertThat(json).isEqualTo("{\"value\":{\"A\":[[\"A\",\"B\"],[\"C\",\"D\"]]}}");
         TreeMultimapOfSeqTuple restored = MAPPER.readValue(json, TreeMultimapOfSeqTuple.class);
-        Assertions.assertEquals(src, restored.getValue());
+        assertThat(restored.getValue()).isEqualTo(src);
     }
 
     @Test
-    void testOptionOfString() throws Exception {
+    void optionOfString() throws Exception {
         String src0 = "A";
         Option<String> src = Option.of(src0);
         String json = MAPPER.writeValueAsString(new OptionOfString().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":\"A\"}");
+        assertThat(json).isEqualTo("{\"value\":\"A\"}");
         OptionOfString restored = MAPPER.readValue(json, OptionOfString.class);
-        Assertions.assertEquals(src, restored.getValue());
+        assertThat(restored.getValue()).isEqualTo(src);
     }
 
     @Test
-    void testOptionOfTuple() throws Exception {
+    void optionOfTuple() throws Exception {
         String src00 = "A";
         String src01 = "B";
         Tuple2<String, String> src0 = Tuple.of(src00, src01);
         Option<Tuple2<String, String>> src = Option.of(src0);
         String json = MAPPER.writeValueAsString(new OptionOfTuple().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":[\"A\",\"B\"]}");
+        assertThat(json).isEqualTo("{\"value\":[\"A\",\"B\"]}");
         OptionOfTuple restored = MAPPER.readValue(json, OptionOfTuple.class);
-        Assertions.assertEquals(src, restored.getValue());
+        assertThat(restored.getValue()).isEqualTo(src);
     }
 
     @Test
-    void testLazyOfString() throws Exception {
+    void lazyOfString() throws Exception {
         String src0 = "A";
         Lazy<String> src = Lazy.of(() -> src0);
         String json = MAPPER.writeValueAsString(new LazyOfString().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":\"A\"}");
+        assertThat(json).isEqualTo("{\"value\":\"A\"}");
         LazyOfString restored = MAPPER.readValue(json, LazyOfString.class);
-        Assertions.assertEquals(src, restored.getValue());
+        assertThat(restored.getValue()).isEqualTo(src);
     }
 
     @Test
-    void testLazyOfTuple() throws Exception {
+    void lazyOfTuple() throws Exception {
         String src00 = "A";
         String src01 = "B";
         Tuple2<String, String> src0 = Tuple.of(src00, src01);
         Lazy<Tuple2<String, String>> src = Lazy.of(() -> src0);
         String json = MAPPER.writeValueAsString(new LazyOfTuple().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":[\"A\",\"B\"]}");
+        assertThat(json).isEqualTo("{\"value\":[\"A\",\"B\"]}");
         LazyOfTuple restored = MAPPER.readValue(json, LazyOfTuple.class);
-        Assertions.assertEquals(src, restored.getValue());
+        assertThat(restored.getValue()).isEqualTo(src);
     }
 
     @Test
-    void testLeftEitherOfString() throws Exception {
+    void leftEitherOfString() throws Exception {
         String srcl = "A";
         Either<String, Object> src = Either.left(srcl);
         String json = MAPPER.writeValueAsString(new LeftEitherOfString().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":[\"left\",\"A\"]}");
+        assertThat(json).isEqualTo("{\"value\":[\"left\",\"A\"]}");
         LeftEitherOfString restored = MAPPER.readValue(json, LeftEitherOfString.class);
-        Assertions.assertEquals(src, restored.getValue());
+        assertThat(restored.getValue()).isEqualTo(src);
     }
 
     @Test
-    void testLeftEitherOfTuple() throws Exception {
+    void leftEitherOfTuple() throws Exception {
         String srcl0 = "A";
         String srcl1 = "B";
         Tuple2<String, String> srcl = Tuple.of(srcl0, srcl1);
         Either<Tuple2<String, String>, Object> src = Either.left(srcl);
         String json = MAPPER.writeValueAsString(new LeftEitherOfTuple().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":[\"left\",[\"A\",\"B\"]]}");
+        assertThat(json).isEqualTo("{\"value\":[\"left\",[\"A\",\"B\"]]}");
         LeftEitherOfTuple restored = MAPPER.readValue(json, LeftEitherOfTuple.class);
-        Assertions.assertEquals(src, restored.getValue());
+        assertThat(restored.getValue()).isEqualTo(src);
     }
 
     @Test
-    void testRightEitherOfString() throws Exception {
+    void rightEitherOfString() throws Exception {
         String srcr = "A";
         Either<Object, String> src = Either.right(srcr);
         String json = MAPPER.writeValueAsString(new RightEitherOfString().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":[\"right\",\"A\"]}");
+        assertThat(json).isEqualTo("{\"value\":[\"right\",\"A\"]}");
         RightEitherOfString restored = MAPPER.readValue(json, RightEitherOfString.class);
-        Assertions.assertEquals(src, restored.getValue());
+        assertThat(restored.getValue()).isEqualTo(src);
     }
 
     @Test
-    void testRightEitherOfTuple() throws Exception {
+    void rightEitherOfTuple() throws Exception {
         String srcr0 = "A";
         String srcr1 = "B";
         Tuple2<String, String> srcr = Tuple.of(srcr0, srcr1);
         Either<Object, Tuple2<String, String>> src = Either.right(srcr);
         String json = MAPPER.writeValueAsString(new RightEitherOfTuple().setValue(src));
-        Assertions.assertEquals(json, "{\"value\":[\"right\",[\"A\",\"B\"]]}");
+        assertThat(json).isEqualTo("{\"value\":[\"right\",[\"A\",\"B\"]]}");
         RightEitherOfTuple restored = MAPPER.readValue(json, RightEitherOfTuple.class);
-        Assertions.assertEquals(src, restored.getValue());
+        assertThat(restored.getValue()).isEqualTo(src);
     }
 
     public static class Tuple1OfString {

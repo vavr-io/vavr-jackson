@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class StreamJsonMergeTest extends BaseTest {
+class StreamJsonMergeTest extends BaseTest {
     static class TestJsonMergeWithStream {
         @JsonMerge(OptBoolean.TRUE)
         public Stream<String> value = Stream.of("a", "b", "c");
@@ -28,21 +28,21 @@ public class StreamJsonMergeTest extends BaseTest {
     }
 
     @Test
-    public void shouldMergeSeq() throws Exception {
+    void shouldMergeSeq() throws Exception {
         TestJsonMergeWithStream result = mapper().readValue(asJson("{'value':['d', 'e', 'f']}"), TestJsonMergeWithStream.class);
 
         assertThat(result.value.toJavaList()).containsExactly("a", "b", "c", "d", "e", "f");
     }
 
     @Test
-    public void shouldMergeSeqConstructor() throws Exception {
+    void shouldMergeSeqConstructor() throws Exception {
         TestJsonMergeWithStreamConstructor result = mapper().readValue(asJson("{'value':['d', 'e', 'f']}"), TestJsonMergeWithStreamConstructor.class);
 
         assertThat(result.value.toJavaList()).containsExactly("a", "b", "c", "d", "e", "f");
     }
 
     @Test
-    public void shouldMergeWhileRetainingValues() throws Exception {
+    void shouldMergeWhileRetainingValues() throws Exception {
         TestJsonMergeWithStreamConstructor result = mapper().readerForUpdating(new TestJsonMergeWithStreamConstructor("a", "b"))
           .readValue(asJson("{'value':['c', 'd', 'e', 'f']}"));
 

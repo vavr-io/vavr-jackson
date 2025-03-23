@@ -4,12 +4,12 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import io.vavr.collection.CharSeq;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
 
 class CharSeqTest extends BaseTest {
 
@@ -18,9 +18,9 @@ class CharSeqTest extends BaseTest {
         ObjectWriter writer = mapper().writer();
         CharSeq src = CharSeq.of("abc");
         String json = writer.writeValueAsString(src);
-        Assertions.assertEquals("\"abc\"", json);
+        assertThat(json).isEqualTo("\"abc\"");
         CharSeq dst = mapper().readValue(json, CharSeq.class);
-        Assertions.assertEquals(src, dst);
+        assertThat((Iterable) dst).isEqualTo(src);
     }
 
     @Test
@@ -29,9 +29,9 @@ class CharSeqTest extends BaseTest {
         CharSeq src = CharSeq.of("abc");
         String plainJson = mapper().writeValueAsString(src);
         String wrappedJson = mapper.writeValueAsString(src);
-        Assertions.assertEquals(wrappedJson, wrapToObject(CharSeq.class.getName(), plainJson));
+        assertThat(wrapToObject(CharSeq.class.getName(), plainJson)).isEqualTo(wrappedJson);
         CharSeq restored = mapper.readValue(wrappedJson, CharSeq.class);
-        Assertions.assertEquals(src, restored);
+        assertThat((Iterable) restored).isEqualTo(src);
     }
 
     @Test
@@ -40,13 +40,13 @@ class CharSeqTest extends BaseTest {
         CharSeq src = CharSeq.of("abc");
         String plainJson = mapper().writeValueAsString(src);
         String wrappedJson = mapper.writeValueAsString(src);
-        Assertions.assertEquals(wrappedJson, wrapToArray(CharSeq.class.getName(), plainJson));
+        assertThat(wrapToArray(CharSeq.class.getName(), plainJson)).isEqualTo(wrappedJson);
         CharSeq restored = mapper.readValue(wrappedJson, CharSeq.class);
-        Assertions.assertEquals(src, restored);
+        assertThat((Iterable) restored).isEqualTo(src);
     }
 
     @Test
     void shouldThrowExceptionWhenDeserializingInvalidCharSeq() {
-        assertThrows(JsonMappingException.class, () -> mapper().readValue("42", CharSeq.class));
+        assertThatExceptionOfType(JsonMappingException.class).isThrownBy(() -> mapper().readValue("42", CharSeq.class));
     }
 }

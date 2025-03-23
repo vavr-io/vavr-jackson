@@ -2,10 +2,11 @@ package io.vavr.jackson.datatype;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.vavr.Lazy;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class ServiceLoaderTest {
+import static org.assertj.core.api.Assertions.assertThat;
+
+class ServiceLoaderTest {
 
     /**
      * Since there is no way (without reflection) to interrogate the mapper to see which modules
@@ -20,8 +21,8 @@ public class ServiceLoaderTest {
 
         Lazy<?> src = Lazy.of(() -> 1);
         String json = mapper.writer().writeValueAsString(src);
-        Assertions.assertEquals("1", json);
+        assertThat(json).isEqualTo("1");
         Lazy<?> restored = mapper.readValue(json, Lazy.class);
-        Assertions.assertEquals(src, restored);
+        assertThat(restored).isEqualTo(src);
     }
 }

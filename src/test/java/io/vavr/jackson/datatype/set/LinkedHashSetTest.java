@@ -4,13 +4,14 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import io.vavr.collection.LinkedHashSet;
 import io.vavr.collection.Set;
 import io.vavr.control.Option;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.Arrays;
 
-public class LinkedHashSetTest extends SetTest {
+import static org.assertj.core.api.Assertions.assertThat;
+
+class LinkedHashSetTest extends SetTest {
 
     @Override
     protected Class<?> clz() {
@@ -35,7 +36,7 @@ public class LinkedHashSetTest extends SetTest {
     }
 
     @Test
-    void testKeepOrder() throws IOException {
-        Assertions.assertEquals(mapper().readValue("[3, 2, 1]", LinkedHashSet.class), LinkedHashSet.of(3, 2, 1));
+    void keepOrder() throws IOException {
+        assertThat(LinkedHashSet.of(3, 2, 1)).isEqualTo(mapper().readValue("[3, 2, 1]", LinkedHashSet.class));
     }
 }

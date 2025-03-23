@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class HashSetJsonMergeTest extends BaseTest {
+class HashSetJsonMergeTest extends BaseTest {
     static class TestJsonMergeWithHashSet {
         @JsonMerge(OptBoolean.TRUE)
         public HashSet<String> value = HashSet.of("a", "b", "c");
@@ -28,21 +28,21 @@ public class HashSetJsonMergeTest extends BaseTest {
     }
 
     @Test
-    public void shouldMergeSeq() throws Exception {
+    void shouldMergeSeq() throws Exception {
         TestJsonMergeWithHashSet result = mapper().readValue(asJson("{'value':['d', 'e', 'f']}"), TestJsonMergeWithHashSet.class);
 
         assertThat(result.value.toJavaList()).containsExactly("a", "b", "c", "d", "e", "f");
     }
 
     @Test
-    public void shouldMergeSeqConstructor() throws Exception {
+    void shouldMergeSeqConstructor() throws Exception {
         TestJsonMergeWithHashSetConstructor result = mapper().readValue(asJson("{'value':['d', 'e', 'f']}"), TestJsonMergeWithHashSetConstructor.class);
 
         assertThat(result.value.toJavaList()).containsExactly("a", "b", "c", "d", "e", "f");
     }
 
     @Test
-    public void shouldMergeWhileRetainingValues() throws Exception {
+    void shouldMergeWhileRetainingValues() throws Exception {
         TestJsonMergeWithHashSetConstructor result = mapper().readerForUpdating(new TestJsonMergeWithHashSetConstructor("a", "b"))
           .readValue(asJson("{'value':['c', 'd', 'e', 'f']}"));
 

@@ -6,12 +6,12 @@ import io.vavr.collection.List;
 import io.vavr.jackson.datatype.BaseTest;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class ReadmeTest extends BaseTest {
 
     @Test
-    void testDeser() throws Exception {
+    void deser() throws Exception {
         ObjectMapper mapper = mapper();
 
         // readme: Serialization/deserialization
@@ -20,8 +20,8 @@ class ReadmeTest extends BaseTest {
         });
         // end of readme
 
-        assertEquals("[1]", json);
-        assertEquals(List.of(1), restored);
-        assertEquals("List(1)", restored.toString());
+        assertThat(json).isEqualTo("[1]");
+        assertThat(restored).isEqualTo(List.of(1));
+        assertThat(restored.toString()).isEqualTo("List(1)");
     }
 }

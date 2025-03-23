@@ -4,12 +4,13 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import io.vavr.collection.LinkedHashMap;
 import io.vavr.collection.Map;
 import io.vavr.control.Option;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
-public class LinkedHashMapTest extends MapTest {
+import static org.assertj.core.api.Assertions.assertThat;
+
+class LinkedHashMapTest extends MapTest {
     @Override
     Class<?> clz() {
         return LinkedHashMap.class;
@@ -34,9 +35,9 @@ public class LinkedHashMapTest extends MapTest {
         javaObject.put("1", 2);
 
         String json = mapper().writer().writeValueAsString(vavrObject);
-        Assertions.assertEquals(genJsonMap(javaObject), json);
+        assertThat(json).isEqualTo(genJsonMap(javaObject));
 
         Map<?, ?> restored = (Map<?, ?>) mapper().readValue(json, clz());
-        Assertions.assertEquals(restored, vavrObject);
+        assertThat(vavrObject).isEqualTo(restored);
     }
 }

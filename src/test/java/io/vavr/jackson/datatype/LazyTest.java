@@ -13,36 +13,36 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.time.LocalDate;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
-public class LazyTest extends BaseTest {
+class LazyTest extends BaseTest {
 
     @Test
     void shouldSerializeAndDeserializeLazyWithValue() throws IOException {
         Lazy<?> src = Lazy.of(() -> 1);
         String json = mapper().writer().writeValueAsString(src);
-        assertEquals("1", json);
+        assertThat(json).isEqualTo("1");
         Lazy<?> restored = mapper().readValue(json, Lazy.class);
-        assertEquals(src, restored);
+        assertThat(restored).isEqualTo(src);
     }
 
     @Test
     void shouldSerializeAndDeserializeLazyWithNullValue() throws IOException {
         Lazy<?> src = Lazy.of(() -> null);
         String json = mapper().writer().writeValueAsString(src);
-        assertEquals("null", json);
+        assertThat(json).isEqualTo("null");
         Lazy<?> restored = mapper().readValue(json, Lazy.class);
-        assertEquals(src, restored);
+        assertThat(restored).isEqualTo(src);
     }
 
     @Test
     void shouldSerializeAndDeserializeTwoLevelLazy() throws IOException {
         Lazy<Lazy<Integer>> src = Lazy.of(() -> Lazy.of(() -> 1));
         String json = mapper().writeValueAsString(src);
-        assertEquals("1", json);
+        assertThat(json).isEqualTo("1");
         Lazy<?> restored = mapper().readValue(json, new TypeReference<Lazy<Lazy<Integer>>>() {
         });
-        assertEquals(src, restored);
+        assertThat(restored).isEqualTo(src);
     }
 
     @Test
@@ -56,12 +56,12 @@ public class LazyTest extends BaseTest {
         String json = mapper.writeValueAsString(src);
 
         // Then the serialization is successful
-        assertEquals("[2019,12,25]", json);
+        assertThat(json).isEqualTo("[2019,12,25]");
 
         // And the deserialization is successful
         Lazy<?> src2 = mapper.readValue(json, new TypeReference<Lazy<LocalDate>>() {
         });
-        assertEquals(src, src2);
+        assertThat(src2).isEqualTo(src);
     }
 
     static class FrenchDate {
@@ -71,7 +71,7 @@ public class LazyTest extends BaseTest {
     }
 
     @Test
-    void testSerializeWithContext() throws IOException {
+    void serializeWithContext() throws IOException {
         // Given a lazy date with specific format
         FrenchDate src = new FrenchDate();
         src.value = Lazy.of(() -> LocalDate.of(2019, 12, 25));
@@ -82,11 +82,11 @@ public class LazyTest extends BaseTest {
         String json = mapper.writeValueAsString(src);
 
         // Then the serialization is successful
-        assertEquals("{\"date\":\"25/12/2019\"}", json);
+        assertThat(json).isEqualTo("{\"date\":\"25/12/2019\"}");
 
         // And the deserialization is successful
         FrenchDate src2 = mapper.readValue(json, FrenchDate.class);
-        assertEquals(src.value, src2.value);
+        assertThat(src2.value).isEqualTo(src.value);
     }
 
     static class WrapperForStaticTyping {
@@ -117,7 +117,7 @@ public class LazyTest extends BaseTest {
     }
 
     @Test
-    void testSerializeWithStaticTyping() throws IOException {
+    void serializeWithStaticTyping() throws IOException {
         // Given an instance with lazy value configured with static typing
         WrapperForStaticTyping src = new WrapperForStaticTyping();
 
@@ -125,11 +125,11 @@ public class LazyTest extends BaseTest {
         String json = mapper().writeValueAsString(src);
 
         // Then the serialization is successful
-        assertEquals("{\"value\":{\"a\":1}}", json);
+        assertThat(json).isEqualTo("{\"value\":{\"a\":1}}");
     }
 
     @Test
-    void testSerializeWithDynamicTyping() throws IOException {
+    void serializeWithDynamicTyping() throws IOException {
         // Given an instance with lazy value configured with dynamic typing
         WrapperForDynamicTyping src = new WrapperForDynamicTyping();
 
@@ -137,6 +137,6 @@ public class LazyTest extends BaseTest {
         String json = mapper().writeValueAsString(src);
 
         // Then the serialization is successful
-        assertEquals("{\"value\":{\"a\":1,\"b\":2}}", json);
+        assertThat(json).isEqualTo("{\"value\":{\"a\":1,\"b\":2}}");
     }
 }

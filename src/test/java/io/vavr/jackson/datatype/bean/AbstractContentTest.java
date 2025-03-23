@@ -12,8 +12,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class AbstractContentTest {
 
@@ -187,19 +186,19 @@ public class AbstractContentTest {
     }
 
     @Test
-    void testList() throws IOException {
+    void list() throws IOException {
         L l = new L(List.of(new X("a", 1), new X("bbb", 42)));
         json_roundtrip_test(l, L.class);
     }
 
     @Test
-    void testMap() throws IOException {
+    void map() throws IOException {
         M m = new M(HashMap.of(1, new X("a", 1), 42, new X("bbb", 42)));
         json_roundtrip_test(m, M.class);
     }
 
     @Test
-    void testValue() throws IOException {
+    void value() throws IOException {
         V v = new V()
             .setLazy(Lazy.of(() -> new X("b", 2)))
             .setOption(Option.of(new X("c", 3)));
@@ -210,8 +209,8 @@ public class AbstractContentTest {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new VavrModule());
         String asString = mapper.writeValueAsString(value);
-        assertNotNull(asString);
+        assertThat(asString).isNotNull();
         final T value_decoded = mapper.readValue(asString, valueType);
-        assertEquals(value, value_decoded);
+        assertThat(value_decoded).isEqualTo(value);
     }
 }

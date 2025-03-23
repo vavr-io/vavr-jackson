@@ -10,13 +10,14 @@ import io.vavr.collection.TreeMap;
 import io.vavr.collection.TreeMultimap;
 import io.vavr.jackson.datatype.BaseTest;
 import io.vavr.jackson.datatype.VavrModule;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
-public class Issue142Test extends BaseTest {
+import static org.assertj.core.api.Assertions.assertThat;
+
+class Issue142Test extends BaseTest {
 
     public static class MyComparable implements Comparable<MyComparable> {
 
@@ -45,7 +46,7 @@ public class Issue142Test extends BaseTest {
     private ObjectMapper mapper;
 
     @BeforeEach
-    public void before() {
+    void before() {
         mapper = new ObjectMapper();
         SimpleModule module = new VavrModule()
             .addKeyDeserializer(MyComparable.class, new KeyDeserializer() {
@@ -58,30 +59,30 @@ public class Issue142Test extends BaseTest {
     }
 
     @Test
-    public void testMap() throws IOException {
+    void map() throws IOException {
 
         TreeMap<MyComparable, Integer> mp = TreeMap.<MyComparable, Integer>empty()
             .put(new MyComparable(1), 1)
             .put(new MyComparable(2), 2);
 
         String json = mapper.writeValueAsString(mp);
-        Assertions.assertEquals("{\"2\":2,\"1\":1}", json);
+        assertThat(json).isEqualTo("{\"2\":2,\"1\":1}");
         TreeMap<MyComparable, Integer> restored = mapper.readValue(json, new TypeReference<TreeMap<MyComparable, Integer>>() {
         });
-        Assertions.assertEquals(restored, mp);
+        assertThat(mp).isEqualTo(restored);
     }
 
     @Test
-    public void testMultimap() throws IOException {
+    void multimap() throws IOException {
 
         TreeMultimap<MyComparable, Integer> mp = TreeMultimap.<Integer>withSeq().<MyComparable, Integer>empty()
             .put(new MyComparable(1), 1)
             .put(new MyComparable(2), 2);
 
         String json = mapper.writeValueAsString(mp);
-        Assertions.assertEquals("{\"2\":[2],\"1\":[1]}", json);
+        assertThat(json).isEqualTo("{\"2\":[2],\"1\":[1]}");
         TreeMultimap<MyComparable, Integer> restored = mapper.readValue(json, new TypeReference<TreeMultimap<MyComparable, Integer>>() {
         });
-        Assertions.assertEquals(restored, mp);
+        assertThat(mp).isEqualTo(restored);
     }
 }

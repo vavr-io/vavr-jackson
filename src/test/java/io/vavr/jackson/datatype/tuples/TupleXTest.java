@@ -9,12 +9,12 @@ import io.vavr.Tuple2;
 import io.vavr.Tuple3;
 import io.vavr.Tuple8;
 import io.vavr.jackson.datatype.BaseTest;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
 
 class TupleXTest extends BaseTest {
 
@@ -22,31 +22,28 @@ class TupleXTest extends BaseTest {
     void test0() throws IOException {
         Tuple0 tuple0 = Tuple0.instance();
         String json = mapper().writer().writeValueAsString(tuple0);
-        Assertions.assertEquals(mapper().readValue(json, Tuple0.class), tuple0);
+        assertThat(tuple0).isEqualTo(mapper().readValue(json, Tuple0.class));
     }
 
     @Test
     void test9() {
-        assertThrows(JsonMappingException.class, () -> {
-            String wrongJson = "[1, 2, 3, 4, 5, 6, 7, 8, 9]";
-            mapper().readValue(wrongJson, Tuple8.class);
-        });
+        String wrongJson = "[1, 2, 3, 4, 5, 6, 7, 8, 9]";
+        assertThatExceptionOfType(JsonMappingException.class).isThrownBy(() ->
+            mapper().readValue(wrongJson, Tuple8.class));
     }
 
     @Test
     void test10() {
-        assertThrows(JsonMappingException.class, () -> {
-            String json = "[1, 2, 3]";
-            mapper().readValue(json, Tuple2.class);
-        });
+        String json = "[1, 2, 3]";
+        assertThatExceptionOfType(JsonMappingException.class).isThrownBy(() ->
+            mapper().readValue(json, Tuple2.class));
     }
 
     @Test
     void test11() throws IOException {
-        assertThrows(JsonMappingException.class, () -> {
-            String json = "[1, 2]";
-            mapper().readValue(json, Tuple3.class);
-        });
+        String json = "[1, 2]";
+        assertThatExceptionOfType(JsonMappingException.class).isThrownBy(() ->
+            mapper().readValue(json, Tuple3.class));
     }
 
     @JsonTypeInfo(
@@ -63,11 +60,11 @@ class TupleXTest extends BaseTest {
     }
 
     @Test
-    void testJsonTypeInfo1() throws IOException {
+    void jsonTypeInfo1() throws IOException {
         String javaUtilValue = mapper().writeValueAsString(new A());
-        Assertions.assertEquals("{\"f\":[{\"card\":{\"type\":\"hello\"}},{\"card\":{\"type\":\"hello\"}}]}", javaUtilValue);
+        assertThat(javaUtilValue).isEqualTo("{\"f\":[{\"card\":{\"type\":\"hello\"}},{\"card\":{\"type\":\"hello\"}}]}");
         A restored = mapper().readValue(javaUtilValue, A.class);
-        Assertions.assertEquals("hello", restored.f._1.type);
-        Assertions.assertEquals("hello", restored.f._2.type);
+        assertThat(restored.f._1.type).isEqualTo("hello");
+        assertThat(restored.f._2.type).isEqualTo("hello");
     }
 }
