@@ -31,6 +31,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.introspect.Annotated;
 import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
 import com.fasterxml.jackson.databind.ser.ContextualSerializer;
+import com.fasterxml.jackson.databind.util.NameTransformer;
 import io.vavr.control.Option;
 
 import java.io.IOException;
@@ -57,6 +58,10 @@ class OptionSerializer extends HListSerializer<Option<?>> implements ContextualS
         this.plainMode = plainMode;
         this.valueTypeSerializer = valueTypeSerializer;
         this.valueSerializer = (JsonSerializer<Object>) valueSerializer;
+    }
+
+    JavaType getValueType() {
+        return valueType;
     }
 
     @Override
@@ -142,5 +147,10 @@ class OptionSerializer extends HListSerializer<Option<?>> implements ContextualS
             return this;
         }
         return new OptionSerializer(refType, valueType, typeSer, valueSer, plainMode);
+    }
+
+    @Override
+    public JsonSerializer<Option<?>> unwrappingSerializer(NameTransformer unwrapper) {
+        return new UnwrappingOptionSerializer(this, unwrapper);
     }
 }
