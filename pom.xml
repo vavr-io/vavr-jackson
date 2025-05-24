@@ -15,7 +15,7 @@
 
         <vavrVersion>0.10.4</vavrVersion>
         <fasterxmlVersion>2.13.5</fasterxmlVersion>
-        <junitJupiterVersion>5.9.3</junitJupiterVersion>
+        <junitJupiterVersion>5.12.2</junitJupiterVersion>
         <assertjVersion>3.27.3</assertjVersion>
         <jaxbVersion>2.3.1</jaxbVersion>
         <javapoetVersion>1.13.0</javapoetVersion>
