@@ -1,7 +1,7 @@
 # vavr-jackson
 
 [![Build](https://github.com/vavr-io/vavr-jackson/actions/workflows/build.yml/badge.svg)](https://github.com/vavr-io/vavr-jackson/actions/workflows/build.yml)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.vavr/vavr-jackson/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.vavr/vavr-jackson)
+![Maven Central Version](https://img.shields.io/maven-central/v/io.vavr/vavr-jackson?versionPrefix=0)
 [![Coverage Status](https://codecov.io/github/vavr-io/vavr-jackson/coverage.svg?branch=master)](https://codecov.io/github/vavr-io/vavr-jackson?branch=master)
 
 Jackson datatype module for [Vavr](https://vavr.io/) library
@@ -54,7 +54,7 @@ Developer versions can be found [here](https://oss.sonatype.org/content/reposito
 <dependency>
   <groupId>io.vavr</groupId>
   <artifactId>vavr-jackson</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>0.10.6-SNAPSHOT</version>
 </dependency>
 ```
 
