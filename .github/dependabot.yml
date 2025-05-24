@@ -1,6 +1,6 @@
 version: 2
 updates:
-  - package-ecosystem: "gradle"
+  - package-ecosystem: "maven"
     target-branch: "main"
     directory: "/"
     schedule:
