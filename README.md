@@ -86,7 +86,7 @@ Ensure that your `~/.m2/settings.xml` contains the following:
 ### Gradle
 
 ```groovy
-compile("io.vavr:vavr-jackson:1.0.0-SNAPSHOT")
+compile("io.vavr:vavr-jackson:0.10.6-SNAPSHOT")
 ```
 
 Ensure that your `build.gradle` contains the following:
