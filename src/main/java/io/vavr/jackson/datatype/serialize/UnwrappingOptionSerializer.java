@@ -34,10 +34,10 @@ import java.io.IOException;
 
 /**
  * Serializer for {@link Option} that unwraps the value if it is defined and the property is annotated with {@code @JsonUnwrapped}.
- * <p/>
+ *
  * Note that {@code Option} values of other Vavr types like {@link io.vavr.control.Try}, {@link Either}, etc are not supported
  * due to {@link com.fasterxml.jackson.annotation.JsonUnwrapped} only supports Java beans.
- * <p/>
+ *
  * Delegates the unwrapping to a {@link com.fasterxml.jackson.databind.ser.impl.UnwrappingBeanSerializer}
  * since to support unwrapping requires to serialize only the fields instead of the whole object
  * but that is an internal {@link BeanSerializerBase} function and therefore not available here.
