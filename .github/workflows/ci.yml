@@ -15,7 +15,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
-        java: [8, 11, 17, 21, 24]
+        java: [8, 11, 17, 21, 24, 25-ea]
         exclude:
           - java: 8
             os: macos-latest
