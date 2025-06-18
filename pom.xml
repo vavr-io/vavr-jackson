@@ -17,7 +17,7 @@
         <maven.release.version>3.1.1</maven.release.version>
         <maven.source.version>3.3.1</maven.source.version>
         <maven.gpg.version>3.2.7</maven.gpg.version>
-        <maven.central.publishing.version>0.7.0</maven.central.publishing.version>
+        <maven.central.publishing.version>0.8.0</maven.central.publishing.version>
 
         <vavr.version>0.10.6</vavr.version>
         <fasterxml.version>2.13.5</fasterxml.version>
