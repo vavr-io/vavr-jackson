@@ -22,7 +22,7 @@
         <vavr.version>0.10.7</vavr.version>
         <fasterxml.version>2.13.5</fasterxml.version>
         <junit.jupiter.version>5.13.4</junit.jupiter.version>
-        <assertj.version>3.27.3</assertj.version>
+        <assertj.version>3.27.4</assertj.version>
         <jaxb.version>2.3.1</jaxb.version>
         <javapoet.version>1.13.0</javapoet.version>
     </properties>
