@@ -158,7 +158,7 @@ public abstract class MultimapTest extends BaseTest {
         }
 
         @Override
-        public CustomElement deserialize(JsonParser p, DeserializationContext context) throws IOException {
+        public CustomElement deserialize(JsonParser p, DeserializationContext context) {
             return new CustomElement(p.getValueAsString());
         }
     }

@@ -32,8 +32,6 @@ import io.vavr.collection.Map;
 import io.vavr.collection.SortedMap;
 import io.vavr.collection.TreeMap;
 
-import java.io.IOException;
-
 class MapDeserializer extends MaplikeDeserializer<Map<?, ?>> {
 
     private static final long serialVersionUID = 1L;
@@ -55,7 +53,7 @@ class MapDeserializer extends MaplikeDeserializer<Map<?, ?>> {
     }
 
     @Override
-    public Map<?, ?> deserialize(JsonParser p, DeserializationContext ctxt, Map<?, ?> intoValue) throws IOException {
+    public Map<?, ?> deserialize(JsonParser p, DeserializationContext ctxt, Map<?, ?> intoValue) {
         final java.util.LinkedHashMap<Object, Object> result = new java.util.LinkedHashMap<>();
         if (intoValue != null) {
             result.putAll(intoValue.toJavaMap());
@@ -77,7 +75,7 @@ class MapDeserializer extends MaplikeDeserializer<Map<?, ?>> {
         return HashMap.ofAll(result);
     }
 
-    private Object deserializeValue(JsonParser p, DeserializationContext ctxt, Map<?, ?> intoValue, JsonToken t, java.util.LinkedHashMap<Object, Object> result, Object key) throws IOException {
+    private Object deserializeValue(JsonParser p, DeserializationContext ctxt, Map<?, ?> intoValue, JsonToken t, java.util.LinkedHashMap<Object, Object> result, Object key) {
         if (t == JsonToken.VALUE_NULL) {
             return elementDeserializer.getNullValue(ctxt);
         }
@@ -100,7 +98,7 @@ class MapDeserializer extends MaplikeDeserializer<Map<?, ?>> {
     }
 
     @Override
-    public Map<?, ?> deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+    public Map<?, ?> deserialize(JsonParser p, DeserializationContext ctxt) {
         return deserialize(p, ctxt, null);
     }
 

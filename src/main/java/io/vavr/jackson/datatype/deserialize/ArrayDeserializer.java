@@ -29,7 +29,6 @@ import tools.jackson.databind.jsontype.TypeDeserializer;
 import io.vavr.collection.Traversable;
 import tools.jackson.core.JsonParser;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -116,7 +115,7 @@ abstract class ArrayDeserializer<T> extends VavrValueDeserializer<T> {
     }
 
     @Override
-    public T deserialize(JsonParser parser, DeserializationContext context) throws IOException {
+    public T deserialize(JsonParser parser, DeserializationContext context) {
         return deserialize(parser, context, null);
     }
 

@@ -33,7 +33,6 @@ import io.vavr.Tuple6;
 import io.vavr.Tuple7;
 import tools.jackson.databind.ValueDeserializer;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,7 +51,7 @@ abstract class TupleDeserializer<T> extends VavrValueDeserializer<T> {
     }
 
     @Override
-    public T deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+    public T deserialize(JsonParser p, DeserializationContext ctxt) {
         List<Object> list = new ArrayList<>();
         int ptr = 0;
 

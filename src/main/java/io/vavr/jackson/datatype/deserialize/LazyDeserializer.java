@@ -28,8 +28,6 @@ import tools.jackson.databind.ValueDeserializer;
 import tools.jackson.databind.jsontype.TypeDeserializer;
 import io.vavr.Lazy;
 
-import java.io.IOException;
-
 class LazyDeserializer extends VavrValueDeserializer<Lazy<?>> {
 
     private static final long serialVersionUID = 1L;
@@ -52,7 +50,7 @@ class LazyDeserializer extends VavrValueDeserializer<Lazy<?>> {
     }
 
     @Override
-    public Lazy<?> deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+    public Lazy<?> deserialize(JsonParser p, DeserializationContext ctxt) {
         Object value;
         if (valueTypeDeserializer == null) {
             value = valueDeserializer.deserialize(p, ctxt);

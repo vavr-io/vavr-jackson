@@ -29,8 +29,6 @@ import tools.jackson.databind.deser.std.StdDeserializer;
 import tools.jackson.databind.type.TypeFactory;
 import io.vavr.collection.CharSeq;
 
-import java.io.IOException;
-
 class CharSeqDeserializer extends StdDeserializer<CharSeq> {
 
     private static final long serialVersionUID = 1L;
@@ -42,7 +40,7 @@ class CharSeqDeserializer extends StdDeserializer<CharSeq> {
     }
 
     @Override
-    public CharSeq deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+    public CharSeq deserialize(JsonParser p, DeserializationContext ctxt) {
         Object obj = deserializer.deserialize(p, ctxt);
         if (obj instanceof String) {
             return CharSeq.of((String) obj);

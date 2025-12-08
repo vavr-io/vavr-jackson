@@ -250,7 +250,7 @@ public abstract class MapTest extends BaseTest {
         }
 
         @Override
-        public CustomValue deserialize(JsonParser p, DeserializationContext context) throws IOException {
+        public CustomValue deserialize(JsonParser p, DeserializationContext context) {
             return new CustomValue(p.getValueAsString());
         }
     }
