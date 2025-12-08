@@ -26,7 +26,7 @@ import io.vavr.collection.CharSeq;
 
 import java.io.IOException;
 
-class CharSeqSerializer extends ValueSerializer<CharSeq> {
+class CharSeqSerializer extends VavrValueSerializer<CharSeq> {
 
     private static final long serialVersionUID = 1L;
 

@@ -31,7 +31,7 @@ import io.vavr.Value;
 
 import java.util.ArrayList;
 
-class ArraySerializer<T extends Value<?>> extends ValueSerializer<T> implements ContextualSerializer {
+class ArraySerializer<T extends Value<?>> extends VavrValueSerializer<T> implements ContextualSerializer {
 
     private static final long serialVersionUID = 1L;
     private final CollectionLikeType collectionType;

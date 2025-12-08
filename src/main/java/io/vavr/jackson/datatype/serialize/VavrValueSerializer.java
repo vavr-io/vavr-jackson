@@ -31,18 +31,18 @@ import com.fasterxml.jackson.databind.type.TypeFactory;
 
 import java.io.IOException;
 
-abstract class ValueSerializer<T> extends StdSerializer<T> {
+abstract class VavrValueSerializer<T> extends StdSerializer<T> {
 
     private static final long serialVersionUID = 1L;
 
     final JavaType type;
     final BeanProperty beanProperty;
 
-    ValueSerializer(JavaType type) {
+    VavrValueSerializer(JavaType type) {
         this(type, null);
     }
 
-    ValueSerializer(JavaType type, BeanProperty property) {
+    VavrValueSerializer(JavaType type, BeanProperty property) {
         super(type);
         this.type = type;
         this.beanProperty = property;

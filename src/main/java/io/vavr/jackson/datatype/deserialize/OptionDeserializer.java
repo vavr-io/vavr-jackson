@@ -32,7 +32,7 @@ import io.vavr.control.Option;
 
 import java.io.IOException;
 
-class OptionDeserializer<T> extends ValueDeserializer<Option<T>> implements ContextualDeserializer {
+class OptionDeserializer<T> extends VavrValueDeserializer<Option<T>> implements ContextualDeserializer {
 
     private static final long serialVersionUID = 1L;
 

@@ -26,7 +26,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 
-class SerializableSerializer<T> extends ValueSerializer<T> {
+class SerializableSerializer<T> extends VavrValueSerializer<T> {
 
     private static final long serialVersionUID = 1L;
 

@@ -31,7 +31,7 @@ import io.vavr.Lazy;
 
 import java.io.IOException;
 
-class LazyDeserializer extends ValueDeserializer<Lazy<?>> implements ContextualDeserializer {
+class LazyDeserializer extends VavrValueDeserializer<Lazy<?>> implements ContextualDeserializer {
 
     private static final long serialVersionUID = 1L;
 

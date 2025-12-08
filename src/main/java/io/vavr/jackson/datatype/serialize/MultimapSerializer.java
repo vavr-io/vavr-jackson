@@ -33,7 +33,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-class MultimapSerializer extends ValueSerializer<Multimap<?, ?>> implements ContextualSerializer {
+class MultimapSerializer extends VavrValueSerializer<Multimap<?, ?>> implements ContextualSerializer {
 
     private static final long serialVersionUID = 1L;
     private final MapLikeType mapType;

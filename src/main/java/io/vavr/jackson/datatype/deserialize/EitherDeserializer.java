@@ -34,7 +34,7 @@ import static com.fasterxml.jackson.core.JsonToken.START_ARRAY;
 import static com.fasterxml.jackson.core.JsonToken.START_OBJECT;
 import static com.fasterxml.jackson.core.JsonToken.VALUE_NULL;
 
-class EitherDeserializer extends ValueDeserializer<Either<?, ?>> {
+class EitherDeserializer extends VavrValueDeserializer<Either<?, ?>> {
 
     private static final long serialVersionUID = 1L;
 

@@ -30,7 +30,7 @@ import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import java.util.ArrayList;
 import java.util.List;
 
-abstract class ValueDeserializer<T> extends StdDeserializer<T> implements ResolvableDeserializer {
+abstract class VavrValueDeserializer<T> extends StdDeserializer<T> implements ResolvableDeserializer {
 
     private static final long serialVersionUID = 1L;
 
@@ -38,7 +38,7 @@ abstract class ValueDeserializer<T> extends StdDeserializer<T> implements Resolv
     private final int typeCount;
     private final List<JsonDeserializer<?>> deserializers;
 
-    ValueDeserializer(JavaType valueType, int typeCount) {
+    VavrValueDeserializer(JavaType valueType, int typeCount) {
         super(valueType);
         this.javaType = valueType;
         this.typeCount = typeCount;

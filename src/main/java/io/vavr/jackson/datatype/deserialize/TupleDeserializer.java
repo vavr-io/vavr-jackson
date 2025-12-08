@@ -40,7 +40,7 @@ import java.util.List;
 import static com.fasterxml.jackson.core.JsonToken.END_ARRAY;
 import static com.fasterxml.jackson.core.JsonToken.VALUE_NULL;
 
-abstract class TupleDeserializer<T> extends ValueDeserializer<T> {
+abstract class TupleDeserializer<T> extends VavrValueDeserializer<T> {
 
     private static final long serialVersionUID = 1L;
 

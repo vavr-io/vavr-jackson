@@ -38,7 +38,7 @@ import java.util.List;
 import static com.fasterxml.jackson.core.JsonToken.END_ARRAY;
 import static com.fasterxml.jackson.core.JsonToken.VALUE_NULL;
 
-abstract class ArrayDeserializer<T> extends ValueDeserializer<T> implements ContextualDeserializer {
+abstract class ArrayDeserializer<T> extends VavrValueDeserializer<T> implements ContextualDeserializer {
 
     private static final long serialVersionUID = 1L;
 

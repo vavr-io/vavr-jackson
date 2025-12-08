@@ -31,7 +31,7 @@ import io.vavr.collection.Map;
 
 import java.util.LinkedHashMap;
 
-class MapSerializer extends ValueSerializer<Map<?, ?>> implements ContextualSerializer {
+class MapSerializer extends VavrValueSerializer<Map<?, ?>> implements ContextualSerializer {
 
     private static final long serialVersionUID = 1L;
     private final MapLikeType mapType;
