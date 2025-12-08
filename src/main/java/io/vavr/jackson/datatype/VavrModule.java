@@ -19,7 +19,7 @@
  */
 package io.vavr.jackson.datatype;
 
-import com.fasterxml.jackson.databind.module.SimpleModule;
+import tools.jackson.databind.module.SimpleModule;
 import io.vavr.jackson.datatype.deserialize.VavrDeserializers;
 import io.vavr.jackson.datatype.serialize.VavrSerializers;
 

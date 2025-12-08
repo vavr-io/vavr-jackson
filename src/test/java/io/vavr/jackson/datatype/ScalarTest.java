@@ -1,7 +1,7 @@
 package io.vavr.jackson.datatype;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.DeserializationFeature;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.DeserializationFeature;
 import io.vavr.collection.List;
 import org.junit.jupiter.api.Test;
 
@@ -44,7 +44,7 @@ class ScalarTest extends BaseTest {
         });
         assertThat(List.of(2.4)).isEqualTo(l5);
 
-        List<BigDecimal> l5d = mapper().enable(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS)
+        List<BigDecimal> l5d = mapper().rebuild().enable(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS).build()
             .readValue("[2.4]", new TypeReference<List<BigDecimal>>() {
             });
         assertThat(List.of(BigDecimal.valueOf(2.4))).isEqualTo(l5d);

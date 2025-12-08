@@ -19,8 +19,8 @@
  */
 package io.vavr.jackson.datatype.deserialize;
 
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JavaType;
+import tools.jackson.databind.DeserializationContext;
+import tools.jackson.databind.JavaType;
 import io.vavr.Tuple;
 import io.vavr.Tuple1;
 

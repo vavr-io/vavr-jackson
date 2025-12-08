@@ -2,7 +2,7 @@ package io.vavr.jackson.generated;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import io.vavr.Lazy;
 import io.vavr.Tuple;
 import io.vavr.Tuple1;
@@ -41,7 +41,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class PolymorphicPojoTest {
     private static final VavrModule MAPPER_MODULE = new VavrModule();
 
-    private static final ObjectMapper MAPPER = new ObjectMapper().registerModule(MAPPER_MODULE);
+    private static final ObjectMapper MAPPER = new ObjectMapper().rebuild().addModule(MAPPER_MODULE).build();
 
     @Test
     void array() throws Exception {

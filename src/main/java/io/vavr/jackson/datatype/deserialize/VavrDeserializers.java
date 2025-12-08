@@ -19,17 +19,17 @@
  */
 package io.vavr.jackson.datatype.deserialize;
 
-import com.fasterxml.jackson.databind.BeanDescription;
-import com.fasterxml.jackson.databind.DeserializationConfig;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.KeyDeserializer;
-import com.fasterxml.jackson.databind.deser.Deserializers;
-import com.fasterxml.jackson.databind.jsontype.TypeDeserializer;
-import com.fasterxml.jackson.databind.type.CollectionLikeType;
-import com.fasterxml.jackson.databind.type.MapLikeType;
-import com.fasterxml.jackson.databind.type.ReferenceType;
+import tools.jackson.databind.BeanDescription;
+import tools.jackson.databind.DeserializationConfig;
+import tools.jackson.databind.JavaType;
+import tools.jackson.databind.DatabindException;
+import tools.jackson.databind.KeyDeserializer;
+import tools.jackson.databind.ValueDeserializer;
+import tools.jackson.databind.deser.Deserializers;
+import tools.jackson.databind.jsontype.TypeDeserializer;
+import tools.jackson.databind.type.CollectionLikeType;
+import tools.jackson.databind.type.MapLikeType;
+import tools.jackson.databind.type.ReferenceType;
 import io.vavr.CheckedFunction0;
 import io.vavr.CheckedFunction1;
 import io.vavr.CheckedFunction2;
@@ -77,9 +77,9 @@ public class VavrDeserializers extends Deserializers.Base {
     }
 
     @Override
-    public JsonDeserializer<?> findBeanDeserializer(JavaType type,
-                                                    DeserializationConfig config,
-                                                    BeanDescription beanDesc) throws JsonMappingException {
+    public ValueDeserializer<?> findBeanDeserializer(JavaType type,
+                                                     DeserializationConfig config,
+                                                     BeanDescription.Supplier beanDesc) throws DatabindException {
         Class<?> raw = type.getRawClass();
         if (Either.class.isAssignableFrom(raw)) {
             return new EitherDeserializer(type);
@@ -173,10 +173,10 @@ public class VavrDeserializers extends Deserializers.Base {
     }
 
     @Override
-    public JsonDeserializer<?> findReferenceDeserializer(ReferenceType type,
-                                                         DeserializationConfig config, BeanDescription beanDesc,
-                                                         TypeDeserializer contentTypeDeserializer, JsonDeserializer<?> contentDeserializer)
-        throws JsonMappingException {
+    public ValueDeserializer<?> findReferenceDeserializer(ReferenceType type,
+                                                         DeserializationConfig config, BeanDescription.Supplier beanDesc,
+                                                         TypeDeserializer contentTypeDeserializer, ValueDeserializer<?> contentDeserializer)
+        throws DatabindException {
         Class<?> raw = type.getRawClass();
         if (raw == Lazy.class) {
             return new LazyDeserializer(type, type.getContentType(), contentTypeDeserializer, contentDeserializer);
@@ -188,10 +188,10 @@ public class VavrDeserializers extends Deserializers.Base {
     }
 
     @Override
-    public JsonDeserializer<?> findCollectionLikeDeserializer(CollectionLikeType collectionType,
-                                                              DeserializationConfig config, BeanDescription beanDesc,
-                                                              TypeDeserializer elementTypeDeserializer, JsonDeserializer<?> elementDeserializer)
-        throws JsonMappingException {
+    public ValueDeserializer<?> findCollectionLikeDeserializer(CollectionLikeType collectionType,
+                                                              DeserializationConfig config, BeanDescription.Supplier beanDesc,
+                                                              TypeDeserializer elementTypeDeserializer, ValueDeserializer<?> elementDeserializer)
+        throws DatabindException {
         Class<?> raw = collectionType.getRawClass();
         if (raw == CharSeq.class) {
             return new CharSeqDeserializer(collectionType);
@@ -212,11 +212,11 @@ public class VavrDeserializers extends Deserializers.Base {
     }
 
     @Override
-    public JsonDeserializer<?> findMapLikeDeserializer(MapLikeType type,
-                                                       DeserializationConfig config, BeanDescription beanDesc,
+    public ValueDeserializer<?> findMapLikeDeserializer(MapLikeType type,
+                                                       DeserializationConfig config, BeanDescription.Supplier beanDesc,
                                                        KeyDeserializer keyDeserializer,
-                                                       TypeDeserializer elementTypeDeserializer, JsonDeserializer<?> elementDeserializer)
-        throws JsonMappingException {
+                                                       TypeDeserializer elementTypeDeserializer, ValueDeserializer<?> elementDeserializer)
+        throws DatabindException {
         Class<?> raw = type.getRawClass();
         if (Map.class.isAssignableFrom(raw)) {
             return new MapDeserializer(type, keyDeserializer, elementTypeDeserializer, elementDeserializer);
@@ -225,5 +225,10 @@ public class VavrDeserializers extends Deserializers.Base {
             return new MultimapDeserializer(type, keyDeserializer, elementTypeDeserializer, elementDeserializer);
         }
         return super.findMapLikeDeserializer(type, config, beanDesc, keyDeserializer, elementTypeDeserializer, elementDeserializer);
+    }
+
+    @Override
+    public boolean hasDeserializerFor(DeserializationConfig config, Class<?> valueType) {
+        return true;
     }
 }

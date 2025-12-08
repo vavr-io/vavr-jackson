@@ -19,8 +19,9 @@
  */
 package io.vavr.jackson.datatype.serialize;
 
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.type.TypeFactory;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.JavaType;
+import tools.jackson.databind.type.TypeFactory;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -35,10 +36,16 @@ class SerializableSerializer<T> extends VavrValueSerializer<T> {
     }
 
     @Override
-    Object toJavaObj(T value) throws IOException {
+    Object toJavaObj(T value) throws JacksonException {
         ByteArrayOutputStream buf = new ByteArrayOutputStream();
-        ObjectOutputStream stream = new ObjectOutputStream(buf);
-        stream.writeObject(value);
+        try {
+            ObjectOutputStream stream = null;
+            stream = new ObjectOutputStream(buf);
+            stream.writeObject(value);
+
+        } catch (IOException e) {
+            throw new RuntimeException(e.getMessage());
+        }
         return buf.toByteArray();
     }
 

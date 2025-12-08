@@ -19,16 +19,15 @@
  */
 package io.vavr.jackson.datatype.deserialize;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.KeyDeserializer;
-import com.fasterxml.jackson.databind.deser.ResolvableDeserializer;
-import com.fasterxml.jackson.databind.jsontype.TypeDeserializer;
-import com.fasterxml.jackson.databind.type.MapLikeType;
+import tools.jackson.core.JsonParser;
+import tools.jackson.core.JsonToken;
+import tools.jackson.databind.DeserializationContext;
+import tools.jackson.databind.JavaType;
+import tools.jackson.databind.ValueDeserializer;
+import tools.jackson.databind.DatabindException;
+import tools.jackson.databind.KeyDeserializer;
+import tools.jackson.databind.jsontype.TypeDeserializer;
+import tools.jackson.databind.type.MapLikeType;
 import io.vavr.Tuple;
 import io.vavr.Tuple2;
 import io.vavr.collection.HashMultimap;
@@ -36,44 +35,43 @@ import io.vavr.collection.LinkedHashMultimap;
 import io.vavr.collection.Multimap;
 import io.vavr.collection.TreeMultimap;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
-class MultimapDeserializer extends MaplikeDeserializer<Multimap<?, ?>> implements ResolvableDeserializer {
+class MultimapDeserializer extends MaplikeDeserializer<Multimap<?, ?>> {
 
     private static final long serialVersionUID = 1L;
 
-    private JsonDeserializer<?> containerDeserializer;
+    private ValueDeserializer<?> containerDeserializer;
 
     MultimapDeserializer(MapLikeType mapType, KeyDeserializer keyDeserializer, TypeDeserializer elementTypeDeserializer,
-                         JsonDeserializer<?> elementDeserializer) {
+                         ValueDeserializer<?> elementDeserializer) {
         super(mapType, keyDeserializer, elementTypeDeserializer, elementDeserializer);
     }
 
     MultimapDeserializer(MultimapDeserializer origin, KeyDeserializer keyDeserializer,
-                         TypeDeserializer elementTypeDeserializer, JsonDeserializer<?> elementDeserializer) {
+                         TypeDeserializer elementTypeDeserializer, ValueDeserializer<?> elementDeserializer) {
         super(origin.mapType, keyDeserializer, elementTypeDeserializer, elementDeserializer);
         containerDeserializer = origin.containerDeserializer;
     }
 
     @Override
     MultimapDeserializer createDeserializer(KeyDeserializer keyDeserializer, TypeDeserializer elementTypeDeserializer,
-                                            JsonDeserializer<?> elementDeserializer) {
+                                            ValueDeserializer<?> elementDeserializer) {
         return new MultimapDeserializer(this, keyDeserializer, elementTypeDeserializer, elementDeserializer);
     }
 
     @Override
-    public void resolve(DeserializationContext ctxt) throws JsonMappingException {
+    public void resolve(DeserializationContext ctxt) throws DatabindException {
         JavaType containerType = ctxt.getTypeFactory()
             .constructCollectionType(ArrayList.class, mapType.getContentType());
         containerDeserializer = ctxt.findContextualValueDeserializer(containerType, null);
     }
 
     @Override
-    public Multimap<?, ?> deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+    public Multimap<?, ?> deserialize(JsonParser p, DeserializationContext ctxt) {
         final java.util.List<Tuple2<Object, Object>> result = new java.util.ArrayList<>();
         while (p.nextToken() != JsonToken.END_OBJECT) {
-            String name = p.getCurrentName();
+            String name = p.currentName();
             Object key = keyDeserializer.deserializeKey(name, ctxt);
             p.nextToken();
             ArrayList<?> list = (ArrayList<?>) containerDeserializer.deserialize(p, ctxt);

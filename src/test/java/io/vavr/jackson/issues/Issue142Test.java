@@ -1,11 +1,11 @@
 package io.vavr.jackson.issues;
 
 import com.fasterxml.jackson.annotation.JsonValue;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.KeyDeserializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.module.SimpleModule;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.DeserializationContext;
+import tools.jackson.databind.KeyDeserializer;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.module.SimpleModule;
 import io.vavr.collection.TreeMap;
 import io.vavr.collection.TreeMultimap;
 import io.vavr.jackson.datatype.BaseTest;
@@ -55,7 +55,7 @@ class Issue142Test extends BaseTest {
                     return new MyComparable(Integer.parseInt(key));
                 }
             });
-        mapper.registerModule(module);
+        mapper = mapper().rebuild().addModule(module).build();
     }
 
     @Test

@@ -2,13 +2,12 @@ package io.vavr.jackson.datatype;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.DatabindException;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectWriter;
+import tools.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import tools.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import io.vavr.collection.PriorityQueue;
 import org.junit.jupiter.api.Test;
 
@@ -26,19 +25,19 @@ class PriorityQueueTest extends BaseTest {
 
     @Test
     void shouldThrowExceptionForGenericDeserializationWithIntegers() {
-        assertThatExceptionOfType(JsonMappingException.class).isThrownBy(() -> mapper().readValue("[1, 2]", PriorityQueue.class));
+        assertThatExceptionOfType(DatabindException.class).isThrownBy(() -> mapper().readValue("[1, 2]", PriorityQueue.class));
     }
 
     @Test
     void shouldThrowExceptionForGenericDeserializationWithTypeReference() throws IOException {
-        assertThatExceptionOfType(JsonMappingException.class).isThrownBy(() ->
+        assertThatExceptionOfType(DatabindException.class).isThrownBy(() ->
             mapper().readValue("[1, 2]", new TypeReference<PriorityQueue<Object>>() {
             }));
     }
 
     @Test
     void shouldThrowExceptionForIncomparableDeserialization() {
-        assertThatExceptionOfType(JsonMappingException.class).isThrownBy(() ->
+        assertThatExceptionOfType(DatabindException.class).isThrownBy(() ->
             mapper().readValue("[{\"i\":1}, {\"i\":2}]", new TypeReference<PriorityQueue<PriorityQueueTest.Incomparable>>() {
             }));
     }
@@ -156,7 +155,7 @@ class PriorityQueueTest extends BaseTest {
 
         // When serializing them using object mapper
         // with VAVR module and Java Time module
-        ObjectMapper mapper = mapper().registerModule(new JavaTimeModule());
+        ObjectMapper mapper = mapper();
         String json = mapper.writeValueAsString(src);
 
         // Then the serialization is successful

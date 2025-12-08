@@ -1,7 +1,7 @@
 package io.vavr.jackson.datatype.set;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonMappingException;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.DatabindException;
 import io.vavr.collection.List;
 import io.vavr.collection.Set;
 import io.vavr.collection.SortedSet;
@@ -71,13 +71,13 @@ class TreeSetTest extends SetTest {
 
     @Test
     void generic1() {
-        assertThatExceptionOfType(JsonMappingException.class).isThrownBy(() ->
+        assertThatExceptionOfType(DatabindException.class).isThrownBy(() ->
             mapper().readValue("[1, 2]", TreeSet.class));
     }
 
     @Test
     void generic2() {
-        assertThatExceptionOfType(JsonMappingException.class).isThrownBy(() ->
+        assertThatExceptionOfType(DatabindException.class).isThrownBy(() ->
             mapper().readValue("[1, 2]", new TypeReference<TreeSet<Object>>() {
             }));
     }
@@ -102,7 +102,7 @@ class TreeSetTest extends SetTest {
 
     @Test
     void generic3() {
-        assertThatExceptionOfType(JsonMappingException.class).isThrownBy(() ->
+        assertThatExceptionOfType(DatabindException.class).isThrownBy(() ->
             mapper().readValue("[{\"i\":1}, {\"i\":2}]", new TypeReference<TreeSet<Incomparable>>() {
             }));
     }

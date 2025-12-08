@@ -19,17 +19,15 @@
  */
 package io.vavr.jackson.datatype.serialize;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.BeanProperty;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
-import com.fasterxml.jackson.databind.ser.std.StdSerializer;
-import com.fasterxml.jackson.databind.type.TypeFactory;
-
-import java.io.IOException;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.core.JsonToken;
+import tools.jackson.databind.BeanProperty;
+import tools.jackson.databind.JavaType;
+import tools.jackson.databind.SerializationContext;
+import tools.jackson.databind.ValueSerializer;
+import tools.jackson.databind.jsontype.TypeSerializer;
+import tools.jackson.databind.ser.std.StdSerializer;
+import tools.jackson.databind.type.TypeFactory;
 
 abstract class VavrValueSerializer<T> extends StdSerializer<T> {
 
@@ -48,36 +46,36 @@ abstract class VavrValueSerializer<T> extends StdSerializer<T> {
         this.beanProperty = property;
     }
 
-    abstract Object toJavaObj(T value) throws IOException;
+    abstract Object toJavaObj(T value);
 
     abstract JavaType emulatedJavaType(TypeFactory typeFactory);
 
     @Override
-    public void serialize(T value, JsonGenerator gen, SerializerProvider provider) throws IOException {
+    public void serialize(T value, JsonGenerator gen, SerializationContext context) {
         Object obj = toJavaObj(value);
         if (obj == null) {
-            provider.getDefaultNullValueSerializer().serialize(null, gen, provider);
+            context.getDefaultNullValueSerializer().serialize(null, gen, context);
         } else {
-            JsonSerializer<Object> ser;
+            ValueSerializer<Object> ser;
             try {
-                JavaType emulated = emulatedJavaType(provider.getTypeFactory());
+                JavaType emulated = emulatedJavaType(context.getTypeFactory());
                 if (emulated.getRawClass() != Object.class) {
-                    ser = provider.findTypedValueSerializer(emulated, true, beanProperty);
+                    ser = context.findPrimaryPropertySerializer(emulated, beanProperty);
                 } else {
-                    ser = provider.findTypedValueSerializer(obj.getClass(), true, beanProperty);
+                    ser = context.findPrimaryPropertySerializer(obj.getClass(), beanProperty);
                 }
             } catch (Exception ignore) {
-                ser = provider.findTypedValueSerializer(obj.getClass(), true, beanProperty);
+                ser = context.findPrimaryPropertySerializer(obj.getClass(), beanProperty);
             }
-            ser.serialize(obj, gen, provider);
+            ser.serialize(obj, gen, context);
         }
     }
 
     @Override
-    public void serializeWithType(T value, JsonGenerator gen, SerializerProvider serializers,
-                                  TypeSerializer typeSer) throws IOException {
-        typeSer.writeTypePrefix(gen, typeSer.typeId(value, JsonToken.VALUE_STRING));
-        serialize(value, gen, serializers);
-        typeSer.writeTypeSuffix(gen, typeSer.typeId(value, JsonToken.VALUE_STRING));
+    public void serializeWithType(T value, JsonGenerator gen, SerializationContext context,
+                                  TypeSerializer typeSer) {
+        typeSer.writeTypePrefix(gen, context, typeSer.typeId(value, JsonToken.VALUE_STRING));
+        serialize(value, gen, context);
+        typeSer.writeTypeSuffix(gen, context, typeSer.typeId(value, JsonToken.VALUE_STRING));
     }
 }

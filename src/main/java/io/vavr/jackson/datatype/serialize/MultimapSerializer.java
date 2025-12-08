@@ -19,21 +19,20 @@
  */
 package io.vavr.jackson.datatype.serialize;
 
-import com.fasterxml.jackson.databind.BeanProperty;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.ser.ContextualSerializer;
-import com.fasterxml.jackson.databind.type.MapLikeType;
-import com.fasterxml.jackson.databind.type.TypeFactory;
+import tools.jackson.databind.BeanProperty;
+import tools.jackson.databind.JavaType;
+import tools.jackson.databind.DatabindException;
+import tools.jackson.databind.SerializationContext;
+import tools.jackson.databind.ValueSerializer;
+import tools.jackson.databind.type.MapLikeType;
+import tools.jackson.databind.type.TypeFactory;
 import io.vavr.collection.Multimap;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-class MultimapSerializer extends VavrValueSerializer<Multimap<?, ?>> implements ContextualSerializer {
+class MultimapSerializer extends VavrValueSerializer<Multimap<?, ?>> {
 
     private static final long serialVersionUID = 1L;
     private final MapLikeType mapType;
@@ -61,12 +60,12 @@ class MultimapSerializer extends VavrValueSerializer<Multimap<?, ?>> implements 
     }
 
     @Override
-    public boolean isEmpty(SerializerProvider provider, Multimap<?, ?> value) {
+    public boolean isEmpty(SerializationContext context, Multimap<?, ?> value) {
         return value.isEmpty();
     }
 
     @Override
-    public JsonSerializer<?> createContextual(SerializerProvider prov, BeanProperty property) throws JsonMappingException {
+    public ValueSerializer<?> createContextual(SerializationContext context, BeanProperty property) throws DatabindException {
         if (property == beanProperty) {
             return this;
         }

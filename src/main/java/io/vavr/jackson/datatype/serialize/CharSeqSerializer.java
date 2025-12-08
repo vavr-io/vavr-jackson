@@ -19,9 +19,9 @@
  */
 package io.vavr.jackson.datatype.serialize;
 
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.type.TypeFactory;
+import tools.jackson.databind.JavaType;
+import tools.jackson.databind.SerializationContext;
+import tools.jackson.databind.type.TypeFactory;
 import io.vavr.collection.CharSeq;
 
 import java.io.IOException;
@@ -35,7 +35,7 @@ class CharSeqSerializer extends VavrValueSerializer<CharSeq> {
     }
 
     @Override
-    Object toJavaObj(CharSeq value) throws IOException {
+    Object toJavaObj(CharSeq value) {
         return value.toString();
     }
 
@@ -45,7 +45,7 @@ class CharSeqSerializer extends VavrValueSerializer<CharSeq> {
     }
 
     @Override
-    public boolean isEmpty(SerializerProvider provider, CharSeq value) {
+    public boolean isEmpty(SerializationContext context, CharSeq value) {
         return value.isEmpty();
     }
 }

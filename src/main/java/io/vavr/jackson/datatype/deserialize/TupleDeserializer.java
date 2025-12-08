@@ -19,11 +19,10 @@
  */
 package io.vavr.jackson.datatype.deserialize;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.JsonDeserializer;
+import tools.jackson.core.JsonParser;
+import tools.jackson.core.JsonToken;
+import tools.jackson.databind.DeserializationContext;
+import tools.jackson.databind.JavaType;
 import io.vavr.Tuple0;
 import io.vavr.Tuple1;
 import io.vavr.Tuple2;
@@ -32,13 +31,14 @@ import io.vavr.Tuple4;
 import io.vavr.Tuple5;
 import io.vavr.Tuple6;
 import io.vavr.Tuple7;
+import tools.jackson.databind.ValueDeserializer;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.fasterxml.jackson.core.JsonToken.END_ARRAY;
-import static com.fasterxml.jackson.core.JsonToken.VALUE_NULL;
+import static tools.jackson.core.JsonToken.END_ARRAY;
+import static tools.jackson.core.JsonToken.VALUE_NULL;
 
 abstract class TupleDeserializer<T> extends VavrValueDeserializer<T> {
 
@@ -60,8 +60,8 @@ abstract class TupleDeserializer<T> extends VavrValueDeserializer<T> {
             if (ptr >= deserializersCount()) {
                 throw mappingException(ctxt, javaType.getRawClass(), jsonToken);
             }
-            JsonDeserializer<?> deserializer = deserializer(ptr++);
-            Object value = (jsonToken != VALUE_NULL) ? deserializer.deserialize(p, ctxt) : deserializer.getNullValue(ctxt);
+            ValueDeserializer<?> deserializer = deserializer(ptr++);
+            Object value = (jsonToken != VALUE_NULL) ? (deserializer).deserialize(p, ctxt) : deserializer.getNullValue(ctxt);
             list.add(value);
         }
         if (list.size() == deserializersCount()) {

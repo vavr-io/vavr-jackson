@@ -19,24 +19,23 @@
  */
 package io.vavr.jackson.datatype.deserialize;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.deser.ResolvableDeserializer;
-import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
-import com.fasterxml.jackson.databind.type.TypeFactory;
+import tools.jackson.core.JsonParser;
+import tools.jackson.core.JsonToken;
+import tools.jackson.databind.DeserializationContext;
+import tools.jackson.databind.JavaType;
+import tools.jackson.databind.ValueDeserializer;
+import tools.jackson.databind.DatabindException;
+import tools.jackson.databind.deser.std.StdDeserializer;
+import tools.jackson.databind.type.TypeFactory;
 import io.vavr.collection.CharSeq;
 
 import java.io.IOException;
 
-class CharSeqDeserializer extends StdDeserializer<CharSeq> implements ResolvableDeserializer {
+class CharSeqDeserializer extends StdDeserializer<CharSeq> {
 
     private static final long serialVersionUID = 1L;
 
-    private JsonDeserializer<?> deserializer;
+    private ValueDeserializer<?> deserializer;
 
     CharSeqDeserializer(JavaType valueType) {
         super(valueType);
@@ -48,12 +47,12 @@ class CharSeqDeserializer extends StdDeserializer<CharSeq> implements Resolvable
         if (obj instanceof String) {
             return CharSeq.of((String) obj);
         } else {
-            throw JsonMappingException.from(p, String.format("Unexpected token (%s), expected %s: CharSeq can only be deserialized from String", p.getCurrentToken(), JsonToken.VALUE_STRING));
+            throw DatabindException.from(p, String.format("Unexpected token (%s), expected %s: CharSeq can only be deserialized from String", p.currentToken(), JsonToken.VALUE_STRING));
         }
     }
 
     @Override
-    public void resolve(DeserializationContext ctxt) throws JsonMappingException {
+    public void resolve(DeserializationContext ctxt) throws DatabindException {
         deserializer = ctxt.findContextualValueDeserializer(TypeFactory.unknownType(), null);
     }
 }

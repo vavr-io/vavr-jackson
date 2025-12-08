@@ -19,24 +19,23 @@
  */
 package io.vavr.jackson.datatype.deserialize;
 
-import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.deser.ResolvableDeserializer;
-import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
+import tools.jackson.core.JsonToken;
+import tools.jackson.databind.DatabindException;
+import tools.jackson.databind.DeserializationContext;
+import tools.jackson.databind.JavaType;
+import tools.jackson.databind.ValueDeserializer;
+import tools.jackson.databind.deser.std.StdDeserializer;
 
 import java.util.ArrayList;
 import java.util.List;
 
-abstract class VavrValueDeserializer<T> extends StdDeserializer<T> implements ResolvableDeserializer {
+abstract class VavrValueDeserializer<T> extends StdDeserializer<T> {
 
     private static final long serialVersionUID = 1L;
 
     private final JavaType javaType;
     private final int typeCount;
-    private final List<JsonDeserializer<?>> deserializers;
+    private final List<ValueDeserializer<?>> deserializers;
 
     VavrValueDeserializer(JavaType valueType, int typeCount) {
         super(valueType);
@@ -49,12 +48,12 @@ abstract class VavrValueDeserializer<T> extends StdDeserializer<T> implements Re
         return deserializers.size();
     }
 
-    JsonDeserializer<?> deserializer(int index) {
-        return deserializers.get(index);
+    ValueDeserializer<Object> deserializer(int index) {
+        return (ValueDeserializer<Object>) deserializers.get(index);
     }
 
     @Override
-    public void resolve(DeserializationContext ctxt) throws JsonMappingException {
+    public void resolve(DeserializationContext ctxt) throws DatabindException {
         // TODO rewrite this
         if (javaType.isCollectionLikeType() || javaType.isReferenceType()) {
             deserializers.add(ctxt.findRootValueDeserializer(javaType.getContentType()));
@@ -67,9 +66,9 @@ abstract class VavrValueDeserializer<T> extends StdDeserializer<T> implements Re
     }
 
     // DEV-NOTE: original method is deprecated since 2.8
-    static JsonMappingException mappingException(DeserializationContext ctxt, Class<?> targetClass, JsonToken token) {
+    static DatabindException mappingException(DeserializationContext ctxt, Class<?> targetClass, JsonToken token) {
         String tokenDesc = (token == null) ? "<end of input>" : String.format("%s token", token);
-        return JsonMappingException.from(ctxt.getParser(),
+        return DatabindException.from(ctxt.getParser(),
             String.format("Can not deserialize instance of %s out of %s",
                 _calcName(targetClass), tokenDesc));
     }

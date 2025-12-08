@@ -19,11 +19,11 @@
  */
 package io.vavr.jackson.datatype.deserialize;
 
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.jsontype.TypeDeserializer;
+import tools.jackson.databind.DeserializationContext;
+import tools.jackson.databind.JavaType;
+import tools.jackson.databind.DatabindException;
+import tools.jackson.databind.ValueDeserializer;
+import tools.jackson.databind.jsontype.TypeDeserializer;
 import io.vavr.collection.HashSet;
 import io.vavr.collection.Set;
 
@@ -36,7 +36,7 @@ class SetDeserializer extends ArrayDeserializer<Set<?>> {
     private static final long serialVersionUID = 1L;
 
     SetDeserializer(JavaType collectionType, JavaType elementType, TypeDeserializer elementTypeDeserializer,
-                    JsonDeserializer<?> elementDeserializer, boolean deserializeNullAsEmptyCollection) {
+                    ValueDeserializer<?> elementDeserializer, boolean deserializeNullAsEmptyCollection) {
         super(collectionType, 1, elementType, elementTypeDeserializer, elementDeserializer, deserializeNullAsEmptyCollection);
     }
 
@@ -48,14 +48,14 @@ class SetDeserializer extends ArrayDeserializer<Set<?>> {
      * @param elementDeserializer     the new deserializer for the element itself
      */
     private SetDeserializer(SetDeserializer origin, TypeDeserializer elementTypeDeserializer,
-                            JsonDeserializer<?> elementDeserializer) {
+                            ValueDeserializer<?> elementDeserializer) {
         this(origin.collectionType, origin.elementType, elementTypeDeserializer, elementDeserializer,
             origin.deserializeNullAsEmptyCollection);
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    Set<?> create(List<Object> result, DeserializationContext ctx) throws JsonMappingException {
+    Set<?> create(List<Object> result, DeserializationContext ctx) throws DatabindException {
         if (io.vavr.collection.SortedSet.class.isAssignableFrom(collectionType.getRawClass())) {
             checkContainedTypeIsComparable(ctx, collectionType.containedTypeOrUnknown(0));
             return io.vavr.collection.TreeSet.ofAll((Comparator<Object> & Serializable) (o1, o2) -> ((Comparable) o1).compareTo(o2), result);
@@ -68,7 +68,7 @@ class SetDeserializer extends ArrayDeserializer<Set<?>> {
     }
 
     @Override
-    SetDeserializer createDeserializer(TypeDeserializer elementTypeDeserializer, JsonDeserializer<?> elementDeserializer) {
+    SetDeserializer createDeserializer(TypeDeserializer elementTypeDeserializer, ValueDeserializer<?> elementDeserializer) {
         return new SetDeserializer(this, elementTypeDeserializer, elementDeserializer);
     }
 }

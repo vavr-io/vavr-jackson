@@ -19,20 +19,17 @@
  */
 package io.vavr.jackson.datatype.deserialize;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.BeanProperty;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.deser.ContextualDeserializer;
-import com.fasterxml.jackson.databind.jsontype.TypeDeserializer;
+import tools.jackson.core.JsonParser;
+import tools.jackson.core.JsonToken;
+import tools.jackson.databind.BeanProperty;
+import tools.jackson.databind.DeserializationContext;
+import tools.jackson.databind.JavaType;
+import tools.jackson.databind.DatabindException;
+import tools.jackson.databind.ValueDeserializer;
+import tools.jackson.databind.jsontype.TypeDeserializer;
 import io.vavr.control.Option;
 
-import java.io.IOException;
-
-class OptionDeserializer<T> extends VavrValueDeserializer<Option<T>> implements ContextualDeserializer {
+class OptionDeserializer<T> extends VavrValueDeserializer<Option<T>> {
 
     private static final long serialVersionUID = 1L;
 
@@ -40,10 +37,10 @@ class OptionDeserializer<T> extends VavrValueDeserializer<Option<T>> implements 
     private final JavaType valueType;
     private final boolean plainMode;
     private final TypeDeserializer valueTypeDeserializer;
-    private final JsonDeserializer<T> valueDeserializer;
-    private JsonDeserializer<?> stringDeserializer;
+    private final ValueDeserializer<T> valueDeserializer;
+    private ValueDeserializer<?> stringDeserializer;
 
-    OptionDeserializer(JavaType fullType, JavaType valueType, TypeDeserializer typeDeser, JsonDeserializer<T> valueDeser, boolean plainMode) {
+    OptionDeserializer(JavaType fullType, JavaType valueType, TypeDeserializer typeDeser, ValueDeserializer<T> valueDeser, boolean plainMode) {
         super(fullType, 1);
         this.fullType = fullType;
         this.valueType = valueType;
@@ -52,13 +49,13 @@ class OptionDeserializer<T> extends VavrValueDeserializer<Option<T>> implements 
         this.plainMode = plainMode;
     }
 
-    private OptionDeserializer(OptionDeserializer<T> origin, TypeDeserializer typeDeser, JsonDeserializer<T> valueDeser) {
+    private OptionDeserializer(OptionDeserializer<T> origin, TypeDeserializer typeDeser, ValueDeserializer<T> valueDeser) {
         this(origin.fullType, origin.valueType, typeDeser, valueDeser, origin.plainMode);
         this.stringDeserializer = origin.stringDeserializer;
     }
 
     @Override
-    public Option<T> deserialize(JsonParser p, DeserializationContext ctxt, Option<T> intoValue) throws IOException {
+    public Option<T> deserialize(JsonParser p, DeserializationContext ctxt, Option<T> intoValue) {
         if (plainMode) {
             if (valueTypeDeserializer == null) {
                 return Boolean.TRUE.equals(valueDeserializer.supportsUpdate(ctxt.getConfig())) && intoValue != null
@@ -77,7 +74,7 @@ class OptionDeserializer<T> extends VavrValueDeserializer<Option<T>> implements 
             cnt++;
             switch (cnt) {
                 case 1:
-                    JsonToken currentToken = p.getCurrentToken();
+                    JsonToken currentToken = p.currentToken();
                     String def = (String) stringDeserializer.deserialize(p, ctxt);
                     if ("defined".equals(def)) {
                         defined = true;
@@ -114,12 +111,12 @@ class OptionDeserializer<T> extends VavrValueDeserializer<Option<T>> implements 
     }
 
     @Override
-    public Option<T> deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+    public Option<T> deserialize(JsonParser p, DeserializationContext ctxt) {
         return deserialize(p, ctxt, null);
     }
 
     @Override
-    public void resolve(DeserializationContext ctxt) throws JsonMappingException {
+    public void resolve(DeserializationContext ctxt) throws DatabindException {
         super.resolve(ctxt);
         stringDeserializer = ctxt.findContextualValueDeserializer(ctxt.constructType(String.class), null);
     }
@@ -130,8 +127,8 @@ class OptionDeserializer<T> extends VavrValueDeserializer<Option<T>> implements 
     }
 
     @Override
-    public JsonDeserializer<?> createContextual(DeserializationContext ctxt, BeanProperty property) throws JsonMappingException {
-        JsonDeserializer<?> deser = valueDeserializer;
+    public ValueDeserializer<?> createContextual(DeserializationContext ctxt, BeanProperty property) throws DatabindException {
+        ValueDeserializer<?> deser = valueDeserializer;
         TypeDeserializer typeDeser = valueTypeDeserializer;
         JavaType refType = valueType;
 
@@ -150,7 +147,7 @@ class OptionDeserializer<T> extends VavrValueDeserializer<Option<T>> implements 
      * Overridable fluent factory method used for creating contextual
      * instances.
      */
-    private OptionDeserializer<?> withResolved(JavaType refType, TypeDeserializer typeDeser, JsonDeserializer<?> valueDeser) {
+    private OptionDeserializer<?> withResolved(JavaType refType, TypeDeserializer typeDeser, ValueDeserializer<?> valueDeser) {
         if (refType == valueType && valueDeser == valueDeserializer && typeDeser == valueTypeDeserializer) {
             return this;
         }

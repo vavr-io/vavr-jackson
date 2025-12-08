@@ -19,22 +19,21 @@
  */
 package io.vavr.jackson.datatype.deserialize;
 
-import com.fasterxml.jackson.databind.BeanProperty;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.KeyDeserializer;
-import com.fasterxml.jackson.databind.deser.ContextualDeserializer;
-import com.fasterxml.jackson.databind.deser.ContextualKeyDeserializer;
-import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
-import com.fasterxml.jackson.databind.jsontype.TypeDeserializer;
-import com.fasterxml.jackson.databind.type.MapLikeType;
+import tools.jackson.databind.BeanProperty;
+import tools.jackson.databind.DeserializationContext;
+import tools.jackson.databind.JavaType;
+import tools.jackson.databind.ValueDeserializer;
+import tools.jackson.databind.DatabindException;
+import tools.jackson.databind.KeyDeserializer;
+import tools.jackson.databind.deser.ContextualKeyDeserializer;
+import tools.jackson.databind.deser.std.StdDeserializer;
+import tools.jackson.databind.jsontype.TypeDeserializer;
+import tools.jackson.databind.type.MapLikeType;
 
 import java.io.Serializable;
 import java.util.Comparator;
 
-abstract class MaplikeDeserializer<T> extends StdDeserializer<T> implements ContextualDeserializer {
+abstract class MaplikeDeserializer<T> extends StdDeserializer<T>  {
 
     private static final long serialVersionUID = 1L;
 
@@ -43,10 +42,10 @@ abstract class MaplikeDeserializer<T> extends StdDeserializer<T> implements Cont
     final Comparator<Object> keyComparator;
     final KeyDeserializer keyDeserializer;
     final TypeDeserializer elementTypeDeserializer;
-    final JsonDeserializer<?> elementDeserializer;
+    final ValueDeserializer<?> elementDeserializer;
 
     MaplikeDeserializer(MapLikeType mapType, KeyDeserializer keyDeserializer,
-                        TypeDeserializer elementTypeDeserializer, JsonDeserializer<?> elementDeserializer) {
+                        TypeDeserializer elementTypeDeserializer, ValueDeserializer<?> elementDeserializer) {
         super(mapType);
         this.mapType = mapType;
         this.keyComparator = createKeyComparator(mapType.getKeyType());
@@ -76,10 +75,10 @@ abstract class MaplikeDeserializer<T> extends StdDeserializer<T> implements Cont
      */
     abstract MaplikeDeserializer<T> createDeserializer(KeyDeserializer keyDeserializer,
                                                        TypeDeserializer elementTypeDeserializer,
-                                                       JsonDeserializer<?> elementDeserializer);
+                                                       ValueDeserializer<?> elementDeserializer);
 
     @Override
-    public JsonDeserializer<?> createContextual(DeserializationContext context, BeanProperty property) throws JsonMappingException {
+    public ValueDeserializer<?> createContextual(DeserializationContext context, BeanProperty property) throws DatabindException {
         KeyDeserializer keyDeser = keyDeserializer;
         if (keyDeser == null) {
             keyDeser = context.findKeyDeserializer(mapType.getKeyType(), property);
@@ -91,7 +90,7 @@ abstract class MaplikeDeserializer<T> extends StdDeserializer<T> implements Cont
         if (elementTypeDeser != null) {
             elementTypeDeser = elementTypeDeser.forProperty(property);
         }
-        JsonDeserializer<?> elementDeser = elementDeserializer;
+        ValueDeserializer<?> elementDeser = elementDeserializer;
         if (elementDeser == null) {
             elementDeser = context.findContextualValueDeserializer(mapType.getContentType(), property);
         } else {

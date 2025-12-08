@@ -28,8 +28,7 @@ compile("io.vavr:vavr-jackson:0.10.3")
 ### Registering module
 Just register a new instance of <code>VavrModule</code>
 ```java
-ObjectMapper mapper = new ObjectMapper();
-mapper.registerModule(new VavrModule());
+ObjectMapper mapper = new ObjectMapper().rebuild().addModule(new VavrModule()).build();
 ```
 
 ### Serialization/deserialization

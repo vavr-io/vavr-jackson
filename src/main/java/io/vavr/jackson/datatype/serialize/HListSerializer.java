@@ -19,15 +19,13 @@
  */
 package io.vavr.jackson.datatype.serialize;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
-import com.fasterxml.jackson.databind.ser.std.StdSerializer;
-
-import java.io.IOException;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.core.JsonToken;
+import tools.jackson.databind.JavaType;
+import tools.jackson.databind.SerializationContext;
+import tools.jackson.databind.ValueSerializer;
+import tools.jackson.databind.jsontype.TypeSerializer;
+import tools.jackson.databind.ser.std.StdSerializer;
 
 abstract class HListSerializer<T> extends StdSerializer<T> {
 
@@ -40,20 +38,20 @@ abstract class HListSerializer<T> extends StdSerializer<T> {
         this.type = type;
     }
 
-    void write(Object val, int containedTypeIndex, JsonGenerator gen, SerializerProvider provider) throws IOException {
+    void write(Object val, int containedTypeIndex, JsonGenerator gen, SerializationContext context) {
         if (val != null) {
             if (type.containedTypeCount() > containedTypeIndex) {
-                JsonSerializer<Object> ser;
+                ValueSerializer<Object> ser;
                 JavaType containedType = type.containedType(containedTypeIndex);
                 if (containedType != null && containedType.hasGenericTypes()) {
-                    JavaType st = provider.constructSpecializedType(containedType, val.getClass());
-                    ser = provider.findTypedValueSerializer(st, true, null);
+                    JavaType st = context.constructSpecializedType(containedType, val.getClass());
+                    ser = context.findTypedValueSerializer(st, true);
                 } else {
-                    ser = provider.findTypedValueSerializer(val.getClass(), true, null);
+                    ser = context.findTypedValueSerializer(val.getClass(), true);
                 }
-                ser.serialize(val, gen, provider);
+                ser.serialize(val, gen, context);
             } else {
-                gen.writeObject(val);
+                gen.writePOJO(val);
             }
         } else {
             gen.writeNull();
@@ -61,10 +59,10 @@ abstract class HListSerializer<T> extends StdSerializer<T> {
     }
 
     @Override
-    public void serializeWithType(T value, JsonGenerator gen, SerializerProvider serializers,
-                                  TypeSerializer typeSer) throws IOException {
-        typeSer.writeTypePrefix(gen, typeSer.typeId(value, JsonToken.VALUE_STRING));
-        serialize(value, gen, serializers);
-        typeSer.writeTypeSuffix(gen, typeSer.typeId(value, JsonToken.VALUE_STRING));
+    public void serializeWithType(T value, JsonGenerator gen, SerializationContext context,
+                                  TypeSerializer typeSer) {
+        typeSer.writeTypePrefix(gen, context, typeSer.typeId(value, JsonToken.VALUE_STRING));
+        serialize(value, gen, context);
+        typeSer.writeTypeSuffix(gen, context, typeSer.typeId(value, JsonToken.VALUE_STRING));
     }
 }

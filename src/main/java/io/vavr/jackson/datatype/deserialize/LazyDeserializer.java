@@ -19,28 +19,27 @@
  */
 package io.vavr.jackson.datatype.deserialize;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.BeanProperty;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.deser.ContextualDeserializer;
-import com.fasterxml.jackson.databind.jsontype.TypeDeserializer;
+import tools.jackson.core.JsonParser;
+import tools.jackson.databind.BeanProperty;
+import tools.jackson.databind.DeserializationContext;
+import tools.jackson.databind.JavaType;
+import tools.jackson.databind.DatabindException;
+import tools.jackson.databind.ValueDeserializer;
+import tools.jackson.databind.jsontype.TypeDeserializer;
 import io.vavr.Lazy;
 
 import java.io.IOException;
 
-class LazyDeserializer extends VavrValueDeserializer<Lazy<?>> implements ContextualDeserializer {
+class LazyDeserializer extends VavrValueDeserializer<Lazy<?>> {
 
     private static final long serialVersionUID = 1L;
 
     private final JavaType fullType;
     private final JavaType valueType;
     private final TypeDeserializer valueTypeDeserializer;
-    private final JsonDeserializer<?> valueDeserializer;
+    private final ValueDeserializer<?> valueDeserializer;
 
-    LazyDeserializer(JavaType fullType, JavaType valueType, TypeDeserializer typeDeser, JsonDeserializer<?> valueDeser) {
+    LazyDeserializer(JavaType fullType, JavaType valueType, TypeDeserializer typeDeser, ValueDeserializer<?> valueDeser) {
         super(valueType, 1);
         this.fullType = fullType;
         this.valueType = valueType;
@@ -48,7 +47,7 @@ class LazyDeserializer extends VavrValueDeserializer<Lazy<?>> implements Context
         this.valueDeserializer = valueDeser;
     }
 
-    private LazyDeserializer(LazyDeserializer origin, TypeDeserializer typeDeser, JsonDeserializer<?> valueDeser) {
+    private LazyDeserializer(LazyDeserializer origin, TypeDeserializer typeDeser, ValueDeserializer<?> valueDeser) {
         this(origin.fullType, origin.valueType, typeDeser, valueDeser);
     }
 
@@ -69,8 +68,8 @@ class LazyDeserializer extends VavrValueDeserializer<Lazy<?>> implements Context
     }
 
     @Override
-    public JsonDeserializer<?> createContextual(DeserializationContext ctxt, BeanProperty property) throws JsonMappingException {
-        JsonDeserializer<?> deser = valueDeserializer;
+    public ValueDeserializer<?> createContextual(DeserializationContext ctxt, BeanProperty property) throws DatabindException {
+        ValueDeserializer<?> deser = valueDeserializer;
         TypeDeserializer typeDeser = valueTypeDeserializer;
         JavaType refType = valueType;
 

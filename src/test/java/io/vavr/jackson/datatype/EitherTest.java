@@ -2,10 +2,11 @@ package io.vavr.jackson.datatype;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.module.scala.DefaultScalaModule;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.DatabindException;
+import tools.jackson.databind.DeserializationFeature;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.module.scala.DefaultScalaModule;
 import io.vavr.Tuple;
 import io.vavr.collection.HashSet;
 import io.vavr.collection.List;
@@ -26,7 +27,7 @@ class EitherTest extends BaseTest {
 
     @Test
     void shouldSerializeAndDeserializeWrappedEitherObject() throws IOException {
-        ObjectMapper mapper = mapper().addMixIn(Either.class, WrapperObject.class);
+        ObjectMapper mapper = mapper().rebuild().addMixIn(Either.class, WrapperObject.class).build();
         Either<Integer, Integer> src = Either.right(1);
         String plainJson = mapper().writeValueAsString(src);
         String wrappedJson = mapper.writeValueAsString(src);
@@ -54,28 +55,28 @@ class EitherTest extends BaseTest {
     @Test
     void shouldThrowExceptionWhenInvalidJsonHasExtraRightValue() throws IOException {
         String json = "[\"right\", 2, 3]";
-        assertThatExceptionOfType(JsonMappingException.class).isThrownBy(() ->
+        assertThatExceptionOfType(DatabindException.class).isThrownBy(() ->
             mapper().readValue(json, Either.class));
     }
 
     @Test
     void shouldThrowExceptionWhenInvalidJsonHasMissingRightValue() throws IOException {
         String json = "[\"right\"]";
-        assertThatExceptionOfType(JsonMappingException.class).isThrownBy(() ->
+        assertThatExceptionOfType(DatabindException.class).isThrownBy(() ->
             mapper().readValue(json, Either.class));
     }
 
     @Test
     void shouldThrowExceptionWhenInvalidJsonHasMalformedLeftType() throws IOException {
         String json = "[\"lEft\", 42]";
-        assertThatExceptionOfType(JsonMappingException.class).isThrownBy(() ->
+        assertThatExceptionOfType(DatabindException.class).isThrownBy(() ->
             mapper().readValue(json, Either.class));
     }
 
     @Test
     void shouldThrowExceptionWhenInvalidJsonHasNonStringLeftOrRight() throws IOException {
         String json = "[42, 42]";
-        assertThatExceptionOfType(JsonMappingException.class).isThrownBy(() ->
+        assertThatExceptionOfType(DatabindException.class).isThrownBy(() ->
             mapper().readValue(json, Either.class));
     }
 
@@ -142,7 +143,7 @@ class EitherTest extends BaseTest {
     void shouldSerializeAndDeserializeScalaEither() throws IOException {
         final scala.util.Either<String, BigInteger> left = scala.util.Left.apply("test");
         final scala.util.Either<String, BigInteger> right = scala.util.Right.apply(BigInteger.ONE);
-        final ObjectMapper mapper = mapper().registerModule(new DefaultScalaModule());
+        final ObjectMapper mapper = mapper().rebuild().addModule(new DefaultScalaModule()).disable(DeserializationFeature.FAIL_ON_TRAILING_TOKENS).build();
 
         final String serializedLeft = mapper.writeValueAsString(left);
         final Either<String, BigInteger> deserializedLeft =
