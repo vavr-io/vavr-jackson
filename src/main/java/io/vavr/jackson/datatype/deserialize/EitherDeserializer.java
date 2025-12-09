@@ -28,6 +28,7 @@ import io.vavr.control.Either;
 import tools.jackson.databind.ValueDeserializer;
 
 import static tools.jackson.core.JsonToken.END_ARRAY;
+import static tools.jackson.core.JsonToken.END_OBJECT;
 import static tools.jackson.core.JsonToken.START_ARRAY;
 import static tools.jackson.core.JsonToken.START_OBJECT;
 import static tools.jackson.core.JsonToken.VALUE_NULL;
@@ -80,13 +81,9 @@ class EitherDeserializer extends VavrValueDeserializer<Either<?, ?>> {
             final JsonToken currentToken = p.currentToken();
             final String type = p.nextName();
             if (isRight(type)) {
-                final ValueDeserializer<?> deserializer = deserializer(1);
-                final Object value = p.nextToken() != VALUE_NULL ? deserializer.deserialize(p, ctxt) : deserializer.getNullValue(ctxt);
-                return Either.right(value);
+                return Either.right(getValue(p, ctxt, 1));
             } else if (isLeft(type)) {
-                final ValueDeserializer<?> deserializer = deserializer(0);
-                final Object value = p.nextToken() != VALUE_NULL ? deserializer.deserialize(p, ctxt) : deserializer.getNullValue(ctxt);
-                return Either.left(value);
+                return Either.left(getValue(p, ctxt, 0));
             } else {
                 throw mappingException(ctxt, javaType.getRawClass(), currentToken);
             }
@@ -94,6 +91,8 @@ class EitherDeserializer extends VavrValueDeserializer<Either<?, ?>> {
             throw mappingException(ctxt, javaType.getRawClass(), p.currentToken());
         }
     }
+
+
 
     @Override
     public void resolve(DeserializationContext ctxt) throws DatabindException {
@@ -107,5 +106,14 @@ class EitherDeserializer extends VavrValueDeserializer<Either<?, ?>> {
 
     private static boolean isLeft(final String fieldName) {
         return "left".equals(fieldName) || "l".equals(fieldName);
+    }
+
+    private Object getValue(JsonParser p, DeserializationContext ctxt, int index) {
+        final ValueDeserializer<?> deserializer = deserializer(index);
+        final Object value = p.nextToken() != VALUE_NULL ? deserializer.deserialize(p, ctxt) : deserializer.getNullValue(ctxt);
+        if (p.nextToken() != END_OBJECT) {
+            throw mappingException(ctxt, javaType.getRawClass(), p.currentToken());
+        }
+        return value;
     }
 }
