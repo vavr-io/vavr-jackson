@@ -1,7 +1,7 @@
 package io.vavr.jackson.datatype.bean;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.annotation.JsonDeserialize;
 import io.vavr.Lazy;
 import io.vavr.collection.HashMap;
 import io.vavr.collection.List;
@@ -9,6 +9,7 @@ import io.vavr.collection.Map;
 import io.vavr.control.Option;
 import io.vavr.jackson.datatype.VavrModule;
 import org.junit.jupiter.api.Test;
+import tools.jackson.databind.introspect.DefaultAccessorNamingStrategy;
 
 import java.io.IOException;
 
@@ -205,9 +206,11 @@ public class AbstractContentTest {
         json_roundtrip_test(v, V.class);
     }
 
-    public static <T> void json_roundtrip_test(T value, Class<T> valueType) throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.registerModule(new VavrModule());
+    public static <T> void json_roundtrip_test(T value, Class<T> valueType)  throws IOException {
+        ObjectMapper mapper = new ObjectMapper().rebuild()
+            .addModule(new VavrModule())
+            .accessorNaming(new DefaultAccessorNamingStrategy.Provider()
+                .withFirstCharAcceptance(true, false)). build();
         String asString = mapper.writeValueAsString(value);
         assertThat(asString).isNotNull();
         final T value_decoded = mapper.readValue(asString, valueType);

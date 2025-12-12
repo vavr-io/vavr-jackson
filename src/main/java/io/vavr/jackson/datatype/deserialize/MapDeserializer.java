@@ -19,49 +19,47 @@
  */
 package io.vavr.jackson.datatype.deserialize;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.KeyDeserializer;
-import com.fasterxml.jackson.databind.jsontype.TypeDeserializer;
-import com.fasterxml.jackson.databind.type.MapLikeType;
+import tools.jackson.core.JsonParser;
+import tools.jackson.core.JsonToken;
+import tools.jackson.databind.DeserializationContext;
+import tools.jackson.databind.ValueDeserializer;
+import tools.jackson.databind.KeyDeserializer;
+import tools.jackson.databind.jsontype.TypeDeserializer;
+import tools.jackson.databind.type.MapLikeType;
 import io.vavr.collection.HashMap;
 import io.vavr.collection.LinkedHashMap;
 import io.vavr.collection.Map;
 import io.vavr.collection.SortedMap;
 import io.vavr.collection.TreeMap;
 
-import java.io.IOException;
-
 class MapDeserializer extends MaplikeDeserializer<Map<?, ?>> {
 
     private static final long serialVersionUID = 1L;
 
     MapDeserializer(MapLikeType mapType, KeyDeserializer keyDeserializer, TypeDeserializer elementTypeDeserializer,
-                    JsonDeserializer<?> elementDeserializer) {
+                    ValueDeserializer<?> elementDeserializer) {
         super(mapType, keyDeserializer, elementTypeDeserializer, elementDeserializer);
     }
 
-    MapDeserializer(MapDeserializer origin, KeyDeserializer keyDeserializer, TypeDeserializer elementTypeDeserializer, JsonDeserializer<?> valueDeserializer) {
+    MapDeserializer(MapDeserializer origin, KeyDeserializer keyDeserializer, TypeDeserializer elementTypeDeserializer, ValueDeserializer<?> valueDeserializer) {
         super(origin.mapType, keyDeserializer, elementTypeDeserializer, valueDeserializer);
     }
 
     @Override
     MaplikeDeserializer<Map<?, ?>> createDeserializer(KeyDeserializer keyDeserializer,
                                                       TypeDeserializer elementTypeDeserializer,
-                                                      JsonDeserializer<?> valueDeserializer) {
+                                                      ValueDeserializer<?> valueDeserializer) {
         return new MapDeserializer(this, keyDeserializer, elementTypeDeserializer, valueDeserializer);
     }
 
     @Override
-    public Map<?, ?> deserialize(JsonParser p, DeserializationContext ctxt, Map<?, ?> intoValue) throws IOException {
+    public Map<?, ?> deserialize(JsonParser p, DeserializationContext ctxt, Map<?, ?> intoValue) {
         final java.util.LinkedHashMap<Object, Object> result = new java.util.LinkedHashMap<>();
         if (intoValue != null) {
             result.putAll(intoValue.toJavaMap());
         }
         while (p.nextToken() != JsonToken.END_OBJECT) {
-            String name = p.getCurrentName();
+            String name = p.currentName();
             Object key = keyDeserializer.deserializeKey(name, ctxt);
             JsonToken t = p.nextToken();
             Object value = deserializeValue(p, ctxt, intoValue, t, result, key);
@@ -77,7 +75,7 @@ class MapDeserializer extends MaplikeDeserializer<Map<?, ?>> {
         return HashMap.ofAll(result);
     }
 
-    private Object deserializeValue(JsonParser p, DeserializationContext ctxt, Map<?, ?> intoValue, JsonToken t, java.util.LinkedHashMap<Object, Object> result, Object key) throws IOException {
+    private Object deserializeValue(JsonParser p, DeserializationContext ctxt, Map<?, ?> intoValue, JsonToken t, java.util.LinkedHashMap<Object, Object> result, Object key) {
         if (t == JsonToken.VALUE_NULL) {
             return elementDeserializer.getNullValue(ctxt);
         }
@@ -100,7 +98,7 @@ class MapDeserializer extends MaplikeDeserializer<Map<?, ?>> {
     }
 
     @Override
-    public Map<?, ?> deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+    public Map<?, ?> deserialize(JsonParser p, DeserializationContext ctxt) {
         return deserialize(p, ctxt, null);
     }
 

@@ -1,6 +1,6 @@
 package io.vavr.jackson.datatype.seq;
 
-import com.fasterxml.jackson.core.type.TypeReference;
+import tools.jackson.core.type.TypeReference;
 import io.vavr.collection.Array;
 import io.vavr.collection.IndexedSeq;
 import io.vavr.collection.Seq;

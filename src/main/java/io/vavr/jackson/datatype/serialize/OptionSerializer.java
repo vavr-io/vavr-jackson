@@ -19,24 +19,21 @@
  */
 package io.vavr.jackson.datatype.serialize;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.AnnotationIntrospector;
-import com.fasterxml.jackson.databind.BeanProperty;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.MapperFeature;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.introspect.Annotated;
-import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
-import com.fasterxml.jackson.databind.ser.ContextualSerializer;
-import com.fasterxml.jackson.databind.util.NameTransformer;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.databind.AnnotationIntrospector;
+import tools.jackson.databind.BeanProperty;
+import tools.jackson.databind.JavaType;
+import tools.jackson.databind.DatabindException;
+import tools.jackson.databind.MapperFeature;
+import tools.jackson.databind.SerializationContext;
+import tools.jackson.databind.ValueSerializer;
+import tools.jackson.databind.annotation.JsonSerialize;
+import tools.jackson.databind.introspect.Annotated;
+import tools.jackson.databind.jsontype.TypeSerializer;
+import tools.jackson.databind.util.NameTransformer;
 import io.vavr.control.Option;
 
-import java.io.IOException;
-
-class OptionSerializer extends HListSerializer<Option<?>> implements ContextualSerializer {
+class OptionSerializer extends HListSerializer<Option<?>> {
 
     private static final long serialVersionUID = 1L;
 
@@ -44,20 +41,20 @@ class OptionSerializer extends HListSerializer<Option<?>> implements ContextualS
 
     private final TypeSerializer valueTypeSerializer;
 
-    private final JsonSerializer<Object> valueSerializer;
+    private final ValueSerializer<Object> valueSerializer;
 
     private final JavaType fullType;
 
     private final JavaType valueType;
 
     @SuppressWarnings("unchecked")
-    OptionSerializer(JavaType fullType, JavaType valueType, TypeSerializer valueTypeSerializer, JsonSerializer<?> valueSerializer, boolean plainMode) {
+    OptionSerializer(JavaType fullType, JavaType valueType, TypeSerializer valueTypeSerializer, ValueSerializer<?> valueSerializer, boolean plainMode) {
         super(fullType);
         this.fullType = fullType;
         this.valueType = valueType;
         this.plainMode = plainMode;
         this.valueTypeSerializer = valueTypeSerializer;
-        this.valueSerializer = (JsonSerializer<Object>) valueSerializer;
+        this.valueSerializer = (ValueSerializer<Object>) valueSerializer;
     }
 
     JavaType getValueType() {
@@ -65,13 +62,13 @@ class OptionSerializer extends HListSerializer<Option<?>> implements ContextualS
     }
 
     @Override
-    public void serialize(Option<?> value, JsonGenerator gen, SerializerProvider provider) throws IOException {
+    public void serialize(Option<?> value, JsonGenerator gen, SerializationContext context) {
         if (plainMode) {
             if (value.isDefined()) {
                 if (valueSerializer != null) {
-                    valueSerializer.serialize(value.get(), gen, provider);
+                    valueSerializer.serialize(value.get(), gen, context);
                 } else {
-                    write(value.get(), 0, gen, provider);
+                    write(value.get(), 0, gen, context);
                 }
             } else {
                 gen.writeNull();
@@ -80,7 +77,7 @@ class OptionSerializer extends HListSerializer<Option<?>> implements ContextualS
             gen.writeStartArray();
             if (value.isDefined()) {
                 gen.writeString("defined");
-                write(value.get(), 0, gen, provider);
+                write(value.get(), 0, gen, context);
             } else {
                 gen.writeString("undefined");
             }
@@ -89,21 +86,21 @@ class OptionSerializer extends HListSerializer<Option<?>> implements ContextualS
     }
 
     @Override
-    public boolean isEmpty(SerializerProvider provider, Option<?> value) {
+    public boolean isEmpty(SerializationContext provider, Option<?> value) {
         return value.isEmpty();
     }
 
     @Override
-    public JsonSerializer<?> createContextual(SerializerProvider provider, BeanProperty property) throws JsonMappingException {
+    public ValueSerializer<?> createContextual(SerializationContext provider, BeanProperty property) throws DatabindException {
         TypeSerializer vts = valueTypeSerializer;
         if (vts != null) {
-            vts = vts.forProperty(property);
+            vts = vts.forProperty(provider, property);
         }
-        JsonSerializer<?> ser = valueSerializer;
+        ValueSerializer<?> ser = valueSerializer;
         if (ser == null) {
             // A few conditions needed to be able to fetch serializer here:
             if (useStatic(provider, property, valueType)) {
-                ser = provider.findTypedValueSerializer(valueType, true, property);
+                ser = provider.findPrimaryPropertySerializer(valueType, property);
             }
         } else {
             ser = provider.handlePrimaryContextualization(ser, property);
@@ -111,7 +108,7 @@ class OptionSerializer extends HListSerializer<Option<?>> implements ContextualS
         return withResolved(fullType, vts, ser);
     }
 
-    private boolean useStatic(SerializerProvider provider, BeanProperty property, JavaType referredType) {
+    private boolean useStatic(SerializationContext context, BeanProperty property, JavaType referredType) {
         // First: no serializer for `Object.class`, must be dynamic
         if (referredType.isJavaLangObject()) {
             return false;
@@ -125,11 +122,11 @@ class OptionSerializer extends HListSerializer<Option<?>> implements ContextualS
             return true;
         }
         // if neither, maybe explicit annotation?
-        AnnotationIntrospector intr = provider.getAnnotationIntrospector();
+        AnnotationIntrospector intr = context.getAnnotationIntrospector();
         if ((intr != null) && (property != null)) {
             Annotated ann = property.getMember();
             if (ann != null) {
-                JsonSerialize.Typing t = intr.findSerializationTyping(property.getMember());
+                JsonSerialize.Typing t = intr.findSerializationTyping(context.getConfig(), property.getMember());
                 if (t == JsonSerialize.Typing.STATIC) {
                     return true;
                 }
@@ -139,10 +136,10 @@ class OptionSerializer extends HListSerializer<Option<?>> implements ContextualS
             }
         }
         // and finally, may be forced by global static typing (unlikely...)
-        return provider.isEnabled(MapperFeature.USE_STATIC_TYPING);
+        return context.isEnabled(MapperFeature.USE_STATIC_TYPING);
     }
 
-    private OptionSerializer withResolved(JavaType refType, TypeSerializer typeSer, JsonSerializer<?> valueSer) {
+    private OptionSerializer withResolved(JavaType refType, TypeSerializer typeSer, ValueSerializer<?> valueSer) {
         if (refType == valueType && typeSer == valueTypeSerializer && valueSer == valueSerializer) {
             return this;
         }
@@ -150,7 +147,7 @@ class OptionSerializer extends HListSerializer<Option<?>> implements ContextualS
     }
 
     @Override
-    public JsonSerializer<Option<?>> unwrappingSerializer(NameTransformer unwrapper) {
+    public ValueSerializer<Option<?>> unwrappingSerializer(NameTransformer unwrapper) {
         return new UnwrappingOptionSerializer(this, unwrapper);
     }
 }

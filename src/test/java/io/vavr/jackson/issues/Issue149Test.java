@@ -2,8 +2,7 @@ package io.vavr.jackson.issues;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import io.vavr.collection.List;
 import io.vavr.control.Option;
 import io.vavr.control.Try;
@@ -48,7 +47,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 public class Issue149Test extends BaseTest {
 
     @Test
-    public void itShouldRespectTheJsonUnwrappedAnnotation() throws JsonProcessingException {
+    public void itShouldRespectTheJsonUnwrappedAnnotation() {
         // Given a mapper and a Foo object
         ObjectMapper mapper = mapper();
         Foo foo = new Foo();
@@ -74,7 +73,7 @@ public class Issue149Test extends BaseTest {
 
         // When serializing the FooList object
         assertThatThrownBy(() -> mapper.writeValueAsString(fooList))
-            .hasRootCauseMessage("Cannot unwrap a non-bean object");
+            .hasMessageStartingWith("Cannot unwrap a non-bean object");
     }
 
     @Test
@@ -96,7 +95,7 @@ public class Issue149Test extends BaseTest {
 
         // When serializing the FooEither object
         assertThatThrownBy(() -> mapper.writeValueAsString(fooEither))
-            .hasRootCauseMessage("Cannot unwrap a non-bean object");
+            .hasMessageStartingWith("Cannot unwrap a non-bean object");
     }
 
     static class Foo {

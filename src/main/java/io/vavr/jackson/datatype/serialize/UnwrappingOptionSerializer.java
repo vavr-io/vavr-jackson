@@ -19,18 +19,16 @@
  */
 package io.vavr.jackson.datatype.serialize;
 
-import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.*;
-import com.fasterxml.jackson.databind.ser.BeanSerializer;
-import com.fasterxml.jackson.databind.ser.ContextualSerializer;
-import com.fasterxml.jackson.databind.ser.std.BeanSerializerBase;
-import com.fasterxml.jackson.databind.ser.std.StdSerializer;
-import com.fasterxml.jackson.databind.util.NameTransformer;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.core.exc.StreamWriteException;
+import tools.jackson.databind.*;
+import tools.jackson.databind.ValueSerializer;
+import tools.jackson.databind.ser.BeanSerializer;
+import tools.jackson.databind.ser.bean.BeanSerializerBase;
+import tools.jackson.databind.ser.std.StdSerializer;
+import tools.jackson.databind.util.NameTransformer;
 import io.vavr.control.Either;
 import io.vavr.control.Option;
-
-import java.io.IOException;
 
 /**
  * Serializer for {@link Option} that unwraps the value if it is defined and the property is annotated with {@code @JsonUnwrapped}.
@@ -38,11 +36,11 @@ import java.io.IOException;
  * Note that {@code Option} values of other Vavr types like {@link io.vavr.control.Try}, {@link Either}, etc are not supported
  * due to {@link com.fasterxml.jackson.annotation.JsonUnwrapped} only supports Java beans.
  *
- * Delegates the unwrapping to a {@link com.fasterxml.jackson.databind.ser.impl.UnwrappingBeanSerializer}
+ * Delegates the unwrapping to a {@link tools.jackson.databind.ser.impl.UnwrappingBeanSerializer}
  * since to support unwrapping requires to serialize only the fields instead of the whole object
  * but that is an internal {@link BeanSerializerBase} function and therefore not available here.
  */
-class UnwrappingOptionSerializer extends StdSerializer<Option<?>> implements ContextualSerializer {
+class UnwrappingOptionSerializer extends StdSerializer<Option<?>> {
 
     private static final long serialVersionUID = 1L;
     private final OptionSerializer optionSerializer;
@@ -60,28 +58,28 @@ class UnwrappingOptionSerializer extends StdSerializer<Option<?>> implements Con
      *
      * @param value Value to serialize; can <b>not</b> be null.
      * @param gen Generator used to output resulting Json content
-     * @param provider Provider that can be used to get serializers for serializing Objects value contains, if any.
-     * @throws JsonGenerationException if the option value is not a bean
+     * @param context Provider that can be used to get serializers for serializing Objects value contains, if any.
+     * @throws StreamWriteException if the option value is not a bean
      */
     @Override
-    public void serialize(Option<?> value, JsonGenerator gen, SerializerProvider provider) throws IOException {
+    public void serialize(Option<?> value, JsonGenerator gen, SerializationContext context) {
             if (value.isDefined()) {
-                JsonSerializer ser;
+                ValueSerializer<?> ser;
                 Object val = value.get();
                 JavaType containedType = optionSerializer.getValueType().containedType(0);
                 if (containedType != null && containedType.hasGenericTypes()) {
-                    JavaType st = provider.constructSpecializedType(containedType, val.getClass());
-                    ser = provider.findTypedValueSerializer(st, true, null);
+                    JavaType st = context.constructSpecializedType(containedType, val.getClass());
+                    ser = context.findTypedValueSerializer(st, true);
                 } else {
-                    ser = provider.findTypedValueSerializer(val.getClass(), true, null);
+                    ser = context.findTypedValueSerializer(val.getClass(), true);
                 }
                 // can only unwrap if the inner values is a bean.
-                if (ser instanceof BeanSerializer) {
-                    JsonSerializer<Object> unwrappingSerializer = ser.unwrappingSerializer(unwrapper);
-                    unwrappingSerializer.serialize(val, gen, provider);
+                if (ser instanceof BeanSerializerBase) {
+                    ValueSerializer<Object> unwrappingSerializer = (ValueSerializer<Object>) ser.unwrappingSerializer(unwrapper);
+                    unwrappingSerializer.serialize(val, gen, context);
                 } else {
                     // Cannot unwrap a non-bean object, so throw an exception
-                    throw new JsonGenerationException("Cannot unwrap a non-bean object", gen);
+                    throw new StreamWriteException(gen, "Cannot unwrap a non-bean object");
                 }
             } else {
                 gen.writeNull();
@@ -94,12 +92,12 @@ class UnwrappingOptionSerializer extends StdSerializer<Option<?>> implements Con
     }
 
     @Override
-    public boolean isEmpty(SerializerProvider provider, Option<?> value) {
+    public boolean isEmpty(SerializationContext context, Option<?> value) {
         return value.isEmpty();
     }
 
     @Override
-    public JsonSerializer<?> createContextual(SerializerProvider provider, BeanProperty property) throws JsonMappingException {
-        return optionSerializer.createContextual(provider, property);
+    public ValueSerializer<?> createContextual(SerializationContext context, BeanProperty property) throws DatabindException {
+        return optionSerializer.createContextual(context, property);
     }
 }

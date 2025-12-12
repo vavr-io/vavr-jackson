@@ -19,60 +19,57 @@
  */
 package io.vavr.jackson.datatype.serialize;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.AnnotationIntrospector;
-import com.fasterxml.jackson.databind.BeanProperty;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.MapperFeature;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.introspect.Annotated;
-import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
-import com.fasterxml.jackson.databind.ser.ContextualSerializer;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.databind.AnnotationIntrospector;
+import tools.jackson.databind.BeanProperty;
+import tools.jackson.databind.JavaType;
+import tools.jackson.databind.DatabindException;
+import tools.jackson.databind.MapperFeature;
+import tools.jackson.databind.SerializationContext;
+import tools.jackson.databind.ValueSerializer;
+import tools.jackson.databind.annotation.JsonSerialize;
+import tools.jackson.databind.introspect.Annotated;
+import tools.jackson.databind.jsontype.TypeSerializer;
 import io.vavr.Lazy;
 
-import java.io.IOException;
-
-class LazySerializer extends HListSerializer<Lazy<?>> implements ContextualSerializer {
+class LazySerializer extends HListSerializer<Lazy<?>> {
 
     private static final long serialVersionUID = 1L;
 
     private final JavaType fullType;
     private final JavaType valueType;
     private final TypeSerializer valueTypeSerializer;
-    private final JsonSerializer<Object> valueSerializer;
+    private final ValueSerializer<Object> valueSerializer;
 
     @SuppressWarnings("unchecked")
-    LazySerializer(JavaType fullType, JavaType valueType, TypeSerializer typeSer, JsonSerializer<?> valueSer) {
+    LazySerializer(JavaType fullType, JavaType valueType, TypeSerializer typeSer, ValueSerializer<?> valueSer) {
         super(fullType);
         this.fullType = fullType;
         this.valueType = valueType;
         this.valueTypeSerializer = typeSer;
-        this.valueSerializer = (JsonSerializer<Object>) valueSer;
+        this.valueSerializer = (ValueSerializer<Object>) valueSer;
     }
 
     @Override
-    public void serialize(Lazy<?> value, JsonGenerator gen, SerializerProvider provider) throws IOException {
+    public void serialize(Lazy<?> value, JsonGenerator gen, SerializationContext context) {
         if (valueSerializer != null) {
-            valueSerializer.serialize(value.get(), gen, provider);
+            valueSerializer.serialize(value.get(), gen, context);
         } else {
-            write(value.get(), 0, gen, provider);
+            write(value.get(), 0, gen, context);
         }
     }
 
     @Override
-    public JsonSerializer<?> createContextual(SerializerProvider provider, BeanProperty property) throws JsonMappingException {
+    public ValueSerializer<?> createContextual(SerializationContext provider, BeanProperty property) throws DatabindException {
         TypeSerializer vts = valueTypeSerializer;
         if (vts != null) {
-            vts = vts.forProperty(property);
+            vts = vts.forProperty(provider, property);
         }
-        JsonSerializer<?> ser = valueSerializer;
+        ValueSerializer<?> ser = valueSerializer;
         if (ser == null) {
             // A few conditions needed to be able to fetch serializer here:
             if (useStatic(provider, property, valueType)) {
-                ser = provider.findTypedValueSerializer(valueType, true, property);
+                ser = provider.findPrimaryPropertySerializer(valueType, property);
             }
         } else {
             ser = provider.handlePrimaryContextualization(ser, property);
@@ -80,7 +77,7 @@ class LazySerializer extends HListSerializer<Lazy<?>> implements ContextualSeria
         return new LazySerializer(fullType, valueType, vts, ser);
     }
 
-    private boolean useStatic(SerializerProvider provider, BeanProperty property, JavaType referredType) {
+    private boolean useStatic(SerializationContext context, BeanProperty property, JavaType referredType) {
         // First: no serializer for `Object.class`, must be dynamic
         if (referredType.isJavaLangObject()) {
             return false;
@@ -94,11 +91,11 @@ class LazySerializer extends HListSerializer<Lazy<?>> implements ContextualSeria
             return true;
         }
         // if neither, maybe explicit annotation?
-        AnnotationIntrospector intr = provider.getAnnotationIntrospector();
+        AnnotationIntrospector intr = context.getAnnotationIntrospector();
         if ((intr != null) && (property != null)) {
             Annotated ann = property.getMember();
             if (ann != null) {
-                JsonSerialize.Typing t = intr.findSerializationTyping(property.getMember());
+                JsonSerialize.Typing t = intr.findSerializationTyping(context.getConfig(), property.getMember());
                 if (t == JsonSerialize.Typing.STATIC) {
                     return true;
                 }
@@ -108,6 +105,6 @@ class LazySerializer extends HListSerializer<Lazy<?>> implements ContextualSeria
             }
         }
         // and finally, may be forced by global static typing (unlikely...)
-        return provider.isEnabled(MapperFeature.USE_STATIC_TYPING);
+        return context.isEnabled(MapperFeature.USE_STATIC_TYPING);
     }
 }

@@ -1,10 +1,9 @@
 package io.vavr.jackson.datatype;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectWriter;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.dataformat.csv.CsvMapper;
-import com.fasterxml.jackson.datatype.joda.JodaModule;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.ObjectWriter;
+import tools.jackson.dataformat.csv.CsvMapper;
+import tools.jackson.datatype.joda.JodaModule;
 import io.vavr.collection.List;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -24,10 +23,8 @@ class SerializationFeatureTest {
         java.util.List<DateTime> dateTimeJavaList = new ArrayList<>();
         dateTimeJavaList.add(dateTime);
 
-        CsvMapper mapper = new CsvMapper();
-        mapper.registerModule(new JodaModule());
-        mapper.registerModule(new VavrModule());
-        ObjectWriter writer = mapper.writer().without(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        CsvMapper mapper = new CsvMapper().rebuild().addModules(new JodaModule(), new VavrModule()).build();
+        ObjectWriter writer = mapper.writer();
 
         String serializedDateTime = writer.writeValueAsString(dateTime);
         String serializedDateTimeJavaList = writer.writeValueAsString(dateTimeJavaList);

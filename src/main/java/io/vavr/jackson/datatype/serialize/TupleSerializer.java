@@ -19,11 +19,10 @@
  */
 package io.vavr.jackson.datatype.serialize;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.SerializerProvider;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.databind.JavaType;
+import tools.jackson.databind.SerializationContext;
 
-import java.io.IOException;
 import java.util.List;
 
 abstract class TupleSerializer<T> extends HListSerializer<T> {
@@ -35,11 +34,11 @@ abstract class TupleSerializer<T> extends HListSerializer<T> {
     }
 
     @Override
-    public void serialize(T value, JsonGenerator gen, SerializerProvider provider) throws IOException {
+    public void serialize(T value, JsonGenerator gen, SerializationContext context) {
         gen.writeStartArray();
         List<?> list = toList(value);
         for (int i = 0; i < list.size(); i++) {
-            write(list.get(i), i, gen, provider);
+            write(list.get(i), i, gen, context);
         }
         gen.writeEndArray();
     }

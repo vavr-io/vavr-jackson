@@ -3,9 +3,8 @@ package io.vavr.jackson.datatype.seq;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.ObjectMapper;
 import io.vavr.collection.List;
 import io.vavr.collection.Seq;
 import io.vavr.control.Option;
@@ -83,7 +82,7 @@ class ListTest extends SeqTest {
 
         // When serializing them using object mapper
         // with VAVR module and Java Time module
-        ObjectMapper mapper = mapper().registerModule(new JavaTimeModule());
+        ObjectMapper mapper = mapper();
         String json = mapper.writeValueAsString(src);
 
         // Then the serialization is successful

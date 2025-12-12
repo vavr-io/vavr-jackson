@@ -1,7 +1,6 @@
 package io.vavr.jackson.datatype;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
+import tools.jackson.core.type.TypeReference;
 import io.vavr.CheckedFunction0;
 import io.vavr.CheckedFunction1;
 import io.vavr.CheckedFunction2;
@@ -30,7 +29,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOf
 class FunctionTest extends BaseTest {
 
     @Test
-    void shouldThrowExceptionForInvalidFunctionSerialization() throws JsonProcessingException {
+    void shouldThrowExceptionForInvalidFunctionSerialization() {
         Function1<String, String> src = i1 -> i1 + 42;
         String json = mapper().writer().writeValueAsString(src);
         String broken = "\"00000000" + json.substring(1);

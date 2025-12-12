@@ -19,11 +19,11 @@
  */
 package io.vavr.jackson.datatype.deserialize;
 
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.jsontype.TypeDeserializer;
+import tools.jackson.databind.DeserializationContext;
+import tools.jackson.databind.JavaType;
+import tools.jackson.databind.DatabindException;
+import tools.jackson.databind.ValueDeserializer;
+import tools.jackson.databind.jsontype.TypeDeserializer;
 import io.vavr.collection.PriorityQueue;
 
 import java.io.Serializable;
@@ -35,7 +35,7 @@ class PriorityQueueDeserializer extends ArrayDeserializer<PriorityQueue<?>> {
     private static final long serialVersionUID = 1L;
 
     PriorityQueueDeserializer(JavaType collectionType, JavaType elementType, TypeDeserializer elementTypeDeserializer,
-                              JsonDeserializer<?> elementDeserializer, boolean deserializeNullAsEmptyCollection) {
+                              ValueDeserializer<?> elementDeserializer, boolean deserializeNullAsEmptyCollection) {
         super(collectionType, 1, elementType, elementTypeDeserializer, elementDeserializer, deserializeNullAsEmptyCollection);
     }
 
@@ -47,20 +47,22 @@ class PriorityQueueDeserializer extends ArrayDeserializer<PriorityQueue<?>> {
      * @param elementDeserializer     the new deserializer for the element itself
      */
     PriorityQueueDeserializer(PriorityQueueDeserializer origin, TypeDeserializer elementTypeDeserializer,
-                              JsonDeserializer<?> elementDeserializer) {
+                              ValueDeserializer<?> elementDeserializer) {
         this(origin.collectionType, origin.elementType, elementTypeDeserializer, elementDeserializer,
             origin.deserializeNullAsEmptyCollection);
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    PriorityQueue<?> create(List<Object> list, DeserializationContext ctxt) throws JsonMappingException {
+    PriorityQueue<?> create(List<Object> list, DeserializationContext ctxt) throws DatabindException {
         checkContainedTypeIsComparable(ctxt, collectionType.containedTypeOrUnknown(0));
         return PriorityQueue.ofAll((Comparator<Object> & Serializable) (o1, o2) -> ((Comparable) o1).compareTo(o2), list);
     }
 
     @Override
-    PriorityQueueDeserializer createDeserializer(TypeDeserializer elementTypeDeserializer, JsonDeserializer<?> elementDeserializer) {
+    ArrayDeserializer<PriorityQueue<?>> createDeserializer(TypeDeserializer elementTypeDeserializer, ValueDeserializer<?> elementDeserializer) {
         return new PriorityQueueDeserializer(this, elementTypeDeserializer, elementDeserializer);
     }
+
+
 }

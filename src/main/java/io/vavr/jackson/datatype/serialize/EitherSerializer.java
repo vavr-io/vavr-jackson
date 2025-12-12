@@ -19,12 +19,10 @@
  */
 package io.vavr.jackson.datatype.serialize;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.SerializerProvider;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.databind.JavaType;
 import io.vavr.control.Either;
-
-import java.io.IOException;
+import tools.jackson.databind.SerializationContext;
 
 class EitherSerializer extends HListSerializer<Either<?, ?>> {
 
@@ -35,20 +33,20 @@ class EitherSerializer extends HListSerializer<Either<?, ?>> {
     }
 
     @Override
-    public void serialize(Either<?, ?> value, JsonGenerator gen, SerializerProvider provider) throws IOException {
+    public void serialize(Either<?, ?> value, JsonGenerator gen, SerializationContext context) {
         gen.writeStartArray();
         if (value.isLeft()) {
             gen.writeString("left");
-            write(value.getLeft(), 0, gen, provider);
+            write(value.getLeft(), 0, gen, context);
         } else {
             gen.writeString("right");
-            write(value.get(), 1, gen, provider);
+            write(value.get(), 1, gen, context);
         }
         gen.writeEndArray();
     }
 
     @Override
-    public boolean isEmpty(SerializerProvider provider, Either<?, ?> value) {
+    public boolean isEmpty(SerializationContext context, Either<?, ?> value) {
         return value.isEmpty();
     }
 }

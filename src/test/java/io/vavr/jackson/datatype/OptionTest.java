@@ -2,8 +2,8 @@ package io.vavr.jackson.datatype;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.DatabindException;
+import tools.jackson.databind.ObjectMapper;
 import io.vavr.control.Option;
 import org.junit.jupiter.api.Test;
 
@@ -48,35 +48,35 @@ class OptionTest extends BaseTest {
     @Test
     void shouldThrowExceptionForInvalidOptionWithExtraValue() {
         String json = "[\"defined\", 2, 3]";
-        assertThatExceptionOfType(JsonMappingException.class).isThrownBy(() ->
+        assertThatExceptionOfType(DatabindException.class).isThrownBy(() ->
             mapper(optSettings).readValue(json, Option.class));
     }
 
     @Test
     void shouldThrowExceptionForDefinedOptionWithoutValue() {
         String json = "[\"defined\"]";
-        assertThatExceptionOfType(JsonMappingException.class).isThrownBy(() ->
+        assertThatExceptionOfType(DatabindException.class).isThrownBy(() ->
             mapper(optSettings).readValue(json, Option.class));
     }
 
     @Test
     void shouldThrowExceptionForEmptyArrayOption() {
         String json = "[]";
-        assertThatExceptionOfType(JsonMappingException.class).isThrownBy(() ->
+        assertThatExceptionOfType(DatabindException.class).isThrownBy(() ->
             mapper(optSettings).readValue(json, Option.class));
     }
 
     @Test
     void shouldThrowExceptionForUndefinedOptionWithExtraValues() {
         String json = "[\"undefined\", 2, 3]";
-        assertThatExceptionOfType(JsonMappingException.class).isThrownBy(() ->
+        assertThatExceptionOfType(DatabindException.class).isThrownBy(() ->
             mapper(optSettings).readValue(json, Option.class));
     }
 
     @Test
     void shouldThrowExceptionForUnrecognizedOptionType() {
         String json = "[\"test\"]";
-        assertThatExceptionOfType(JsonMappingException.class).isThrownBy(() ->
+        assertThatExceptionOfType(DatabindException.class).isThrownBy(() ->
             mapper(optSettings).readValue(json, Option.class));
     }
 

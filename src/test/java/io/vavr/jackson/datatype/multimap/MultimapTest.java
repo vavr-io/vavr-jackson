@@ -2,20 +2,20 @@ package io.vavr.jackson.datatype.multimap;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.BeanProperty;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.KeyDeserializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.deser.ContextualKeyDeserializer;
-import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.core.JsonParser;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.BeanProperty;
+import tools.jackson.databind.DeserializationContext;
+import tools.jackson.databind.DatabindException;
+import tools.jackson.databind.KeyDeserializer;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.SerializationContext;
+import tools.jackson.databind.ValueSerializer;
+import tools.jackson.databind.annotation.JsonDeserialize;
+import tools.jackson.databind.annotation.JsonSerialize;
+import tools.jackson.databind.deser.ContextualKeyDeserializer;
+import tools.jackson.databind.deser.std.StdDeserializer;
 import io.vavr.Tuple;
 import io.vavr.collection.HashMap;
 import io.vavr.collection.Multimap;
@@ -68,7 +68,7 @@ public abstract class MultimapTest extends BaseTest {
 
     @Test
     public void deserializeValueNull() {
-        assertThatExceptionOfType(JsonMappingException.class).isThrownBy(() -> mapper().readValue("{\"k\":null}", clz()));
+        assertThatExceptionOfType(DatabindException.class).isThrownBy(() -> mapper().readValue("{\"k\":null}", clz()));
     }
 
     @Test
@@ -130,10 +130,10 @@ public abstract class MultimapTest extends BaseTest {
         }
     }
 
-    static class CustomKeySerializer extends JsonSerializer<CustomKey> {
+    static class CustomKeySerializer extends ValueSerializer<CustomKey> {
         @Override
-        public void serialize(CustomKey value, JsonGenerator jgen, SerializerProvider provider) throws IOException {
-            jgen.writeFieldName(String.valueOf(value.id));
+        public void serialize(CustomKey value, JsonGenerator jgen, SerializationContext context) {
+            jgen.writeName(String.valueOf(value.id));
         }
     }
 
@@ -144,9 +144,9 @@ public abstract class MultimapTest extends BaseTest {
         }
     }
 
-    static class CustomElementSerializer extends JsonSerializer<CustomElement> {
+    static class CustomElementSerializer extends ValueSerializer<CustomElement> {
         @Override
-        public void serialize(CustomElement value, JsonGenerator jgen, SerializerProvider provider) throws IOException {
+        public void serialize(CustomElement value, JsonGenerator jgen, SerializationContext context) {
             jgen.writeString(value.value);
         }
     }
@@ -158,7 +158,7 @@ public abstract class MultimapTest extends BaseTest {
         }
 
         @Override
-        public CustomElement deserialize(JsonParser p, DeserializationContext context) throws IOException {
+        public CustomElement deserialize(JsonParser p, DeserializationContext context) {
             return new CustomElement(p.getValueAsString());
         }
     }

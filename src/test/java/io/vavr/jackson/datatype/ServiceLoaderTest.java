@@ -1,6 +1,6 @@
 package io.vavr.jackson.datatype;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import io.vavr.Lazy;
 import org.junit.jupiter.api.Test;
 
@@ -17,7 +17,7 @@ class ServiceLoaderTest {
      */
     @Test
     void shouldAutoDiscover() throws Exception {
-        ObjectMapper mapper = new ObjectMapper().findAndRegisterModules();
+        ObjectMapper mapper = new ObjectMapper().rebuild().findAndAddModules().build();
 
         Lazy<?> src = Lazy.of(() -> 1);
         String json = mapper.writer().writeValueAsString(src);

@@ -1,11 +1,11 @@
 package io.vavr.jackson.datatype;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import com.fasterxml.jackson.module.jaxb.JaxbAnnotationModule;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectWriter;
+import tools.jackson.dataformat.xml.XmlMapper;
+import tools.jackson.module.jaxb.JaxbAnnotationModule;
 import io.vavr.Tuple2;
 import io.vavr.collection.List;
 import io.vavr.collection.Seq;
@@ -28,7 +28,7 @@ public class BaseTest {
     protected interface WrapperArray {
     }
 
-    protected void verifySerialization(TypeReference<?> typeReference, List<Tuple2<?, String>> testValues) throws IOException {
+    protected void verifySerialization(TypeReference<?> typeReference, List<Tuple2<?, String>> testValues) {
         ObjectWriter writer = mapper().writerFor(typeReference);
         for (Tuple2<?, String> testValue : testValues) {
             Object src = testValue._1();
@@ -43,27 +43,22 @@ public class BaseTest {
     }
 
     protected ObjectMapper mapper() {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.registerModule(new VavrModule());
+        ObjectMapper mapper = new ObjectMapper().rebuild().addModule(new VavrModule()).build();
         return mapper;
     }
 
     protected ObjectMapper mapper(VavrModule.Settings settings) {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.registerModule(new VavrModule(settings));
+        ObjectMapper mapper = new ObjectMapper().rebuild().addModule(new VavrModule(settings)).build();
         return mapper;
     }
 
     public XmlMapper xmlMapper() {
-        XmlMapper xmlMapper = new XmlMapper();
-        xmlMapper.registerModule(new VavrModule());
+        XmlMapper xmlMapper = new XmlMapper().rebuild().addModule(new VavrModule()).build();
         return xmlMapper;
     }
 
     public XmlMapper xmlMapperJaxb() {
-        XmlMapper xmlMapper = new XmlMapper();
-        xmlMapper.registerModule(new JaxbAnnotationModule());
-        xmlMapper.registerModule(new VavrModule());
+        XmlMapper xmlMapper = new XmlMapper().rebuild().addModules(new JaxbAnnotationModule(), new VavrModule()).build();
         return xmlMapper;
     }
 

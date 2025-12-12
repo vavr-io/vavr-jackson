@@ -2,7 +2,7 @@ package io.vavr.jackson.datatype.tuples;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.databind.JsonMappingException;
+import tools.jackson.databind.DatabindException;
 import io.vavr.Tuple;
 import io.vavr.Tuple0;
 import io.vavr.Tuple2;
@@ -28,21 +28,21 @@ class TupleXTest extends BaseTest {
     @Test
     void test9() {
         String wrongJson = "[1, 2, 3, 4, 5, 6, 7, 8, 9]";
-        assertThatExceptionOfType(JsonMappingException.class).isThrownBy(() ->
+        assertThatExceptionOfType(DatabindException.class).isThrownBy(() ->
             mapper().readValue(wrongJson, Tuple8.class));
     }
 
     @Test
     void test10() {
         String json = "[1, 2, 3]";
-        assertThatExceptionOfType(JsonMappingException.class).isThrownBy(() ->
+        assertThatExceptionOfType(DatabindException.class).isThrownBy(() ->
             mapper().readValue(json, Tuple2.class));
     }
 
     @Test
     void test11() throws IOException {
         String json = "[1, 2]";
-        assertThatExceptionOfType(JsonMappingException.class).isThrownBy(() ->
+        assertThatExceptionOfType(DatabindException.class).isThrownBy(() ->
             mapper().readValue(json, Tuple3.class));
     }
 

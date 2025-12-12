@@ -1,11 +1,11 @@
 package io.vavr.jackson.datatype.set;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectWriter;
+import tools.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import tools.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import io.vavr.Tuple;
 import io.vavr.collection.List;
 import io.vavr.collection.Set;
@@ -44,7 +44,7 @@ public abstract class SetTest extends BaseTest {
 
     @Test
     void test2() throws IOException {
-        ObjectMapper mapper = mapper().addMixIn(clz(), WrapperObject.class);
+        ObjectMapper mapper = mapper().rebuild().addMixIn(clz(), WrapperObject.class).build();
         Set<?> src = of(1);
         String plainJson = mapper().writeValueAsString(src);
         String wrappedJson = mapper.writeValueAsString(src);
@@ -55,7 +55,7 @@ public abstract class SetTest extends BaseTest {
 
     @Test
     void test3() throws IOException {
-        ObjectMapper mapper = mapper().addMixIn(clz(), WrapperArray.class);
+        ObjectMapper mapper = mapper().rebuild().addMixIn(clz(), WrapperArray.class).build();
         Set<?> src = of(1);
         String plainJson = mapper().writeValueAsString(src);
         String wrappedJson = mapper.writeValueAsString(src);

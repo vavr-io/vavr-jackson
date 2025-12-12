@@ -19,37 +19,35 @@
  */
 package io.vavr.jackson.datatype.deserialize;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.BeanProperty;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.deser.ContextualDeserializer;
-import com.fasterxml.jackson.databind.jsontype.TypeDeserializer;
+import tools.jackson.core.JsonToken;
+import tools.jackson.databind.BeanProperty;
+import tools.jackson.databind.DatabindException;
+import tools.jackson.databind.DeserializationContext;
+import tools.jackson.databind.JavaType;
+import tools.jackson.databind.ValueDeserializer;
+import tools.jackson.databind.jsontype.TypeDeserializer;
 import io.vavr.collection.Traversable;
+import tools.jackson.core.JsonParser;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static com.fasterxml.jackson.core.JsonToken.END_ARRAY;
-import static com.fasterxml.jackson.core.JsonToken.VALUE_NULL;
+import static tools.jackson.core.JsonToken.END_ARRAY;
+import static tools.jackson.core.JsonToken.VALUE_NULL;
 
-abstract class ArrayDeserializer<T> extends ValueDeserializer<T> implements ContextualDeserializer {
+abstract class ArrayDeserializer<T> extends VavrValueDeserializer<T> {
 
     private static final long serialVersionUID = 1L;
 
     protected final JavaType collectionType;
     protected final JavaType elementType;
     protected final TypeDeserializer elementTypeDeserializer;
-    protected final JsonDeserializer<?> elementDeserializer;
+    protected final ValueDeserializer<?> elementDeserializer;
     protected final boolean deserializeNullAsEmptyCollection;
 
     ArrayDeserializer(JavaType collectionType, int typeCount, JavaType elementType,
-                      TypeDeserializer elementTypeDeserializer, JsonDeserializer<?> elementDeserializer,
+                      TypeDeserializer elementTypeDeserializer, ValueDeserializer<?> elementDeserializer,
                       boolean deserializeNullAsEmptyCollection) {
         super(collectionType, typeCount);
         this.collectionType = collectionType;
@@ -59,7 +57,7 @@ abstract class ArrayDeserializer<T> extends ValueDeserializer<T> implements Cont
         this.deserializeNullAsEmptyCollection = deserializeNullAsEmptyCollection;
     }
 
-    abstract T create(List<Object> list, DeserializationContext ctxt) throws JsonMappingException;
+    abstract T create(List<Object> list, DeserializationContext ctxt) throws DatabindException;
 
     /**
      * Creates a new deserializer from the original one (this).
@@ -70,11 +68,11 @@ abstract class ArrayDeserializer<T> extends ValueDeserializer<T> implements Cont
      * @return a new deserializer
      */
     abstract ArrayDeserializer<T> createDeserializer(TypeDeserializer elementTypeDeserializer,
-                                                     JsonDeserializer<?> elementDeserializer);
+                                                     ValueDeserializer<?> elementDeserializer);
 
     @Override
-    public JsonDeserializer<?> createContextual(DeserializationContext ctxt, BeanProperty property) throws JsonMappingException {
-        JsonDeserializer<?> elementDeser = elementDeserializer;
+    public ValueDeserializer<?> createContextual(DeserializationContext ctxt, BeanProperty property) throws DatabindException {
+        ValueDeserializer<?> elementDeser = elementDeserializer;
         TypeDeserializer elementTypeDeser = elementTypeDeserializer;
 
         if (elementDeser == null) {
@@ -89,9 +87,9 @@ abstract class ArrayDeserializer<T> extends ValueDeserializer<T> implements Cont
     }
 
     @Override
-    public T deserialize(JsonParser parser, DeserializationContext context, T intoValue) throws IOException {
+    public T deserialize(JsonParser parser, DeserializationContext context, T intoValue) {
         if (!parser.isExpectedStartArrayToken()) {
-            throw mappingException(context, collectionType.getRawClass(), parser.getCurrentToken());
+            throw mappingException(context, collectionType.getRawClass(), parser.currentToken());
         }
 
         List<Object> elements = new ArrayList<>();
@@ -117,19 +115,19 @@ abstract class ArrayDeserializer<T> extends ValueDeserializer<T> implements Cont
     }
 
     @Override
-    public T deserialize(JsonParser parser, DeserializationContext context) throws IOException {
+    public T deserialize(JsonParser parser, DeserializationContext context) {
         return deserialize(parser, context, null);
     }
 
     @Override
-    public T getNullValue(DeserializationContext ctxt) throws JsonMappingException {
+    public T getNullValue(DeserializationContext ctxt) throws DatabindException {
         if (deserializeNullAsEmptyCollection) {
             return create(Collections.emptyList(), ctxt);
         }
-        return super.getNullValue(ctxt);
+        return (T) super.getNullValue(ctxt);
     }
 
-    static void checkContainedTypeIsComparable(DeserializationContext ctxt, JavaType type) throws JsonMappingException {
+    static void checkContainedTypeIsComparable(DeserializationContext ctxt, JavaType type) throws DatabindException {
         Class<?> clz = type.getRawClass();
         if (clz == Object.class || !Comparable.class.isAssignableFrom(clz)) {
             throw mappingException(ctxt, clz, null);

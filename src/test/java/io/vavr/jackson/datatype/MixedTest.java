@@ -1,7 +1,7 @@
 package io.vavr.jackson.datatype;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonMappingException;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.DatabindException;
 import io.vavr.collection.HashMap;
 import io.vavr.collection.List;
 import org.junit.jupiter.api.Test;
@@ -40,8 +40,8 @@ class MixedTest extends BaseTest {
     }
 
     @Test
-    void shouldThrowJsonMappingExceptionForInvalidListElements() {
-        assertThatExceptionOfType(JsonMappingException.class).isThrownBy(() ->
+    void shouldThrowDatabindExceptionForInvalidListElements() {
+        assertThatExceptionOfType(DatabindException.class).isThrownBy(() ->
             mapper().readValue("[\"s\"]", new TypeReference<List<Integer>>() {
             }));
     }

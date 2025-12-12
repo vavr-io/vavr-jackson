@@ -2,7 +2,6 @@ package io.vavr.jackson.datatype.map;
 
 import com.fasterxml.jackson.annotation.JsonMerge;
 import com.fasterxml.jackson.annotation.OptBoolean;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import io.vavr.Tuple;
 import io.vavr.collection.HashMap;
 import io.vavr.jackson.datatype.BaseTest;
@@ -34,7 +33,7 @@ class HashMapJsonMergeTest extends BaseTest {
     }
 
     @Test
-    void shouldMergeNested() throws JsonProcessingException {
+    void shouldMergeNested() {
         TestJsonMergeWithNestedMap result = mapper().readValue(asJson("{'value': {'foo1': {'foo_nested2': 'bar_nested2'}}}"), TestJsonMergeWithNestedMap.class);
 
         assertThat(result.value)

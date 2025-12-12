@@ -19,7 +19,7 @@
  */
 package io.vavr.jackson.datatype.serialize;
 
-import com.fasterxml.jackson.databind.JavaType;
+import tools.jackson.databind.JavaType;
 import io.vavr.Tuple2;
 
 import java.util.Arrays;

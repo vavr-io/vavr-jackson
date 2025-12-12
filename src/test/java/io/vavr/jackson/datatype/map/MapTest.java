@@ -2,24 +2,23 @@ package io.vavr.jackson.datatype.map;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.BeanProperty;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.KeyDeserializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.deser.ContextualDeserializer;
-import com.fasterxml.jackson.databind.deser.ContextualKeyDeserializer;
-import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
-import com.fasterxml.jackson.databind.deser.std.StdScalarDeserializer;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.core.JsonParser;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.BeanProperty;
+import tools.jackson.databind.DeserializationContext;
+import tools.jackson.databind.SerializationContext;
+import tools.jackson.databind.ValueDeserializer;
+import tools.jackson.databind.KeyDeserializer;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ValueSerializer;
+import tools.jackson.databind.annotation.JsonDeserialize;
+import tools.jackson.databind.annotation.JsonSerialize;
+import tools.jackson.databind.deser.ContextualKeyDeserializer;
+import tools.jackson.databind.deser.std.StdDeserializer;
+import tools.jackson.databind.deser.std.StdScalarDeserializer;
+import tools.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import io.vavr.Tuple;
 import io.vavr.collection.HashMap;
 import io.vavr.collection.List;
@@ -61,7 +60,7 @@ public abstract class MapTest extends BaseTest {
 
     @Test
     void test2() throws IOException {
-        ObjectMapper mapper = mapper().addMixIn(clz(), WrapperObject.class);
+        ObjectMapper mapper = mapper().rebuild().addMixIn(clz(), WrapperObject.class).build();
         Map<?, ?> src = emptyMap().put("1", 2);
         String plainJson = mapper().writeValueAsString(src);
         String wrappedJson = mapper.writeValueAsString(src);
@@ -71,8 +70,8 @@ public abstract class MapTest extends BaseTest {
     }
 
     @Test
-    void test3() throws IOException {
-        ObjectMapper mapper = mapper().addMixIn(clz(), WrapperArray.class);
+    void test3()  throws IOException {
+        ObjectMapper mapper = mapper().rebuild().addMixIn(clz(), WrapperArray.class).build();
         Map<?, ?> src = emptyMap().put("1", 2);
         String plainJson = mapper().writeValueAsString(src);
         String wrappedJson = mapper.writeValueAsString(src);
@@ -97,7 +96,7 @@ public abstract class MapTest extends BaseTest {
 
     @Test
     void test4() {
-        assertThatExceptionOfType(JsonParseException.class).isThrownBy(() -> mapper().readValue("{1: 1}", clz()));
+        assertThatExceptionOfType(JacksonException.class).isThrownBy(() -> mapper().readValue("{1: 1}", clz()));
     }
 
     @Test
@@ -223,10 +222,10 @@ public abstract class MapTest extends BaseTest {
         }
     }
 
-    static class CustomKeySerializer extends JsonSerializer<CustomKey> {
+    static class CustomKeySerializer extends ValueSerializer<CustomKey> {
         @Override
-        public void serialize(CustomKey value, JsonGenerator jgen, SerializerProvider provider) throws IOException {
-            jgen.writeFieldName(String.valueOf(value.id));
+        public void serialize(CustomKey value, JsonGenerator jgen, SerializationContext context) {
+            jgen.writeName(String.valueOf(value.id));
         }
     }
 
@@ -237,9 +236,9 @@ public abstract class MapTest extends BaseTest {
         }
     }
 
-    static class CustomValueSerializer extends JsonSerializer<CustomValue> {
+    static class CustomValueSerializer extends ValueSerializer<CustomValue> {
         @Override
-        public void serialize(CustomValue value, JsonGenerator jgen, SerializerProvider provider) throws IOException {
+        public void serialize(CustomValue value, JsonGenerator jgen, SerializationContext context) {
             jgen.writeString(value.value);
         }
     }
@@ -251,7 +250,7 @@ public abstract class MapTest extends BaseTest {
         }
 
         @Override
-        public CustomValue deserialize(JsonParser p, DeserializationContext context) throws IOException {
+        public CustomValue deserialize(JsonParser p, DeserializationContext context) {
             return new CustomValue(p.getValueAsString());
         }
     }
@@ -304,7 +303,7 @@ public abstract class MapTest extends BaseTest {
         Map<Integer, String> map;
     }
 
-    static class ClassNameContentDeserializer extends StdScalarDeserializer<Object> implements ContextualDeserializer {
+    static class ClassNameContentDeserializer extends StdScalarDeserializer<Object> {
 
         final String className;
 
@@ -318,7 +317,7 @@ public abstract class MapTest extends BaseTest {
         }
 
         @Override
-        public JsonDeserializer<?> createContextual(DeserializationContext ctxt, BeanProperty property) {
+        public ValueDeserializer<?> createContextual(DeserializationContext ctxt, BeanProperty property) {
             return new ClassNameContentDeserializer(ctxt.getContextualType().getRawClass().getSimpleName());
         }
 
