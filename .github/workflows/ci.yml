@@ -15,7 +15,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
-        java: [8, 11, 17, 21, 24, 25-ea]
+        java: [8, 11, 17, 21, 24, 25, 26-ea]
         exclude:
           - java: 8
             os: macos-latest
@@ -38,7 +38,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        java: [8, 11, 17, 21, 24]
+        java: [8, 11, 17, 21, 25]
         fasterxmlVersion: [2.18.3, 2.19.0]
       fail-fast: false
 
