@@ -66,6 +66,7 @@ import io.vavr.collection.Seq;
 import io.vavr.collection.Set;
 import io.vavr.control.Either;
 import io.vavr.control.Option;
+import io.vavr.control.Try;
 import io.vavr.jackson.datatype.VavrModule;
 
 public class VavrDeserializers extends Deserializers.Base {
@@ -83,6 +84,9 @@ public class VavrDeserializers extends Deserializers.Base {
         Class<?> raw = type.getRawClass();
         if (Either.class.isAssignableFrom(raw)) {
             return new EitherDeserializer(type);
+        }
+        if (Try.class.isAssignableFrom(raw)) {
+            return new TryDeserializer(type);
         }
 
         if (Tuple0.class.isAssignableFrom(raw)) {
