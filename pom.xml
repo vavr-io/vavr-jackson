@@ -20,7 +20,7 @@
         <maven.central.publishing.version>0.8.0</maven.central.publishing.version>
 
         <vavr.version>0.10.7</vavr.version>
-        <fasterxml.version>2.13.5</fasterxml.version>
+        <fasterxml.version>2.20.1</fasterxml.version>
         <junit.jupiter.version>5.13.4</junit.jupiter.version>
         <assertj.version>3.27.6</assertj.version>
         <jaxb.version>2.3.1</jaxb.version>
