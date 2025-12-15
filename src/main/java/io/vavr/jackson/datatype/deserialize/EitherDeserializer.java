@@ -81,9 +81,9 @@ class EitherDeserializer extends VavrValueDeserializer<Either<?, ?>> {
             final JsonToken currentToken = p.currentToken();
             final String type = p.nextName();
             if (isRight(type)) {
-                return Either.right(getValue(p, ctxt, 1));
+                return Either.right(parseObject(p, ctxt, 1));
             } else if (isLeft(type)) {
-                return Either.left(getValue(p, ctxt, 0));
+                return Either.left(parseObject(p, ctxt, 0));
             } else {
                 throw mappingException(ctxt, javaType.getRawClass(), currentToken);
             }
@@ -108,7 +108,7 @@ class EitherDeserializer extends VavrValueDeserializer<Either<?, ?>> {
         return "left".equals(fieldName) || "l".equals(fieldName);
     }
 
-    private Object getValue(JsonParser p, DeserializationContext ctxt, int index) {
+    private Object parseObject(JsonParser p, DeserializationContext ctxt, int index) {
         final ValueDeserializer<?> deserializer = deserializer(index);
         final Object value = p.nextToken() != VALUE_NULL ? deserializer.deserialize(p, ctxt) : deserializer.getNullValue(ctxt);
         if (p.nextToken() != END_OBJECT) {
