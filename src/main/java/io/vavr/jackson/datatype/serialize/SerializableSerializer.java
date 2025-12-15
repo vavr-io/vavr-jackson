@@ -20,6 +20,7 @@
 package io.vavr.jackson.datatype.serialize;
 
 import tools.jackson.core.JacksonException;
+import tools.jackson.core.exc.JacksonIOException;
 import tools.jackson.databind.JavaType;
 import tools.jackson.databind.type.TypeFactory;
 
@@ -44,7 +45,7 @@ class SerializableSerializer<T> extends VavrValueSerializer<T> {
             stream.writeObject(value);
 
         } catch (IOException e) {
-            throw new RuntimeException(e.getMessage());
+            throw JacksonIOException.construct(e);
         }
         return buf.toByteArray();
     }
