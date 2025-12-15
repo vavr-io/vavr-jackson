@@ -39,7 +39,7 @@ jobs:
     strategy:
       matrix:
         java: [8, 11, 17, 21, 25]
-        fasterxmlVersion: [2.18.3, 2.19.0]
+        fasterxmlVersion: [2.20.1]
       fail-fast: false
 
     steps:
