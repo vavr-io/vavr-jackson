@@ -15,14 +15,14 @@ Jackson datatype module for [Vavr](https://vavr.io/) library
 <dependency>
   <groupId>io.vavr</groupId>
   <artifactId>vavr-jackson</artifactId>
-  <version>0.10.3</version>
+  <version>0.11.0</version>
 </dependency>
 ```
 
 ### Gradle
 
 ```groovy
-compile("io.vavr:vavr-jackson:0.10.3")
+compile("io.vavr:vavr-jackson:0.11.0")
 ```
 
 ### Registering module
@@ -53,7 +53,7 @@ Developer versions can be found [here](https://oss.sonatype.org/content/reposito
 <dependency>
   <groupId>io.vavr</groupId>
   <artifactId>vavr-jackson</artifactId>
-  <version>0.10.6-SNAPSHOT</version>
+  <version>0.11.1-SNAPSHOT</version>
 </dependency>
 ```
 
@@ -85,7 +85,7 @@ Ensure that your `~/.m2/settings.xml` contains the following:
 ### Gradle
 
 ```groovy
-compile("io.vavr:vavr-jackson:0.10.6-SNAPSHOT")
+compile("io.vavr:vavr-jackson:0.11.1-SNAPSHOT")
 ```
 
 Ensure that your `build.gradle` contains the following:
