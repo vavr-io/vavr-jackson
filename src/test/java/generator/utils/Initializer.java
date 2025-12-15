@@ -33,7 +33,7 @@ import io.vavr.jackson.datatype.VavrModule;
 import javax.lang.model.element.Modifier;
 
 /**
- * @author <a href="mailto:ruslan.sennov@gmail.com">Ruslan Sennov</a>
+ * @author Ruslan Sennov</a>
  */
 public class Initializer {
 

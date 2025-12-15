@@ -19,7 +19,7 @@ import static generator.utils.PoetHelpers.simplePojo;
 import static generator.utils.Serializer.expectedJson;
 
 /**
- * @author <a href="mailto:ruslan.sennov@gmail.com">Ruslan Sennov</a>
+ * @author Ruslan Sennov</a>
  */
 public class SimplePojo {
 

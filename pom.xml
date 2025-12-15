@@ -6,7 +6,28 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.vavr</groupId>
     <artifactId>vavr-jackson</artifactId>
-    <version>0.10.6-SNAPSHOT</version>
+    <version>0.11.0-SNAPSHOT</version>
+    <name>Vavr Jackson</name>
+    <description>Serialization and deserialization of Vavr types with Jackson</description>
+    <url>https://vavr.io</url>
+
+    <developers>
+        <developer>
+            <id>ruslansennov</id>
+            <name>Ruslan Sennov</name>
+            <email>ruslan.sennov@gmail.com</email>
+        </developer>
+        <developer>
+            <id>danieldietrich</id>
+            <name>Daniel Dietrich</name>
+            <email>cafebab3@gmail.com</email>
+        </developer>
+        <developer>
+            <id>pivovarit</id>
+            <name>Grzegorz Piwowarek</name>
+            <email>gpiwowarek@gmail.com</email>
+        </developer>
+    </developers>
 
     <licenses>
         <license>
