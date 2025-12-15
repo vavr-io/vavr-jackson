@@ -33,7 +33,7 @@ import java.io.IOException;
 import static generator.utils.Initializer.initMapper;
 
 /**
- * @author <a href="mailto:ruslan.sennov@gmail.com">Ruslan Sennov</a>
+ * @author Ruslan Sennov</a>
  */
 public class BindingClass {
 
