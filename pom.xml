@@ -1,9 +1,9 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                              http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.vavr</groupId>
     <artifactId>vavr-jackson</artifactId>
-    <version>0.11.0</version>
+    <version>0.11.1-SNAPSHOT</version>
     <name>Vavr Jackson</name>
     <description>Serialization and deserialization of Vavr types with Jackson</description>
     <url>https://vavr.io</url>
@@ -38,7 +38,7 @@
         <connection>scm:git:git@github.com:vavr-io/vavr-jackson.git</connection>
         <developerConnection>scm:git:git@github.com:vavr-io/vavr-jackson.git</developerConnection>
         <url>git@github.com:vavr-io/vavr-jackson.git</url>
-        <tag>v0.11.0</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <properties>
