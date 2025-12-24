@@ -3,7 +3,9 @@
 [![Build](https://github.com/vavr-io/vavr-jackson/actions/workflows/ci.yml/badge.svg)](https://github.com/vavr-io/vavr-jackson/actions/workflows/ci.yml)
 ![Maven Central Version](https://img.shields.io/maven-central/v/io.vavr/vavr-jackson?versionPrefix=0)
 
-Jackson datatype module for [Vavr](https://vavr.io/) library
+Jackson datatype module for [Vavr](https://vavr.io/) library.
+
+This module enables Jackson to seamlessly serialize and deserialize Vavr's functional data types, including immutable collections, tuples, and control types like `Option` and `Either`.
 
 [![Stargazers over time](https://starchart.cc/vavr-io/vavr-jackson.svg?variant=adaptive)](https://starchart.cc/vavr-io/vavr-jackson)
 
@@ -30,21 +32,106 @@ Jackson datatype module for [Vavr](https://vavr.io/) library
 compile("io.vavr:vavr-jackson:0.11.0")
 ```
 
-### Registering module
-Just register a new instance of <code>VavrModule</code>
+### Registering the Module
+
+Register the `VavrModule` with your Jackson `ObjectMapper`:
+
 ```java
-ObjectMapper mapper = new ObjectMapper().rebuild().addModule(new VavrModule()).build();
+ObjectMapper mapper = new ObjectMapper().rebuild()
+    .addModule(new VavrModule())
+    .build();
 ```
 
-### Serialization/deserialization
+### Basic Usage
 
 <!-- see io.vavr.jackson.datatype.docs.ReadmeTest#testDeser -->
 
 ```java
-String json = mapper.writeValueAsString(List.of(1));
-// = [1]
+import io.vavr.collection.List;
+import io.vavr.jackson.datatype.VavrModule;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.ObjectMapper;
+
+ObjectMapper mapper = new ObjectMapper().rebuild()
+    .addModule(new VavrModule())
+    .build();
+
+// Serialize
+String json = mapper.writeValueAsString(List.of(1, 2, 3));
+// Result: [1,2,3]
+
+// Deserialize
 List<Integer> restored = mapper.readValue(json, new TypeReference<List<Integer>>() {});
-// = List(1)
+// Result: List(1, 2, 3)
+```
+
+## Supported Types
+
+The module provides serialization and deserialization support for:
+
+### Collections
+- **Sequences**: `List`, `Array`, `Vector`, `Stream`, `Queue`, `IndexedSeq`
+- **Sets**: `HashSet`, `LinkedHashSet`, `TreeSet`, `Set`
+- **Maps**: `HashMap`, `LinkedHashMap`, `TreeMap`, `Map`
+- **Multimaps**: All Vavr Multimap implementations
+- **Other**: `PriorityQueue`, `CharSeq`
+
+### Control Types
+- `Option` - Optional values that can be `Some` or `None`
+- `Either` - Values that can be `Left` or `Right`
+- `Lazy` - Lazily evaluated values
+
+### Tuples
+- `Tuple0` through `Tuple8` - Immutable tuples with 0 to 8 elements
+
+### Functions
+- `Function0` through `Function8`
+- `CheckedFunction0` through `CheckedFunction8`
+
+## Configuration
+
+You can customize the module behavior using `VavrModule.Settings`:
+
+### Plain Option Format
+
+By default, `Option` values are serialized in a plain format (just the value or null). You can change this behavior:
+
+```java
+// Default behavior: plain format (enabled)
+VavrModule.Settings settings = new VavrModule.Settings();
+ObjectMapper mapper = new ObjectMapper().rebuild()
+    .addModule(new VavrModule(settings))
+    .build();
+
+mapper.writeValueAsString(Option.of(42));  // Result: 42
+mapper.writeValueAsString(Option.none());  // Result: null
+```
+
+```java
+// Explicit format: ["defined", value] or ["undefined"]
+VavrModule.Settings settings = new VavrModule.Settings()
+    .useOptionInPlainFormat(false);
+ObjectMapper mapper = new ObjectMapper().rebuild()
+    .addModule(new VavrModule(settings))
+    .build();
+
+mapper.writeValueAsString(Option.of(42));  // Result: ["defined",42]
+mapper.writeValueAsString(Option.none());  // Result: ["undefined"]
+```
+
+### Deserialize Null as Empty Collection
+
+Configure whether `null` values should be deserialized as empty collections:
+
+```java
+VavrModule.Settings settings = new VavrModule.Settings()
+    .deserializeNullAsEmptyCollection(true);
+ObjectMapper mapper = new ObjectMapper().rebuild()
+    .addModule(new VavrModule(settings))
+    .build();
+
+List<Integer> result = mapper.readValue("null", new TypeReference<List<Integer>>() {});
+// Result: List() (empty list instead of null)
 ```
 
 ## Using Developer Versions
