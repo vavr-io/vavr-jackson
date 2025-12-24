@@ -21,7 +21,10 @@ package io.vavr.jackson.datatype.serialize;
 
 import tools.jackson.core.JsonGenerator;
 import tools.jackson.core.exc.StreamWriteException;
-import tools.jackson.databind.*;
+import tools.jackson.databind.BeanProperty;
+import tools.jackson.databind.DatabindException;
+import tools.jackson.databind.JavaType;
+import tools.jackson.databind.SerializationContext;
 import tools.jackson.databind.ValueSerializer;
 import tools.jackson.databind.ser.BeanSerializer;
 import tools.jackson.databind.ser.bean.BeanSerializerBase;

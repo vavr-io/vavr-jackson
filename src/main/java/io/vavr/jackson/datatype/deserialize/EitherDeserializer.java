@@ -76,14 +76,13 @@ class EitherDeserializer extends VavrValueDeserializer<Either<?, ?>> {
             }
             return right ? Either.right(value) : Either.left(value);
         } else if (nextToken == START_OBJECT) {
-            final JsonToken currentToken = p.currentToken();
             final String type = p.nextName();
             if (isRight(type)) {
                 return Either.right(parseObject(p, ctxt, 1));
             } else if (isLeft(type)) {
                 return Either.left(parseObject(p, ctxt, 0));
             } else {
-                throw mappingException(ctxt, javaType.getRawClass(), currentToken);
+                throw mappingException(ctxt, javaType.getRawClass(), p.currentToken());
             }
         } else {
             throw mappingException(ctxt, javaType.getRawClass(), p.currentToken());
