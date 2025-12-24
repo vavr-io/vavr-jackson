@@ -38,8 +38,6 @@ import static tools.jackson.core.JsonToken.VALUE_NULL;
 
 abstract class ArrayDeserializer<T> extends VavrValueDeserializer<T> {
 
-    private static final long serialVersionUID = 1L;
-
     protected final JavaType collectionType;
     protected final JavaType elementType;
     protected final TypeDeserializer elementTypeDeserializer;
@@ -95,7 +93,7 @@ abstract class ArrayDeserializer<T> extends VavrValueDeserializer<T> {
         List<Object> elements = new ArrayList<>();
 
         if (intoValue instanceof Traversable) {
-            for (Object o : ((Traversable) intoValue)) {
+            for (Object o : ((Traversable<?>) intoValue)) {
                 elements.add(o);
             }
         }

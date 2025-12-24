@@ -30,8 +30,6 @@ import java.io.ObjectOutputStream;
 
 class SerializableSerializer<T> extends VavrValueSerializer<T> {
 
-    private static final long serialVersionUID = 1L;
-
     SerializableSerializer(JavaType type) {
         super(type);
     }

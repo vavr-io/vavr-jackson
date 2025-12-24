@@ -28,8 +28,6 @@ import java.io.IOException;
 
 class CharSeqSerializer extends VavrValueSerializer<CharSeq> {
 
-    private static final long serialVersionUID = 1L;
-
     CharSeqSerializer(JavaType type) {
         super(type);
     }

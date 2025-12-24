@@ -35,8 +35,6 @@ import static tools.jackson.core.JsonToken.VALUE_NULL;
 
 class EitherDeserializer extends VavrValueDeserializer<Either<?, ?>> {
 
-    private static final long serialVersionUID = 1L;
-
     private final JavaType javaType;
     private ValueDeserializer<?> stringDeserializer;
 

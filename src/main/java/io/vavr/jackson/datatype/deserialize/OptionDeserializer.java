@@ -31,8 +31,6 @@ import io.vavr.control.Option;
 
 class OptionDeserializer<T> extends VavrValueDeserializer<Option<T>> {
 
-    private static final long serialVersionUID = 1L;
-
     private final JavaType fullType;
     private final JavaType valueType;
     private final boolean plainMode;
