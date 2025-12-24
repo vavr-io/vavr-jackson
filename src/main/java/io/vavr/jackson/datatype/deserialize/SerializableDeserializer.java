@@ -43,8 +43,7 @@ class SerializableDeserializer<T> extends StdDeserializer<T> {
 
     @SuppressWarnings("unchecked")
     private static <T> T deserialize(byte[] objectData) {
-        try {
-            ObjectInputStream stream = new ObjectInputStream(new ByteArrayInputStream(objectData));
+        try (ObjectInputStream stream = new ObjectInputStream(new ByteArrayInputStream(objectData))) {
             return (T) stream.readObject();
         } catch (Exception x) {
             throw new IllegalStateException("Error deserializing object", x);
