@@ -37,11 +37,8 @@ class SerializableSerializer<T> extends VavrValueSerializer<T> {
     @Override
     Object toJavaObj(T value) throws JacksonException {
         ByteArrayOutputStream buf = new ByteArrayOutputStream();
-        try {
-            ObjectOutputStream stream = null;
-            stream = new ObjectOutputStream(buf);
+        try (ObjectOutputStream stream = new ObjectOutputStream(buf)) {
             stream.writeObject(value);
-
         } catch (IOException e) {
             throw JacksonIOException.construct(e);
         }
