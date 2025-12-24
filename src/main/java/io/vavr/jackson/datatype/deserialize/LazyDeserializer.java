@@ -30,8 +30,6 @@ import io.vavr.Lazy;
 
 class LazyDeserializer extends VavrValueDeserializer<Lazy<?>> {
 
-    private static final long serialVersionUID = 1L;
-
     private final JavaType fullType;
     private final JavaType valueType;
     private final TypeDeserializer valueTypeDeserializer;

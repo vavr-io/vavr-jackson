@@ -32,8 +32,6 @@ import java.util.List;
 
 class PriorityQueueDeserializer extends ArrayDeserializer<PriorityQueue<?>> {
 
-    private static final long serialVersionUID = 1L;
-
     PriorityQueueDeserializer(JavaType collectionType, JavaType elementType, TypeDeserializer elementTypeDeserializer,
                               ValueDeserializer<?> elementDeserializer, boolean deserializeNullAsEmptyCollection) {
         super(collectionType, 1, elementType, elementTypeDeserializer, elementDeserializer, deserializeNullAsEmptyCollection);

@@ -31,8 +31,6 @@ import tools.jackson.databind.type.TypeFactory;
 
 abstract class VavrValueSerializer<T> extends StdSerializer<T> {
 
-    private static final long serialVersionUID = 1L;
-
     final JavaType type;
     final BeanProperty beanProperty;
 

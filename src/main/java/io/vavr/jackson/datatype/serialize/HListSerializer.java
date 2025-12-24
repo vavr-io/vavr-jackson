@@ -29,8 +29,6 @@ import tools.jackson.databind.ser.std.StdSerializer;
 
 abstract class HListSerializer<T> extends StdSerializer<T> {
 
-    private static final long serialVersionUID = 1L;
-
     private final JavaType type;
 
     HListSerializer(JavaType type) {

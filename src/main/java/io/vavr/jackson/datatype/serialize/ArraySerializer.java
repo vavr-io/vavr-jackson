@@ -32,7 +32,6 @@ import java.util.ArrayList;
 
 class ArraySerializer<T extends Value<?>> extends VavrValueSerializer<T> {
 
-    private static final long serialVersionUID = 1L;
     private final CollectionLikeType collectionType;
 
     ArraySerializer(CollectionLikeType collectionType, BeanProperty property) {

@@ -33,8 +33,6 @@ import java.util.List;
 
 class SetDeserializer extends ArrayDeserializer<Set<?>> {
 
-    private static final long serialVersionUID = 1L;
-
     SetDeserializer(JavaType collectionType, JavaType elementType, TypeDeserializer elementTypeDeserializer,
                     ValueDeserializer<?> elementDeserializer, boolean deserializeNullAsEmptyCollection) {
         super(collectionType, 1, elementType, elementTypeDeserializer, elementDeserializer, deserializeNullAsEmptyCollection);

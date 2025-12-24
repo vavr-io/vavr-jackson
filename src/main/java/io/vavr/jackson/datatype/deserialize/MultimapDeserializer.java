@@ -39,8 +39,6 @@ import java.util.ArrayList;
 
 class MultimapDeserializer extends MaplikeDeserializer<Multimap<?, ?>> {
 
-    private static final long serialVersionUID = 1L;
-
     private ValueDeserializer<?> containerDeserializer;
 
     MultimapDeserializer(MapLikeType mapType, KeyDeserializer keyDeserializer, TypeDeserializer elementTypeDeserializer,

@@ -35,8 +35,6 @@ import java.util.Comparator;
 
 abstract class MaplikeDeserializer<T> extends StdDeserializer<T>  {
 
-    private static final long serialVersionUID = 1L;
-
     final MapLikeType mapType;
 
     final Comparator<Object> keyComparator;

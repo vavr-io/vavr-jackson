@@ -27,8 +27,6 @@ import java.util.List;
 
 abstract class TupleSerializer<T> extends HListSerializer<T> {
 
-    private static final long serialVersionUID = 1L;
-
     TupleSerializer(JavaType type) {
         super(type);
     }

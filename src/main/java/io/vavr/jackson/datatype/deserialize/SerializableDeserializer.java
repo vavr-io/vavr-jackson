@@ -30,8 +30,6 @@ import java.io.ObjectInputStream;
 
 class SerializableDeserializer<T> extends StdDeserializer<T> {
 
-    private static final long serialVersionUID = 1L;
-
     SerializableDeserializer(JavaType valueType) {
         super(valueType);
     }

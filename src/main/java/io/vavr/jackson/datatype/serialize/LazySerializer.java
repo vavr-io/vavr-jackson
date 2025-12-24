@@ -34,8 +34,6 @@ import io.vavr.Lazy;
 
 class LazySerializer extends HListSerializer<Lazy<?>> {
 
-    private static final long serialVersionUID = 1L;
-
     private final JavaType fullType;
     private final JavaType valueType;
     private final TypeSerializer valueTypeSerializer;

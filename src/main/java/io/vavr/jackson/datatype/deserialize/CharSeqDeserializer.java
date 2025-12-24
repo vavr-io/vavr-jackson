@@ -31,8 +31,6 @@ import io.vavr.collection.CharSeq;
 
 class CharSeqDeserializer extends StdDeserializer<CharSeq> {
 
-    private static final long serialVersionUID = 1L;
-
     private ValueDeserializer<?> deserializer;
 
     CharSeqDeserializer(JavaType valueType) {

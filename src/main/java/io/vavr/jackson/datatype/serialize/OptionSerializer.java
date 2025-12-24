@@ -35,8 +35,6 @@ import io.vavr.control.Option;
 
 class OptionSerializer extends HListSerializer<Option<?>> {
 
-    private static final long serialVersionUID = 1L;
-
     private final boolean plainMode;
 
     private final TypeSerializer valueTypeSerializer;

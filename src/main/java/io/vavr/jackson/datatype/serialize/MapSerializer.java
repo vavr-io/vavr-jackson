@@ -32,7 +32,6 @@ import java.util.LinkedHashMap;
 
 class MapSerializer extends VavrValueSerializer<Map<?, ?>> {
 
-    private static final long serialVersionUID = 1L;
     private final MapLikeType mapType;
 
     MapSerializer(MapLikeType mapType, BeanProperty beanProperty) {

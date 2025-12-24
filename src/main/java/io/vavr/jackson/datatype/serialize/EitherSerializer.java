@@ -26,8 +26,6 @@ import tools.jackson.databind.SerializationContext;
 
 class EitherSerializer extends HListSerializer<Either<?, ?>> {
 
-    private static final long serialVersionUID = 1L;
-
     EitherSerializer(JavaType type) {
         super(type);
     }

@@ -31,8 +31,6 @@ import java.util.List;
 
 abstract class VavrValueDeserializer<T> extends StdDeserializer<T> {
 
-    private static final long serialVersionUID = 1L;
-
     private final JavaType javaType;
     private final int typeCount;
     private final List<ValueDeserializer<?>> deserializers;

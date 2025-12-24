@@ -34,7 +34,6 @@ import java.util.List;
 
 class MultimapSerializer extends VavrValueSerializer<Multimap<?, ?>> {
 
-    private static final long serialVersionUID = 1L;
     private final MapLikeType mapType;
 
     MultimapSerializer(MapLikeType mapType) {

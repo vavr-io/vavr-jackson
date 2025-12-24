@@ -42,7 +42,6 @@ import io.vavr.control.Option;
  */
 class UnwrappingOptionSerializer extends StdSerializer<Option<?>> {
 
-    private static final long serialVersionUID = 1L;
     private final OptionSerializer optionSerializer;
     private final NameTransformer unwrapper;
 

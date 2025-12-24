@@ -34,8 +34,6 @@ import io.vavr.collection.TreeMap;
 
 class MapDeserializer extends MaplikeDeserializer<Map<?, ?>> {
 
-    private static final long serialVersionUID = 1L;
-
     MapDeserializer(MapLikeType mapType, KeyDeserializer keyDeserializer, TypeDeserializer elementTypeDeserializer,
                     ValueDeserializer<?> elementDeserializer) {
         super(mapType, keyDeserializer, elementTypeDeserializer, elementDeserializer);

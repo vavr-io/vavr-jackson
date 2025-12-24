@@ -23,8 +23,11 @@ import tools.jackson.databind.module.SimpleModule;
 import io.vavr.jackson.datatype.deserialize.VavrDeserializers;
 import io.vavr.jackson.datatype.serialize.VavrSerializers;
 
+import java.io.Serial;
+
 public class VavrModule extends SimpleModule {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     public static class Settings {
