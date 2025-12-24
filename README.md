@@ -9,6 +9,11 @@ Jackson datatype module for [Vavr](https://vavr.io/) library
 
 ## Usage
 
+
+> - **Jackson 2.x** with **Vavr 0.x** → use **vavr-jackson 0.x**
+> - **Jackson 3.x** with **Vavr 0.x** → use **vavr-jackson 1.x (SNAPSHOT)**
+
+
 ### Maven
 
 ```xml
