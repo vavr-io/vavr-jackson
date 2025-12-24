@@ -15,7 +15,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
-        java: [8, 11, 17, 21, 24, 25, 26-ea]
+        java: [17, 21, 24, 25, 26-ea]
         exclude:
           - java: 8
             os: macos-latest
@@ -38,8 +38,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        java: [8, 11, 17, 21, 25]
-        fasterxmlVersion: [2.20.1]
+        java: [17, 21, 25]
+        fasterxmlVersion: [3.0.3]
       fail-fast: false
 
     steps:
@@ -51,7 +51,7 @@ jobs:
           cache: maven
 
       - name: Run tests with specific Jackson version
-        run: mvn --batch-mode clean verify -DfasterxmlVersion=${{ matrix.fasterxmlVersion }}
+        run: mvn --batch-mode clean verify -Djackson.version=${{ matrix.fasterxmlVersion }}
 
   results:
     if: ${{ always() }}
