@@ -23,7 +23,7 @@ import io.vavr.control.Option;
 import java.io.IOException;
 
 /**
- * @author <a href="mailto:ruslan.sennov@gmail.com">Ruslan Sennov</a>
+ * @author Ruslan Sennov</a>
  */
 public class Generator {
 

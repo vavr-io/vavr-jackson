@@ -24,7 +24,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
- * @author <a href="mailto:ruslan.sennov@gmail.com">Ruslan Sennov</a>
+ * @author Ruslan Sennov</a>
  */
 public class Serializer {
 

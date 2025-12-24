@@ -1,39 +1,21 @@
 name: release
+
 on:
   workflow_dispatch:
     inputs:
       release-tag:
-        description: 'Version to release'
+        description: 'Tag to release (must start with "v", e.g., v1.2.3)'
         required: true
+        type: string
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        java: [ '21' ]
-        architecture: [ 'x64' ]
-
-    name: Release ${{ github.event.inputs.release-tag }}
-    steps:
-      - uses: actions/checkout@v5
-        with:
-          ref: ${{ github.event.inputs.release-tag }}
-
-      - name: Setup JDK
-        uses: actions/setup-java@v5
-        with:
-          distribution: 'temurin'
-          java-version: '21'
-          cache: 'maven'
-          server-id: central
-          server-username: CENTRAL_USERNAME
-          server-password: CENTRAL_PASSWORD
-          gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
-
-      - name: Deploy Snapshot
-        run: mvn -B --no-transfer-progress -Pmaven-central-release -DskipTests=true deploy
-        env:
-          CENTRAL_USERNAME: ${{ secrets.CENTRAL_USERNAME }}
-          CENTRAL_PASSWORD: ${{ secrets.CENTRAL_PASSWORD }}
-          MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
+  release:
+    uses: vavr-io/workflows/.github/workflows/release.yml@main
+    with:
+      java-version: 21
+      release-tag: ${{ inputs.release-tag }}
+    secrets:
+      CENTRAL_USERNAME: ${{ secrets.CENTRAL_USERNAME }}
+      CENTRAL_PASSWORD: ${{ secrets.CENTRAL_PASSWORD }}
+      MAVEN_GPG_PRIVATE_KEY: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
+      MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
