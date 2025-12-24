@@ -1,9 +1,9 @@
 package io.vavr.jackson.datatype.multimap;
 
-import tools.jackson.core.type.TypeReference;
 import io.vavr.collection.HashMultimap;
 import io.vavr.collection.Multimap;
 import io.vavr.control.Option;
+import tools.jackson.core.type.TypeReference;
 
 public class HashMultimapTest extends MultimapTest {
     @Override

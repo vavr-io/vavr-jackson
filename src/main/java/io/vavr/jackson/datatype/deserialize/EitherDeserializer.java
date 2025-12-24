@@ -19,12 +19,12 @@
  */
 package io.vavr.jackson.datatype.deserialize;
 
+import io.vavr.control.Either;
 import tools.jackson.core.JsonParser;
 import tools.jackson.core.JsonToken;
+import tools.jackson.databind.DatabindException;
 import tools.jackson.databind.DeserializationContext;
 import tools.jackson.databind.JavaType;
-import tools.jackson.databind.DatabindException;
-import io.vavr.control.Either;
 import tools.jackson.databind.ValueDeserializer;
 
 import static tools.jackson.core.JsonToken.END_ARRAY;

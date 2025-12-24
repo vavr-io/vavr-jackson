@@ -1,13 +1,12 @@
 package io.vavr.jackson.datatype.set;
 
-import tools.jackson.core.type.TypeReference;
 import io.vavr.collection.LinkedHashSet;
 import io.vavr.collection.Set;
 import io.vavr.control.Option;
-import org.junit.jupiter.api.Test;
-
 import java.io.IOException;
 import java.util.Arrays;
+import org.junit.jupiter.api.Test;
+import tools.jackson.core.type.TypeReference;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

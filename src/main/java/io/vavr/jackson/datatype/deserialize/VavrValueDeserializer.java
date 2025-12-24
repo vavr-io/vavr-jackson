@@ -19,15 +19,14 @@
  */
 package io.vavr.jackson.datatype.deserialize;
 
+import java.util.ArrayList;
+import java.util.List;
 import tools.jackson.core.JsonToken;
 import tools.jackson.databind.DatabindException;
 import tools.jackson.databind.DeserializationContext;
 import tools.jackson.databind.JavaType;
 import tools.jackson.databind.ValueDeserializer;
 import tools.jackson.databind.deser.std.StdDeserializer;
-
-import java.util.ArrayList;
-import java.util.List;
 
 abstract class VavrValueDeserializer<T> extends StdDeserializer<T> {
 

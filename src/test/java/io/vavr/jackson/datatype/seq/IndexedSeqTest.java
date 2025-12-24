@@ -1,12 +1,11 @@
 package io.vavr.jackson.datatype.seq;
 
-import tools.jackson.core.type.TypeReference;
 import io.vavr.collection.Array;
 import io.vavr.collection.IndexedSeq;
 import io.vavr.collection.Seq;
 import io.vavr.control.Option;
-
 import java.util.Arrays;
+import tools.jackson.core.type.TypeReference;
 
 public class IndexedSeqTest extends SeqTest {
     @Override

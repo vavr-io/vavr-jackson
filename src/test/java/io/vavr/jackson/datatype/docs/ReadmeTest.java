@@ -1,10 +1,10 @@
 package io.vavr.jackson.datatype.docs;
 
-import tools.jackson.core.type.TypeReference;
-import tools.jackson.databind.ObjectMapper;
 import io.vavr.collection.List;
 import io.vavr.jackson.datatype.BaseTest;
 import org.junit.jupiter.api.Test;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.ObjectMapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

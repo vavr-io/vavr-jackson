@@ -19,11 +19,10 @@
  */
 package io.vavr.jackson.datatype.serialize;
 
-import tools.jackson.databind.JavaType;
 import io.vavr.Tuple1;
-
 import java.util.Collections;
 import java.util.List;
+import tools.jackson.databind.JavaType;
 
 class Tuple1Serializer extends TupleSerializer<Tuple1<?>> {
 

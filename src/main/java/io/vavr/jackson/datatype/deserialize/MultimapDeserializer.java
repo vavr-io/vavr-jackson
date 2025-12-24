@@ -19,23 +19,22 @@
  */
 package io.vavr.jackson.datatype.deserialize;
 
-import tools.jackson.core.JsonParser;
-import tools.jackson.core.JsonToken;
-import tools.jackson.databind.DeserializationContext;
-import tools.jackson.databind.JavaType;
-import tools.jackson.databind.ValueDeserializer;
-import tools.jackson.databind.DatabindException;
-import tools.jackson.databind.KeyDeserializer;
-import tools.jackson.databind.jsontype.TypeDeserializer;
-import tools.jackson.databind.type.MapLikeType;
 import io.vavr.Tuple;
 import io.vavr.Tuple2;
 import io.vavr.collection.HashMultimap;
 import io.vavr.collection.LinkedHashMultimap;
 import io.vavr.collection.Multimap;
 import io.vavr.collection.TreeMultimap;
-
 import java.util.ArrayList;
+import tools.jackson.core.JsonParser;
+import tools.jackson.core.JsonToken;
+import tools.jackson.databind.DatabindException;
+import tools.jackson.databind.DeserializationContext;
+import tools.jackson.databind.JavaType;
+import tools.jackson.databind.KeyDeserializer;
+import tools.jackson.databind.ValueDeserializer;
+import tools.jackson.databind.jsontype.TypeDeserializer;
+import tools.jackson.databind.type.MapLikeType;
 
 class MultimapDeserializer extends MaplikeDeserializer<Multimap<?, ?>> {
 

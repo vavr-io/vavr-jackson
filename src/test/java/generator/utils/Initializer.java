@@ -1,6 +1,5 @@
 package generator.utils;
 
-import tools.jackson.databind.ObjectMapper;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.MethodSpec;
@@ -29,8 +28,8 @@ import io.vavr.collection.Stream;
 import io.vavr.control.Either;
 import io.vavr.control.Option;
 import io.vavr.jackson.datatype.VavrModule;
-
 import javax.lang.model.element.Modifier;
+import tools.jackson.databind.ObjectMapper;
 
 /**
  * @author Ruslan Sennov</a>

@@ -1,11 +1,10 @@
 package io.vavr.jackson.datatype.seq;
 
-import tools.jackson.core.type.TypeReference;
 import io.vavr.collection.Seq;
 import io.vavr.collection.Stream;
 import io.vavr.control.Option;
-
 import java.util.Arrays;
+import tools.jackson.core.type.TypeReference;
 
 public class StreamTest extends SeqTest {
     @Override

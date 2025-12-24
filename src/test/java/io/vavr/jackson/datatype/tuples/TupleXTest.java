@@ -2,16 +2,15 @@ package io.vavr.jackson.datatype.tuples;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import tools.jackson.databind.DatabindException;
 import io.vavr.Tuple;
 import io.vavr.Tuple0;
 import io.vavr.Tuple2;
 import io.vavr.Tuple3;
 import io.vavr.Tuple8;
 import io.vavr.jackson.datatype.BaseTest;
-import org.junit.jupiter.api.Test;
-
 import java.io.IOException;
+import org.junit.jupiter.api.Test;
+import tools.jackson.databind.DatabindException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;

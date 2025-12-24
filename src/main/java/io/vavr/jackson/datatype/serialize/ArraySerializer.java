@@ -19,16 +19,15 @@
  */
 package io.vavr.jackson.datatype.serialize;
 
+import io.vavr.Value;
+import java.util.ArrayList;
 import tools.jackson.databind.BeanProperty;
-import tools.jackson.databind.JavaType;
 import tools.jackson.databind.DatabindException;
+import tools.jackson.databind.JavaType;
 import tools.jackson.databind.SerializationContext;
 import tools.jackson.databind.ValueSerializer;
 import tools.jackson.databind.type.CollectionLikeType;
 import tools.jackson.databind.type.TypeFactory;
-import io.vavr.Value;
-
-import java.util.ArrayList;
 
 class ArraySerializer<T extends Value<?>> extends VavrValueSerializer<T> {
 

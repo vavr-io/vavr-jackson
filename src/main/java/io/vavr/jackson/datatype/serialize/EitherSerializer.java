@@ -19,9 +19,9 @@
  */
 package io.vavr.jackson.datatype.serialize;
 
+import io.vavr.control.Either;
 import tools.jackson.core.JsonGenerator;
 import tools.jackson.databind.JavaType;
-import io.vavr.control.Either;
 import tools.jackson.databind.SerializationContext;
 
 class EitherSerializer extends HListSerializer<Either<?, ?>> {

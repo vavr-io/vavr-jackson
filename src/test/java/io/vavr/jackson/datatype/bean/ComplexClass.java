@@ -14,7 +14,6 @@ import io.vavr.collection.TreeMultimap;
 import io.vavr.collection.TreeSet;
 import io.vavr.collection.Vector;
 import io.vavr.control.Option;
-
 import java.io.Serializable;
 
 public class ComplexClass implements Serializable {

@@ -19,12 +19,11 @@
  */
 package io.vavr.jackson.datatype.serialize;
 
+import io.vavr.collection.CharSeq;
 import tools.jackson.databind.JavaType;
 import tools.jackson.databind.SerializationContext;
 import tools.jackson.databind.type.TypeFactory;
-import io.vavr.collection.CharSeq;
 
-import java.io.IOException;
 
 class CharSeqSerializer extends VavrValueSerializer<CharSeq> {
 

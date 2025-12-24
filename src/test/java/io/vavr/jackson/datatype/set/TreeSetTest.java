@@ -1,17 +1,16 @@
 package io.vavr.jackson.datatype.set;
 
-import tools.jackson.core.type.TypeReference;
-import tools.jackson.databind.DatabindException;
 import io.vavr.collection.List;
 import io.vavr.collection.Set;
 import io.vavr.collection.SortedSet;
 import io.vavr.collection.TreeSet;
 import io.vavr.control.Option;
-import org.junit.jupiter.api.Test;
-
 import java.io.IOException;
 import java.util.Comparator;
 import java.util.Objects;
+import org.junit.jupiter.api.Test;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.DatabindException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;

@@ -19,12 +19,11 @@
  */
 package io.vavr.jackson.datatype.deserialize;
 
-import tools.jackson.databind.DeserializationContext;
-import tools.jackson.databind.JavaType;
 import io.vavr.Tuple;
 import io.vavr.Tuple3;
-
 import java.util.List;
+import tools.jackson.databind.DeserializationContext;
+import tools.jackson.databind.JavaType;
 
 class Tuple3Deserializer extends TupleDeserializer<Tuple3<?, ?, ?>> {
 

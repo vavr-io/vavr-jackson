@@ -1,16 +1,15 @@
 package io.vavr.jackson.datatype;
 
+import io.vavr.collection.List;
+import java.io.IOException;
+import java.util.ArrayList;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.junit.jupiter.api.Test;
 import tools.jackson.core.type.TypeReference;
 import tools.jackson.databind.ObjectWriter;
 import tools.jackson.dataformat.csv.CsvMapper;
 import tools.jackson.datatype.joda.JodaModule;
-import io.vavr.collection.List;
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
-import org.junit.jupiter.api.Test;
-
-import java.io.IOException;
-import java.util.ArrayList;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

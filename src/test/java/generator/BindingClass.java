@@ -23,12 +23,11 @@ import io.vavr.collection.HashSet;
 import io.vavr.collection.List;
 import io.vavr.control.Either;
 import io.vavr.control.Option;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
-import javax.lang.model.element.Modifier;
 import java.io.File;
 import java.io.IOException;
+import javax.lang.model.element.Modifier;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import static generator.utils.Initializer.initMapper;
 

@@ -18,7 +18,6 @@ import io.vavr.collection.Set;
 import io.vavr.collection.Stream;
 import io.vavr.control.Either;
 import io.vavr.control.Option;
-
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;

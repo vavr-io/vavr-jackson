@@ -1,12 +1,11 @@
 package io.vavr.jackson.issues;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import tools.jackson.databind.ObjectMapper;
 import io.vavr.collection.List;
 import io.vavr.jackson.datatype.VavrModule;
-import org.junit.jupiter.api.Test;
-
 import java.util.Date;
+import org.junit.jupiter.api.Test;
+import tools.jackson.databind.ObjectMapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

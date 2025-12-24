@@ -19,13 +19,6 @@
  */
 package io.vavr.jackson.datatype;
 
-import tools.jackson.databind.JavaType;
-import tools.jackson.databind.type.CollectionLikeType;
-import tools.jackson.databind.type.MapLikeType;
-import tools.jackson.databind.type.ReferenceType;
-import tools.jackson.databind.type.TypeBindings;
-import tools.jackson.databind.type.TypeFactory;
-import tools.jackson.databind.type.TypeModifier;
 import io.vavr.Lazy;
 import io.vavr.collection.CharSeq;
 import io.vavr.collection.Map;
@@ -34,8 +27,14 @@ import io.vavr.collection.PriorityQueue;
 import io.vavr.collection.Seq;
 import io.vavr.collection.Set;
 import io.vavr.control.Option;
-
 import java.lang.reflect.Type;
+import tools.jackson.databind.JavaType;
+import tools.jackson.databind.type.CollectionLikeType;
+import tools.jackson.databind.type.MapLikeType;
+import tools.jackson.databind.type.ReferenceType;
+import tools.jackson.databind.type.TypeBindings;
+import tools.jackson.databind.type.TypeFactory;
+import tools.jackson.databind.type.TypeModifier;
 
 public class VavrTypeModifier extends TypeModifier {
 

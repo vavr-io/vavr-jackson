@@ -20,15 +20,6 @@
 package io.vavr.jackson.datatype.serialize;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import tools.jackson.databind.BeanDescription;
-import tools.jackson.databind.JavaType;
-import tools.jackson.databind.SerializationConfig;
-import tools.jackson.databind.ValueSerializer;
-import tools.jackson.databind.jsontype.TypeSerializer;
-import tools.jackson.databind.ser.Serializers;
-import tools.jackson.databind.type.CollectionLikeType;
-import tools.jackson.databind.type.MapLikeType;
-import tools.jackson.databind.type.ReferenceType;
 import io.vavr.CheckedFunction0;
 import io.vavr.CheckedFunction1;
 import io.vavr.CheckedFunction2;
@@ -66,6 +57,15 @@ import io.vavr.collection.Set;
 import io.vavr.control.Either;
 import io.vavr.control.Option;
 import io.vavr.jackson.datatype.VavrModule;
+import tools.jackson.databind.BeanDescription;
+import tools.jackson.databind.JavaType;
+import tools.jackson.databind.SerializationConfig;
+import tools.jackson.databind.ValueSerializer;
+import tools.jackson.databind.jsontype.TypeSerializer;
+import tools.jackson.databind.ser.Serializers;
+import tools.jackson.databind.type.CollectionLikeType;
+import tools.jackson.databind.type.MapLikeType;
+import tools.jackson.databind.type.ReferenceType;
 
 public class VavrSerializers extends Serializers.Base {
 

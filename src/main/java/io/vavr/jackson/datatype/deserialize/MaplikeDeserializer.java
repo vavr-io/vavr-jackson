@@ -19,19 +19,18 @@
  */
 package io.vavr.jackson.datatype.deserialize;
 
+import java.io.Serializable;
+import java.util.Comparator;
 import tools.jackson.databind.BeanProperty;
+import tools.jackson.databind.DatabindException;
 import tools.jackson.databind.DeserializationContext;
 import tools.jackson.databind.JavaType;
-import tools.jackson.databind.ValueDeserializer;
-import tools.jackson.databind.DatabindException;
 import tools.jackson.databind.KeyDeserializer;
+import tools.jackson.databind.ValueDeserializer;
 import tools.jackson.databind.deser.ContextualKeyDeserializer;
 import tools.jackson.databind.deser.std.StdDeserializer;
 import tools.jackson.databind.jsontype.TypeDeserializer;
 import tools.jackson.databind.type.MapLikeType;
-
-import java.io.Serializable;
-import java.util.Comparator;
 
 abstract class MaplikeDeserializer<T> extends StdDeserializer<T>  {
 

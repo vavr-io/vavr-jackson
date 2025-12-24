@@ -19,11 +19,10 @@
  */
 package io.vavr.jackson.datatype;
 
-import tools.jackson.databind.module.SimpleModule;
 import io.vavr.jackson.datatype.deserialize.VavrDeserializers;
 import io.vavr.jackson.datatype.serialize.VavrSerializers;
-
 import java.io.Serial;
+import tools.jackson.databind.module.SimpleModule;
 
 public class VavrModule extends SimpleModule {
 

@@ -19,14 +19,13 @@
  */
 package io.vavr.jackson.datatype.deserialize;
 
+import java.io.ByteArrayInputStream;
+import java.io.ObjectInputStream;
 import tools.jackson.core.JsonParser;
 import tools.jackson.databind.DeserializationContext;
 import tools.jackson.databind.JavaType;
 import tools.jackson.databind.ValueDeserializer;
 import tools.jackson.databind.deser.std.StdDeserializer;
-
-import java.io.ByteArrayInputStream;
-import java.io.ObjectInputStream;
 
 class SerializableDeserializer<T> extends StdDeserializer<T> {
 
