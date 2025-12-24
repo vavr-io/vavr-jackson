@@ -55,7 +55,7 @@
         <vavr.version>0.11.0</vavr.version>
         <jackson.version>3.0.3</jackson.version>
 
-        <junit.jupiter.version>5.13.4</junit.jupiter.version>
+        <junit.jupiter.version>6.0.1</junit.jupiter.version>
         <assertj.version>3.27.6</assertj.version>
         <jaxb.version>2.3.1</jaxb.version>
         <javapoet.version>1.13.0</javapoet.version>
