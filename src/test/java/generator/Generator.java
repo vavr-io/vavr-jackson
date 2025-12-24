@@ -19,7 +19,6 @@ import io.vavr.collection.TreeSet;
 import io.vavr.collection.Vector;
 import io.vavr.control.Either;
 import io.vavr.control.Option;
-
 import java.io.IOException;
 
 /**

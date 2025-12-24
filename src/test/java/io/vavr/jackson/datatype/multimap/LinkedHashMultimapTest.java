@@ -1,13 +1,12 @@
 package io.vavr.jackson.datatype.multimap;
 
-import tools.jackson.core.type.TypeReference;
 import io.vavr.collection.LinkedHashMultimap;
 import io.vavr.collection.Multimap;
 import io.vavr.control.Option;
-import org.junit.jupiter.api.Test;
-
 import java.io.IOException;
 import java.util.Collections;
+import org.junit.jupiter.api.Test;
+import tools.jackson.core.type.TypeReference;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

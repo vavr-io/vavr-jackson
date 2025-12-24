@@ -2,12 +2,12 @@ package io.vavr.jackson.issues;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
-import tools.jackson.databind.ObjectMapper;
 import io.vavr.collection.List;
 import io.vavr.control.Option;
 import io.vavr.control.Try;
 import io.vavr.jackson.datatype.BaseTest;
 import org.junit.jupiter.api.Test;
+import tools.jackson.databind.ObjectMapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;

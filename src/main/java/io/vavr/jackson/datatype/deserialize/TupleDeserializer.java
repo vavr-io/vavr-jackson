@@ -19,10 +19,6 @@
  */
 package io.vavr.jackson.datatype.deserialize;
 
-import tools.jackson.core.JsonParser;
-import tools.jackson.core.JsonToken;
-import tools.jackson.databind.DeserializationContext;
-import tools.jackson.databind.JavaType;
 import io.vavr.Tuple0;
 import io.vavr.Tuple1;
 import io.vavr.Tuple2;
@@ -31,10 +27,13 @@ import io.vavr.Tuple4;
 import io.vavr.Tuple5;
 import io.vavr.Tuple6;
 import io.vavr.Tuple7;
-import tools.jackson.databind.ValueDeserializer;
-
 import java.util.ArrayList;
 import java.util.List;
+import tools.jackson.core.JsonParser;
+import tools.jackson.core.JsonToken;
+import tools.jackson.databind.DeserializationContext;
+import tools.jackson.databind.JavaType;
+import tools.jackson.databind.ValueDeserializer;
 
 import static tools.jackson.core.JsonToken.END_ARRAY;
 import static tools.jackson.core.JsonToken.VALUE_NULL;

@@ -1,17 +1,16 @@
 package io.vavr.jackson.datatype.bean;
 
-import tools.jackson.databind.ObjectMapper;
-import tools.jackson.databind.annotation.JsonDeserialize;
 import io.vavr.Lazy;
 import io.vavr.collection.HashMap;
 import io.vavr.collection.List;
 import io.vavr.collection.Map;
 import io.vavr.control.Option;
 import io.vavr.jackson.datatype.VavrModule;
-import org.junit.jupiter.api.Test;
-import tools.jackson.databind.introspect.DefaultAccessorNamingStrategy;
-
 import java.io.IOException;
+import org.junit.jupiter.api.Test;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.annotation.JsonDeserialize;
+import tools.jackson.databind.introspect.DefaultAccessorNamingStrategy;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

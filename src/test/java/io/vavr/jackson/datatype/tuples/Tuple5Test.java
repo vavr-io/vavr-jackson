@@ -1,9 +1,9 @@
 package io.vavr.jackson.datatype.tuples;
 
-import tools.jackson.core.type.TypeReference;
 import io.vavr.Tuple;
 import io.vavr.Tuple5;
 import io.vavr.control.Option;
+import tools.jackson.core.type.TypeReference;
 
 public class Tuple5Test extends TupleTest<Tuple5<?, ?, ?, ?, ?>> {
 

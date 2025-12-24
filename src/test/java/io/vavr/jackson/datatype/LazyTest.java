@@ -3,15 +3,14 @@ package io.vavr.jackson.datatype;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import io.vavr.Lazy;
+import java.io.IOException;
+import java.time.LocalDate;
+import org.junit.jupiter.api.Test;
 import tools.jackson.core.type.TypeReference;
 import tools.jackson.databind.ObjectMapper;
 import tools.jackson.databind.annotation.JsonSerialize;
-import io.vavr.Lazy;
-import org.junit.jupiter.api.Test;
 import tools.jackson.databind.cfg.DateTimeFeature;
-
-import java.io.IOException;
-import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

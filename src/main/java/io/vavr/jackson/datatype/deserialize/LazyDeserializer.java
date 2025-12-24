@@ -19,14 +19,14 @@
  */
 package io.vavr.jackson.datatype.deserialize;
 
+import io.vavr.Lazy;
 import tools.jackson.core.JsonParser;
 import tools.jackson.databind.BeanProperty;
+import tools.jackson.databind.DatabindException;
 import tools.jackson.databind.DeserializationContext;
 import tools.jackson.databind.JavaType;
-import tools.jackson.databind.DatabindException;
 import tools.jackson.databind.ValueDeserializer;
 import tools.jackson.databind.jsontype.TypeDeserializer;
-import io.vavr.Lazy;
 
 class LazyDeserializer extends VavrValueDeserializer<Lazy<?>> {
 

@@ -19,11 +19,10 @@
  */
 package io.vavr.jackson.datatype.serialize;
 
-import tools.jackson.databind.JavaType;
 import io.vavr.Tuple7;
-
 import java.util.Arrays;
 import java.util.List;
+import tools.jackson.databind.JavaType;
 
 class Tuple7Serializer extends TupleSerializer<Tuple7<?, ?, ?, ?, ?, ?, ?>> {
 

@@ -1,6 +1,5 @@
 package generator;
 
-import tools.jackson.core.type.TypeReference;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.JavaFile;
@@ -23,13 +22,13 @@ import io.vavr.Tuple8;
 import io.vavr.collection.Map;
 import io.vavr.collection.Multimap;
 import io.vavr.control.Either;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
-import javax.lang.model.element.Modifier;
 import java.io.File;
 import java.io.IOException;
 import java.util.stream.Collectors;
+import javax.lang.model.element.Modifier;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import tools.jackson.core.type.TypeReference;
 
 import static generator.utils.Initializer.initMapper;
 import static generator.utils.Initializer.initValue;

@@ -2,12 +2,11 @@ package io.vavr.jackson.datatype;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import io.vavr.control.Option;
+import java.io.IOException;
+import org.junit.jupiter.api.Test;
 import tools.jackson.databind.DatabindException;
 import tools.jackson.databind.ObjectMapper;
-import io.vavr.control.Option;
-import org.junit.jupiter.api.Test;
-
-import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;

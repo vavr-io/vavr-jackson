@@ -1,9 +1,8 @@
 package io.vavr.jackson.datatype.bean;
 
 import io.vavr.jackson.datatype.BaseTest;
-import org.junit.jupiter.api.Test;
-
 import java.io.IOException;
+import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

@@ -19,17 +19,6 @@
  */
 package io.vavr.jackson.datatype.deserialize;
 
-import tools.jackson.databind.BeanDescription;
-import tools.jackson.databind.DeserializationConfig;
-import tools.jackson.databind.JavaType;
-import tools.jackson.databind.DatabindException;
-import tools.jackson.databind.KeyDeserializer;
-import tools.jackson.databind.ValueDeserializer;
-import tools.jackson.databind.deser.Deserializers;
-import tools.jackson.databind.jsontype.TypeDeserializer;
-import tools.jackson.databind.type.CollectionLikeType;
-import tools.jackson.databind.type.MapLikeType;
-import tools.jackson.databind.type.ReferenceType;
 import io.vavr.CheckedFunction0;
 import io.vavr.CheckedFunction1;
 import io.vavr.CheckedFunction2;
@@ -67,6 +56,17 @@ import io.vavr.collection.Set;
 import io.vavr.control.Either;
 import io.vavr.control.Option;
 import io.vavr.jackson.datatype.VavrModule;
+import tools.jackson.databind.BeanDescription;
+import tools.jackson.databind.DatabindException;
+import tools.jackson.databind.DeserializationConfig;
+import tools.jackson.databind.JavaType;
+import tools.jackson.databind.KeyDeserializer;
+import tools.jackson.databind.ValueDeserializer;
+import tools.jackson.databind.deser.Deserializers;
+import tools.jackson.databind.jsontype.TypeDeserializer;
+import tools.jackson.databind.type.CollectionLikeType;
+import tools.jackson.databind.type.MapLikeType;
+import tools.jackson.databind.type.ReferenceType;
 
 public class VavrDeserializers extends Deserializers.Base {
 

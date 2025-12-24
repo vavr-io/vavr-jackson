@@ -1,6 +1,5 @@
 package io.vavr.jackson.datatype;
 
-import tools.jackson.core.type.TypeReference;
 import io.vavr.CheckedFunction0;
 import io.vavr.CheckedFunction1;
 import io.vavr.CheckedFunction2;
@@ -19,9 +18,9 @@ import io.vavr.Function5;
 import io.vavr.Function6;
 import io.vavr.Function7;
 import io.vavr.Function8;
-import org.junit.jupiter.api.Test;
-
 import java.io.IOException;
+import org.junit.jupiter.api.Test;
+import tools.jackson.core.type.TypeReference;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;

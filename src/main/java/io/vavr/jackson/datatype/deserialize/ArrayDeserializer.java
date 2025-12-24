@@ -19,6 +19,11 @@
  */
 package io.vavr.jackson.datatype.deserialize;
 
+import io.vavr.collection.Traversable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import tools.jackson.core.JsonParser;
 import tools.jackson.core.JsonToken;
 import tools.jackson.databind.BeanProperty;
 import tools.jackson.databind.DatabindException;
@@ -26,12 +31,6 @@ import tools.jackson.databind.DeserializationContext;
 import tools.jackson.databind.JavaType;
 import tools.jackson.databind.ValueDeserializer;
 import tools.jackson.databind.jsontype.TypeDeserializer;
-import io.vavr.collection.Traversable;
-import tools.jackson.core.JsonParser;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 import static tools.jackson.core.JsonToken.END_ARRAY;
 import static tools.jackson.core.JsonToken.VALUE_NULL;

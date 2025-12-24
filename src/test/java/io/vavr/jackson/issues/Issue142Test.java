@@ -1,19 +1,18 @@
 package io.vavr.jackson.issues;
 
 import com.fasterxml.jackson.annotation.JsonValue;
+import io.vavr.collection.TreeMap;
+import io.vavr.collection.TreeMultimap;
+import io.vavr.jackson.datatype.BaseTest;
+import io.vavr.jackson.datatype.VavrModule;
+import java.io.IOException;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import tools.jackson.core.type.TypeReference;
 import tools.jackson.databind.DeserializationContext;
 import tools.jackson.databind.KeyDeserializer;
 import tools.jackson.databind.ObjectMapper;
 import tools.jackson.databind.module.SimpleModule;
-import io.vavr.collection.TreeMap;
-import io.vavr.collection.TreeMultimap;
-import io.vavr.jackson.datatype.BaseTest;
-import io.vavr.jackson.datatype.VavrModule;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

@@ -6,12 +6,11 @@ import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
 import io.vavr.collection.PriorityQueue;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
-import javax.lang.model.element.Modifier;
 import java.io.File;
 import java.io.IOException;
+import javax.lang.model.element.Modifier;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import static generator.utils.Initializer.initMapper;
 import static generator.utils.Initializer.initValue;

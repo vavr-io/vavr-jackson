@@ -1,13 +1,12 @@
 package io.vavr.jackson.datatype;
 
-import tools.jackson.core.type.TypeReference;
-import tools.jackson.databind.DatabindException;
 import io.vavr.collection.HashMap;
 import io.vavr.collection.List;
-import org.junit.jupiter.api.Test;
-
 import java.io.IOException;
 import java.util.Arrays;
+import org.junit.jupiter.api.Test;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.DatabindException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;

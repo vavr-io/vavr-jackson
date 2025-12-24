@@ -19,18 +19,18 @@
  */
 package io.vavr.jackson.datatype.serialize;
 
+import io.vavr.Lazy;
 import tools.jackson.core.JsonGenerator;
 import tools.jackson.databind.AnnotationIntrospector;
 import tools.jackson.databind.BeanProperty;
-import tools.jackson.databind.JavaType;
 import tools.jackson.databind.DatabindException;
+import tools.jackson.databind.JavaType;
 import tools.jackson.databind.MapperFeature;
 import tools.jackson.databind.SerializationContext;
 import tools.jackson.databind.ValueSerializer;
 import tools.jackson.databind.annotation.JsonSerialize;
 import tools.jackson.databind.introspect.Annotated;
 import tools.jackson.databind.jsontype.TypeSerializer;
-import io.vavr.Lazy;
 
 class LazySerializer extends HListSerializer<Lazy<?>> {
 

@@ -1,16 +1,15 @@
 package io.vavr.jackson.datatype.set;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import tools.jackson.core.type.TypeReference;
-import tools.jackson.databind.ObjectMapper;
 import io.vavr.collection.HashSet;
 import io.vavr.collection.Set;
 import io.vavr.control.Option;
-import org.junit.jupiter.api.Test;
-
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
+import org.junit.jupiter.api.Test;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.ObjectMapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

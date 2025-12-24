@@ -19,16 +19,15 @@
  */
 package io.vavr.jackson.datatype.serialize;
 
+import io.vavr.control.Either;
+import io.vavr.control.Option;
 import tools.jackson.core.JsonGenerator;
 import tools.jackson.core.exc.StreamWriteException;
 import tools.jackson.databind.*;
 import tools.jackson.databind.ValueSerializer;
-import tools.jackson.databind.ser.BeanSerializer;
 import tools.jackson.databind.ser.bean.BeanSerializerBase;
 import tools.jackson.databind.ser.std.StdSerializer;
 import tools.jackson.databind.util.NameTransformer;
-import io.vavr.control.Either;
-import io.vavr.control.Option;
 
 /**
  * Serializer for {@link Option} that unwraps the value if it is defined and the property is annotated with {@code @JsonUnwrapped}.

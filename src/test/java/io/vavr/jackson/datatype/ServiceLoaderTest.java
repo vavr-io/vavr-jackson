@@ -1,8 +1,8 @@
 package io.vavr.jackson.datatype;
 
-import tools.jackson.databind.ObjectMapper;
 import io.vavr.Lazy;
 import org.junit.jupiter.api.Test;
+import tools.jackson.databind.ObjectMapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

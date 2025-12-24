@@ -19,11 +19,10 @@
  */
 package io.vavr.jackson.datatype.serialize;
 
+import java.util.List;
 import tools.jackson.core.JsonGenerator;
 import tools.jackson.databind.JavaType;
 import tools.jackson.databind.SerializationContext;
-
-import java.util.List;
 
 abstract class TupleSerializer<T> extends HListSerializer<T> {
 

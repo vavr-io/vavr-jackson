@@ -2,15 +2,14 @@ package io.vavr.jackson.issues;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import tools.jackson.databind.ObjectMapper;
 import io.vavr.control.Option;
 import io.vavr.jackson.datatype.BaseTest;
-import org.junit.jupiter.api.Test;
-import tools.jackson.databind.cfg.DateTimeFeature;
-
 import java.io.IOException;
 import java.time.YearMonth;
 import java.util.Optional;
+import org.junit.jupiter.api.Test;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.cfg.DateTimeFeature;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

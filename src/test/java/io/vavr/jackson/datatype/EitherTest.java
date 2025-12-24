@@ -2,21 +2,19 @@ package io.vavr.jackson.datatype;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import tools.jackson.core.type.TypeReference;
-import tools.jackson.databind.DatabindException;
-import tools.jackson.databind.DeserializationFeature;
-import tools.jackson.databind.ObjectMapper;
-import tools.jackson.module.scala.DefaultScalaModule;
 import io.vavr.Tuple;
 import io.vavr.collection.HashSet;
 import io.vavr.collection.List;
 import io.vavr.collection.Set;
 import io.vavr.control.Either;
 import io.vavr.control.Option;
-import org.junit.jupiter.api.Test;
-
 import java.io.IOException;
 import java.math.BigInteger;
+import org.junit.jupiter.api.Test;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.DatabindException;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.module.scala.DefaultScalaModule;
 
 import static io.vavr.control.Option.none;
 import static io.vavr.control.Option.some;

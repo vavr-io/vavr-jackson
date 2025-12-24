@@ -38,13 +38,12 @@ import io.vavr.collection.TreeSet;
 import io.vavr.collection.Vector;
 import io.vavr.control.Either;
 import io.vavr.control.Option;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
-import javax.lang.model.element.Modifier;
 import java.io.File;
 import java.io.IOException;
 import java.util.function.Consumer;
+import javax.lang.model.element.Modifier;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import static generator.utils.Initializer.initMapper;
 import static generator.utils.PoetHelpers.simplePojo;

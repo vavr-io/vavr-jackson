@@ -1,12 +1,11 @@
 package io.vavr.jackson.datatype;
 
+import io.vavr.collection.CharSeq;
+import java.io.IOException;
+import org.junit.jupiter.api.Test;
 import tools.jackson.databind.DatabindException;
 import tools.jackson.databind.ObjectMapper;
 import tools.jackson.databind.ObjectWriter;
-import io.vavr.collection.CharSeq;
-import org.junit.jupiter.api.Test;
-
-import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;

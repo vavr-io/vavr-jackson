@@ -1,25 +1,24 @@
 package io.vavr.jackson.datatype.seq;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import tools.jackson.core.type.TypeReference;
-import tools.jackson.databind.DatabindException;
-import tools.jackson.databind.ObjectMapper;
-import tools.jackson.databind.ObjectWriter;
-import tools.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
-import tools.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import io.vavr.Tuple;
 import io.vavr.collection.List;
 import io.vavr.collection.Seq;
 import io.vavr.control.Option;
 import io.vavr.jackson.datatype.BaseTest;
 import io.vavr.jackson.datatype.VavrModule;
-import org.junit.jupiter.api.Test;
-
+import java.io.IOException;
+import java.util.Arrays;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.io.IOException;
-import java.util.Arrays;
+import org.junit.jupiter.api.Test;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.DatabindException;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectWriter;
+import tools.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import tools.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;

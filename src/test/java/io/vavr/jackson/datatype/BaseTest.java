@@ -1,20 +1,19 @@
 package io.vavr.jackson.datatype;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import tools.jackson.core.type.TypeReference;
-import tools.jackson.databind.ObjectMapper;
-import tools.jackson.databind.ObjectWriter;
-import tools.jackson.dataformat.xml.XmlMapper;
-import tools.jackson.module.jaxb.JaxbAnnotationModule;
 import io.vavr.Tuple2;
 import io.vavr.collection.List;
 import io.vavr.collection.Seq;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.Collection;
 import java.util.Map;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectWriter;
+import tools.jackson.dataformat.xml.XmlMapper;
+import tools.jackson.module.jaxb.JaxbAnnotationModule;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

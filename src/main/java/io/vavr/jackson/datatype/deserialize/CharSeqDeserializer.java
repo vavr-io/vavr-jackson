@@ -19,15 +19,15 @@
  */
 package io.vavr.jackson.datatype.deserialize;
 
+import io.vavr.collection.CharSeq;
 import tools.jackson.core.JsonParser;
 import tools.jackson.core.JsonToken;
+import tools.jackson.databind.DatabindException;
 import tools.jackson.databind.DeserializationContext;
 import tools.jackson.databind.JavaType;
 import tools.jackson.databind.ValueDeserializer;
-import tools.jackson.databind.DatabindException;
 import tools.jackson.databind.deser.std.StdDeserializer;
 import tools.jackson.databind.type.TypeFactory;
-import io.vavr.collection.CharSeq;
 
 class CharSeqDeserializer extends StdDeserializer<CharSeq> {
 

@@ -19,16 +19,15 @@
  */
 package io.vavr.jackson.datatype.deserialize;
 
-import tools.jackson.databind.DeserializationContext;
-import tools.jackson.databind.JavaType;
-import tools.jackson.databind.DatabindException;
-import tools.jackson.databind.ValueDeserializer;
-import tools.jackson.databind.jsontype.TypeDeserializer;
 import io.vavr.collection.PriorityQueue;
-
 import java.io.Serializable;
 import java.util.Comparator;
 import java.util.List;
+import tools.jackson.databind.DatabindException;
+import tools.jackson.databind.DeserializationContext;
+import tools.jackson.databind.JavaType;
+import tools.jackson.databind.ValueDeserializer;
+import tools.jackson.databind.jsontype.TypeDeserializer;
 
 class PriorityQueueDeserializer extends ArrayDeserializer<PriorityQueue<?>> {
 
