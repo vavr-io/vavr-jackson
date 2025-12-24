@@ -2,13 +2,11 @@ package io.vavr.jackson.issues;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import tools.jackson.databind.ObjectMapper;
 import io.vavr.control.Option;
 import io.vavr.jackson.datatype.BaseTest;
-import io.vavr.jackson.datatype.VavrModule;
 import org.junit.jupiter.api.Test;
+import tools.jackson.databind.cfg.DateTimeFeature;
 
 import java.io.IOException;
 import java.time.YearMonth;
@@ -33,8 +31,6 @@ class Issue141Test extends BaseTest {
         // When serializing the instance using object mapper
         // with Java Time Module and JDK8 Module
         ObjectMapper objectMapper = mapper();
-        objectMapper.registerModule(new JavaTimeModule());
-        objectMapper.registerModule(new Jdk8Module());
         String json = objectMapper.writeValueAsString(obj);
 
         // Then serialization is successful
@@ -58,9 +54,7 @@ class Issue141Test extends BaseTest {
 
         // When serializing the instance using object mapper
         // with Java Time Module and VAVR Module
-        ObjectMapper objectMapper = mapper();
-        objectMapper.registerModule(new JavaTimeModule());
-        objectMapper.registerModule(new VavrModule());
+        ObjectMapper objectMapper = mapper().rebuild().enable(DateTimeFeature.WRITE_DATES_AS_TIMESTAMPS).build();
         String json = objectMapper.writeValueAsString(obj);
 
         // Then serialization is successful
@@ -86,8 +80,6 @@ class Issue141Test extends BaseTest {
         // When serializing the instance using object mapper
         // with Java Time Module and VAVR Module
         ObjectMapper objectMapper = mapper();
-        objectMapper.registerModule(new JavaTimeModule());
-        objectMapper.registerModule(new VavrModule());
         String json = objectMapper.writeValueAsString(obj);
 
         // Then serialization is failed

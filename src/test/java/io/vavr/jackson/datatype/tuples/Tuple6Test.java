@@ -1,6 +1,6 @@
 package io.vavr.jackson.datatype.tuples;
 
-import com.fasterxml.jackson.core.type.TypeReference;
+import tools.jackson.core.type.TypeReference;
 import io.vavr.Tuple;
 import io.vavr.Tuple6;
 import io.vavr.control.Option;

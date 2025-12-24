@@ -1,6 +1,6 @@
 package io.vavr.jackson.datatype.multimap;
 
-import com.fasterxml.jackson.core.type.TypeReference;
+import tools.jackson.core.type.TypeReference;
 import io.vavr.collection.LinkedHashMultimap;
 import io.vavr.collection.Multimap;
 import io.vavr.control.Option;

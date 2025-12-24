@@ -19,19 +19,18 @@
  */
 package io.vavr.jackson.datatype.serialize;
 
-import com.fasterxml.jackson.databind.BeanProperty;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.ser.ContextualSerializer;
-import com.fasterxml.jackson.databind.type.CollectionLikeType;
-import com.fasterxml.jackson.databind.type.TypeFactory;
+import tools.jackson.databind.BeanProperty;
+import tools.jackson.databind.JavaType;
+import tools.jackson.databind.DatabindException;
+import tools.jackson.databind.SerializationContext;
+import tools.jackson.databind.ValueSerializer;
+import tools.jackson.databind.type.CollectionLikeType;
+import tools.jackson.databind.type.TypeFactory;
 import io.vavr.Value;
 
 import java.util.ArrayList;
 
-class ArraySerializer<T extends Value<?>> extends ValueSerializer<T> implements ContextualSerializer {
+class ArraySerializer<T extends Value<?>> extends VavrValueSerializer<T> {
 
     private static final long serialVersionUID = 1L;
     private final CollectionLikeType collectionType;
@@ -66,13 +65,13 @@ class ArraySerializer<T extends Value<?>> extends ValueSerializer<T> implements 
     }
 
     @Override
-    public boolean isEmpty(SerializerProvider provider, T value) {
+    public boolean isEmpty(SerializationContext context, T value) {
         return value.isEmpty();
     }
 
     @Override
-    public JsonSerializer<?> createContextual(SerializerProvider provider, BeanProperty property)
-        throws JsonMappingException {
+    public ValueSerializer<?> createContextual(SerializationContext context, BeanProperty property)
+        throws DatabindException {
         if (property == beanProperty) {
             return this;
         }

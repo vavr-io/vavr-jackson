@@ -3,12 +3,12 @@ package io.vavr.jackson.datatype;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.annotation.JsonSerialize;
 import io.vavr.Lazy;
 import org.junit.jupiter.api.Test;
+import tools.jackson.databind.cfg.DateTimeFeature;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -52,7 +52,7 @@ class LazyTest extends BaseTest {
 
         // When serializing the date using object mapper
         // with Java Time module and VAVR module
-        ObjectMapper mapper = mapper().registerModule(new JavaTimeModule());
+        ObjectMapper mapper = mapper().rebuild().enable(DateTimeFeature.WRITE_DATES_AS_TIMESTAMPS).build();
         String json = mapper.writeValueAsString(src);
 
         // Then the serialization is successful
@@ -78,7 +78,7 @@ class LazyTest extends BaseTest {
 
         // When serializing the date using object mapper
         // with Java Time module and VAVR module
-        ObjectMapper mapper = mapper().registerModule(new JavaTimeModule());
+        ObjectMapper mapper = mapper();
         String json = mapper.writeValueAsString(src);
 
         // Then the serialization is successful

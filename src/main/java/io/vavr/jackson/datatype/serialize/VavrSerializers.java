@@ -19,15 +19,16 @@
  */
 package io.vavr.jackson.datatype.serialize;
 
-import com.fasterxml.jackson.databind.BeanDescription;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.SerializationConfig;
-import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
-import com.fasterxml.jackson.databind.ser.Serializers;
-import com.fasterxml.jackson.databind.type.CollectionLikeType;
-import com.fasterxml.jackson.databind.type.MapLikeType;
-import com.fasterxml.jackson.databind.type.ReferenceType;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import tools.jackson.databind.BeanDescription;
+import tools.jackson.databind.JavaType;
+import tools.jackson.databind.SerializationConfig;
+import tools.jackson.databind.ValueSerializer;
+import tools.jackson.databind.jsontype.TypeSerializer;
+import tools.jackson.databind.ser.Serializers;
+import tools.jackson.databind.type.CollectionLikeType;
+import tools.jackson.databind.type.MapLikeType;
+import tools.jackson.databind.type.ReferenceType;
 import io.vavr.CheckedFunction0;
 import io.vavr.CheckedFunction1;
 import io.vavr.CheckedFunction2;
@@ -75,8 +76,8 @@ public class VavrSerializers extends Serializers.Base {
     }
 
     @Override
-    public JsonSerializer<?> findSerializer(SerializationConfig config,
-                                            JavaType type, BeanDescription beanDesc) {
+    public ValueSerializer<?> findSerializer(SerializationConfig config,
+                                            JavaType type, BeanDescription.Supplier beanDesc, JsonFormat.Value formatOverrides) {
 
         Class<?> raw = type.getRawClass();
         if (Either.class.isAssignableFrom(raw)) {
@@ -167,13 +168,13 @@ public class VavrSerializers extends Serializers.Base {
             return new SerializableSerializer<>(type);
         }
 
-        return super.findSerializer(config, type, beanDesc);
+        return super.findSerializer(config, type, beanDesc, formatOverrides);
     }
 
     @Override
-    public JsonSerializer<?> findReferenceSerializer(SerializationConfig config,
-                                                     ReferenceType type, BeanDescription beanDesc,
-                                                     TypeSerializer contentTypeSerializer, JsonSerializer<Object> contentValueSerializer) {
+    public ValueSerializer<?> findReferenceSerializer(SerializationConfig config,
+                                                     ReferenceType type, BeanDescription.Supplier beanDesc,
+                                                                             JsonFormat.Value formatOverrides, TypeSerializer contentTypeSerializer, ValueSerializer<Object> contentValueSerializer) {
         Class<?> raw = type.getRawClass();
         if (Lazy.class.isAssignableFrom(raw)) {
             return new LazySerializer(type, type.getContentType(), contentTypeSerializer, contentValueSerializer);
@@ -181,13 +182,13 @@ public class VavrSerializers extends Serializers.Base {
         if (Option.class.isAssignableFrom(raw)) {
             return new OptionSerializer(type, type.getContentType(), contentTypeSerializer, contentValueSerializer, settings.useOptionInPlainFormat());
         }
-        return super.findReferenceSerializer(config, type, beanDesc, contentTypeSerializer, contentValueSerializer);
+        return super.findReferenceSerializer(config, type, beanDesc, formatOverrides, contentTypeSerializer, contentValueSerializer);
     }
 
     @Override
-    public JsonSerializer<?> findCollectionLikeSerializer(SerializationConfig config,
-                                                          CollectionLikeType collectionType, BeanDescription beanDesc,
-                                                          TypeSerializer elementTypeSerializer, JsonSerializer<Object> elementValueSerializer) {
+    public ValueSerializer<?> findCollectionLikeSerializer(SerializationConfig config,
+                                                          CollectionLikeType collectionType, BeanDescription.Supplier beanDesc,
+                                                                                  JsonFormat.Value formatOverrides, TypeSerializer elementTypeSerializer, ValueSerializer<Object> elementValueSerializer) {
         Class<?> raw = collectionType.getRawClass();
         if (raw == CharSeq.class) {
             return new CharSeqSerializer(collectionType);
@@ -201,21 +202,18 @@ public class VavrSerializers extends Serializers.Base {
         if (PriorityQueue.class.isAssignableFrom(raw)) {
             return new ArraySerializer<>(collectionType);
         }
-        return super.findCollectionLikeSerializer(config, collectionType, beanDesc, elementTypeSerializer, elementValueSerializer);
+        return super.findCollectionLikeSerializer(config, collectionType, beanDesc, formatOverrides, elementTypeSerializer, elementValueSerializer);
     }
 
     @Override
-    public JsonSerializer<?> findMapLikeSerializer(SerializationConfig config,
-                                                   MapLikeType type, BeanDescription beanDesc,
-                                                   JsonSerializer<Object> keySerializer,
-                                                   TypeSerializer elementTypeSerializer, JsonSerializer<Object> elementValueSerializer) {
-        Class<?> raw = type.getRawClass();
-        if (Map.class.isAssignableFrom(raw)) {
-            return new MapSerializer(type);
-        }
-        if (Multimap.class.isAssignableFrom(raw)) {
-            return new MultimapSerializer(type);
-        }
-        return super.findMapLikeSerializer(config, type, beanDesc, keySerializer, elementTypeSerializer, elementValueSerializer);
+    public ValueSerializer<?> findMapLikeSerializer(SerializationConfig config, MapLikeType type, BeanDescription.Supplier beanDesc, JsonFormat.Value formatOverrides, ValueSerializer<Object> keySerializer, TypeSerializer elementTypeSerializer, ValueSerializer<Object> elementValueSerializer) {
+            Class<?> raw = type.getRawClass();
+            if (Map.class.isAssignableFrom(raw)) {
+                return new MapSerializer(type);
+            }
+            if (Multimap.class.isAssignableFrom(raw)) {
+                return new MultimapSerializer(type);
+            }
+            return super.findMapLikeSerializer(config, type, beanDesc, formatOverrides, keySerializer, elementTypeSerializer, elementValueSerializer);
     }
 }

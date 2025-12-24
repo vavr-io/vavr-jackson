@@ -19,11 +19,11 @@
  */
 package io.vavr.jackson.datatype.deserialize;
 
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.jsontype.TypeDeserializer;
+import tools.jackson.databind.DeserializationContext;
+import tools.jackson.databind.JavaType;
+import tools.jackson.databind.DatabindException;
+import tools.jackson.databind.ValueDeserializer;
+import tools.jackson.databind.jsontype.TypeDeserializer;
 import io.vavr.collection.Array;
 import io.vavr.collection.IndexedSeq;
 import io.vavr.collection.Queue;
@@ -38,7 +38,7 @@ class SeqDeserializer extends ArrayDeserializer<Seq<?>> {
     private static final long serialVersionUID = 1L;
 
     SeqDeserializer(JavaType collectionType, JavaType elementType, TypeDeserializer elementTypeDeserializer,
-                    JsonDeserializer<?> elementDeserializer, boolean deserializeNullAsEmptyCollection) {
+                    ValueDeserializer<?> elementDeserializer, boolean deserializeNullAsEmptyCollection) {
         super(collectionType, 1, elementType, elementTypeDeserializer, elementDeserializer, deserializeNullAsEmptyCollection);
     }
 
@@ -50,13 +50,13 @@ class SeqDeserializer extends ArrayDeserializer<Seq<?>> {
      * @param elementDeserializer     the new deserializer for the element itself
      */
     private SeqDeserializer(SeqDeserializer origin, TypeDeserializer elementTypeDeserializer,
-                            JsonDeserializer<?> elementDeserializer) {
+                            ValueDeserializer<?> elementDeserializer) {
         this(origin.collectionType, origin.elementType, elementTypeDeserializer, elementDeserializer,
             origin.deserializeNullAsEmptyCollection);
     }
 
     @Override
-    Seq<?> create(List<Object> result, DeserializationContext ctxt) throws JsonMappingException {
+    Seq<?> create(List<Object> result, DeserializationContext ctxt) throws DatabindException {
         if (Array.class.isAssignableFrom(collectionType.getRawClass())) {
             return Array.ofAll(result);
         }
@@ -77,7 +77,8 @@ class SeqDeserializer extends ArrayDeserializer<Seq<?>> {
     }
 
     @Override
-    SeqDeserializer createDeserializer(TypeDeserializer elementTypeDeserializer, JsonDeserializer<?> elementDeserializer) {
+    SeqDeserializer createDeserializer(TypeDeserializer elementTypeDeserializer, ValueDeserializer<?> elementDeserializer) {
         return new SeqDeserializer(this, elementTypeDeserializer, elementDeserializer);
     }
+
 }

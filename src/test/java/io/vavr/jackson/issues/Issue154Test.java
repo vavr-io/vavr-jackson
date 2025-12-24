@@ -1,8 +1,7 @@
 package io.vavr.jackson.issues;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import tools.jackson.databind.ObjectMapper;
 import io.vavr.collection.List;
 import io.vavr.jackson.datatype.VavrModule;
 import org.junit.jupiter.api.Test;
@@ -32,8 +31,7 @@ class Issue154Test {
         MyVavrClass myClass = new MyVavrClass();
         myClass.dates = List.of(new Date(1591221600000L), new Date(1591308000000L));
 
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.registerModule(new VavrModule());
+        ObjectMapper mapper = new ObjectMapper().rebuild().addModule(new VavrModule()).build();
 
         String json = mapper.writeValueAsString(myClass);
         assertThat(json).isEqualTo("{\"dates\":[\"2020-06-04\",\"2020-06-05\"]}");
@@ -44,9 +42,7 @@ class Issue154Test {
         MyVavrClass myClass = new MyVavrClass();
         myClass.dates = List.of(new Date(1591221600000L), new Date(1591308000000L));
 
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.registerModule(new VavrModule());
-        mapper.registerModule(new JavaTimeModule());
+        ObjectMapper mapper = new ObjectMapper().rebuild().addModule(new VavrModule()).build();
 
         String json = mapper.writeValueAsString(myClass);
         assertThat(json).isEqualTo("{\"dates\":[\"2020-06-04\",\"2020-06-05\"]}");
@@ -58,8 +54,6 @@ class Issue154Test {
         myClass.dates = List.of(new Date(1591221600000L), new Date(1591308000000L)).asJava();
 
         ObjectMapper mapper = new ObjectMapper();
-        mapper.registerModule(new JavaTimeModule());
-
         String json = mapper.writeValueAsString(myClass);
         assertThat(json).isEqualTo("{\"dates\":[\"2020-06-04\",\"2020-06-05\"]}");
     }

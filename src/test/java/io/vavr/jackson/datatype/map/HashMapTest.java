@@ -1,6 +1,6 @@
 package io.vavr.jackson.datatype.map;
 
-import com.fasterxml.jackson.core.type.TypeReference;
+import tools.jackson.core.type.TypeReference;
 import io.vavr.collection.HashMap;
 import io.vavr.collection.Map;
 import io.vavr.control.Option;

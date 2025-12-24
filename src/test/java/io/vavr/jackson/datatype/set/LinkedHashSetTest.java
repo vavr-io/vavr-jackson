@@ -1,6 +1,6 @@
 package io.vavr.jackson.datatype.set;
 
-import com.fasterxml.jackson.core.type.TypeReference;
+import tools.jackson.core.type.TypeReference;
 import io.vavr.collection.LinkedHashSet;
 import io.vavr.collection.Set;
 import io.vavr.control.Option;
