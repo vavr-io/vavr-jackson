@@ -10,7 +10,6 @@ import java.io.ObjectOutputStream;
 import java.util.Collection;
 import java.util.Map;
 import tools.jackson.core.type.TypeReference;
-import tools.jackson.databind.ObjectMapper;
 import tools.jackson.databind.ObjectWriter;
 import tools.jackson.databind.json.JsonMapper;
 import tools.jackson.dataformat.xml.XmlMapper;
@@ -42,13 +41,13 @@ public class BaseTest {
         }
     }
 
-    protected ObjectMapper mapper() {
-        ObjectMapper mapper = JsonMapper.builder().addModule(new VavrModule()).build();
+    protected JsonMapper mapper() {
+        JsonMapper mapper = JsonMapper.builder().addModule(new VavrModule()).build();
         return mapper;
     }
 
-    protected ObjectMapper mapper(VavrModule.Settings settings) {
-        ObjectMapper mapper = JsonMapper.builder().addModule(new VavrModule(settings)).build();
+    protected JsonMapper mapper(VavrModule.Settings settings) {
+        JsonMapper mapper = JsonMapper.builder().addModule(new VavrModule(settings)).build();
         return mapper;
     }
 

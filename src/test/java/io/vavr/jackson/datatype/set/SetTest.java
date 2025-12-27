@@ -16,7 +16,6 @@ import org.junit.jupiter.api.Test;
 import tools.jackson.core.type.TypeReference;
 import tools.jackson.databind.ObjectMapper;
 import tools.jackson.databind.ObjectWriter;
-import tools.jackson.databind.json.JsonMapper;
 import tools.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import tools.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
@@ -44,7 +43,7 @@ public abstract class SetTest extends BaseTest {
 
     @Test
     void test2() throws IOException {
-        ObjectMapper mapper = ((JsonMapper) mapper()).rebuild().addMixIn(clz(), WrapperObject.class).build();
+        ObjectMapper mapper = mapper().rebuild().addMixIn(clz(), WrapperObject.class).build();
         Set<?> src = of(1);
         String plainJson = mapper().writeValueAsString(src);
         String wrappedJson = mapper.writeValueAsString(src);
@@ -55,7 +54,7 @@ public abstract class SetTest extends BaseTest {
 
     @Test
     void test3() throws IOException {
-        ObjectMapper mapper = ((JsonMapper) mapper()).rebuild().addMixIn(clz(), WrapperArray.class).build();
+        ObjectMapper mapper = mapper().rebuild().addMixIn(clz(), WrapperArray.class).build();
         Set<?> src = of(1);
         String plainJson = mapper().writeValueAsString(src);
         String wrappedJson = mapper.writeValueAsString(src);
