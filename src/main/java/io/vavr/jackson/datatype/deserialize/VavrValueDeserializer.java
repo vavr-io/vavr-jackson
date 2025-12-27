@@ -32,7 +32,7 @@ abstract class VavrValueDeserializer<T> extends StdDeserializer<T> {
 
     private final JavaType javaType;
     private final int typeCount;
-    private final List<ValueDeserializer<?>> deserializers;
+    private final List<ValueDeserializer<Object>> deserializers;
 
     VavrValueDeserializer(JavaType valueType, int typeCount) {
         super(valueType);
@@ -46,7 +46,7 @@ abstract class VavrValueDeserializer<T> extends StdDeserializer<T> {
     }
 
     ValueDeserializer<Object> deserializer(int index) {
-        return (ValueDeserializer<Object>) deserializers.get(index);
+        return deserializers.get(index);
     }
 
     @Override
@@ -62,7 +62,6 @@ abstract class VavrValueDeserializer<T> extends StdDeserializer<T> {
         }
     }
 
-    // DEV-NOTE: original method is deprecated since 2.8
     static DatabindException mappingException(DeserializationContext ctxt, Class<?> targetClass, JsonToken token) {
         String tokenDesc = (token == null) ? "<end of input>" : String.format("%s token", token);
         return DatabindException.from(ctxt.getParser(),
