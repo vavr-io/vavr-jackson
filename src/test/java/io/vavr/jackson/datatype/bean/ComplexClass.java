@@ -15,6 +15,7 @@ import io.vavr.collection.TreeSet;
 import io.vavr.collection.Vector;
 import io.vavr.control.Option;
 import java.io.Serializable;
+import java.util.Objects;
 
 public class ComplexClass implements Serializable {
 
@@ -206,32 +207,32 @@ public class ComplexClass implements Serializable {
 
         ComplexClass that = (ComplexClass) o;
 
-        if (complexInnerClassHashMap != null ? !complexInnerClassHashMap.equals(that.complexInnerClassHashMap) : that.complexInnerClassHashMap != null)
+        if (!Objects.equals(complexInnerClassHashMap, that.complexInnerClassHashMap))
             return false;
-        if (complexInnerClassTreeMap != null ? !complexInnerClassTreeMap.equals(that.complexInnerClassTreeMap) : that.complexInnerClassTreeMap != null)
+        if (!Objects.equals(complexInnerClassTreeMap, that.complexInnerClassTreeMap))
             return false;
-        if (complexInnerClassHashMultimap != null ? !complexInnerClassHashMultimap.equals(that.complexInnerClassHashMultimap) : that.complexInnerClassHashMultimap != null)
+        if (!Objects.equals(complexInnerClassHashMultimap, that.complexInnerClassHashMultimap))
             return false;
-        if (complexInnerClassTreeMultimap != null ? !complexInnerClassTreeMultimap.equals(that.complexInnerClassTreeMultimap) : that.complexInnerClassTreeMultimap != null)
+        if (!Objects.equals(complexInnerClassTreeMultimap, that.complexInnerClassTreeMultimap))
             return false;
-        if (complexInnerClasses != null ? !complexInnerClasses.equals(that.complexInnerClasses) : that.complexInnerClasses != null)
+        if (!Objects.equals(complexInnerClasses, that.complexInnerClasses))
             return false;
-        if (complexInnerClassList != null ? !complexInnerClassList.equals(that.complexInnerClassList) : that.complexInnerClassList != null)
+        if (!Objects.equals(complexInnerClassList, that.complexInnerClassList))
             return false;
-        if (complexInnerClassQueue != null ? !complexInnerClassQueue.equals(that.complexInnerClassQueue) : that.complexInnerClassQueue != null)
+        if (!Objects.equals(complexInnerClassQueue, that.complexInnerClassQueue))
             return false;
-        if (complexInnerClassStream != null ? !complexInnerClassStream.equals(that.complexInnerClassStream) : that.complexInnerClassStream != null)
+        if (!Objects.equals(complexInnerClassStream, that.complexInnerClassStream))
             return false;
-        if (complexInnerClassVector != null ? !complexInnerClassVector.equals(that.complexInnerClassVector) : that.complexInnerClassVector != null)
+        if (!Objects.equals(complexInnerClassVector, that.complexInnerClassVector))
             return false;
-        if (complexInnerClassHashSet != null ? !complexInnerClassHashSet.equals(that.complexInnerClassHashSet) : that.complexInnerClassHashSet != null)
+        if (!Objects.equals(complexInnerClassHashSet, that.complexInnerClassHashSet))
             return false;
-        if (complexInnerClassTreeSet != null ? !complexInnerClassTreeSet.equals(that.complexInnerClassTreeSet) : that.complexInnerClassTreeSet != null)
+        if (!Objects.equals(complexInnerClassTreeSet, that.complexInnerClassTreeSet))
             return false;
-        if (complexInnerClassTuple2 != null ? !complexInnerClassTuple2.equals(that.complexInnerClassTuple2) : that.complexInnerClassTuple2 != null)
+        if (!Objects.equals(complexInnerClassTuple2, that.complexInnerClassTuple2))
             return false;
-        if (opt1 != null ? !opt1.equals(that.opt1) : that.opt1 != null) return false;
-        return !(opt2 != null ? !opt2.equals(that.opt2) : that.opt2 != null);
+        if (!Objects.equals(opt1, that.opt1)) return false;
+        return !(!Objects.equals(opt2, that.opt2));
     }
 
     @Override
@@ -413,17 +414,15 @@ public class ComplexClass implements Serializable {
             if (byteField != that.byteField) return false;
             if (shortField != that.shortField) return false;
             if (booleanField != that.booleanField) return false;
-            return !(stringField != null ? !stringField.equals(that.stringField) : that.stringField != null);
+            return Objects.equals(stringField, that.stringField);
         }
 
         @Override
         public int hashCode() {
             int result;
-            final long temp;
             result = intField;
-            result = 31 * result + (int) (longField ^ (longField >>> 32));
-            temp = Double.doubleToLongBits(doubleField);
-            result = 31 * result + (int) (temp ^ (temp >>> 32));
+            result = 31 * result + Long.hashCode(longField);
+            result = 31 * result + Double.hashCode(doubleField);
             result = 31 * result + (floatField != +0.0f ? Float.floatToIntBits(floatField) : 0);
             result = 31 * result + (int) charField;
             result = 31 * result + (int) byteField;

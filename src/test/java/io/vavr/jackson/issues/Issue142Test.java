@@ -20,7 +20,7 @@ class Issue142Test extends BaseTest {
 
     public static class MyComparable implements Comparable<MyComparable> {
 
-        private int v;
+        private final int v;
 
         public MyComparable(int v) {
             this.v = v;

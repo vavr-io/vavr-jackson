@@ -2,6 +2,7 @@ package io.vavr.jackson.datatype.bean;
 
 import io.vavr.collection.List;
 import io.vavr.jackson.datatype.BaseTest;
+import java.util.Objects;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -19,8 +20,8 @@ class BeanTest extends BaseTest {
 
             BeanObject that = (BeanObject) o;
 
-            if (scalar != null ? !scalar.equals(that.scalar) : that.scalar != null) return false;
-            return !(value != null ? !value.equals(that.value) : that.value != null);
+            if (!Objects.equals(scalar, that.scalar)) return false;
+            return !(!Objects.equals(value, that.value));
         }
 
         @Override
@@ -75,8 +76,8 @@ class BeanTest extends BaseTest {
 
             ComplexInnerClass that = (ComplexInnerClass) o;
 
-            if (scalar != null ? !scalar.equals(that.scalar) : that.scalar != null) return false;
-            return !(values != null ? !values.equals(that.values) : that.values != null);
+            if (!Objects.equals(scalar, that.scalar)) return false;
+            return !(!Objects.equals(values, that.values));
         }
 
         @Override
@@ -114,8 +115,8 @@ class BeanTest extends BaseTest {
 
             ComplexBeanObject that = (ComplexBeanObject) o;
 
-            if (scalar != null ? !scalar.equals(that.scalar) : that.scalar != null) return false;
-            return !(values != null ? !values.equals(that.values) : that.values != null);
+            if (!Objects.equals(scalar, that.scalar)) return false;
+            return !(!Objects.equals(values, that.values));
         }
 
         @Override
