@@ -31,6 +31,7 @@ import io.vavr.jackson.datatype.VavrModule;
 import org.junit.jupiter.api.Test;
 import tools.jackson.core.type.TypeReference;
 import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -40,10 +41,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 class ParameterizedPojoTest {
     private static final VavrModule MAPPER_MODULE = new VavrModule();
 
-    private static final ObjectMapper MAPPER = new ObjectMapper().rebuild().addModule(MAPPER_MODULE).build();
+    private static final ObjectMapper MAPPER = JsonMapper.builder().addModule(MAPPER_MODULE).build();
 
     @Test
-    void tuple1OfString() throws Exception {
+    void tuple1OfString() {
         String src0 = "A";
         Tuple1<String> src = Tuple.of(src0);
         String json = MAPPER.writeValueAsString(new ParameterizedTuple1Pojo<>(src));
@@ -55,7 +56,7 @@ class ParameterizedPojoTest {
     }
 
     @Test
-    void tuple1OfTuple() throws Exception {
+    void tuple1OfTuple() {
         String src00 = "B";
         Tuple1<String> src0 = Tuple.of(src00);
         Tuple1<Tuple1<String>> src = Tuple.of(src0);
@@ -68,7 +69,7 @@ class ParameterizedPojoTest {
     }
 
     @Test
-    void tuple2OfString() throws Exception {
+    void tuple2OfString() {
         String src0 = "A";
         String src1 = "B";
         Tuple2<String, String> src = Tuple.of(src0, src1);
@@ -81,7 +82,7 @@ class ParameterizedPojoTest {
     }
 
     @Test
-    void tuple2OfTuple() throws Exception {
+    void tuple2OfTuple() {
         String src0 = "A";
         String src10 = "B";
         String src11 = "C";
@@ -96,7 +97,7 @@ class ParameterizedPojoTest {
     }
 
     @Test
-    void tuple3OfString() throws Exception {
+    void tuple3OfString() {
         String src0 = "A";
         String src1 = "B";
         String src2 = "C";
@@ -110,7 +111,7 @@ class ParameterizedPojoTest {
     }
 
     @Test
-    void tuple3OfTuple() throws Exception {
+    void tuple3OfTuple() {
         String src0 = "A";
         String src10 = "B";
         String src11 = "C";
@@ -128,7 +129,7 @@ class ParameterizedPojoTest {
     }
 
     @Test
-    void tuple4OfString() throws Exception {
+    void tuple4OfString() {
         String src0 = "A";
         String src1 = "B";
         String src2 = "C";
@@ -143,7 +144,7 @@ class ParameterizedPojoTest {
     }
 
     @Test
-    void tuple4OfTuple() throws Exception {
+    void tuple4OfTuple() {
         String src0 = "A";
         String src10 = "B";
         String src11 = "C";
@@ -164,7 +165,7 @@ class ParameterizedPojoTest {
     }
 
     @Test
-    void tuple5OfString() throws Exception {
+    void tuple5OfString() {
         String src0 = "A";
         String src1 = "B";
         String src2 = "C";
@@ -180,7 +181,7 @@ class ParameterizedPojoTest {
     }
 
     @Test
-    void tuple5OfTuple() throws Exception {
+    void tuple5OfTuple() {
         String src0 = "A";
         String src10 = "B";
         String src11 = "C";
@@ -202,7 +203,7 @@ class ParameterizedPojoTest {
     }
 
     @Test
-    void tuple6OfString() throws Exception {
+    void tuple6OfString() {
         String src0 = "A";
         String src1 = "B";
         String src2 = "C";
@@ -219,7 +220,7 @@ class ParameterizedPojoTest {
     }
 
     @Test
-    void tuple6OfTuple() throws Exception {
+    void tuple6OfTuple() {
         String src0 = "A";
         String src10 = "B";
         String src11 = "C";
@@ -244,7 +245,7 @@ class ParameterizedPojoTest {
     }
 
     @Test
-    void tuple7OfString() throws Exception {
+    void tuple7OfString() {
         String src0 = "A";
         String src1 = "B";
         String src2 = "C";
@@ -262,7 +263,7 @@ class ParameterizedPojoTest {
     }
 
     @Test
-    void tuple7OfTuple() throws Exception {
+    void tuple7OfTuple() {
         String src0 = "A";
         String src10 = "B";
         String src11 = "C";
@@ -290,7 +291,7 @@ class ParameterizedPojoTest {
     }
 
     @Test
-    void tuple8OfString() throws Exception {
+    void tuple8OfString() {
         String src0 = "A";
         String src1 = "B";
         String src2 = "C";
@@ -309,7 +310,7 @@ class ParameterizedPojoTest {
     }
 
     @Test
-    void tuple8OfTuple() throws Exception {
+    void tuple8OfTuple() {
         String src0 = "A";
         String src10 = "B";
         String src11 = "C";
@@ -340,7 +341,7 @@ class ParameterizedPojoTest {
     }
 
     @Test
-    void arrayOfString() throws Exception {
+    void arrayOfString() {
         String src0 = "A";
         String src1 = "B";
         String src2 = "C";
@@ -354,7 +355,7 @@ class ParameterizedPojoTest {
     }
 
     @Test
-    void arrayOfTuple() throws Exception {
+    void arrayOfTuple() {
         String src00 = "A";
         String src01 = "B";
         Tuple2<String, String> src0 = Tuple.of(src00, src01);
@@ -368,7 +369,7 @@ class ParameterizedPojoTest {
     }
 
     @Test
-    void listOfString() throws Exception {
+    void listOfString() {
         String src0 = "A";
         String src1 = "B";
         String src2 = "C";
@@ -382,7 +383,7 @@ class ParameterizedPojoTest {
     }
 
     @Test
-    void listOfTuple() throws Exception {
+    void listOfTuple() {
         String src00 = "A";
         String src01 = "B";
         Tuple2<String, String> src0 = Tuple.of(src00, src01);
@@ -396,7 +397,7 @@ class ParameterizedPojoTest {
     }
 
     @Test
-    void queueOfString() throws Exception {
+    void queueOfString() {
         String src0 = "A";
         String src1 = "B";
         String src2 = "C";
@@ -410,7 +411,7 @@ class ParameterizedPojoTest {
     }
 
     @Test
-    void queueOfTuple() throws Exception {
+    void queueOfTuple() {
         String src00 = "A";
         String src01 = "B";
         Tuple2<String, String> src0 = Tuple.of(src00, src01);
@@ -424,7 +425,7 @@ class ParameterizedPojoTest {
     }
 
     @Test
-    void streamOfString() throws Exception {
+    void streamOfString() {
         String src0 = "A";
         String src1 = "B";
         String src2 = "C";
@@ -438,7 +439,7 @@ class ParameterizedPojoTest {
     }
 
     @Test
-    void streamOfTuple() throws Exception {
+    void streamOfTuple() {
         String src00 = "A";
         String src01 = "B";
         Tuple2<String, String> src0 = Tuple.of(src00, src01);
@@ -452,7 +453,7 @@ class ParameterizedPojoTest {
     }
 
     @Test
-    void vectorOfString() throws Exception {
+    void vectorOfString() {
         String src0 = "A";
         String src1 = "B";
         String src2 = "C";
@@ -466,7 +467,7 @@ class ParameterizedPojoTest {
     }
 
     @Test
-    void vectorOfTuple() throws Exception {
+    void vectorOfTuple() {
         String src00 = "A";
         String src01 = "B";
         Tuple2<String, String> src0 = Tuple.of(src00, src01);
@@ -480,7 +481,7 @@ class ParameterizedPojoTest {
     }
 
     @Test
-    void priorityQueueOfString() throws Exception {
+    void priorityQueueOfString() {
         String src0 = "A";
         String src1 = "B";
         String src2 = "C";
@@ -494,7 +495,7 @@ class ParameterizedPojoTest {
     }
 
     @Test
-    void hashSetOfString() throws Exception {
+    void hashSetOfString() {
         String src0 = "A";
         String src1 = "B";
         String src2 = "C";
@@ -508,7 +509,7 @@ class ParameterizedPojoTest {
     }
 
     @Test
-    void hashSetOfTuple() throws Exception {
+    void hashSetOfTuple() {
         String src00 = "A";
         String src01 = "B";
         Tuple2<String, String> src0 = Tuple.of(src00, src01);
@@ -522,7 +523,7 @@ class ParameterizedPojoTest {
     }
 
     @Test
-    void linkedHashSetOfString() throws Exception {
+    void linkedHashSetOfString() {
         String src0 = "A";
         String src1 = "B";
         String src2 = "C";
@@ -536,7 +537,7 @@ class ParameterizedPojoTest {
     }
 
     @Test
-    void linkedHashSetOfTuple() throws Exception {
+    void linkedHashSetOfTuple() {
         String src00 = "A";
         String src01 = "B";
         Tuple2<String, String> src0 = Tuple.of(src00, src01);
@@ -550,7 +551,7 @@ class ParameterizedPojoTest {
     }
 
     @Test
-    void treeSetOfString() throws Exception {
+    void treeSetOfString() {
         String src0 = "A";
         String src1 = "B";
         String src2 = "C";
@@ -564,7 +565,7 @@ class ParameterizedPojoTest {
     }
 
     @Test
-    void hashMapOfString() throws Exception {
+    void hashMapOfString() {
         Integer src00 = 1;
         String src01 = "A";
         Tuple2<Integer, String> src0 = Tuple.of(src00, src01);
@@ -578,7 +579,7 @@ class ParameterizedPojoTest {
     }
 
     @Test
-    void hashMapOfTuple() throws Exception {
+    void hashMapOfTuple() {
         Integer src00 = 1;
         String src010 = "A";
         String src011 = "B";
@@ -594,7 +595,7 @@ class ParameterizedPojoTest {
     }
 
     @Test
-    void linkedHashMapOfString() throws Exception {
+    void linkedHashMapOfString() {
         Integer src00 = 1;
         String src01 = "A";
         Tuple2<Integer, String> src0 = Tuple.of(src00, src01);
@@ -608,7 +609,7 @@ class ParameterizedPojoTest {
     }
 
     @Test
-    void linkedHashMapOfTuple() throws Exception {
+    void linkedHashMapOfTuple() {
         Integer src00 = 1;
         String src010 = "A";
         String src011 = "B";
@@ -624,7 +625,7 @@ class ParameterizedPojoTest {
     }
 
     @Test
-    void treeMapOfString() throws Exception {
+    void treeMapOfString() {
         Integer src00 = 1;
         String src01 = "A";
         Tuple2<Integer, String> src0 = Tuple.of(src00, src01);
@@ -638,7 +639,7 @@ class ParameterizedPojoTest {
     }
 
     @Test
-    void treeMapOfTuple() throws Exception {
+    void treeMapOfTuple() {
         Integer src00 = 1;
         String src010 = "A";
         String src011 = "B";
@@ -654,7 +655,7 @@ class ParameterizedPojoTest {
     }
 
     @Test
-    void hashMultimapOfSeqString() throws Exception {
+    void hashMultimapOfSeqString() {
         String src00 = "A";
         String src01 = "B";
         Tuple2<String, String> src0 = Tuple.of(src00, src01);
@@ -671,7 +672,7 @@ class ParameterizedPojoTest {
     }
 
     @Test
-    void hashMultimapOfSeqTuple() throws Exception {
+    void hashMultimapOfSeqTuple() {
         String src00 = "A";
         String src010 = "A";
         String src011 = "B";
@@ -692,7 +693,7 @@ class ParameterizedPojoTest {
     }
 
     @Test
-    void linkedHashMultimapOfSeqString() throws Exception {
+    void linkedHashMultimapOfSeqString() {
         String src00 = "A";
         String src01 = "B";
         Tuple2<String, String> src0 = Tuple.of(src00, src01);
@@ -709,7 +710,7 @@ class ParameterizedPojoTest {
     }
 
     @Test
-    void linkedHashMultimapOfSeqTuple() throws Exception {
+    void linkedHashMultimapOfSeqTuple() {
         String src00 = "A";
         String src010 = "A";
         String src011 = "B";
@@ -730,7 +731,7 @@ class ParameterizedPojoTest {
     }
 
     @Test
-    void treeMultimapOfSeqString() throws Exception {
+    void treeMultimapOfSeqString() {
         String src00 = "A";
         String src01 = "B";
         Tuple2<String, String> src0 = Tuple.of(src00, src01);
@@ -747,7 +748,7 @@ class ParameterizedPojoTest {
     }
 
     @Test
-    void treeMultimapOfSeqTuple() throws Exception {
+    void treeMultimapOfSeqTuple() {
         String src00 = "A";
         String src010 = "A";
         String src011 = "B";
@@ -768,7 +769,7 @@ class ParameterizedPojoTest {
     }
 
     @Test
-    void optionOfString() throws Exception {
+    void optionOfString() {
         String src0 = "A";
         Option<String> src = Option.of(src0);
         String json = MAPPER.writeValueAsString(new ParameterizedOptionPojo<>(src));
@@ -780,7 +781,7 @@ class ParameterizedPojoTest {
     }
 
     @Test
-    void optionOfTuple() throws Exception {
+    void optionOfTuple() {
         String src00 = "A";
         String src01 = "B";
         Tuple2<String, String> src0 = Tuple.of(src00, src01);
@@ -794,7 +795,7 @@ class ParameterizedPojoTest {
     }
 
     @Test
-    void lazyOfString() throws Exception {
+    void lazyOfString() {
         String src0 = "A";
         Lazy<String> src = Lazy.of(() -> src0);
         String json = MAPPER.writeValueAsString(new ParameterizedLazyPojo<>(src));
@@ -806,7 +807,7 @@ class ParameterizedPojoTest {
     }
 
     @Test
-    void lazyOfTuple() throws Exception {
+    void lazyOfTuple() {
         String src00 = "A";
         String src01 = "B";
         Tuple2<String, String> src0 = Tuple.of(src00, src01);
@@ -820,7 +821,7 @@ class ParameterizedPojoTest {
     }
 
     @Test
-    void leftEitherOfString() throws Exception {
+    void leftEitherOfString() {
         String srcl = "A";
         Either<String, Object> src = Either.left(srcl);
         String json = MAPPER.writeValueAsString(new ParameterizedEitherPojo<>(src));
@@ -832,7 +833,7 @@ class ParameterizedPojoTest {
     }
 
     @Test
-    void leftEitherOfTuple() throws Exception {
+    void leftEitherOfTuple() {
         String srcl0 = "A";
         String srcl1 = "B";
         Tuple2<String, String> srcl = Tuple.of(srcl0, srcl1);
@@ -846,7 +847,7 @@ class ParameterizedPojoTest {
     }
 
     @Test
-    void rightEitherOfString() throws Exception {
+    void rightEitherOfString() {
         String srcr = "A";
         Either<Object, String> src = Either.right(srcr);
         String json = MAPPER.writeValueAsString(new ParameterizedEitherPojo<>(src));
@@ -858,7 +859,7 @@ class ParameterizedPojoTest {
     }
 
     @Test
-    void rightEitherOfTuple() throws Exception {
+    void rightEitherOfTuple() {
         String srcr0 = "A";
         String srcr1 = "B";
         Tuple2<String, String> srcr = Tuple.of(srcr0, srcr1);

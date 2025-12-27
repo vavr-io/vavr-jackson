@@ -29,21 +29,21 @@ class SetJsonMergeTest extends BaseTest {
     }
 
     @Test
-    void shouldMergeSeq() throws Exception {
+    void shouldMergeSeq() {
         TestJsonMergeWithSet result = mapper().readValue(asJson("{'value':['d', 'e', 'f']}"), TestJsonMergeWithSet.class);
 
         assertThat(result.value.toJavaList()).containsExactly("a", "b", "c", "d", "e", "f");
     }
 
     @Test
-    void shouldMergeSeqConstructor() throws Exception {
+    void shouldMergeSeqConstructor() {
         TestJsonMergeWithSetConstructor result = mapper().readValue(asJson("{'value':['d', 'e', 'f']}"), TestJsonMergeWithSetConstructor.class);
 
         assertThat(result.value.toJavaList()).containsExactly("a", "b", "c", "d", "e", "f");
     }
 
     @Test
-    void shouldMergeWhileRetainingValues() throws Exception {
+    void shouldMergeWhileRetainingValues() {
         TestJsonMergeWithSetConstructor result = mapper().readerForUpdating(new TestJsonMergeWithSetConstructor("a", "b"))
           .readValue(asJson("{'value':['c', 'd', 'e', 'f']}"));
 

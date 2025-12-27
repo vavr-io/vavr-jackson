@@ -29,21 +29,21 @@ class IndexedSeqJsonMergeTest extends BaseTest {
     }
 
     @Test
-    void shouldMergeSeq() throws Exception {
+    void shouldMergeSeq() {
         TestJsonMergeWithSeq result = mapper().readValue(asJson("{'value':['d', 'e', 'f']}"), TestJsonMergeWithSeq.class);
 
         assertThat(result.value.toJavaList()).containsExactly("a", "b", "c", "d", "e", "f");
     }
 
     @Test
-    void shouldMergeSeqConstructor() throws Exception {
+    void shouldMergeSeqConstructor() {
         TestJsonMergeWithSeqConstructor result = mapper().readValue(asJson("{'value':['d', 'e', 'f']}"), TestJsonMergeWithSeqConstructor.class);
 
         assertThat(result.value.toJavaList()).containsExactly("a", "b", "c", "d", "e", "f");
     }
 
     @Test
-    void shouldMergeWhileRetainingValues() throws Exception {
+    void shouldMergeWhileRetainingValues() {
         TestJsonMergeWithSeqConstructor result = mapper().readerForUpdating(new TestJsonMergeWithSeqConstructor("a", "b"))
           .readValue(asJson("{'value':['c', 'd', 'e', 'f']}"));
 

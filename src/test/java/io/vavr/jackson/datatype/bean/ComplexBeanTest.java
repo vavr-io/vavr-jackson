@@ -1,7 +1,6 @@
 package io.vavr.jackson.datatype.bean;
 
 import io.vavr.jackson.datatype.BaseTest;
-import java.io.IOException;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -9,7 +8,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class ComplexBeanTest extends BaseTest {
 
     @Test
-    void test1() throws IOException {
+    void test1() {
 
         final ComplexClass src = ComplexClass.build();
         final String json = mapper().writer().writeValueAsString(src);

@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import io.vavr.Lazy;
-import java.io.IOException;
 import java.time.LocalDate;
 import org.junit.jupiter.api.Test;
 import tools.jackson.core.type.TypeReference;
@@ -17,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class LazyTest extends BaseTest {
 
     @Test
-    void shouldSerializeAndDeserializeLazyWithValue() throws IOException {
+    void shouldSerializeAndDeserializeLazyWithValue() {
         Lazy<?> src = Lazy.of(() -> 1);
         String json = mapper().writer().writeValueAsString(src);
         assertThat(json).isEqualTo("1");
@@ -26,7 +25,7 @@ class LazyTest extends BaseTest {
     }
 
     @Test
-    void shouldSerializeAndDeserializeLazyWithNullValue() throws IOException {
+    void shouldSerializeAndDeserializeLazyWithNullValue() {
         Lazy<?> src = Lazy.of(() -> null);
         String json = mapper().writer().writeValueAsString(src);
         assertThat(json).isEqualTo("null");
@@ -35,7 +34,7 @@ class LazyTest extends BaseTest {
     }
 
     @Test
-    void shouldSerializeAndDeserializeTwoLevelLazy() throws IOException {
+    void shouldSerializeAndDeserializeTwoLevelLazy() {
         Lazy<Lazy<Integer>> src = Lazy.of(() -> Lazy.of(() -> 1));
         String json = mapper().writeValueAsString(src);
         assertThat(json).isEqualTo("1");
@@ -45,7 +44,7 @@ class LazyTest extends BaseTest {
     }
 
     @Test
-    void shouldSerializeAndDeserializeLazyWithLocalDateWithoutContext() throws IOException {
+    void shouldSerializeAndDeserializeLazyWithLocalDateWithoutContext() {
         // Given a lazy date
         Lazy<?> src = Lazy.of(() -> LocalDate.of(2019, 12, 25));
 
@@ -70,7 +69,7 @@ class LazyTest extends BaseTest {
     }
 
     @Test
-    void serializeWithContext() throws IOException {
+    void serializeWithContext() {
         // Given a lazy date with specific format
         FrenchDate src = new FrenchDate();
         src.value = Lazy.of(() -> LocalDate.of(2019, 12, 25));
@@ -116,7 +115,7 @@ class LazyTest extends BaseTest {
     }
 
     @Test
-    void serializeWithStaticTyping() throws IOException {
+    void serializeWithStaticTyping() {
         // Given an instance with lazy value configured with static typing
         WrapperForStaticTyping src = new WrapperForStaticTyping();
 
@@ -128,7 +127,7 @@ class LazyTest extends BaseTest {
     }
 
     @Test
-    void serializeWithDynamicTyping() throws IOException {
+    void serializeWithDynamicTyping() {
         // Given an instance with lazy value configured with dynamic typing
         WrapperForDynamicTyping src = new WrapperForDynamicTyping();
 

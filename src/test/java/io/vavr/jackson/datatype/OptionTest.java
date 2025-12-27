@@ -3,7 +3,6 @@ package io.vavr.jackson.datatype;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import io.vavr.control.Option;
-import java.io.IOException;
 import org.junit.jupiter.api.Test;
 import tools.jackson.databind.DatabindException;
 import tools.jackson.databind.ObjectMapper;
@@ -16,7 +15,7 @@ class OptionTest extends BaseTest {
     private static VavrModule.Settings optSettings = new VavrModule.Settings().useOptionInPlainFormat(false);
 
     @Test
-    void shouldSerializeAndDeserializeDefinedOptionWithValue() throws IOException {
+    void shouldSerializeAndDeserializeDefinedOptionWithValue() {
         Option<?> src = Option.of(1);
         String json = mapper(optSettings).writer().writeValueAsString(src);
         assertThat(json).isEqualTo("[\"defined\",1]");
@@ -25,7 +24,7 @@ class OptionTest extends BaseTest {
     }
 
     @Test
-    void shouldSerializeAndDeserializeDefinedOptionWithNull() throws IOException {
+    void shouldSerializeAndDeserializeDefinedOptionWithNull() {
         Option<?> src = Option.some(null);
         String json = mapper(optSettings).writer().writeValueAsString(src);
         assertThat(json).isEqualTo("[\"defined\",null]");
@@ -34,7 +33,7 @@ class OptionTest extends BaseTest {
     }
 
     @Test
-    void shouldSerializeAndDeserializeNoneOption() throws IOException {
+    void shouldSerializeAndDeserializeNoneOption() {
         Option<?> src = Option.none();
         String json = mapper(optSettings).writer().writeValueAsString(src);
         assertThat(json).isEqualTo("[\"undefined\"]");
@@ -80,7 +79,7 @@ class OptionTest extends BaseTest {
     }
 
     @Test
-    void shouldDeserializeNullToEmptyOption() throws IOException {
+    void shouldDeserializeNullToEmptyOption() {
         String json = "null";
         Option<?> option = mapper(optSettings).readValue(json, Option.class);
         assertThat(option.isEmpty()).isTrue();
@@ -100,7 +99,7 @@ class OptionTest extends BaseTest {
     }
 
     @Test
-    void shouldSerializeAndDeserializeWithDefaultJsonTypeInfo() throws IOException {
+    void shouldSerializeAndDeserializeWithDefaultJsonTypeInfo() {
         String javaUtilValue = mapper().writeValueAsString(new A());
         assertThat(javaUtilValue).isEqualTo("{\"f\":{\"card\":{\"type\":\"hello\"}}}");
         A restored = mapper().readValue(javaUtilValue, A.class);
@@ -108,7 +107,7 @@ class OptionTest extends BaseTest {
     }
 
     @Test
-    void shouldSerializeAndDeserializeWithOptionEnabledJsonTypeInfo() throws IOException {
+    void shouldSerializeAndDeserializeWithOptionEnabledJsonTypeInfo() {
         ObjectMapper mapper = mapper(optSettings);
         String javaUtilValue = mapper.writeValueAsString(new A());
         assertThat(javaUtilValue).isEqualTo("{\"f\":[\"defined\",{\"card\":{\"type\":\"hello\"}}]}");

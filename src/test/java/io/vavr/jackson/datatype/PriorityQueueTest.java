@@ -28,7 +28,7 @@ class PriorityQueueTest extends BaseTest {
     }
 
     @Test
-    void shouldThrowExceptionForGenericDeserializationWithTypeReference() throws IOException {
+    void shouldThrowExceptionForGenericDeserializationWithTypeReference() {
         assertThatExceptionOfType(DatabindException.class).isThrownBy(() ->
             mapper().readValue("[1, 2]", new TypeReference<PriorityQueue<Object>>() {
             }));
@@ -42,7 +42,7 @@ class PriorityQueueTest extends BaseTest {
     }
 
     @Test
-    void shouldSerializeAndDeserializePriorityQueueOfIntegers() throws IOException {
+    void shouldSerializeAndDeserializePriorityQueueOfIntegers() {
         ObjectWriter writer = mapper().writer();
         PriorityQueue<Integer> src = PriorityQueue.of(1, 5, 8);
         String json = writer.writeValueAsString(src);
@@ -99,7 +99,7 @@ class PriorityQueueTest extends BaseTest {
 
     @Test
     @SuppressWarnings("unchecked")
-    void jaxbXmlSerialization() throws IOException {
+    void jaxbXmlSerialization() {
         ObjectMapper mapper = xmlMapperJaxb();
         String javaUtilValue = mapper.writeValueAsString(new JaxbXmlSerializeVavr().init(PriorityQueue.of(1, 2, 3)));
         assertThat(javaUtilValue).isEqualTo(mapper.writeValueAsString(new JaxbXmlSerializeJavaUtil().init(Arrays.asList(1, 2, 3))));
@@ -133,7 +133,7 @@ class PriorityQueueTest extends BaseTest {
 
     @Test
     @SuppressWarnings("unchecked")
-    void xmlSerialization() throws IOException {
+    void xmlSerialization() {
         ObjectMapper mapper = xmlMapper();
         String javaUtilValue = mapper.writeValueAsString(new XmlSerializeVavr().init(PriorityQueue.of(1, 2, 3)));
         assertThat(javaUtilValue).isEqualTo(mapper.writeValueAsString(new XmlSerializeJavaUtil().init(Arrays.asList(1, 2, 3))));
@@ -147,7 +147,7 @@ class PriorityQueueTest extends BaseTest {
     }
 
     @Test
-    void serializeWithContext() throws IOException {
+    void serializeWithContext() {
         // Given an object containing dates to serialize
         FrenchDates src = new FrenchDates();
         src.dates = PriorityQueue.of(new Date(1591308000000L));

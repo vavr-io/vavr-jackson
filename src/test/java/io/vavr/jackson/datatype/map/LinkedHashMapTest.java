@@ -3,7 +3,6 @@ package io.vavr.jackson.datatype.map;
 import io.vavr.collection.LinkedHashMap;
 import io.vavr.collection.Map;
 import io.vavr.control.Option;
-import java.io.IOException;
 import org.junit.jupiter.api.Test;
 import tools.jackson.core.type.TypeReference;
 
@@ -27,7 +26,7 @@ class LinkedHashMapTest extends MapTest {
     }
 
     @Test
-    void shouldKeepOrder() throws IOException {
+    void shouldKeepOrder() {
         Map<Object, Object> vavrObject = emptyMap().put("2", 1).put("1", 2);
         java.util.Map<Object, Object> javaObject = new java.util.LinkedHashMap<>();
         javaObject.put("2", 1);

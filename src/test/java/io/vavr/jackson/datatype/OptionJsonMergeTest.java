@@ -39,21 +39,21 @@ class OptionJsonMergeTest extends BaseTest {
     }
 
     @Test
-    void shouldMergeString() throws Exception {
+    void shouldMergeString() {
         TestJsonMergeWithString result = mapper().readValue(asJson("{'value':'override'}"), TestJsonMergeWithString.class);
 
         assertThat(result.value.get()).isEqualTo("override");
     }
 
     @Test
-    void shouldMergePojo() throws Exception {
+    void shouldMergePojo() {
         TestJsonMergeWithPojo result = mapper().readValue(asJson("{'value':{'y':-6}}"), TestJsonMergeWithPojo.class);
         assertThat(result.value.get().x).isEqualTo(7);
         assertThat(result.value.get().y).isEqualTo(-6);
     }
 
     @Test
-    void shouldMergeWhileRetainingValues() throws Exception {
+    void shouldMergeWhileRetainingValues() {
         TestJsonMergeWithPojo result = mapper().readerForUpdating(new TestJsonMergeWithPojo(10, 20))
             .readValue(asJson("{'value':{'x':11}}"));
 

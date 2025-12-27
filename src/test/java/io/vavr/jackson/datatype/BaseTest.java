@@ -12,6 +12,7 @@ import java.util.Map;
 import tools.jackson.core.type.TypeReference;
 import tools.jackson.databind.ObjectMapper;
 import tools.jackson.databind.ObjectWriter;
+import tools.jackson.databind.json.JsonMapper;
 import tools.jackson.dataformat.xml.XmlMapper;
 import tools.jackson.module.jaxb.JaxbAnnotationModule;
 
@@ -42,22 +43,22 @@ public class BaseTest {
     }
 
     protected ObjectMapper mapper() {
-        ObjectMapper mapper = new ObjectMapper().rebuild().addModule(new VavrModule()).build();
+        ObjectMapper mapper = JsonMapper.builder().addModule(new VavrModule()).build();
         return mapper;
     }
 
     protected ObjectMapper mapper(VavrModule.Settings settings) {
-        ObjectMapper mapper = new ObjectMapper().rebuild().addModule(new VavrModule(settings)).build();
+        ObjectMapper mapper = JsonMapper.builder().addModule(new VavrModule(settings)).build();
         return mapper;
     }
 
     public XmlMapper xmlMapper() {
-        XmlMapper xmlMapper = new XmlMapper().rebuild().addModule(new VavrModule()).build();
+        XmlMapper xmlMapper = XmlMapper.builder().addModule(new VavrModule()).build();
         return xmlMapper;
     }
 
     public XmlMapper xmlMapperJaxb() {
-        XmlMapper xmlMapper = new XmlMapper().rebuild().addModules(new JaxbAnnotationModule(), new VavrModule()).build();
+        XmlMapper xmlMapper = XmlMapper.builder().addModules(new JaxbAnnotationModule(), new VavrModule()).build();
         return xmlMapper;
     }
 

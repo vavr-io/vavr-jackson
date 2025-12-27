@@ -4,7 +4,6 @@ import io.vavr.collection.Map;
 import io.vavr.collection.SortedMap;
 import io.vavr.collection.TreeMap;
 import io.vavr.control.Option;
-import java.io.IOException;
 import java.util.Objects;
 import org.junit.jupiter.api.Test;
 import tools.jackson.core.type.TypeReference;
@@ -49,7 +48,7 @@ class TreeMapTest extends MapTest {
     }
 
     @Test
-    void deserializeToSortedMap() throws IOException {
+    void deserializeToSortedMap() {
         Clazz c = new Clazz();
         c.setSet(TreeMap.of(1, 3, 5, 7));
         Clazz dc = mapper().readValue(mapper().writeValueAsString(c), Clazz.class);

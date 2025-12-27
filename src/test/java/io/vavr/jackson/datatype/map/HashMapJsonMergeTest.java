@@ -22,7 +22,7 @@ class HashMapJsonMergeTest extends BaseTest {
     }
 
     @Test
-    void shouldMergeString() throws Exception {
+    void shouldMergeString() {
         TestJsonMergeWithHashMap result = mapper().readValue(asJson("{'value': {'foo2':'bar2'}}"), TestJsonMergeWithHashMap.class);
 
         assertThat(result.value)

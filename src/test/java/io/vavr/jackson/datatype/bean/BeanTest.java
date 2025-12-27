@@ -2,7 +2,6 @@ package io.vavr.jackson.datatype.bean;
 
 import io.vavr.collection.List;
 import io.vavr.jackson.datatype.BaseTest;
-import java.io.IOException;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -33,7 +32,7 @@ class BeanTest extends BaseTest {
     }
 
     @Test
-    void test1() throws IOException {
+    void test1() {
         BeanObject src = new BeanObject();
         src.scalar = "s";
         src.value = List.of(1);
@@ -128,7 +127,7 @@ class BeanTest extends BaseTest {
     }
 
     @Test
-    void test2() throws IOException {
+    void test2() {
         ComplexInnerClass innerSrc = new ComplexInnerClass();
         innerSrc.setScalar(10);
         innerSrc.setValues(List.of("Data1", "Data2", "Data3"));
@@ -151,7 +150,7 @@ class BeanTest extends BaseTest {
     }
 
     @Test
-    void deserializeScalarNull() throws IOException {
+    void deserializeScalarNull() {
         // language=JSON
         String json = "{\"scalar\":null,\"value\":[]}";
 

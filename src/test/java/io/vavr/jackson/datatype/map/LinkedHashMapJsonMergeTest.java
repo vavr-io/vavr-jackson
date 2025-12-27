@@ -22,7 +22,7 @@ class LinkedHashMapJsonMergeTest extends BaseTest {
     }
 
     @Test
-    void shouldMergeString() throws Exception {
+    void shouldMergeString() {
         TestJsonMergeWithLinkedHashMap result = mapper().readValue(asJson("{'value': {'foo2':'bar2'}}"), TestJsonMergeWithLinkedHashMap.class);
 
         assertThat(result.value)

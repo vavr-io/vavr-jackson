@@ -24,7 +24,7 @@ class MapJsonMergeTest extends BaseTest {
     }
 
     @Test
-    void shouldMergeString() throws Exception {
+    void shouldMergeString() {
         TestJsonMergeWithMap result = mapper().readValue(asJson("{'value': {'foo2':'bar2'}}"), TestJsonMergeWithMap.class);
 
         assertThat(result.value)

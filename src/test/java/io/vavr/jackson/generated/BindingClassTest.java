@@ -15,6 +15,7 @@ import io.vavr.control.Option;
 import io.vavr.jackson.datatype.VavrModule;
 import org.junit.jupiter.api.Test;
 import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -24,10 +25,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 class BindingClassTest {
     private static final VavrModule MAPPER_MODULE = new VavrModule();
 
-    private static final ObjectMapper MAPPER = new ObjectMapper().rebuild().addModule(MAPPER_MODULE).build();
+    private static final ObjectMapper MAPPER = JsonMapper.builder().addModule(MAPPER_MODULE).build();
 
     @Test
-    void lazyClass() throws Exception {
+    void lazyClass() {
         LazyClass src = new LazyClass(Lazy.of(ImplementedClass::new));
         String json = MAPPER.writeValueAsString(src);
         LazyClass restored = MAPPER.readValue(json, LazyClass.class);
@@ -35,7 +36,7 @@ class BindingClassTest {
     }
 
     @Test
-    void optionClass() throws Exception {
+    void optionClass() {
         OptionClass src = new OptionClass(Option.of(new ImplementedClass()));
         String json = MAPPER.writeValueAsString(src);
         OptionClass restored = MAPPER.readValue(json, OptionClass.class);
@@ -43,7 +44,7 @@ class BindingClassTest {
     }
 
     @Test
-    void tuple1Class() throws Exception {
+    void tuple1Class() {
         Tuple1Class src = new Tuple1Class(new Tuple1<>(new ImplementedClass()));
         String json = MAPPER.writeValueAsString(src);
         Tuple1Class restored = MAPPER.readValue(json, Tuple1Class.class);
@@ -51,7 +52,7 @@ class BindingClassTest {
     }
 
     @Test
-    void listClass() throws Exception {
+    void listClass() {
         ListClass src = new ListClass(List.of(new ImplementedClass()));
         String json = MAPPER.writeValueAsString(src);
         ListClass restored = MAPPER.readValue(json, ListClass.class);
@@ -59,7 +60,7 @@ class BindingClassTest {
     }
 
     @Test
-    void hashSetClass() throws Exception {
+    void hashSetClass() {
         HashSetClass src = new HashSetClass(HashSet.of(new ImplementedClass()));
         String json = MAPPER.writeValueAsString(src);
         HashSetClass restored = MAPPER.readValue(json, HashSetClass.class);
@@ -67,7 +68,7 @@ class BindingClassTest {
     }
 
     @Test
-    void eitherClass() throws Exception {
+    void eitherClass() {
         EitherClass src = new EitherClass(Either.right(new ImplementedClass()));
         String json = MAPPER.writeValueAsString(src);
         EitherClass restored = MAPPER.readValue(json, EitherClass.class);
@@ -75,7 +76,7 @@ class BindingClassTest {
     }
 
     @Test
-    void hashMapClass() throws Exception {
+    void hashMapClass() {
         HashMapClass src = new HashMapClass(HashMap.of(42, new ImplementedClass()));
         String json = MAPPER.writeValueAsString(src);
         HashMapClass restored = MAPPER.readValue(json, HashMapClass.class);
@@ -83,7 +84,7 @@ class BindingClassTest {
     }
 
     @Test
-    void tuple2Class() throws Exception {
+    void tuple2Class() {
         Tuple2Class src = new Tuple2Class(new Tuple2<>(42, new ImplementedClass()));
         String json = MAPPER.writeValueAsString(src);
         Tuple2Class restored = MAPPER.readValue(json, Tuple2Class.class);
@@ -91,7 +92,7 @@ class BindingClassTest {
     }
 
     @Test
-    void hashMultimapClass() throws Exception {
+    void hashMultimapClass() {
         HashMultimapClass src = new HashMultimapClass(HashMultimap.withSeq().of(42, new ImplementedClass()));
         String json = MAPPER.writeValueAsString(src);
         HashMultimapClass restored = MAPPER.readValue(json, HashMultimapClass.class);

@@ -22,7 +22,7 @@ class TreeMapJsonMergeTest extends BaseTest {
     }
 
     @Test
-    void shouldMergeString() throws Exception {
+    void shouldMergeString() {
         TestJsonMergeWithTreeMap result = mapper().readValue(asJson("{'value': {'foo2':'bar2'}}"), TestJsonMergeWithTreeMap.class);
 
         assertThat(result.value)

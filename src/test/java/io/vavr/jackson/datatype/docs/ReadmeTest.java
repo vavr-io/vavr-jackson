@@ -11,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class ReadmeTest extends BaseTest {
 
     @Test
-    void deser() throws Exception {
+    void deser() {
         ObjectMapper mapper = mapper();
 
         // readme: Serialization/deserialization

@@ -28,21 +28,21 @@ class HashSetJsonMergeTest extends BaseTest {
     }
 
     @Test
-    void shouldMergeSeq() throws Exception {
+    void shouldMergeSeq() {
         TestJsonMergeWithHashSet result = mapper().readValue(asJson("{'value':['d', 'e', 'f']}"), TestJsonMergeWithHashSet.class);
 
         assertThat(result.value.toJavaList()).containsExactly("a", "b", "c", "d", "e", "f");
     }
 
     @Test
-    void shouldMergeSeqConstructor() throws Exception {
+    void shouldMergeSeqConstructor() {
         TestJsonMergeWithHashSetConstructor result = mapper().readValue(asJson("{'value':['d', 'e', 'f']}"), TestJsonMergeWithHashSetConstructor.class);
 
         assertThat(result.value.toJavaList()).containsExactly("a", "b", "c", "d", "e", "f");
     }
 
     @Test
-    void shouldMergeWhileRetainingValues() throws Exception {
+    void shouldMergeWhileRetainingValues() {
         TestJsonMergeWithHashSetConstructor result = mapper().readerForUpdating(new TestJsonMergeWithHashSetConstructor("a", "b"))
           .readValue(asJson("{'value':['c', 'd', 'e', 'f']}"));
 

@@ -32,6 +32,7 @@ import io.vavr.control.Option;
 import io.vavr.jackson.datatype.VavrModule;
 import org.junit.jupiter.api.Test;
 import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -41,10 +42,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 class ExtFieldsPojoTest {
     private static final VavrModule MAPPER_MODULE = new VavrModule();
 
-    private static final ObjectMapper MAPPER = new ObjectMapper().rebuild().addModule(MAPPER_MODULE).build();
+    private static final ObjectMapper MAPPER = JsonMapper.builder().addModule(MAPPER_MODULE).build();
 
     @Test
-    void array() throws Exception {
+    void array() {
         Array<A> src = Array.of(new B("a", "b"));
         String json = MAPPER.writeValueAsString(new ArrayPojo().setValue(src));
         assertThat(json).isEqualTo("{\"value\":[{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}]}");
@@ -56,7 +57,7 @@ class ExtFieldsPojoTest {
     }
 
     @Test
-    void list() throws Exception {
+    void list() {
         List<A> src = List.of(new B("a", "b"));
         String json = MAPPER.writeValueAsString(new ListPojo().setValue(src));
         assertThat(json).isEqualTo("{\"value\":[{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}]}");
@@ -68,7 +69,7 @@ class ExtFieldsPojoTest {
     }
 
     @Test
-    void queue() throws Exception {
+    void queue() {
         Queue<A> src = Queue.of(new B("a", "b"));
         String json = MAPPER.writeValueAsString(new QueuePojo().setValue(src));
         assertThat(json).isEqualTo("{\"value\":[{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}]}");
@@ -80,7 +81,7 @@ class ExtFieldsPojoTest {
     }
 
     @Test
-    void stream() throws Exception {
+    void stream() {
         Stream<A> src = Stream.of(new B("a", "b"));
         String json = MAPPER.writeValueAsString(new StreamPojo().setValue(src));
         assertThat(json).isEqualTo("{\"value\":[{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}]}");
@@ -92,7 +93,7 @@ class ExtFieldsPojoTest {
     }
 
     @Test
-    void vector() throws Exception {
+    void vector() {
         Vector<A> src = Vector.of(new B("a", "b"));
         String json = MAPPER.writeValueAsString(new VectorPojo().setValue(src));
         assertThat(json).isEqualTo("{\"value\":[{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}]}");
@@ -104,7 +105,7 @@ class ExtFieldsPojoTest {
     }
 
     @Test
-    void hashSet() throws Exception {
+    void hashSet() {
         HashSet<A> src = HashSet.of(new B("a", "b"));
         String json = MAPPER.writeValueAsString(new HashSetPojo().setValue(src));
         assertThat(json).isEqualTo("{\"value\":[{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}]}");
@@ -116,7 +117,7 @@ class ExtFieldsPojoTest {
     }
 
     @Test
-    void linkedHashSet() throws Exception {
+    void linkedHashSet() {
         LinkedHashSet<A> src = LinkedHashSet.of(new B("a", "b"));
         String json = MAPPER.writeValueAsString(new LinkedHashSetPojo().setValue(src));
         assertThat(json).isEqualTo("{\"value\":[{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}]}");
@@ -128,7 +129,7 @@ class ExtFieldsPojoTest {
     }
 
     @Test
-    void treeSet() throws Exception {
+    void treeSet() {
         TreeSet<A> src = TreeSet.of(new B("a", "b"));
         String json = MAPPER.writeValueAsString(new TreeSetPojo().setValue(src));
         assertThat(json).isEqualTo("{\"value\":[{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}]}");
@@ -140,7 +141,7 @@ class ExtFieldsPojoTest {
     }
 
     @Test
-    void priorityQueue() throws Exception {
+    void priorityQueue() {
         PriorityQueue<A> src = PriorityQueue.of(new B("a", "b"));
         String json = MAPPER.writeValueAsString(new PriorityQueuePojo().setValue(src));
         assertThat(json).isEqualTo("{\"value\":[{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}]}");
@@ -152,7 +153,7 @@ class ExtFieldsPojoTest {
     }
 
     @Test
-    void hashMap() throws Exception {
+    void hashMap() {
         HashMap<String, A> src = HashMap.of("a", new B("a", "b"));
         String json = MAPPER.writeValueAsString(new HashMapPojo().setValue(src));
         assertThat(json).isEqualTo("{\"value\":{\"a\":{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}}}");
@@ -164,7 +165,7 @@ class ExtFieldsPojoTest {
     }
 
     @Test
-    void linkedHashMap() throws Exception {
+    void linkedHashMap() {
         LinkedHashMap<String, A> src = LinkedHashMap.of("a", new B("a", "b"));
         String json = MAPPER.writeValueAsString(new LinkedHashMapPojo().setValue(src));
         assertThat(json).isEqualTo("{\"value\":{\"a\":{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}}}");
@@ -176,7 +177,7 @@ class ExtFieldsPojoTest {
     }
 
     @Test
-    void treeMap() throws Exception {
+    void treeMap() {
         TreeMap<String, A> src = TreeMap.of("a", new B("a", "b"));
         String json = MAPPER.writeValueAsString(new TreeMapPojo().setValue(src));
         assertThat(json).isEqualTo("{\"value\":{\"a\":{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}}}");
@@ -188,7 +189,7 @@ class ExtFieldsPojoTest {
     }
 
     @Test
-    void hashMultimap() throws Exception {
+    void hashMultimap() {
         HashMultimap<String, A> src = HashMultimap.withSeq().of("a", new B("a", "b"));
         String json = MAPPER.writeValueAsString(new HashMultimapPojo().setValue(src));
         assertThat(json).isEqualTo("{\"value\":{\"a\":[{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}]}}");
@@ -200,7 +201,7 @@ class ExtFieldsPojoTest {
     }
 
     @Test
-    void linkedHashMultimap() throws Exception {
+    void linkedHashMultimap() {
         LinkedHashMultimap<String, A> src = LinkedHashMultimap.withSeq().of("a", new B("a", "b"));
         String json = MAPPER.writeValueAsString(new LinkedHashMultimapPojo().setValue(src));
         assertThat(json).isEqualTo("{\"value\":{\"a\":[{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}]}}");
@@ -212,7 +213,7 @@ class ExtFieldsPojoTest {
     }
 
     @Test
-    void treeMultimap() throws Exception {
+    void treeMultimap() {
         TreeMultimap<String, A> src = TreeMultimap.withSeq().of("a", new B("a", "b"));
         String json = MAPPER.writeValueAsString(new TreeMultimapPojo().setValue(src));
         assertThat(json).isEqualTo("{\"value\":{\"a\":[{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}]}}");
@@ -224,7 +225,7 @@ class ExtFieldsPojoTest {
     }
 
     @Test
-    void tuple1() throws Exception {
+    void tuple1() {
         Tuple1<A> src = Tuple.of(new B("a", "b"));
         String json = MAPPER.writeValueAsString(new Tuple1Pojo().setValue(src));
         assertThat(json).isEqualTo("{\"value\":[{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}]}");
@@ -236,7 +237,7 @@ class ExtFieldsPojoTest {
     }
 
     @Test
-    void tuple2() throws Exception {
+    void tuple2() {
         Tuple2<A, A> src = Tuple.of(new B("a", "b"), new B("a", "b"));
         String json = MAPPER.writeValueAsString(new Tuple2Pojo().setValue(src));
         assertThat(json).isEqualTo("{\"value\":[{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}]}");
@@ -251,7 +252,7 @@ class ExtFieldsPojoTest {
     }
 
     @Test
-    void tuple3() throws Exception {
+    void tuple3() {
         Tuple3<A, A, A> src = Tuple.of(new B("a", "b"), new B("a", "b"), new B("a", "b"));
         String json = MAPPER.writeValueAsString(new Tuple3Pojo().setValue(src));
         assertThat(json).isEqualTo("{\"value\":[{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}]}");
@@ -269,7 +270,7 @@ class ExtFieldsPojoTest {
     }
 
     @Test
-    void tuple4() throws Exception {
+    void tuple4() {
         Tuple4<A, A, A, A> src = Tuple.of(new B("a", "b"), new B("a", "b"), new B("a", "b"), new B("a", "b"));
         String json = MAPPER.writeValueAsString(new Tuple4Pojo().setValue(src));
         assertThat(json).isEqualTo("{\"value\":[{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}]}");
@@ -290,7 +291,7 @@ class ExtFieldsPojoTest {
     }
 
     @Test
-    void tuple5() throws Exception {
+    void tuple5() {
         Tuple5<A, A, A, A, A> src = Tuple.of(new B("a", "b"), new B("a", "b"), new B("a", "b"), new B("a", "b"), new B("a", "b"));
         String json = MAPPER.writeValueAsString(new Tuple5Pojo().setValue(src));
         assertThat(json).isEqualTo("{\"value\":[{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}]}");
@@ -314,7 +315,7 @@ class ExtFieldsPojoTest {
     }
 
     @Test
-    void tuple6() throws Exception {
+    void tuple6() {
         Tuple6<A, A, A, A, A, A> src = Tuple.of(new B("a", "b"), new B("a", "b"), new B("a", "b"), new B("a", "b"), new B("a", "b"), new B("a", "b"));
         String json = MAPPER.writeValueAsString(new Tuple6Pojo().setValue(src));
         assertThat(json).isEqualTo("{\"value\":[{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}]}");
@@ -341,7 +342,7 @@ class ExtFieldsPojoTest {
     }
 
     @Test
-    void tuple7() throws Exception {
+    void tuple7() {
         Tuple7<A, A, A, A, A, A, A> src = Tuple.of(new B("a", "b"), new B("a", "b"), new B("a", "b"), new B("a", "b"), new B("a", "b"), new B("a", "b"), new B("a", "b"));
         String json = MAPPER.writeValueAsString(new Tuple7Pojo().setValue(src));
         assertThat(json).isEqualTo("{\"value\":[{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}]}");
@@ -371,7 +372,7 @@ class ExtFieldsPojoTest {
     }
 
     @Test
-    void tuple8() throws Exception {
+    void tuple8() {
         Tuple8<A, A, A, A, A, A, A, A> src = Tuple.of(new B("a", "b"), new B("a", "b"), new B("a", "b"), new B("a", "b"), new B("a", "b"), new B("a", "b"), new B("a", "b"), new B("a", "b"));
         String json = MAPPER.writeValueAsString(new Tuple8Pojo().setValue(src));
         assertThat(json).isEqualTo("{\"value\":[{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}},{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}]}");
@@ -404,7 +405,7 @@ class ExtFieldsPojoTest {
     }
 
     @Test
-    void lazy() throws Exception {
+    void lazy() {
         Lazy<A> src = Lazy.of(() -> new B("a", "b"));
         String json = MAPPER.writeValueAsString(new LazyPojo().setValue(src));
         assertThat(json).isEqualTo("{\"value\":{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}}");
@@ -416,7 +417,7 @@ class ExtFieldsPojoTest {
     }
 
     @Test
-    void option() throws Exception {
+    void option() {
         Option<A> src = Option.some(new B("a", "b"));
         String json = MAPPER.writeValueAsString(new OptionPojo().setValue(src));
         assertThat(json).isEqualTo("{\"value\":{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}}");
@@ -428,7 +429,7 @@ class ExtFieldsPojoTest {
     }
 
     @Test
-    void eitherLeft() throws Exception {
+    void eitherLeft() {
         Either<A, A> src = Either.left(new B("a", "b"));
         String json = MAPPER.writeValueAsString(new EitherPojo().setValue(src));
         assertThat(json).isEqualTo("{\"value\":[\"left\",{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}]}");
@@ -441,7 +442,7 @@ class ExtFieldsPojoTest {
     }
 
     @Test
-    void eitherRight() throws Exception {
+    void eitherRight() {
         Either<A, A> src = Either.right(new B("a", "b"));
         String json = MAPPER.writeValueAsString(new EitherPojo().setValue(src));
         assertThat(json).isEqualTo("{\"value\":[\"right\",{\"ExtFieldsPojoTest$B\":{\"a\":\"a\",\"b\":\"b\"}}]}");

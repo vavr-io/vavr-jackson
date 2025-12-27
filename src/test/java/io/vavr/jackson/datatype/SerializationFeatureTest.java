@@ -1,7 +1,6 @@
 package io.vavr.jackson.datatype;
 
 import io.vavr.collection.List;
-import java.io.IOException;
 import java.util.ArrayList;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -16,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class SerializationFeatureTest {
 
     @Test
-    void shouldApplySerializationFeatureListDateTime() throws IOException {
+    void shouldApplySerializationFeatureListDateTime() {
         DateTime dateTime = new DateTime(2016, 6, 6, 8, 0, DateTimeZone.forID("CET"));
         io.vavr.collection.List<DateTime> dateTimeList = List.of(dateTime);
         java.util.List<DateTime> dateTimeJavaList = new ArrayList<>();

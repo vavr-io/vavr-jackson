@@ -3,7 +3,6 @@ package io.vavr.jackson.datatype.multimap;
 import io.vavr.collection.LinkedHashMultimap;
 import io.vavr.collection.Multimap;
 import io.vavr.control.Option;
-import java.io.IOException;
 import java.util.Collections;
 import org.junit.jupiter.api.Test;
 import tools.jackson.core.type.TypeReference;
@@ -28,7 +27,7 @@ class LinkedHashMultimapTest extends MultimapTest {
     }
 
     @Test
-    void shouldKeepOrder() throws IOException {
+    void shouldKeepOrder() {
         Multimap<Object, Object> vavrObject = emptyMap().put("2", 1).put("1", 2);
         java.util.Map<Object, Object> javaObject = new java.util.LinkedHashMap<>();
         javaObject.put("2", Collections.singletonList(1));

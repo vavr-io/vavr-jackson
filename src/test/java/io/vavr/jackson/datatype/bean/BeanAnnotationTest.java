@@ -65,7 +65,7 @@ public class BeanAnnotationTest extends BaseTest {
     }
 
     @Test
-    void nonEmpty() throws Exception {
+    void nonEmpty() {
         BeanObjectOptional bean = new BeanObjectOptional(false);
         String json = mapper().writer().writeValueAsString(bean);
         assertThat(json.contains(CHARSEQ_VALUE)).isTrue();
@@ -78,7 +78,7 @@ public class BeanAnnotationTest extends BaseTest {
     }
 
     @Test
-    void empty() throws Exception {
+    void empty() {
         BeanObjectOptional bean = new BeanObjectOptional();
         String json = mapper().writer().writeValueAsString(bean);
         assertThat(json).isEqualTo(EMPTY_JSON);
