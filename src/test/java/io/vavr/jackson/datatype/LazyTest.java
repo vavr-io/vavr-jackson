@@ -11,6 +11,7 @@ import tools.jackson.core.type.TypeReference;
 import tools.jackson.databind.ObjectMapper;
 import tools.jackson.databind.annotation.JsonSerialize;
 import tools.jackson.databind.cfg.DateTimeFeature;
+import tools.jackson.databind.json.JsonMapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -51,7 +52,7 @@ class LazyTest extends BaseTest {
 
         // When serializing the date using object mapper
         // with Java Time module and VAVR module
-        ObjectMapper mapper = mapper().rebuild().enable(DateTimeFeature.WRITE_DATES_AS_TIMESTAMPS).build();
+        ObjectMapper mapper = ((JsonMapper) mapper()).rebuild().enable(DateTimeFeature.WRITE_DATES_AS_TIMESTAMPS).build();
         String json = mapper.writeValueAsString(src);
 
         // Then the serialization is successful

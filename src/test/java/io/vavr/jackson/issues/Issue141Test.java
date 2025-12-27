@@ -10,6 +10,7 @@ import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import tools.jackson.databind.ObjectMapper;
 import tools.jackson.databind.cfg.DateTimeFeature;
+import tools.jackson.databind.json.JsonMapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -53,7 +54,7 @@ class Issue141Test extends BaseTest {
 
         // When serializing the instance using object mapper
         // with Java Time Module and VAVR Module
-        ObjectMapper objectMapper = mapper().rebuild().enable(DateTimeFeature.WRITE_DATES_AS_TIMESTAMPS).build();
+        ObjectMapper objectMapper = ((JsonMapper) mapper()).rebuild().enable(DateTimeFeature.WRITE_DATES_AS_TIMESTAMPS).build();
         String json = objectMapper.writeValueAsString(obj);
 
         // Then serialization is successful

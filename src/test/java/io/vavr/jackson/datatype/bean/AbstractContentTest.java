@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import tools.jackson.databind.ObjectMapper;
 import tools.jackson.databind.annotation.JsonDeserialize;
 import tools.jackson.databind.introspect.DefaultAccessorNamingStrategy;
+import tools.jackson.databind.json.JsonMapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -206,7 +207,7 @@ public class AbstractContentTest {
     }
 
     public static <T> void json_roundtrip_test(T value, Class<T> valueType)  throws IOException {
-        ObjectMapper mapper = new ObjectMapper().rebuild()
+        ObjectMapper mapper = JsonMapper.builder()
             .addModule(new VavrModule())
             .accessorNaming(new DefaultAccessorNamingStrategy.Provider()
                 .withFirstCharAcceptance(true, false)). build();

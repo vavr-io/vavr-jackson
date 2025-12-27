@@ -37,7 +37,7 @@ compile("io.vavr:vavr-jackson:0.11.0")
 Register the `VavrModule` with your Jackson `ObjectMapper`:
 
 ```java
-ObjectMapper mapper = new ObjectMapper().rebuild()
+ObjectMapper mapper = JsonMapper.builder()
     .addModule(new VavrModule())
     .build();
 ```
@@ -49,8 +49,9 @@ import io.vavr.collection.List;
 import io.vavr.jackson.datatype.VavrModule;
 import tools.jackson.core.type.TypeReference;
 import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
-ObjectMapper mapper = new ObjectMapper().rebuild()
+ObjectMapper mapper = JsonMapper.builder()
   .addModule(new VavrModule())
   .build();
 
@@ -91,7 +92,7 @@ By default, `Option` values are serialized in a plain format (just the value or 
 
 ```java
 VavrModule.Settings settings = new VavrModule.Settings();
-ObjectMapper mapper = new ObjectMapper().rebuild()
+ObjectMapper mapper = JsonMapper.builder()
     .addModule(new VavrModule(settings))
     .build();
 
@@ -101,7 +102,7 @@ mapper.writeValueAsString(Option.none());  // Result: null
 
 ```java
 VavrModule.Settings settings = new VavrModule.Settings().useOptionInPlainFormat(false);
-ObjectMapper mapper = new ObjectMapper().rebuild()
+ObjectMapper mapper = JsonMapper.builder()
     .addModule(new VavrModule(settings))
     .build();
 
@@ -116,7 +117,7 @@ Configure whether `null` values should be deserialized as empty collections:
 ```java
 VavrModule.Settings settings = new VavrModule.Settings()
     .deserializeNullAsEmptyCollection(true);
-ObjectMapper mapper = new ObjectMapper().rebuild()
+ObjectMapper mapper = JsonMapper.builder()
     .addModule(new VavrModule(settings))
     .build();
 

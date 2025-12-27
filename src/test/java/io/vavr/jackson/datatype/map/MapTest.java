@@ -30,6 +30,7 @@ import tools.jackson.databind.annotation.JsonSerialize;
 import tools.jackson.databind.deser.ContextualKeyDeserializer;
 import tools.jackson.databind.deser.std.StdDeserializer;
 import tools.jackson.databind.deser.std.StdScalarDeserializer;
+import tools.jackson.databind.json.JsonMapper;
 import tools.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -59,7 +60,7 @@ public abstract class MapTest extends BaseTest {
 
     @Test
     void test2() throws IOException {
-        ObjectMapper mapper = mapper().rebuild().addMixIn(clz(), WrapperObject.class).build();
+        ObjectMapper mapper = ((JsonMapper) mapper()).rebuild().addMixIn(clz(), WrapperObject.class).build();
         Map<?, ?> src = emptyMap().put("1", 2);
         String plainJson = mapper().writeValueAsString(src);
         String wrappedJson = mapper.writeValueAsString(src);
@@ -70,7 +71,7 @@ public abstract class MapTest extends BaseTest {
 
     @Test
     void test3()  throws IOException {
-        ObjectMapper mapper = mapper().rebuild().addMixIn(clz(), WrapperArray.class).build();
+        ObjectMapper mapper = ((JsonMapper) mapper()).rebuild().addMixIn(clz(), WrapperArray.class).build();
         Map<?, ?> src = emptyMap().put("1", 2);
         String plainJson = mapper().writeValueAsString(src);
         String wrappedJson = mapper.writeValueAsString(src);

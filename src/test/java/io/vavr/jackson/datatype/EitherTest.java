@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import tools.jackson.core.type.TypeReference;
 import tools.jackson.databind.DatabindException;
 import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 import tools.jackson.module.scala.DefaultScalaModule;
 
 import static io.vavr.control.Option.none;
@@ -26,7 +27,7 @@ class EitherTest extends BaseTest {
 
     @Test
     void shouldSerializeAndDeserializeWrappedEitherObject() throws IOException {
-        ObjectMapper mapper = mapper().rebuild().addMixIn(Either.class, WrapperObject.class).build();
+        ObjectMapper mapper = ((JsonMapper) mapper()).rebuild().addMixIn(Either.class, WrapperObject.class).build();
         Either<Integer, Integer> src = Either.right(1);
         String plainJson = mapper().writeValueAsString(src);
         String wrappedJson = mapper.writeValueAsString(src);
@@ -142,7 +143,7 @@ class EitherTest extends BaseTest {
     void shouldSerializeAndDeserializeScalaEither() throws IOException {
         final scala.util.Either<String, BigInteger> left = scala.util.Left.apply("test");
         final scala.util.Either<String, BigInteger> right = scala.util.Right.apply(BigInteger.ONE);
-        final ObjectMapper mapper = mapper().rebuild().addModule(new DefaultScalaModule()).build();
+        final ObjectMapper mapper = ((JsonMapper) mapper()).rebuild().addModule(new DefaultScalaModule()).build();
 
         final String serializedLeft = mapper.writeValueAsString(left);
         final Either<String, BigInteger> deserializedLeft =
@@ -159,7 +160,7 @@ class EitherTest extends BaseTest {
 
     @Test
     void shouldThrowExceptionWhenInvalidScalaEither() {
-        ObjectMapper mapper = mapper().rebuild().disable(FAIL_ON_TRAILING_TOKENS).build();
+        ObjectMapper mapper = ((JsonMapper) mapper()).rebuild().disable(FAIL_ON_TRAILING_TOKENS).build();
 
         String leftJson = "{\"left\": 42, \"x\": 5}";
         assertThatExceptionOfType(DatabindException.class).isThrownBy(() ->

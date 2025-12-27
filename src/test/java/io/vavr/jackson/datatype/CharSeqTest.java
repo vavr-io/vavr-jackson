@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import tools.jackson.databind.DatabindException;
 import tools.jackson.databind.ObjectMapper;
 import tools.jackson.databind.ObjectWriter;
+import tools.jackson.databind.json.JsonMapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
@@ -24,7 +25,7 @@ class CharSeqTest extends BaseTest {
 
     @Test
     void shouldSerializeAndDeserializeWrappedCharSeqAsObject()  throws IOException {
-        ObjectMapper mapper = mapper().rebuild().addMixIn(CharSeq.class, WrapperObject.class).build();
+        ObjectMapper mapper = ((JsonMapper) mapper()).rebuild().addMixIn(CharSeq.class, WrapperObject.class).build();
         CharSeq src = CharSeq.of("abc");
         String plainJson = mapper().writeValueAsString(src);
         String wrappedJson = mapper.writeValueAsString(src);
@@ -35,7 +36,7 @@ class CharSeqTest extends BaseTest {
 
     @Test
     void shouldSerializeAndDeserializeWrappedCharSeqAsArray()  throws IOException {
-        ObjectMapper mapper = mapper().rebuild().addMixIn(CharSeq.class, WrapperArray.class).build();
+        ObjectMapper mapper = ((JsonMapper) mapper()).rebuild().addMixIn(CharSeq.class, WrapperArray.class).build();
         CharSeq src = CharSeq.of("abc");
         String plainJson = mapper().writeValueAsString(src);
         String wrappedJson = mapper.writeValueAsString(src);

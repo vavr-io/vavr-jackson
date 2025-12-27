@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import org.junit.jupiter.api.Test;
 import tools.jackson.core.type.TypeReference;
 import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -42,7 +43,7 @@ public abstract class TupleTest<T> extends BaseTest {
     @SuppressWarnings("unchecked")
     @Test
     void test2() throws IOException {
-        ObjectMapper mapper = mapper().rebuild().addMixIn(clz(), WrapperObject.class).build();
+        ObjectMapper mapper = ((JsonMapper) mapper()).rebuild().addMixIn(clz(), WrapperObject.class).build();
         T src = ofObjects(1, 17);
         String plainJson = mapper().writeValueAsString(src);
         String wrappedJson = mapper.writeValueAsString(src);
@@ -54,7 +55,7 @@ public abstract class TupleTest<T> extends BaseTest {
     @SuppressWarnings("unchecked")
     @Test
     void test3() throws IOException {
-        ObjectMapper mapper = mapper().rebuild().addMixIn(clz(), WrapperArray.class).build();
+        ObjectMapper mapper = ((JsonMapper) mapper()).rebuild().addMixIn(clz(), WrapperArray.class).build();
         T src = ofObjects(1, 17);
         String plainJson = mapper().writeValueAsString(src);
         String wrappedJson = mapper.writeValueAsString(src);

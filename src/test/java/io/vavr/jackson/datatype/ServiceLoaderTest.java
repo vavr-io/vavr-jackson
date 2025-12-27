@@ -3,6 +3,7 @@ package io.vavr.jackson.datatype;
 import io.vavr.Lazy;
 import org.junit.jupiter.api.Test;
 import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -17,7 +18,7 @@ class ServiceLoaderTest {
      */
     @Test
     void shouldAutoDiscover() throws Exception {
-        ObjectMapper mapper = new ObjectMapper().rebuild().findAndAddModules().build();
+        ObjectMapper mapper = JsonMapper.builder().findAndAddModules().build();
 
         Lazy<?> src = Lazy.of(() -> 1);
         String json = mapper.writer().writeValueAsString(src);
