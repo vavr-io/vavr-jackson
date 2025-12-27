@@ -3,7 +3,6 @@ package io.vavr.jackson.datatype.set;
 import io.vavr.collection.LinkedHashSet;
 import io.vavr.collection.Set;
 import io.vavr.control.Option;
-import java.io.IOException;
 import java.util.Arrays;
 import org.junit.jupiter.api.Test;
 import tools.jackson.core.type.TypeReference;
@@ -35,7 +34,7 @@ class LinkedHashSetTest extends SetTest {
     }
 
     @Test
-    void keepOrder() throws IOException {
+    void keepOrder() {
         assertThat(LinkedHashSet.of(3, 2, 1)).isEqualTo(mapper().readValue("[3, 2, 1]", LinkedHashSet.class));
     }
 }

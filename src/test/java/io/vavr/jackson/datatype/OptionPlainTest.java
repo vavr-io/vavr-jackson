@@ -1,7 +1,6 @@
 package io.vavr.jackson.datatype;
 
 import io.vavr.control.Option;
-import java.io.IOException;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -9,7 +8,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class OptionPlainTest extends BaseTest {
 
     @Test
-    void shouldSerializeAndDeserializeDefinedOptionPlainValue() throws IOException {
+    void shouldSerializeAndDeserializeDefinedOptionPlainValue() {
         Option<?> src = Option.of(1);
         String json = mapper().writer().writeValueAsString(src);
         assertThat(json).isEqualTo("1");
@@ -18,7 +17,7 @@ class OptionPlainTest extends BaseTest {
     }
 
     @Test
-    void shouldSerializeAndDeserializeNoneOptionPlainValue() throws IOException {
+    void shouldSerializeAndDeserializeNoneOptionPlainValue() {
         Option<?> src = Option.none();
         String json = mapper().writer().writeValueAsString(src);
         assertThat(json).isEqualTo("null");

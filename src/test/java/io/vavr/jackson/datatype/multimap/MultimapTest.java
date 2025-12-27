@@ -42,7 +42,7 @@ public abstract class MultimapTest extends BaseTest {
     protected abstract TypeReference<? extends Multimap<String, Option<Integer>>> typeReferenceWithOption();
 
     @Test
-    void test1() throws IOException {
+    void test1() {
         Multimap<Object, Object> vavrObject = emptyMap().put("1", 2).put("2", 3).put("2", 4);
         java.util.Map<Object, List<Object>> javaObject = new java.util.HashMap<>();
         javaObject.put("1", Collections.singletonList(2));
@@ -71,7 +71,7 @@ public abstract class MultimapTest extends BaseTest {
     }
 
     @Test
-    void withOption() throws Exception {
+    void withOption() {
         Multimap<String, Option<Integer>> multimap = this.<String, Option<Integer>>emptyMap().put("1", Option.some(1))
             .put("1", Option.none());
         String json = genJsonMap(HashMap.of("1", asList(1, null)).toJavaMap());
@@ -163,7 +163,7 @@ public abstract class MultimapTest extends BaseTest {
     }
 
     @Test
-    void contextualizationOfKey() throws IOException {
+    void contextualizationOfKey() {
         Multimap<CustomKey, String> empty = emptyMap();
         Multimap<CustomKey, String> map = empty.put(new CustomKey(123), "test");
 
@@ -178,7 +178,7 @@ public abstract class MultimapTest extends BaseTest {
     }
 
     @Test
-    void contextualizationOfKeyAndElement() throws IOException {
+    void contextualizationOfKeyAndElement() {
         Multimap<CustomKey, CustomElement> empty = emptyMap();
         Multimap<CustomKey, CustomElement> map = empty.put(new CustomKey(123), new CustomElement("test"));
 
@@ -221,7 +221,7 @@ public abstract class MultimapTest extends BaseTest {
     }
 
     @Test
-    void secondaryContextualization() throws IOException {
+    void secondaryContextualization() {
         MyBean bean = mapper().readValue("{\"map\":{\"Will be replaced\":[1,2,3]}}", MyBean.class);
         assertIterableEquals(Arrays.asList(1, 2, 3), bean.map.get("String").get());
     }

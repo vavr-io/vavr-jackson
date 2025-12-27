@@ -1,7 +1,6 @@
 package io.vavr.jackson.datatype;
 
 import io.vavr.collection.List;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import org.junit.jupiter.api.Test;
@@ -13,14 +12,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 class ScalarTest extends BaseTest {
 
     @Test
-    void shouldDeserializeIntegerList() throws IOException {
+    void shouldDeserializeIntegerList() {
         List<Integer> l1 = mapper().readValue("[1]", new TypeReference<List<Integer>>() {
         });
         assertThat(List.of(1)).isEqualTo(l1);
     }
 
     @Test
-    void shouldDeserializeBooleanList() throws IOException {
+    void shouldDeserializeBooleanList() {
         List<Boolean> l2 = mapper().readValue("[true]", new TypeReference<List<Boolean>>() {
         });
         assertThat(List.of(true)).isEqualTo(l2);
@@ -31,14 +30,14 @@ class ScalarTest extends BaseTest {
     }
 
     @Test
-    void shouldDeserializeFloatList() throws IOException {
+    void shouldDeserializeFloatList() {
         List<Float> l4 = mapper().readValue("[2.4]", new TypeReference<List<Float>>() {
         });
         assertThat(List.of(2.4f)).isEqualTo(l4);
     }
 
     @Test
-    void shouldDeserializeDoubleAndBigDecimalList() throws IOException {
+    void shouldDeserializeDoubleAndBigDecimalList() {
         List<Double> l5 = mapper().readValue("[2.4]", new TypeReference<List<Double>>() {
         });
         assertThat(List.of(2.4)).isEqualTo(l5);
@@ -50,14 +49,14 @@ class ScalarTest extends BaseTest {
     }
 
     @Test
-    void shouldDeserializeStringList() throws IOException {
+    void shouldDeserializeStringList() {
         List<String> l6 = mapper().readValue("[\"1\"]", new TypeReference<List<String>>() {
         });
         assertThat(List.of("1")).isEqualTo(l6);
     }
 
     @Test
-    void shouldDeserializeLongList() throws IOException {
+    void shouldDeserializeLongList() {
         List<Long> l7 = mapper().readValue("[24]", new TypeReference<List<Long>>() {
         });
         assertThat(List.of(24L)).isEqualTo(l7);
@@ -68,20 +67,20 @@ class ScalarTest extends BaseTest {
     }
 
     @Test
-    void shouldDeserializeBigIntegerList() throws IOException {
+    void shouldDeserializeBigIntegerList() {
         List<BigInteger> l9 = mapper().readValue("[1234567890123456789012]", new TypeReference<List<BigInteger>>() {
         });
         assertThat(List.of(new BigInteger("1234567890123456789012"))).isEqualTo(l9);
     }
 
     @Test
-    void shouldDeserializeFloatToIntegerList() throws IOException {
+    void shouldDeserializeFloatToIntegerList() {
         assertThat(List.of(1)).isEqualTo(mapper().readValue("[1.3]", new TypeReference<List<Integer>>() {
         }));
     }
 
     @Test
-    void shouldDeserializeIntegerToStringList() throws IOException {
+    void shouldDeserializeIntegerToStringList() {
         assertThat(List.of("1")).isEqualTo(mapper().readValue("[1]", new TypeReference<List<String>>() {
         }));
     }

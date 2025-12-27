@@ -6,6 +6,7 @@ import io.vavr.jackson.datatype.VavrModule;
 import java.util.Date;
 import org.junit.jupiter.api.Test;
 import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -30,7 +31,7 @@ class Issue154Test {
         MyVavrClass myClass = new MyVavrClass();
         myClass.dates = List.of(new Date(1591221600000L), new Date(1591308000000L));
 
-        ObjectMapper mapper = new ObjectMapper().rebuild().addModule(new VavrModule()).build();
+        ObjectMapper mapper = JsonMapper.builder().addModule(new VavrModule()).build();
 
         String json = mapper.writeValueAsString(myClass);
         assertThat(json).isEqualTo("{\"dates\":[\"2020-06-04\",\"2020-06-05\"]}");
@@ -41,7 +42,7 @@ class Issue154Test {
         MyVavrClass myClass = new MyVavrClass();
         myClass.dates = List.of(new Date(1591221600000L), new Date(1591308000000L));
 
-        ObjectMapper mapper = new ObjectMapper().rebuild().addModule(new VavrModule()).build();
+        ObjectMapper mapper = JsonMapper.builder().addModule(new VavrModule()).build();
 
         String json = mapper.writeValueAsString(myClass);
         assertThat(json).isEqualTo("{\"dates\":[\"2020-06-04\",\"2020-06-05\"]}");

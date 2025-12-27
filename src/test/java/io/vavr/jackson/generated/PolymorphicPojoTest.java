@@ -32,6 +32,7 @@ import io.vavr.control.Option;
 import io.vavr.jackson.datatype.VavrModule;
 import org.junit.jupiter.api.Test;
 import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -41,10 +42,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 class PolymorphicPojoTest {
     private static final VavrModule MAPPER_MODULE = new VavrModule();
 
-    private static final ObjectMapper MAPPER = new ObjectMapper().rebuild().addModule(MAPPER_MODULE).build();
+    private static final ObjectMapper MAPPER = JsonMapper.builder().addModule(MAPPER_MODULE).build();
 
     @Test
-    void array() throws Exception {
+    void array() {
         Array<I> src = Array.of(new A(), new B());
         String json = MAPPER.writeValueAsString(new ArrayPojo().setValue(src));
         assertThat(json).isEqualTo("{\"value\":[{\"type\":\"a\"},{\"type\":\"b\"}]}");
@@ -55,7 +56,7 @@ class PolymorphicPojoTest {
     }
 
     @Test
-    void list() throws Exception {
+    void list() {
         List<I> src = List.of(new A(), new B());
         String json = MAPPER.writeValueAsString(new ListPojo().setValue(src));
         assertThat(json).isEqualTo("{\"value\":[{\"type\":\"a\"},{\"type\":\"b\"}]}");
@@ -66,7 +67,7 @@ class PolymorphicPojoTest {
     }
 
     @Test
-    void queue() throws Exception {
+    void queue() {
         Queue<I> src = Queue.of(new A(), new B());
         String json = MAPPER.writeValueAsString(new QueuePojo().setValue(src));
         assertThat(json).isEqualTo("{\"value\":[{\"type\":\"a\"},{\"type\":\"b\"}]}");
@@ -77,7 +78,7 @@ class PolymorphicPojoTest {
     }
 
     @Test
-    void stream() throws Exception {
+    void stream() {
         Stream<I> src = Stream.of(new A(), new B());
         String json = MAPPER.writeValueAsString(new StreamPojo().setValue(src));
         assertThat(json).isEqualTo("{\"value\":[{\"type\":\"a\"},{\"type\":\"b\"}]}");
@@ -88,7 +89,7 @@ class PolymorphicPojoTest {
     }
 
     @Test
-    void vector() throws Exception {
+    void vector() {
         Vector<I> src = Vector.of(new A(), new B());
         String json = MAPPER.writeValueAsString(new VectorPojo().setValue(src));
         assertThat(json).isEqualTo("{\"value\":[{\"type\":\"a\"},{\"type\":\"b\"}]}");
@@ -99,7 +100,7 @@ class PolymorphicPojoTest {
     }
 
     @Test
-    void hashSet() throws Exception {
+    void hashSet() {
         HashSet<I> src = HashSet.of(new B());
         String json = MAPPER.writeValueAsString(new HashSetPojo().setValue(src));
         assertThat(json).isEqualTo("{\"value\":[{\"type\":\"b\"}]}");
@@ -109,7 +110,7 @@ class PolymorphicPojoTest {
     }
 
     @Test
-    void linkedHashSet() throws Exception {
+    void linkedHashSet() {
         LinkedHashSet<I> src = LinkedHashSet.of(new B());
         String json = MAPPER.writeValueAsString(new LinkedHashSetPojo().setValue(src));
         assertThat(json).isEqualTo("{\"value\":[{\"type\":\"b\"}]}");
@@ -119,7 +120,7 @@ class PolymorphicPojoTest {
     }
 
     @Test
-    void treeSet() throws Exception {
+    void treeSet() {
         TreeSet<I> src = TreeSet.of(new B());
         String json = MAPPER.writeValueAsString(new TreeSetPojo().setValue(src));
         assertThat(json).isEqualTo("{\"value\":[{\"type\":\"b\"}]}");
@@ -129,7 +130,7 @@ class PolymorphicPojoTest {
     }
 
     @Test
-    void priorityQueue() throws Exception {
+    void priorityQueue() {
         PriorityQueue<I> src = PriorityQueue.of(new B());
         String json = MAPPER.writeValueAsString(new PriorityQueuePojo().setValue(src));
         assertThat(json).isEqualTo("{\"value\":[{\"type\":\"b\"}]}");
@@ -139,7 +140,7 @@ class PolymorphicPojoTest {
     }
 
     @Test
-    void hashMap() throws Exception {
+    void hashMap() {
         HashMap<String, I> src = HashMap.of("a", new A(), "b", new B());
         String json = MAPPER.writeValueAsString(new HashMapPojo().setValue(src));
         assertThat(json).isEqualTo("{\"value\":{\"a\":{\"type\":\"a\"},\"b\":{\"type\":\"b\"}}}");
@@ -150,7 +151,7 @@ class PolymorphicPojoTest {
     }
 
     @Test
-    void linkedHashMap() throws Exception {
+    void linkedHashMap() {
         LinkedHashMap<String, I> src = LinkedHashMap.of("a", new A(), "b", new B());
         String json = MAPPER.writeValueAsString(new LinkedHashMapPojo().setValue(src));
         assertThat(json).isEqualTo("{\"value\":{\"a\":{\"type\":\"a\"},\"b\":{\"type\":\"b\"}}}");
@@ -161,7 +162,7 @@ class PolymorphicPojoTest {
     }
 
     @Test
-    void treeMap() throws Exception {
+    void treeMap() {
         TreeMap<String, I> src = TreeMap.of("a", new A(), "b", new B());
         String json = MAPPER.writeValueAsString(new TreeMapPojo().setValue(src));
         assertThat(json).isEqualTo("{\"value\":{\"a\":{\"type\":\"a\"},\"b\":{\"type\":\"b\"}}}");
@@ -172,7 +173,7 @@ class PolymorphicPojoTest {
     }
 
     @Test
-    void hashMultimap() throws Exception {
+    void hashMultimap() {
         HashMultimap<String, I> src = HashMultimap.withSeq().of("a", new A(), "b", new B());
         String json = MAPPER.writeValueAsString(new HashMultimapPojo().setValue(src));
         assertThat(json).isEqualTo("{\"value\":{\"a\":[{\"type\":\"a\"}],\"b\":[{\"type\":\"b\"}]}}");
@@ -183,7 +184,7 @@ class PolymorphicPojoTest {
     }
 
     @Test
-    void linkedHashMultimap() throws Exception {
+    void linkedHashMultimap() {
         LinkedHashMultimap<String, I> src = LinkedHashMultimap.withSeq().of("a", new A(), "b", new B());
         String json = MAPPER.writeValueAsString(new LinkedHashMultimapPojo().setValue(src));
         assertThat(json).isEqualTo("{\"value\":{\"a\":[{\"type\":\"a\"}],\"b\":[{\"type\":\"b\"}]}}");
@@ -194,7 +195,7 @@ class PolymorphicPojoTest {
     }
 
     @Test
-    void treeMultimap() throws Exception {
+    void treeMultimap() {
         TreeMultimap<String, I> src = TreeMultimap.withSeq().of("a", new A(), "b", new B());
         String json = MAPPER.writeValueAsString(new TreeMultimapPojo().setValue(src));
         assertThat(json).isEqualTo("{\"value\":{\"a\":[{\"type\":\"a\"}],\"b\":[{\"type\":\"b\"}]}}");
@@ -205,7 +206,7 @@ class PolymorphicPojoTest {
     }
 
     @Test
-    void tuple1() throws Exception {
+    void tuple1() {
         Tuple1<I> src = Tuple.of(new A());
         String json = MAPPER.writeValueAsString(new Tuple1Pojo().setValue(src));
         assertThat(json).isEqualTo("{\"value\":[{\"type\":\"a\"}]}");
@@ -215,7 +216,7 @@ class PolymorphicPojoTest {
     }
 
     @Test
-    void tuple2() throws Exception {
+    void tuple2() {
         Tuple2<I, I> src = Tuple.of(new A(), new B());
         String json = MAPPER.writeValueAsString(new Tuple2Pojo().setValue(src));
         assertThat(json).isEqualTo("{\"value\":[{\"type\":\"a\"},{\"type\":\"b\"}]}");
@@ -226,7 +227,7 @@ class PolymorphicPojoTest {
     }
 
     @Test
-    void tuple3() throws Exception {
+    void tuple3() {
         Tuple3<I, I, I> src = Tuple.of(new A(), new B(), new A());
         String json = MAPPER.writeValueAsString(new Tuple3Pojo().setValue(src));
         assertThat(json).isEqualTo("{\"value\":[{\"type\":\"a\"},{\"type\":\"b\"},{\"type\":\"a\"}]}");
@@ -238,7 +239,7 @@ class PolymorphicPojoTest {
     }
 
     @Test
-    void tuple4() throws Exception {
+    void tuple4() {
         Tuple4<I, I, I, I> src = Tuple.of(new A(), new B(), new A(), new B());
         String json = MAPPER.writeValueAsString(new Tuple4Pojo().setValue(src));
         assertThat(json).isEqualTo("{\"value\":[{\"type\":\"a\"},{\"type\":\"b\"},{\"type\":\"a\"},{\"type\":\"b\"}]}");
@@ -251,7 +252,7 @@ class PolymorphicPojoTest {
     }
 
     @Test
-    void tuple5() throws Exception {
+    void tuple5() {
         Tuple5<I, I, I, I, I> src = Tuple.of(new A(), new B(), new A(), new B(), new A());
         String json = MAPPER.writeValueAsString(new Tuple5Pojo().setValue(src));
         assertThat(json).isEqualTo("{\"value\":[{\"type\":\"a\"},{\"type\":\"b\"},{\"type\":\"a\"},{\"type\":\"b\"},{\"type\":\"a\"}]}");
@@ -265,7 +266,7 @@ class PolymorphicPojoTest {
     }
 
     @Test
-    void tuple6() throws Exception {
+    void tuple6() {
         Tuple6<I, I, I, I, I, I> src = Tuple.of(new A(), new B(), new A(), new B(), new A(), new B());
         String json = MAPPER.writeValueAsString(new Tuple6Pojo().setValue(src));
         assertThat(json).isEqualTo("{\"value\":[{\"type\":\"a\"},{\"type\":\"b\"},{\"type\":\"a\"},{\"type\":\"b\"},{\"type\":\"a\"},{\"type\":\"b\"}]}");
@@ -280,7 +281,7 @@ class PolymorphicPojoTest {
     }
 
     @Test
-    void tuple7() throws Exception {
+    void tuple7() {
         Tuple7<I, I, I, I, I, I, I> src = Tuple.of(new A(), new B(), new A(), new B(), new A(), new B(), new A());
         String json = MAPPER.writeValueAsString(new Tuple7Pojo().setValue(src));
         assertThat(json).isEqualTo("{\"value\":[{\"type\":\"a\"},{\"type\":\"b\"},{\"type\":\"a\"},{\"type\":\"b\"},{\"type\":\"a\"},{\"type\":\"b\"},{\"type\":\"a\"}]}");
@@ -296,7 +297,7 @@ class PolymorphicPojoTest {
     }
 
     @Test
-    void tuple8() throws Exception {
+    void tuple8() {
         Tuple8<I, I, I, I, I, I, I, I> src = Tuple.of(new A(), new B(), new A(), new B(), new A(), new B(), new A(), new B());
         String json = MAPPER.writeValueAsString(new Tuple8Pojo().setValue(src));
         assertThat(json).isEqualTo("{\"value\":[{\"type\":\"a\"},{\"type\":\"b\"},{\"type\":\"a\"},{\"type\":\"b\"},{\"type\":\"a\"},{\"type\":\"b\"},{\"type\":\"a\"},{\"type\":\"b\"}]}");
@@ -313,7 +314,7 @@ class PolymorphicPojoTest {
     }
 
     @Test
-    void lazy() throws Exception {
+    void lazy() {
         Lazy<I> src = Lazy.of(A::new);
         String json = MAPPER.writeValueAsString(new LazyPojo().setValue(src));
         assertThat(json).isEqualTo("{\"value\":{\"type\":\"a\"}}");
@@ -323,7 +324,7 @@ class PolymorphicPojoTest {
     }
 
     @Test
-    void option() throws Exception {
+    void option() {
         Option<I> src = Option.some(new A());
         String json = MAPPER.writeValueAsString(new OptionPojo().setValue(src));
         assertThat(json).isEqualTo("{\"value\":{\"type\":\"a\"}}");
@@ -333,7 +334,7 @@ class PolymorphicPojoTest {
     }
 
     @Test
-    void eitherLeft() throws Exception {
+    void eitherLeft() {
         Either<I, I> src = Either.left(new A());
         String json = MAPPER.writeValueAsString(new EitherPojo().setValue(src));
         assertThat(json).isEqualTo("{\"value\":[\"left\",{\"type\":\"a\"}]}");
@@ -344,7 +345,7 @@ class PolymorphicPojoTest {
     }
 
     @Test
-    void eitherRight() throws Exception {
+    void eitherRight() {
         Either<I, I> src = Either.right(new A());
         String json = MAPPER.writeValueAsString(new EitherPojo().setValue(src));
         assertThat(json).isEqualTo("{\"value\":[\"right\",{\"type\":\"a\"}]}");

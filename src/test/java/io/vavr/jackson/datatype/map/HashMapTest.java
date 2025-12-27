@@ -3,7 +3,6 @@ package io.vavr.jackson.datatype.map;
 import io.vavr.collection.HashMap;
 import io.vavr.collection.Map;
 import io.vavr.control.Option;
-import java.io.IOException;
 import org.junit.jupiter.api.Test;
 import tools.jackson.core.type.TypeReference;
 
@@ -27,7 +26,7 @@ class HashMapTest extends MapTest {
     }
 
     @Test
-    void defaultDeserialization() throws IOException {
+    void defaultDeserialization() {
         assertThat(HashMap.empty().put("1", "2")).isEqualTo(mapper().readValue("{\"1\":\"2\"}", Map.class));
     }
 }

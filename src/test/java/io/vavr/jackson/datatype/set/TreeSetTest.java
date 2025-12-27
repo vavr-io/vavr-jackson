@@ -5,7 +5,6 @@ import io.vavr.collection.Set;
 import io.vavr.collection.SortedSet;
 import io.vavr.collection.TreeSet;
 import io.vavr.control.Option;
-import java.io.IOException;
 import java.util.Comparator;
 import java.util.Objects;
 import org.junit.jupiter.api.Test;
@@ -61,7 +60,7 @@ class TreeSetTest extends SetTest {
     }
 
     @Test
-    void deserializeToSortedSet() throws IOException {
+    void deserializeToSortedSet() {
         Clazz c = new Clazz();
         c.setSet(TreeSet.of(1, 3, 5));
         Clazz dc = mapper().readValue(mapper().writeValueAsString(c), Clazz.class);
@@ -83,7 +82,7 @@ class TreeSetTest extends SetTest {
 
     @Override
     @Test
-    void withOption() throws IOException {
+    void withOption() {
         // there is nothing to test, because Option is not Comparable and we cannot deserialize a TreeSet<Option<? extends Comparable<?>>
     }
 

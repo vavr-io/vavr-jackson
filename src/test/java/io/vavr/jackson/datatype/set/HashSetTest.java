@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import io.vavr.collection.HashSet;
 import io.vavr.collection.Set;
 import io.vavr.control.Option;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 import org.junit.jupiter.api.Test;
@@ -38,7 +37,7 @@ class HashSetTest extends SetTest {
     }
 
     @Test
-    void defaultDeserialization() throws IOException {
+    void defaultDeserialization() {
         assertThat(HashSet.of(1)).isEqualTo(mapper().readValue("[1]", Set.class));
     }
 
@@ -48,7 +47,7 @@ class HashSetTest extends SetTest {
     }
 
     @Test
-    void serializeWithContext() throws IOException {
+    void serializeWithContext() {
         // Given an object containing dates to serialize
         FrenchDates src = new FrenchDates();
         src.dates = HashSet.of(new Date(1591308000000L));

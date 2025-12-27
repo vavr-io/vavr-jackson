@@ -28,21 +28,21 @@ class TreeSetJsonMergeTest extends BaseTest {
     }
 
     @Test
-    void shouldMergeSeq() throws Exception {
+    void shouldMergeSeq() {
         TestJsonMergeWithTreeSet result = mapper().readValue(asJson("{'value':['d', 'e', 'f']}"), TestJsonMergeWithTreeSet.class);
 
         assertThat(result.value.toJavaList()).containsExactly("a", "b", "c", "d", "e", "f");
     }
 
     @Test
-    void shouldMergeSeqConstructor() throws Exception {
+    void shouldMergeSeqConstructor() {
         TestJsonMergeWithTreeSetConstructor result = mapper().readValue(asJson("{'value':['d', 'e', 'f']}"), TestJsonMergeWithTreeSetConstructor.class);
 
         assertThat(result.value.toJavaList()).containsExactly("a", "b", "c", "d", "e", "f");
     }
 
     @Test
-    void shouldMergeWhileRetainingValues() throws Exception {
+    void shouldMergeWhileRetainingValues() {
         TestJsonMergeWithTreeSetConstructor result = mapper().readerForUpdating(new TestJsonMergeWithTreeSetConstructor("a", "b"))
           .readValue(asJson("{'value':['c', 'd', 'e', 'f']}"));
 

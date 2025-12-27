@@ -45,7 +45,7 @@ public abstract class MapTest extends BaseTest {
     protected abstract TypeReference<? extends Map<String, Option<Integer>>> typeReferenceWithOption();
 
     @Test
-    void test1() throws IOException {
+    void test1() {
         Map<Object, Object> vavrObject = emptyMap().put("1", 2);
         java.util.Map<Object, Object> javaObject = new java.util.HashMap<>();
         javaObject.put("1", 2);
@@ -58,7 +58,7 @@ public abstract class MapTest extends BaseTest {
     }
 
     @Test
-    void test2() throws IOException {
+    void test2() {
         ObjectMapper mapper = mapper().rebuild().addMixIn(clz(), WrapperObject.class).build();
         Map<?, ?> src = emptyMap().put("1", 2);
         String plainJson = mapper().writeValueAsString(src);
@@ -69,7 +69,7 @@ public abstract class MapTest extends BaseTest {
     }
 
     @Test
-    void test3()  throws IOException {
+    void test3() {
         ObjectMapper mapper = mapper().rebuild().addMixIn(clz(), WrapperArray.class).build();
         Map<?, ?> src = emptyMap().put("1", 2);
         String plainJson = mapper().writeValueAsString(src);
@@ -83,7 +83,7 @@ public abstract class MapTest extends BaseTest {
     // Issue 138: Cannot deserialize to Map<String, String>
     // https://github.com/vavr-io/vavr-jackson/issues/138
     @Test
-    public void deserializeNullValue() throws IOException {
+    public void deserializeNullValue() {
         Map<String, String> stringStringMap = mapper().readValue("{\"1\":null}", new TypeReference<Map<String, String>>() {
         });
         Map<String, Object> stringObjectMap = mapper().readValue("{\"1\":null}", new TypeReference<Map<String, Object>>() {
@@ -107,7 +107,7 @@ public abstract class MapTest extends BaseTest {
     }
 
     @Test
-    void withOption() throws Exception {
+    void withOption() {
         verifySerialization(typeReferenceWithOption(), List.of(
             Tuple.of(emptyMap().put("1", Option.some(1)), genJsonMap(HashMap.of("1", 1).toJavaMap())),
             Tuple.of(emptyMap().put("1", Option.none()), genJsonMap(HashMap.of("1", null).toJavaMap()))
@@ -137,7 +137,7 @@ public abstract class MapTest extends BaseTest {
     }
 
     //    @Test
-    void testJaxbXmlSerialization() throws IOException {
+    void testJaxbXmlSerialization() {
         java.util.Map<String, String> javaInit = new java.util.HashMap<>();
         javaInit.put("key1", "1");
         javaInit.put("key2", "2");
@@ -174,7 +174,7 @@ public abstract class MapTest extends BaseTest {
     }
 
     //    @Test
-    void testXmlSerialization() throws IOException {
+    void testXmlSerialization() {
         java.util.Map<String, String> javaInit = new java.util.HashMap<>();
         javaInit.put("key1", "1");
         javaInit.put("key2", "2");
@@ -255,7 +255,7 @@ public abstract class MapTest extends BaseTest {
     }
 
     @Test
-    void contextualSerialization() throws IOException {
+    void contextualSerialization() {
         Map<CustomKey, CustomValue> empty = emptyMap();
         Map<CustomKey, CustomValue> map = empty.put(new CustomKey(123), new CustomValue("test"));
 
@@ -327,13 +327,13 @@ public abstract class MapTest extends BaseTest {
     }
 
     @Test
-    void secondaryKeyContextualization() throws IOException {
+    void secondaryKeyContextualization() {
         BeanWithModifiedKey bean = mapper().readValue("{\"map\":{\"Will be replaced\":[1,2,3]}}", BeanWithModifiedKey.class);
         assertIterableEquals(Arrays.asList(1, 2, 3), bean.map.get("String").get());
     }
 
     @Test
-    void secondaryContentContextualization() throws IOException {
+    void secondaryContentContextualization() {
         BeanWithModifiedContent bean = mapper().readValue("{\"map\":{\"1\":\"Will be replaced\"}}", BeanWithModifiedContent.class);
         assertThat(bean.map.get(1).get()).isEqualTo("String");
     }

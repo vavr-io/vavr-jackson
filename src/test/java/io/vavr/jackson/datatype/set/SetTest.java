@@ -32,7 +32,7 @@ public abstract class SetTest extends BaseTest {
     protected abstract Set<?> of(Object... objects);
 
     @Test
-    void test1() throws IOException {
+    void test1() {
         ObjectWriter writer = mapper().writer();
         Set<?> src = of(1, 2, 5);
         String json = writer.writeValueAsString(src);
@@ -42,7 +42,7 @@ public abstract class SetTest extends BaseTest {
     }
 
     @Test
-    void test2() throws IOException {
+    void test2() {
         ObjectMapper mapper = mapper().rebuild().addMixIn(clz(), WrapperObject.class).build();
         Set<?> src = of(1);
         String plainJson = mapper().writeValueAsString(src);
@@ -53,7 +53,7 @@ public abstract class SetTest extends BaseTest {
     }
 
     @Test
-    void test3() throws IOException {
+    void test3() {
         ObjectMapper mapper = mapper().rebuild().addMixIn(clz(), WrapperArray.class).build();
         Set<?> src = of(1);
         String plainJson = mapper().writeValueAsString(src);
@@ -64,7 +64,7 @@ public abstract class SetTest extends BaseTest {
     }
 
     @Test
-    void test4() throws IOException {
+    void test4() {
         VavrModule.Settings settings = new VavrModule.Settings();
         settings.deserializeNullAsEmptyCollection(true);
         ObjectMapper mapper = mapper(settings);
@@ -73,14 +73,14 @@ public abstract class SetTest extends BaseTest {
     }
 
     @Test
-    void test5() throws IOException {
+    void test5() {
         ObjectMapper mapper = mapper();
         Set<?> restored = mapper.readValue("null", typeReference());
         assertThat(restored).isNull();
     }
 
     @Test
-    void test6() throws IOException {
+    void test6() {
         ObjectMapper mapper = mapper();
         Set<?> restored = mapper.readValue("[]", typeReference());
         assertThat(restored.isEmpty()).isTrue();
@@ -129,7 +129,7 @@ public abstract class SetTest extends BaseTest {
 
     @Test
     @SuppressWarnings("unchecked")
-    void jaxbXmlSerialization() throws IOException {
+    void jaxbXmlSerialization() {
         ObjectMapper mapper = xmlMapperJaxb();
         String javaUtilValue = mapper.writeValueAsString(new JaxbXmlSerializeVavr().init((Set<Integer>) of(1, 2, 3)));
         assertThat(javaUtilValue).isEqualTo(mapper.writeValueAsString(new JaxbXmlSerializeJavaUtil().init(new java.util.HashSet<>(Arrays.asList(1, 2, 3)))));
@@ -163,7 +163,7 @@ public abstract class SetTest extends BaseTest {
 
     @Test
     @SuppressWarnings("unchecked")
-    void xmlSerialization() throws IOException {
+    void xmlSerialization() {
         ObjectMapper mapper = xmlMapper();
         String javaUtilValue = mapper.writeValueAsString(new XmlSerializeVavr().init((Set<Integer>) of(1, 2, 3)));
         assertThat(javaUtilValue).isEqualTo(mapper.writeValueAsString(new XmlSerializeJavaUtil().init(new java.util.HashSet<>(Arrays.asList(1, 2, 3)))));

@@ -2,7 +2,6 @@ package io.vavr.jackson.datatype;
 
 import io.vavr.collection.HashMap;
 import io.vavr.collection.List;
-import java.io.IOException;
 import java.util.Arrays;
 import org.junit.jupiter.api.Test;
 import tools.jackson.core.type.TypeReference;
@@ -14,7 +13,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOf
 class MixedTest extends BaseTest {
 
     @Test
-    void shouldSerializeAndDeserializeVavrHashMapWithListValues() throws IOException {
+    void shouldSerializeAndDeserializeVavrHashMapWithListValues() {
         Object src = HashMap.empty().put("key1", List.of(1, 2)).put("key2", List.of(3, 4));
         String json = mapper().writer().writeValueAsString(src);
         assertThat(src).isEqualTo(mapper().readValue(json, new TypeReference<HashMap<?, List<?>>>() {
@@ -22,7 +21,7 @@ class MixedTest extends BaseTest {
     }
 
     @Test
-    void shouldSerializeAndDeserializeListOfVavrHashMaps() throws IOException {
+    void shouldSerializeAndDeserializeListOfVavrHashMaps() {
         Object src = List.of(HashMap.empty().put("key1", 1), HashMap.empty().put("key2", 2));
         String json = mapper().writer().writeValueAsString(src);
         assertThat(src).isEqualTo(mapper().readValue(json, new TypeReference<List<HashMap<?, ?>>>() {
@@ -30,7 +29,7 @@ class MixedTest extends BaseTest {
     }
 
     @Test
-    void shouldSerializeAndDeserializeListContainingJavaMap() throws IOException {
+    void shouldSerializeAndDeserializeListContainingJavaMap() {
         java.util.Map<String, String> javaHMap = new java.util.HashMap<>();
         javaHMap.put("1", "2");
         List<?> src = List.of(javaHMap);
@@ -46,7 +45,7 @@ class MixedTest extends BaseTest {
     }
 
     @Test
-    void shouldSerializeAndDeserializeNestedVavrLists() throws IOException {
+    void shouldSerializeAndDeserializeNestedVavrLists() {
         Object src = List.of(List.of(1));
         String json = mapper().writer().writeValueAsString(src);
         assertThat(src).isEqualTo(mapper().readValue(json, new TypeReference<List<List<?>>>() {
@@ -54,7 +53,7 @@ class MixedTest extends BaseTest {
     }
 
     @Test
-    void shouldSerializeAndDeserializeVavrHashMapWithNestedHashMapValues() throws IOException {
+    void shouldSerializeAndDeserializeVavrHashMapWithNestedHashMapValues() {
         Object src = HashMap.empty().put("1", HashMap.empty().put("X", "Y"));
         String json = mapper().writer().writeValueAsString(src);
         assertThat(src).isEqualTo(mapper().readValue(json, new TypeReference<HashMap<?, HashMap<?, ?>>>() {
@@ -62,7 +61,7 @@ class MixedTest extends BaseTest {
     }
 
     @Test
-    void shouldSerializeAndDeserializeListContainingJavaList() throws IOException {
+    void shouldSerializeAndDeserializeListContainingJavaList() {
         Object src = List.of(Arrays.asList(1, 2));
         String json = mapper().writer().writeValueAsString(src);
         assertThat(src).isEqualTo(mapper().readValue(json, List.class));

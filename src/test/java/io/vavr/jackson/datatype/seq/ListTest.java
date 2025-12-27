@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import io.vavr.collection.List;
 import io.vavr.collection.Seq;
 import io.vavr.control.Option;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 import org.junit.jupiter.api.Test;
@@ -39,7 +38,7 @@ class ListTest extends SeqTest {
     }
 
     @Test
-    void defaultDeserialization() throws IOException {
+    void defaultDeserialization() {
         assertThat(List.of(1)).isEqualTo(mapper().readValue("[1]", Seq.class));
     }
 
@@ -61,7 +60,7 @@ class ListTest extends SeqTest {
     }
 
     @Test
-    void jsonTypeInfo() throws IOException {
+    void jsonTypeInfo() {
         String javaUtilValue = mapper().writeValueAsString(new A());
         assertThat(javaUtilValue).isEqualTo(mapper().writeValueAsString(new B()));
         A restored = mapper().readValue(javaUtilValue, A.class);
@@ -74,7 +73,7 @@ class ListTest extends SeqTest {
     }
 
     @Test
-    void serializeWithContext() throws IOException {
+    void serializeWithContext() {
         // Given an object containing dates to serialize
         FrenchDates src = new FrenchDates();
         src.dates = List.of(new Date(1591308000000L));

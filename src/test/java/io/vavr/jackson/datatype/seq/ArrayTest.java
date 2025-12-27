@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import io.vavr.collection.Array;
 import io.vavr.collection.Seq;
 import io.vavr.control.Option;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 import org.junit.jupiter.api.Test;
@@ -36,7 +35,7 @@ class ArrayTest extends SeqTest {
     }
 
     @Test
-    void serializeWithContext() throws IOException {
+    void serializeWithContext() {
         // Given an object containing dates to serialize
         FrenchDates src = new FrenchDates();
         src.dates = Array.of(new Date(1591308000000L));
