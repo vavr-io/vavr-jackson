@@ -28,8 +28,10 @@ import io.vavr.collection.Stream;
 import io.vavr.control.Either;
 import io.vavr.control.Option;
 import io.vavr.jackson.datatype.VavrModule;
+import java.util.stream.IntStream;
 import javax.lang.model.element.Modifier;
 import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 /**
  * @author Ruslan Sennov</a>
@@ -57,7 +59,7 @@ public class Initializer {
                 .build());
         }
         builder.addField(FieldSpec.builder(ClassName.get(ObjectMapper.class), name, mods)
-            .initializer("new $T().registerModule($L)", ClassName.get(ObjectMapper.class), name + "_MODULE")
+            .initializer("$T.builder().addModule($L).build()", ClassName.get(JsonMapper.class), name + "_MODULE")
             .build());
     }
 
@@ -133,20 +135,11 @@ public class Initializer {
             return ptn;
         }
         if (obj instanceof Multimap<?, ?> multimap) {
-            String withContainerType;
-            switch (multimap.getContainerType()) {
-                case SEQ:
-                    withContainerType = "withSeq";
-                    break;
-                case SET:
-                    withContainerType = "withSet";
-                    break;
-                case SORTED_SET:
-                    withContainerType = "withSortedSet";
-                    break;
-                default:
-                    throw new RuntimeException();
-            }
+            String withContainerType = switch (multimap.getContainerType()) {
+                case SEQ -> "withSeq";
+                case SET -> "withSet";
+                case SORTED_SET -> "withSortedSet";
+            };
             TypeName[] subTypes = initValues(builder, name, multimap.toJavaArray());
             ParameterizedTypeName ctn = (ParameterizedTypeName) commonTypeName(subTypes);
             ParameterizedTypeName ptn = ParameterizedTypeName.get(clsName(multimap), ctn.typeArguments.get(0), ctn.typeArguments.get(1));
@@ -223,11 +216,9 @@ public class Initializer {
     }
 
     private static TypeName[] initValues(MethodSpec.Builder builder, String name, Object... objs) {
-        TypeName[] types = new TypeName[objs.length];
-        for (int i = 0; i < objs.length; i++) {
-            types[i] = initValue(builder, name + i, objs[i]);
-        }
-        return types;
+        return IntStream.range(0, objs.length)
+            .mapToObj(i -> initValue(builder, name + i, objs[i]))
+            .toArray(TypeName[]::new);
     }
 
     private static TypeName commonTypeName(TypeName[] subTypes) {

@@ -28,10 +28,10 @@ public class SimplePojo {
         generate(cases);
     }
 
-    static void generate(java.util.Map<String, Object> cases) throws IOException {
 
+    static void generate(java.util.Map<String, Object> cases) throws IOException {
         TypeSpec.Builder pojoTest = TypeSpec.classBuilder("SimplePojoTest")
-            .addJavadoc("generated\n")
+            .addJavadoc("generated - don't edit manually\n")
             .addModifiers(Modifier.PUBLIC);
         initMapper(pojoTest, "MAPPER");
 
@@ -50,10 +50,8 @@ public class SimplePojo {
     }
 
     private static void addCase(TypeSpec.Builder builder, String pojoName, Object value, int opts) {
-
-        MethodSpec.Builder testBuilder = MethodSpec.methodBuilder("test" + pojoName)
-            .addAnnotation(Test.class)
-            .addException(ClassName.get(Exception.class));
+        MethodSpec.Builder testBuilder = MethodSpec.methodBuilder("shouldHandle" + pojoName)
+            .addAnnotation(Test.class);
         TypeName valueTypeName = initValue(testBuilder, "src", value);
         MethodSpec testSpec = testBuilder
             .addStatement("$T json = MAPPER.writeValueAsString(new $L().setValue(src))", ClassName.get(String.class), pojoName)
