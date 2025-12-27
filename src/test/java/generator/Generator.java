@@ -22,10 +22,94 @@ import io.vavr.control.Option;
 import java.io.IOException;
 
 /**
- * @author Ruslan Sennov</a>
+ * Test code generator for Vavr Jackson serialization and deserialization tests.
+ * <p>
+ * This class generates comprehensive JUnit test classes that validate Jackson's ability to
+ * serialize and deserialize various Vavr data types. The generated tests are written to
+ * {@code src/test/java/io/vavr/jackson/generated/} and ensure that the vavr-jackson module
+ * correctly handles all supported Vavr types.
+ * </p>
+ *
+ * <h2>Generated Test Types</h2>
+ * <ul>
+ *   <li><b>SimplePojoTest</b> - Tests simple POJOs containing Vavr types as fields</li>
+ *   <li><b>ParameterizedPojoTest</b> - Tests generic POJOs with parameterized Vavr types</li>
+ *   <li><b>PolymorphicPojoTest</b> - Tests POJOs with polymorphic types using Jackson annotations</li>
+ *   <li><b>ExtFieldsPojoTest</b> - Tests POJOs with extended fields and inheritance hierarchies</li>
+ * </ul>
+ *
+ * <h2>Tested Vavr Types</h2>
+ * <p>The generator creates test cases for the following categories of Vavr types:</p>
+ * <ul>
+ *   <li><b>Tuples</b> - {@code Tuple1} through {@code Tuple8} with String and nested Tuple elements</li>
+ *   <li><b>Sequential Collections</b> - {@code Array}, {@code List}, {@code Queue}, {@code Stream}, {@code Vector}</li>
+ *   <li><b>Sets</b> - {@code HashSet}, {@code LinkedHashSet}, {@code TreeSet}, {@code PriorityQueue}</li>
+ *   <li><b>Maps</b> - {@code HashMap}, {@code LinkedHashMap}, {@code TreeMap}</li>
+ *   <li><b>Multimaps</b> - {@code HashMultimap}, {@code LinkedHashMultimap}, {@code TreeMultimap}</li>
+ *   <li><b>Control Types</b> - {@code Option}, {@code Lazy}, {@code Either}</li>
+ * </ul>
+ *
+ * <h2>Code Generation Process</h2>
+ * <p>The generator uses <a href="https://github.com/square/javapoet">JavaPoet</a> to programmatically
+ * create Java source files. Each test case:</p>
+ * <ol>
+ *   <li>Creates a POJO class with a field of the Vavr type being tested</li>
+ *   <li>Initializes test data with appropriate values</li>
+ *   <li>Serializes the POJO to JSON using Jackson</li>
+ *   <li>Verifies the JSON matches the expected format</li>
+ *   <li>Deserializes the JSON back to a POJO</li>
+ *   <li>Asserts that the deserialized value equals the original</li>
+ * </ol>
+ *
+ * <h2>Usage</h2>
+ * <p>Run this class as a standalone Java application to regenerate all test classes:</p>
+ * <pre>
+ * java generator.Generator
+ * </pre>
+ * <p>Or execute it through Maven:</p>
+ * <pre>
+ * mvn exec:java -Dexec.mainClass="generator.Generator"
+ * </pre>
+ *
+ * <h2>Output Location</h2>
+ * <p>Generated test files are written to:</p>
+ * <pre>
+ * src/test/java/io/vavr/jackson/generated/
+ * </pre>
+ *
+ * @author Ruslan Sennov
+ * @see SimplePojo
+ * @see ParameterizedPojo
+ * @see PolymorphicPojo
+ * @see ExtFieldsPojo
  */
 public class Generator {
 
+    /**
+     * Generates all test classes for Vavr Jackson serialization and deserialization.
+     * <p>
+     * This method creates a comprehensive set of test cases covering various Vavr data types
+     * and their combinations. The generated tests validate that the vavr-jackson module
+     * correctly handles serialization to JSON and deserialization back to Java objects.
+     * </p>
+     *
+     * <p>The test data includes:</p>
+     * <ul>
+     *   <li><b>Tuples</b> - Various tuple arities (1-8) containing Strings and nested Tuples</li>
+     *   <li><b>Sequential Collections</b> - Array, List, Queue, Stream, Vector with String and Tuple elements</li>
+     *   <li><b>Sets</b> - HashSet, LinkedHashSet, TreeSet with String and Tuple elements</li>
+     *   <li><b>Maps</b> - HashMap, LinkedHashMap, TreeMap with Integer keys and String/Tuple values</li>
+     *   <li><b>Multimaps</b> - HashMultimap, LinkedHashMultimap, TreeMultimap with String keys and values</li>
+     *   <li><b>Control Types</b> - Option, Lazy, Either with String and Tuple contents</li>
+     * </ul>
+     *
+     * <p>Each test case is named descriptively (e.g., "Tuple2OfString", "ArrayOfTuple",
+     * "OptionOfString") and includes assertions for both serialization and deserialization
+     * correctness.</p>
+     *
+     * @param args command line arguments (not used)
+     * @throws IOException if an error occurs while writing the generated test files to disk
+     */
     public static void main(String[] args) throws IOException {
         java.util.Map<String, Object> cases = new java.util.LinkedHashMap<>();
 
