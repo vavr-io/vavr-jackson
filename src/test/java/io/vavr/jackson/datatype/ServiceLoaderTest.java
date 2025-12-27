@@ -17,7 +17,7 @@ class ServiceLoaderTest {
      * @throws Exception only if jackson fails to handle vavr types - meaning auto-register didn't work
      */
     @Test
-    void shouldAutoDiscover() throws Exception {
+    void shouldAutoDiscover() {
         ObjectMapper mapper = JsonMapper.builder().findAndAddModules().build();
 
         Lazy<?> src = Lazy.of(() -> 1);

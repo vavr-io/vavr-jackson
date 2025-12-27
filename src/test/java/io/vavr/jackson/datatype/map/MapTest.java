@@ -83,7 +83,7 @@ public abstract class MapTest extends BaseTest {
     // Issue 138: Cannot deserialize to Map<String, String>
     // https://github.com/vavr-io/vavr-jackson/issues/138
     @Test
-    public void deserializeNullValue() {
+    void deserializeNullValue() {
         Map<String, String> stringStringMap = mapper().readValue("{\"1\":null}", new TypeReference<Map<String, String>>() {
         });
         Map<String, Object> stringObjectMap = mapper().readValue("{\"1\":null}", new TypeReference<Map<String, Object>>() {

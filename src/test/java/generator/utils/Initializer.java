@@ -28,8 +28,10 @@ import io.vavr.collection.Stream;
 import io.vavr.control.Either;
 import io.vavr.control.Option;
 import io.vavr.jackson.datatype.VavrModule;
+import java.util.stream.IntStream;
 import javax.lang.model.element.Modifier;
 import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 /**
  * @author Ruslan Sennov</a>
@@ -57,7 +59,7 @@ public class Initializer {
                 .build());
         }
         builder.addField(FieldSpec.builder(ClassName.get(ObjectMapper.class), name, mods)
-            .initializer("new $T().registerModule($L)", ClassName.get(ObjectMapper.class), name + "_MODULE")
+            .initializer("$T.builder().addModule($L).build()", ClassName.get(JsonMapper.class), name + "_MODULE")
             .build());
     }
 
@@ -91,14 +93,14 @@ public class Initializer {
             }
             return ptn;
         }
-        if (obj instanceof Option) {
-            TypeName subType = initValue(builder, name + "0", ((Option<?>) obj).get());
+        if (obj instanceof Option<?> option) {
+            TypeName subType = initValue(builder, name + "0", option.get());
             ParameterizedTypeName ptn = ParameterizedTypeName.get(ClassName.get(Option.class), subType);
             builder.addStatement("$T $L = $T.of($L)", ptn, name, ClassName.get(Option.class), name + "0");
             return ptn;
         }
-        if (obj instanceof Lazy) {
-            TypeName subType = initValue(builder, name + "0", ((Lazy<?>) obj).get());
+        if (obj instanceof Lazy<?> lazy) {
+            TypeName subType = initValue(builder, name + "0", lazy.get());
             ParameterizedTypeName ptn = ParameterizedTypeName.get(ClassName.get(Lazy.class), subType);
             builder.addStatement("$T $L = $T.of(() -> $L)", ptn, name, ClassName.get(Lazy.class), name + "0");
             return ptn;
@@ -133,20 +135,11 @@ public class Initializer {
             return ptn;
         }
         if (obj instanceof Multimap<?, ?> multimap) {
-            String withContainerType;
-            switch (multimap.getContainerType()) {
-                case SEQ:
-                    withContainerType = "withSeq";
-                    break;
-                case SET:
-                    withContainerType = "withSet";
-                    break;
-                case SORTED_SET:
-                    withContainerType = "withSortedSet";
-                    break;
-                default:
-                    throw new RuntimeException();
-            }
+            String withContainerType = switch (multimap.getContainerType()) {
+                case SEQ -> "withSeq";
+                case SET -> "withSet";
+                case SORTED_SET -> "withSortedSet";
+            };
             TypeName[] subTypes = initValues(builder, name, multimap.toJavaArray());
             ParameterizedTypeName ctn = (ParameterizedTypeName) commonTypeName(subTypes);
             ParameterizedTypeName ptn = ParameterizedTypeName.get(clsName(multimap), ctn.typeArguments.get(0), ctn.typeArguments.get(1));
@@ -218,16 +211,14 @@ public class Initializer {
             return ptn;
         }
         ClassName className = ClassName.get(obj.getClass());
-        builder.addStatement("$T $L = " + (obj instanceof String ? "$S" : "$L"), className, name, obj);
+        builder.addStatement("var $L = " + (obj instanceof String ? "$S" : "$L"), name, obj);
         return className;
     }
 
     private static TypeName[] initValues(MethodSpec.Builder builder, String name, Object... objs) {
-        TypeName[] types = new TypeName[objs.length];
-        for (int i = 0; i < objs.length; i++) {
-            types[i] = initValue(builder, name + i, objs[i]);
-        }
-        return types;
+        return IntStream.range(0, objs.length)
+            .mapToObj(i -> initValue(builder, name + i, objs[i]))
+            .toArray(TypeName[]::new);
     }
 
     private static TypeName commonTypeName(TypeName[] subTypes) {

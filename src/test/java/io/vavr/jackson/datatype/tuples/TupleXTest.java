@@ -8,7 +8,6 @@ import io.vavr.Tuple2;
 import io.vavr.Tuple3;
 import io.vavr.Tuple8;
 import io.vavr.jackson.datatype.BaseTest;
-import java.io.IOException;
 import org.junit.jupiter.api.Test;
 import tools.jackson.databind.DatabindException;
 
@@ -18,7 +17,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOf
 class TupleXTest extends BaseTest {
 
     @Test
-    void test0() throws IOException {
+    void test0() {
         Tuple0 tuple0 = Tuple0.instance();
         String json = mapper().writer().writeValueAsString(tuple0);
         assertThat(tuple0).isEqualTo(mapper().readValue(json, Tuple0.class));
@@ -39,7 +38,7 @@ class TupleXTest extends BaseTest {
     }
 
     @Test
-    void test11() throws IOException {
+    void test11() {
         String json = "[1, 2]";
         assertThatExceptionOfType(DatabindException.class).isThrownBy(() ->
             mapper().readValue(json, Tuple3.class));
@@ -59,7 +58,7 @@ class TupleXTest extends BaseTest {
     }
 
     @Test
-    void jsonTypeInfo1() throws IOException {
+    void jsonTypeInfo1() {
         String javaUtilValue = mapper().writeValueAsString(new A());
         assertThat(javaUtilValue).isEqualTo("{\"f\":[{\"card\":{\"type\":\"hello\"}},{\"card\":{\"type\":\"hello\"}}]}");
         A restored = mapper().readValue(javaUtilValue, A.class);

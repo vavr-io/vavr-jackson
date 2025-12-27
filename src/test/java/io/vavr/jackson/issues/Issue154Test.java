@@ -11,8 +11,8 @@ import tools.jackson.databind.json.JsonMapper;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * Serialize of List of Date does not follow pattern defined in {@code @JsonFormat}
- * https://github.com/vavr-io/vavr-jackson/issues/154
+ * Serialize of List of Date does not follow the pattern defined in {@code @JsonFormat}
+ * <a href="https://github.com/vavr-io/vavr-jackson/issues/154">GitHub issue</a>
  */
 class Issue154Test {
 
@@ -27,7 +27,7 @@ class Issue154Test {
     }
 
     @Test
-    void itShouldSerializeVavrListWithVavrModule() throws Exception {
+    void itShouldSerializeVavrListWithVavrModule() {
         MyVavrClass myClass = new MyVavrClass();
         myClass.dates = List.of(new Date(1591221600000L), new Date(1591308000000L));
 
@@ -38,7 +38,7 @@ class Issue154Test {
     }
 
     @Test
-    void itShouldSerializeVavrListWithVavrModuleAndJavaTimeModule() throws Exception {
+    void itShouldSerializeVavrListWithVavrModuleAndJavaTimeModule() {
         MyVavrClass myClass = new MyVavrClass();
         myClass.dates = List.of(new Date(1591221600000L), new Date(1591308000000L));
 
@@ -49,7 +49,7 @@ class Issue154Test {
     }
 
     @Test
-    void itShouldSerializeJavaListWithJavaTimeModule() throws Exception {
+    void itShouldSerializeJavaListWithJavaTimeModule() {
         MyJavaClass myClass = new MyJavaClass();
         myClass.dates = List.of(new Date(1591221600000L), new Date(1591308000000L)).asJava();
 
@@ -59,7 +59,7 @@ class Issue154Test {
     }
 
     @Test
-    void itShouldSerializeJavaListWithoutModule() throws Exception {
+    void itShouldSerializeJavaListWithoutModule() {
         MyJavaClass myClass = new MyJavaClass();
         myClass.dates = List.of(new Date(1591221600000L), new Date(1591308000000L)).asJava();
 

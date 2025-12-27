@@ -96,7 +96,7 @@ public abstract class SetTest extends BaseTest {
     }
 
     @Test
-    void withOption() throws Exception {
+    void withOption() {
         verifySerialization(typeReferenceWithOption(), List.of(
             Tuple.of(of(Option.some("value")), genJsonList("value")),
             Tuple.of(of(Option.none()), genJsonList((Object) null))

@@ -4,7 +4,6 @@ import io.vavr.Tuple;
 import io.vavr.collection.List;
 import io.vavr.control.Option;
 import io.vavr.jackson.datatype.BaseTest;
-import java.io.IOException;
 import java.util.ArrayList;
 import org.junit.jupiter.api.Test;
 import tools.jackson.core.type.TypeReference;
@@ -32,7 +31,7 @@ public abstract class TupleTest<T> extends BaseTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    void test1() throws IOException {
+    void test1() {
         T src = ofObjects(1, 17);
         String json = mapper().writeValueAsString(src);
         assertThat(json).isEqualTo(genJsonTuple(1, 17));
@@ -41,7 +40,7 @@ public abstract class TupleTest<T> extends BaseTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    void test2() throws IOException {
+    void test2() {
         ObjectMapper mapper = mapper().rebuild().addMixIn(clz(), WrapperObject.class).build();
         T src = ofObjects(1, 17);
         String plainJson = mapper().writeValueAsString(src);
@@ -53,7 +52,7 @@ public abstract class TupleTest<T> extends BaseTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    void test3() throws IOException {
+    void test3() {
         ObjectMapper mapper = mapper().rebuild().addMixIn(clz(), WrapperArray.class).build();
         T src = ofObjects(1, 17);
         String plainJson = mapper().writeValueAsString(src);
@@ -64,7 +63,7 @@ public abstract class TupleTest<T> extends BaseTest {
     }
 
     @Test
-    void withOption() throws IOException {
+    void withOption() {
         verifySerialization(typeReferenceWithOption(), List.of(
             Tuple.of(ofObjects(Option.some("1"), Option.none()), genJsonTuple("1", null)),
             Tuple.of(ofObjects(Option.some("1"), Option.some("17")), genJsonTuple("1", "17")),
