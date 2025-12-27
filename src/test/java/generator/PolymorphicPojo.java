@@ -61,7 +61,7 @@ public class PolymorphicPojo {
     static void generate() throws IOException {
 
         TypeSpec.Builder pojoTest = TypeSpec.classBuilder("PolymorphicPojoTest")
-            .addJavadoc("generated\n")
+            .addJavadoc("generated - don't edit manually\n")
             .addModifiers(Modifier.PUBLIC);
         initMapper(pojoTest, "MAPPER");
 
@@ -134,22 +134,22 @@ public class PolymorphicPojo {
         ParameterizedTypeName lazy = ParameterizedTypeName.get(ClassName.get(Lazy.class), ClassName.get("", "I"));
         addCase(pojoTest, lazy, HashMap.of("type", "a"),
             m -> m.addStatement("$T src = $T.of(A::new)", lazy, lazy.rawType),
-            m -> m.addStatement("$T.assertTrue(restored.get() instanceof A)", ClassName.get(Assertions.class)));
+            m -> m.addStatement("$T.assertThat(restored.get()).isInstanceOf(A.class)", ClassName.get(org.assertj.core.api.Assertions.class)));
 
         ParameterizedTypeName option = ParameterizedTypeName.get(ClassName.get(Option.class), ClassName.get("", "I"));
         addCase(pojoTest, option, HashMap.of("type", "a"),
             m -> m.addStatement("$T src = $T.some(new A())", option, option.rawType),
-            m -> m.addStatement("$T.assertTrue(restored.get() instanceof A)", ClassName.get(Assertions.class)));
+            m -> m.addStatement("$T.assertThat(restored.get()).isInstanceOf(A.class)", ClassName.get(org.assertj.core.api.Assertions.class)));
 
         ParameterizedTypeName either = ParameterizedTypeName.get(ClassName.get(Either.class), ClassName.get("", "I"), ClassName.get("", "I"));
         addCase(pojoTest, "Left", true, either, List.of("left", HashMap.of("type", "a")),
             m -> m.addStatement("$T src = $T.left(new A())", either, either.rawType),
-            m -> m.addStatement("$T.assertTrue(restored.isLeft())", ClassName.get(Assertions.class))
-                .addStatement("$T.assertTrue(restored.getLeft() instanceof A)", ClassName.get(Assertions.class)));
+            m -> m.addStatement("$T.assertThat(restored.isLeft()).isTrue()", ClassName.get(org.assertj.core.api.Assertions.class))
+                .addStatement("$T.assertThat(restored.getLeft()).isInstanceOf(A.class)", ClassName.get(org.assertj.core.api.Assertions.class)));
         addCase(pojoTest, "Right", false, either, List.of("right", HashMap.of("type", "a")),
             m -> m.addStatement("$T src = $T.right(new A())", either, either.rawType),
-            m -> m.addStatement("$T.assertTrue(restored.isRight())", ClassName.get(Assertions.class))
-                .addStatement("$T.assertTrue(restored.get() instanceof A)", ClassName.get(Assertions.class)));
+            m -> m.addStatement("$T.assertThat(restored.isRight()).isTrue()", ClassName.get(org.assertj.core.api.Assertions.class))
+                .addStatement("$T.assertThat(restored.get()).isInstanceOf(A.class)", ClassName.get(org.assertj.core.api.Assertions.class)));
 
         JavaFile javaFile = JavaFile.builder("io.vavr.jackson.generated", pojoTest.build())
             .indent("    ")
@@ -176,7 +176,7 @@ public class PolymorphicPojo {
             m -> m.addStatement("$T src = $T.of($L)", ptn, ClassName.get(Tuple.class), argsStr.toString()),
             m -> {
                 for (int i = 0; i < arity; i++) {
-                    m.addStatement("$T.assertTrue(restored._$L instanceof $L)", ClassName.get(Assertions.class), i + 1, (i % 2) == 0 ? "A" : "B");
+                    m.addStatement("$T.assertThat(restored._$L).isInstanceOf($L)", ClassName.get(org.assertj.core.api.Assertions.class), i + 1, (i % 2) == 0 ? "A" : "B");
                 }
             });
     }
@@ -193,7 +193,7 @@ public class PolymorphicPojo {
         ParameterizedTypeName ptn = ParameterizedTypeName.get(ClassName.get(clz), ClassName.get("", "I"));
         addCase(builder, ptn, List.of(HashMap.of("type", "b")),
             m -> m.addStatement("$T src = $T.of(new B())", ptn, ptn.rawType),
-            m -> m.addStatement("$T.assertEquals(restored.filter(e -> e instanceof B).length(), 1)", ClassName.get(Assertions.class)));
+            m -> m.addStatement("$T.assertThat(restored.filter(e -> e instanceof B).length()).isEqualTo(1)", ClassName.get(org.assertj.core.api.Assertions.class)));
     }
 
     private static void addMapCase(TypeSpec.Builder builder, Class<?> clz) {
@@ -222,13 +222,11 @@ public class PolymorphicPojo {
             builder.addType(simplePojo(pojoName, ptn));
         }
         String json = expectedJson(HashMap.of("value", value));
-        MethodSpec.Builder methodBuilder = MethodSpec.methodBuilder("test" + ptn.rawType.simpleName() + namePostfix)
-            .addAnnotation(Test.class)
-            .addException(ClassName.get(Exception.class));
+        MethodSpec.Builder methodBuilder = MethodSpec.methodBuilder("shouldHandle" + ptn.rawType.simpleName() + namePostfix).addAnnotation(Test.class);
         init.accept(methodBuilder);
         methodBuilder
             .addStatement("$T json = MAPPER.writeValueAsString(new $L().setValue(src))", ClassName.get(String.class), pojoName)
-            .addStatement("$T.assertEquals(json, $S)", ClassName.get(Assertions.class), json)
+            .addStatement("$T.assertThat(json).isEqualTo($S)", ClassName.get(org.assertj.core.api.Assertions.class), json)
             .addStatement("$L pojo = MAPPER.readValue(json, $L.class)", pojoName, pojoName)
             .addStatement("$T restored = pojo.getValue()", ptn);
         check.accept(methodBuilder);

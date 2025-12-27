@@ -62,7 +62,7 @@ public class ExtFieldsPojo {
     static void generate() throws IOException {
 
         TypeSpec.Builder pojoTest = TypeSpec.classBuilder("ExtFieldsPojoTest")
-            .addJavadoc("generated\n")
+            .addJavadoc("generated - don't edit manually\n")
             .addModifiers(Modifier.PUBLIC);
         initMapper(pojoTest, "MAPPER");
 
@@ -238,9 +238,8 @@ public class ExtFieldsPojo {
             builder.addType(simplePojo(pojoName, ptn));
         }
         String json = expectedJson(HashMap.of("value", value));
-        MethodSpec.Builder methodBuilder = MethodSpec.methodBuilder("test" + ptn.rawType.simpleName() + namePostfix)
-            .addAnnotation(Test.class)
-            .addException(ClassName.get(Exception.class));
+        MethodSpec.Builder methodBuilder = MethodSpec.methodBuilder("shouldHandle" + ptn.rawType.simpleName() + namePostfix)
+            .addAnnotation(Test.class);
         init.accept(methodBuilder);
         methodBuilder
             .addStatement("$T json = MAPPER.writeValueAsString(new $L().setValue(src))", ClassName.get(String.class), pojoName)

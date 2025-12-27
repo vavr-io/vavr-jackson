@@ -24,6 +24,25 @@ import io.vavr.jackson.datatype.serialize.VavrSerializers;
 import java.io.Serial;
 import tools.jackson.databind.module.SimpleModule;
 
+/**
+ * Jackson {@link tools.jackson.databind.JacksonModule} providing serialization and deserialization
+ * support for Vavr data types.
+ *
+ * <p>The module registers custom serializers, deserializers and type modifiers
+ * to ensure that Vavr collections and value types integrate seamlessly with
+ * Jackson's data-binding mechanism.</p>
+ *
+ * <p>Behavior can be customized via {@link Settings}, allowing fine-grained control
+ * over how certain Vavr types (such as {@code Option}) are represented in JSON
+ * and how {@code null} values are handled during deserialization.</p>
+ *
+ * <p>Typical usage:</p>
+ * <pre>{@code
+ * ObjectMapper mapper = JsonMapper.builder()
+ *   .addModule(new VavrModule())
+ *   .build();
+ * }</pre>
+ */
 public class VavrModule extends SimpleModule {
 
     @Serial
