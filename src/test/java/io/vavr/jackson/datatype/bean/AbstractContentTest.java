@@ -7,6 +7,7 @@ import io.vavr.collection.Map;
 import io.vavr.control.Option;
 import io.vavr.jackson.datatype.VavrModule;
 import java.io.IOException;
+import java.util.Objects;
 import org.junit.jupiter.api.Test;
 import tools.jackson.databind.ObjectMapper;
 import tools.jackson.databind.annotation.JsonDeserialize;
@@ -43,7 +44,7 @@ public class AbstractContentTest {
 
             L l = (L) o;
 
-            return xs != null ? xs.equals(l.xs) : l.xs == null;
+            return Objects.equals(xs, l.xs);
         }
 
         @Override
@@ -78,7 +79,7 @@ public class AbstractContentTest {
 
             M l = (M) o;
 
-            return xs != null ? xs.equals(l.xs) : l.xs == null;
+            return Objects.equals(xs, l.xs);
         }
 
         @Override
@@ -121,8 +122,8 @@ public class AbstractContentTest {
 
             V v = (V) o;
 
-            if (lazy != null ? !lazy.equals(v.lazy) : v.lazy != null) return false;
-            return option != null ? option.equals(v.option) : v.option == null;
+            if (!Objects.equals(lazy, v.lazy)) return false;
+            return Objects.equals(option, v.option);
         }
 
         @Override
@@ -175,7 +176,7 @@ public class AbstractContentTest {
             X x = (X) o;
 
             if (anInt != x.anInt) return false;
-            return aString != null ? aString.equals(x.aString) : x.aString == null;
+            return Objects.equals(aString, x.aString);
         }
 
         @Override

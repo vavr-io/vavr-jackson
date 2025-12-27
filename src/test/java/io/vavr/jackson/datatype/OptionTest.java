@@ -12,7 +12,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOf
 
 class OptionTest extends BaseTest {
 
-    private static VavrModule.Settings optSettings = new VavrModule.Settings().useOptionInPlainFormat(false);
+    private static final VavrModule.Settings optSettings = new VavrModule.Settings().useOptionInPlainFormat(false);
 
     @Test
     void shouldSerializeAndDeserializeDefinedOptionWithValue() {
