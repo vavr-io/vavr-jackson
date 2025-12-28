@@ -31,7 +31,7 @@ import tools.jackson.databind.type.TypeFactory;
 
 class CharSeqDeserializer extends StdDeserializer<CharSeq> {
 
-    private ValueDeserializer<?> deserializer;
+    private volatile ValueDeserializer<?> deserializer;
 
     CharSeqDeserializer(JavaType valueType) {
         super(valueType);

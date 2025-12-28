@@ -36,7 +36,7 @@ import static tools.jackson.core.JsonToken.VALUE_NULL;
 class EitherDeserializer extends VavrValueDeserializer<Either<?, ?>> {
 
     private final JavaType javaType;
-    private ValueDeserializer<?> stringDeserializer;
+    private volatile ValueDeserializer<?> stringDeserializer;
 
     EitherDeserializer(JavaType valueType) {
         super(valueType, 2);

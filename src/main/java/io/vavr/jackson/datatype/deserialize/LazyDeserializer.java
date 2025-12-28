@@ -49,12 +49,9 @@ class LazyDeserializer extends VavrValueDeserializer<Lazy<?>> {
 
     @Override
     public Lazy<?> deserialize(JsonParser p, DeserializationContext ctxt) {
-        Object value;
-        if (valueTypeDeserializer == null) {
-            value = valueDeserializer.deserialize(p, ctxt);
-        } else {
-            value = valueDeserializer.deserializeWithType(p, ctxt, valueTypeDeserializer);
-        }
+        Object value = valueTypeDeserializer == null
+            ? valueDeserializer.deserialize(p, ctxt)
+            : valueDeserializer.deserializeWithType(p, ctxt, valueTypeDeserializer);
         return Lazy.of(() -> value);
     }
 
@@ -65,18 +62,11 @@ class LazyDeserializer extends VavrValueDeserializer<Lazy<?>> {
 
     @Override
     public ValueDeserializer<?> createContextual(DeserializationContext ctxt, BeanProperty property) throws DatabindException {
-        ValueDeserializer<?> deser = valueDeserializer;
-        TypeDeserializer typeDeser = valueTypeDeserializer;
-        JavaType refType = valueType;
+        TypeDeserializer typeDeser = valueTypeDeserializer != null ? valueTypeDeserializer.forProperty(property) : null;
+        ValueDeserializer<?> deser = valueDeserializer == null
+            ? ctxt.findContextualValueDeserializer(valueType, property)
+            : ctxt.handleSecondaryContextualization(valueDeserializer, property, valueType);
 
-        if (deser == null) {
-            deser = ctxt.findContextualValueDeserializer(refType, property);
-        } else { // otherwise directly assigned, probably not contextual yet:
-            deser = ctxt.handleSecondaryContextualization(deser, property, refType);
-        }
-        if (typeDeser != null) {
-            typeDeser = typeDeser.forProperty(property);
-        }
         return new LazyDeserializer(this, typeDeser, deser);
     }
 }
