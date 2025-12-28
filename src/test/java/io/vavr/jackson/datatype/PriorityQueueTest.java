@@ -47,7 +47,7 @@ class PriorityQueueTest extends BaseTest {
         PriorityQueue<Integer> src = PriorityQueue.of(1, 5, 8);
         String json = writer.writeValueAsString(src);
         assertThat(json).isEqualTo(genJsonList(1, 5, 8));
-        PriorityQueue<Integer> dst = mapper().readValue(json, new TypeReference<PriorityQueue<Integer>>() {
+        PriorityQueue<Integer> dst = mapper().readValue(json, new TypeReference<>() {
         });
         assertThat(dst).isEqualTo(src);
     }
@@ -56,7 +56,7 @@ class PriorityQueueTest extends BaseTest {
     void serializable() throws IOException {
         ObjectMapper mapper = mapper();
         PriorityQueue<Integer> src = PriorityQueue.of(1);
-        PriorityQueue<Integer> restored = mapper.readValue(mapper.writeValueAsString(src), new TypeReference<PriorityQueue<Integer>>() {
+        PriorityQueue<Integer> restored = mapper.readValue(mapper.writeValueAsString(src), new TypeReference<>() {
         });
         checkSerialization(restored);
     }

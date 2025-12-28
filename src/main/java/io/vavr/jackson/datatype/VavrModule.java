@@ -79,6 +79,7 @@ public class VavrModule extends SimpleModule {
     }
 
     public VavrModule(Settings settings) {
+        super("VavrModule");
         this.settings = settings;
     }
 
