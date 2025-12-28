@@ -13,7 +13,7 @@ This module enables Jackson to seamlessly serialize and deserialize Vavr's funct
 
 
 > - **Jackson 2.x** with **Vavr 0.x** → use **vavr-jackson 0.x**
-> - **Jackson 3.x** with **Vavr 0.x** → use **vavr-jackson 1.x (SNAPSHOT)**
+> - **Jackson 3.x** with **Vavr 0.x** → use **vavr-jackson 1.x**
 
 
 ### Maven
@@ -22,14 +22,14 @@ This module enables Jackson to seamlessly serialize and deserialize Vavr's funct
 <dependency>
   <groupId>io.vavr</groupId>
   <artifactId>vavr-jackson</artifactId>
-  <version>0.11.0</version>
+  <version>1.0.0</version>
 </dependency>
 ```
 
 ### Gradle
 
 ```groovy
-compile("io.vavr:vavr-jackson:0.11.0")
+compile("io.vavr:vavr-jackson:1.0.0")
 ```
 
 ### Registering the Module
@@ -123,60 +123,4 @@ ObjectMapper mapper = JsonMapper.builder()
 
 List<Integer> result = mapper.readValue("null", new TypeReference<>() {});
 // Result: List() (empty list instead of null)
-```
-
-## Using Developer Versions
-
-Developer versions can be found [here](https://oss.sonatype.org/content/repositories/snapshots/io/vavr/vavr-jackson).
-
-### Maven
-
-```xml
-<dependency>
-  <groupId>io.vavr</groupId>
-  <artifactId>vavr-jackson</artifactId>
-  <version>0.11.1-SNAPSHOT</version>
-</dependency>
-```
-
-Ensure that your `~/.m2/settings.xml` contains the following:
-
-```xml
-<profiles>
-    <profile>
-        <id>allow-snapshots</id>
-        <activation>
-            <activeByDefault>true</activeByDefault>
-        </activation>
-        <repositories>
-            <repository>
-                <id>snapshots-repo</id>
-                <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-                <releases>
-                    <enabled>false</enabled>
-                </releases>
-                <snapshots>
-                    <enabled>true</enabled>
-                </snapshots>
-            </repository>
-        </repositories>
-    </profile>
-</profiles>
-```
-
-### Gradle
-
-```groovy
-compile("io.vavr:vavr-jackson:0.11.1-SNAPSHOT")
-```
-
-Ensure that your `build.gradle` contains the following:
-
-```groovy
-repositories {
-    mavenCentral()
-    maven {
-        url "https://oss.sonatype.org/content/repositories/snapshots"
-    }
-}
 ```
