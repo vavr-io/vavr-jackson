@@ -1,7 +1,7 @@
 # vavr-jackson
 
 [![Build](https://github.com/vavr-io/vavr-jackson/actions/workflows/ci.yml/badge.svg)](https://github.com/vavr-io/vavr-jackson/actions/workflows/ci.yml)
-![Maven Central Version](https://img.shields.io/maven-central/v/io.vavr/vavr-jackson?versionPrefix=0)
+[![Maven Central Version](https://img.shields.io/maven-central/v/io.vavr/vavr-jackson)](https://central.sonatype.com/artifact/io.vavr/vavr-jackson/versions)
 
 Jackson datatype module for [Vavr](https://vavr.io/) library.
 
