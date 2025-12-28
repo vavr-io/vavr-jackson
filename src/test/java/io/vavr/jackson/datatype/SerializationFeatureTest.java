@@ -31,7 +31,7 @@ class SerializationFeatureTest {
         assertThat(serializedDateTimeJavaList).isEqualTo(serializedDateTime);
         assertThat(serializedDateTimeList).isEqualTo(serializedDateTimeJavaList);
 
-        List<DateTime> restored = mapper.readValue(serializedDateTimeList, new TypeReference<List<DateTime>>() {
+        List<DateTime> restored = mapper.readValue(serializedDateTimeList, new TypeReference<>() {
         });
         assertThat(dateTime.getMillis()).isEqualTo(restored.head().getMillis());
     }

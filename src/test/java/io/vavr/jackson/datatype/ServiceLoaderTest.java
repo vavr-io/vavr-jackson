@@ -2,7 +2,9 @@ package io.vavr.jackson.datatype;
 
 import io.vavr.Lazy;
 import org.junit.jupiter.api.Test;
+import tools.jackson.databind.JacksonModule;
 import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.cfg.MapperBuilder;
 import tools.jackson.databind.json.JsonMapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -18,6 +20,10 @@ class ServiceLoaderTest {
      */
     @Test
     void shouldAutoDiscover() {
+        assertThat(MapperBuilder.findModules())
+            .map(JacksonModule::getModuleName)
+            .contains("VavrModule");
+
         ObjectMapper mapper = JsonMapper.builder().findAndAddModules().build();
 
         Lazy<?> src = Lazy.of(() -> 1);
