@@ -66,7 +66,7 @@ public abstract class MultimapTest extends BaseTest {
     }
 
     @Test
-    public void deserializeValueNull() {
+    void deserializeValueNull() {
         assertThatExceptionOfType(DatabindException.class).isThrownBy(() -> mapper().readValue("{\"k\":null}", clz()));
     }
 

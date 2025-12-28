@@ -2,6 +2,8 @@ package generator;
 
 import io.vavr.Lazy;
 import io.vavr.Tuple;
+import io.vavr.Tuple1;
+import io.vavr.Tuple2;
 import io.vavr.collection.Array;
 import io.vavr.collection.HashMap;
 import io.vavr.collection.HashMultimap;
@@ -20,9 +22,17 @@ import io.vavr.collection.Vector;
 import io.vavr.control.Either;
 import io.vavr.control.Option;
 import java.io.IOException;
+import java.util.Map;
 
 /**
- * @author Ruslan Sennov</a>
+ * Test code generator for Vavr Jackson serialization and deserialization tests.
+ * <p>
+ * This class generates comprehensive JUnit test classes that validate Jackson's ability to
+ * serialize and deserialize various Vavr data types. The generated tests are written to
+ * {@code src/test/java/io/vavr/jackson/generated/} and ensure that the vavr-jackson module
+ * correctly handles all supported Vavr types.
+ * </p>
+ * @author Ruslan Sennov, Grzegorz Piwowarek
  */
 public class Generator {
 
@@ -91,9 +101,22 @@ public class Generator {
         cases.put("RightEitherOfString", Either.right("A"));
         cases.put("RightEitherOfTuple", Either.right(Tuple.of("A", "B")));
 
+        Map<Class<?>, Tuple2<String, String>> cases1 = new java.util.LinkedHashMap<>();
+        cases1.put(List.class, Tuple.of("List.of(new ImplementedClass())", "head()"));
+        cases1.put(HashSet.class, Tuple.of("HashSet.of(new ImplementedClass())", "head()"));
+        cases1.put(Option.class, Tuple.of("Option.of(new ImplementedClass())", "get()"));
+        cases1.put(Lazy.class, Tuple.of("Lazy.of(ImplementedClass::new)", "get()"));
+        cases1.put(Tuple1.class, Tuple.of("new Tuple1<>(new ImplementedClass())", "_1"));
+        Map<Class<?>, Tuple2<String, String>> cases2 = new java.util.LinkedHashMap<>();
+        cases2.put(Either.class, Tuple.of("Either.right(new ImplementedClass())", "get()"));
+        cases2.put(HashMap.class, Tuple.of("HashMap.of(42, new ImplementedClass())", "head()._2"));
+        cases2.put(HashMultimap.class, Tuple.of("HashMultimap.withSeq().of(42, new ImplementedClass())", "head()._2"));
+        cases2.put(Tuple2.class, Tuple.of("new Tuple2<>(42, new ImplementedClass())", "_2"));
+
         SimplePojo.generate(cases);
         ParameterizedPojo.generate(cases);
         PolymorphicPojo.generate();
         ExtFieldsPojo.generate();
+        BindingClass.generate(cases1, cases2);
     }
 }

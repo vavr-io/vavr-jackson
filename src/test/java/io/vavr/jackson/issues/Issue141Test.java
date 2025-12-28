@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.vavr.control.Option;
 import io.vavr.jackson.datatype.BaseTest;
-import java.io.IOException;
 import java.time.YearMonth;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
@@ -22,7 +21,7 @@ class Issue141Test extends BaseTest {
     }
 
     @Test
-    void itShouldSerializeJavaOptionalYearMonthAsString() throws IOException {
+    void itShouldSerializeJavaOptionalYearMonthAsString() {
         // Given an instance with java.util.Optional
         MyJavaOptionalClass obj = new MyJavaOptionalClass();
         obj.operatingMonth = Optional.of(YearMonth.of(2019, 12));
@@ -46,7 +45,7 @@ class Issue141Test extends BaseTest {
     }
 
     @Test
-    void itShouldSerializeVavrOptionYearMonthAsStringWithoutJsonFormat() throws IOException {
+    void itShouldSerializeVavrOptionYearMonthAsStringWithoutJsonFormat() {
         // Given an instance with io.vavr.control.Option
         MyVavrOptionalClassWithoutFormat obj = new MyVavrOptionalClassWithoutFormat();
         obj.operatingMonth = Option.of(YearMonth.of(2019, 12));
@@ -71,7 +70,7 @@ class Issue141Test extends BaseTest {
     }
 
     @Test
-    void itShouldSerializeVavrOptionYearMonthAsString() throws IOException {
+    void itShouldSerializeVavrOptionYearMonthAsString() {
         // Given an instance with io.vavr.control.Option
         MyVavrOptionClassWithFormat obj = new MyVavrOptionClassWithFormat();
         obj.operatingMonth = Option.of(YearMonth.of(2019, 12));

@@ -5,7 +5,6 @@ import io.vavr.collection.TreeMap;
 import io.vavr.collection.TreeMultimap;
 import io.vavr.jackson.datatype.BaseTest;
 import io.vavr.jackson.datatype.VavrModule;
-import java.io.IOException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import tools.jackson.core.type.TypeReference;
@@ -58,7 +57,7 @@ class Issue142Test extends BaseTest {
     }
 
     @Test
-    void map() throws IOException {
+    void map() {
 
         TreeMap<MyComparable, Integer> mp = TreeMap.<MyComparable, Integer>empty()
             .put(new MyComparable(1), 1)
@@ -72,7 +71,7 @@ class Issue142Test extends BaseTest {
     }
 
     @Test
-    void multimap() throws IOException {
+    void multimap() {
 
         TreeMultimap<MyComparable, Integer> mp = TreeMultimap.<Integer>withSeq().<MyComparable, Integer>empty()
             .put(new MyComparable(1), 1)

@@ -3,7 +3,6 @@ package io.vavr.jackson.datatype;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import io.vavr.Tuple2;
 import io.vavr.collection.List;
-import io.vavr.collection.Seq;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -43,31 +42,27 @@ public class BaseTest {
     }
 
     protected ObjectMapper mapper() {
-        ObjectMapper mapper = JsonMapper.builder().addModule(new VavrModule()).build();
-        return mapper;
+        return JsonMapper.builder().addModule(new VavrModule()).build();
     }
 
     protected ObjectMapper mapper(VavrModule.Settings settings) {
-        ObjectMapper mapper = JsonMapper.builder().addModule(new VavrModule(settings)).build();
-        return mapper;
+        return JsonMapper.builder().addModule(new VavrModule(settings)).build();
     }
 
     public XmlMapper xmlMapper() {
-        XmlMapper xmlMapper = XmlMapper.builder().addModule(new VavrModule()).build();
-        return xmlMapper;
+        return XmlMapper.builder().addModule(new VavrModule()).build();
     }
 
     public XmlMapper xmlMapperJaxb() {
-        XmlMapper xmlMapper = XmlMapper.builder().addModules(new JaxbAnnotationModule(), new VavrModule()).build();
-        return xmlMapper;
+        return XmlMapper.builder().addModules(new JaxbAnnotationModule(), new VavrModule()).build();
     }
 
     protected String wrapToArray(String as, String json) {
-        return "[\"" + as + "\"," + json + "]";
+        return "[\"%s\",%s]".formatted(as, json);
     }
 
     protected String wrapToObject(String as, String json) {
-        return "{\"" + as + "\":" + json + "}";
+        return "{\"%s\":%s}".formatted(as, json);
     }
 
     protected String genJsonList(Object... list) {
@@ -93,10 +88,10 @@ public class BaseTest {
             }
             sb.append("\"").append(entry.getKey().toString()).append("\":");
             Object value = entry.getValue();
-            if (value instanceof Collection) {
+            if (value instanceof Collection<?> collection ) {
                 sb.append("[");
                 int j = 0;
-                for (Object v : ((Collection) value)) {
+                for (Object v : (collection)) {
                     if (j > 0) {
                         sb.append(",");
                     }
@@ -120,10 +115,10 @@ public class BaseTest {
     }
 
     private void appendObj(StringBuilder sb, Object o) {
-        if (o instanceof java.lang.String) {
-            sb.append("\"").append(o).append("\"");
-        } else if (o instanceof io.vavr.collection.Seq) {
-            sb.append(genJsonList(((Seq) o).toJavaList().toArray()));
+        if (o instanceof java.lang.String str) {
+            sb.append("\"").append(str).append("\"");
+        } else if (o instanceof io.vavr.collection.Seq<?> seq) {
+            sb.append(genJsonList(seq.toJavaList().toArray()));
         } else {
             sb.append(o);
         }

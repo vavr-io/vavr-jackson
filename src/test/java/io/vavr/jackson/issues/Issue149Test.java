@@ -12,90 +12,40 @@ import tools.jackson.databind.ObjectMapper;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-/**
- * Vavr-Jackson should respect the @JsonUnwrapped annotation.
- *
- * Given:
- * <pre>{@code
- * class Foo {
- *     @JsonUnwrapped
- *     Option<Bar> getBar()
- * }
- *
- * class Bar {
- *     @JsonProperty("bar")
- *     String getValue()
- * }
- * }</pre>
- *
- * Returns
- * <pre>{@code
- * {
- *    bar: {
- *        bar: ...
- *    }
- * }
- * }</pre>
- *
- * Instead of expected:
- * <pre>{@code
- * {
- *    bar: ...
- * }
- * }</pre>
- */
 public class Issue149Test extends BaseTest {
 
     @Test
-    public void itShouldRespectTheJsonUnwrappedAnnotation() {
-        // Given a mapper and a Foo object
+    void shouldHandleJsonUnwrapped() {
         ObjectMapper mapper = mapper();
         Foo foo = new Foo();
 
-        // When serializing the Foo object
         String json = mapper.writeValueAsString(foo);
 
-        // Then the JSON should not contain the "bar" wrapper
         assertThat(json).isEqualTo("{\"bar\":\"bar-value\"}");
     }
 
-    /**
-     * Collections cannot be unwrapped.
-     * See {@code JsonUnwrapped} documentation.
-     *
-     * @throws JsonProcessingException
-     */
     @Test
-    public void itFailsWithAnOptionList() {
-        // Given a mapper and a FooList object
+    void shouldFailWhenUnwrappingCollections() {
         ObjectMapper mapper = mapper();
         FooList fooList = new FooList();
 
-        // When serializing the FooList object
-        assertThatThrownBy(() -> mapper.writeValueAsString(fooList))
-            .hasMessageStartingWith("Cannot unwrap a non-bean object");
+        assertThatThrownBy(() -> mapper.writeValueAsString(fooList)).hasMessageStartingWith("Cannot unwrap a non-bean object");
     }
 
     @Test
-    public void itFailsOnAnOptionTry() {
-        // Given a mapper and a FooTry object
+    void shouldFailWhenContainingTry() {
         ObjectMapper mapper = mapper();
         FooTry fooTry = new FooTry();
 
-        // When serializing the FooTry object
-        assertThatThrownBy(() -> mapper.writeValueAsString(fooTry))
-            .hasRootCauseMessage("getCause on Success");
+        assertThatThrownBy(() -> mapper.writeValueAsString(fooTry)).hasRootCauseMessage("getCause on Success");
     }
 
     @Test
-    public void itFailsOnOptionEither() {
-        // Given a mapper and a FooEither object
+    void itFailsOnOptionEither() {
         ObjectMapper mapper = mapper();
         FooEither fooEither = new FooEither();
 
-        // When serializing the FooEither object
-        assertThatThrownBy(() -> mapper.writeValueAsString(fooEither))
-            .hasMessageStartingWith("Cannot unwrap a non-bean object");
+        assertThatThrownBy(() -> mapper.writeValueAsString(fooEither)).hasMessageStartingWith("Cannot unwrap a non-bean object");
     }
 
     static class Foo {

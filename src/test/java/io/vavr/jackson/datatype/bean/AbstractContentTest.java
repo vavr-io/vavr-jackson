@@ -6,7 +6,6 @@ import io.vavr.collection.List;
 import io.vavr.collection.Map;
 import io.vavr.control.Option;
 import io.vavr.jackson.datatype.VavrModule;
-import java.io.IOException;
 import java.util.Objects;
 import org.junit.jupiter.api.Test;
 import tools.jackson.databind.ObjectMapper;
@@ -188,19 +187,19 @@ public class AbstractContentTest {
     }
 
     @Test
-    void list() throws IOException {
+    void list() {
         L l = new L(List.of(new X("a", 1), new X("bbb", 42)));
         json_roundtrip_test(l, L.class);
     }
 
     @Test
-    void map() throws IOException {
+    void map() {
         M m = new M(HashMap.of(1, new X("a", 1), 42, new X("bbb", 42)));
         json_roundtrip_test(m, M.class);
     }
 
     @Test
-    void value() throws IOException {
+    void value() {
         V v = new V()
             .setLazy(Lazy.of(() -> new X("b", 2)))
             .setOption(Option.of(new X("c", 3)));
