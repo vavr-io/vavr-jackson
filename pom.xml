@@ -53,7 +53,7 @@
         <maven.central.publishing.version>0.10.0</maven.central.publishing.version>
 
         <vavr.version>0.11.0</vavr.version>
-        <jackson.version>3.0.3</jackson.version>
+        <jackson.version>3.0.4</jackson.version>
 
         <junit.jupiter.version>6.0.2</junit.jupiter.version>
         <assertj.version>3.27.7</assertj.version>
