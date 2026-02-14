@@ -19,6 +19,7 @@
  */
 package io.vavr.jackson.datatype.deserialize;
 
+import io.vavr.Tuple;
 import io.vavr.Tuple0;
 import io.vavr.Tuple1;
 import io.vavr.Tuple2;
@@ -38,7 +39,7 @@ import tools.jackson.databind.ValueDeserializer;
 import static tools.jackson.core.JsonToken.END_ARRAY;
 import static tools.jackson.core.JsonToken.VALUE_NULL;
 
-abstract class TupleDeserializer<T> extends VavrValueDeserializer<T> {
+class TupleDeserializer extends VavrValueDeserializer<Tuple> {
 
     private final JavaType javaType;
 
@@ -48,7 +49,7 @@ abstract class TupleDeserializer<T> extends VavrValueDeserializer<T> {
     }
 
     @Override
-    public T deserialize(JsonParser p, DeserializationContext ctxt) {
+    public Tuple deserialize(JsonParser p, DeserializationContext ctxt) {
         List<Object> list = new ArrayList<>();
         int ptr = 0;
 
@@ -57,17 +58,15 @@ abstract class TupleDeserializer<T> extends VavrValueDeserializer<T> {
                 throw mappingException(ctxt, javaType.getRawClass(), jsonToken);
             }
             ValueDeserializer<?> deserializer = deserializer(ptr++);
-            Object value = (jsonToken != VALUE_NULL) ? (deserializer).deserialize(p, ctxt) : deserializer.getNullValue(ctxt);
+            Object value = (jsonToken != VALUE_NULL) ? deserializer.deserialize(p, ctxt) : deserializer.getNullValue(ctxt);
             list.add(value);
         }
         if (list.size() == deserializersCount()) {
-            return create(list, ctxt);
+            return create(list);
         } else {
             throw mappingException(ctxt, javaType.getRawClass(), null);
         }
     }
-
-    abstract T create(List<Object> list, DeserializationContext ctxt);
 
     private static int arity(JavaType valueType) {
         Class<?> clz = valueType.getRawClass();
@@ -90,5 +89,20 @@ abstract class TupleDeserializer<T> extends VavrValueDeserializer<T> {
         } else {
             return 8;
         }
+    }
+
+    private Tuple create(List<Object> list) {
+        return switch (list.size()) {
+            case 0 -> Tuple.empty();
+            case 1 -> Tuple.of(list.get(0));
+            case 2 -> Tuple.of(list.get(0), list.get(1));
+            case 3 -> Tuple.of(list.get(0), list.get(1), list.get(2));
+            case 4 -> Tuple.of(list.get(0), list.get(1), list.get(2), list.get(3));
+            case 5 -> Tuple.of(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4));
+            case 6 -> Tuple.of(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4), list.get(5));
+            case 7 -> Tuple.of(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4), list.get(5), list.get(6));
+            case 8 -> Tuple.of(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4), list.get(5), list.get(6), list.get(7));
+            default -> throw new IllegalArgumentException("Unsupported tuple arity: " + list.size());
+        };
     }
 }
