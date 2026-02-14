@@ -38,15 +38,7 @@ import io.vavr.Function6;
 import io.vavr.Function7;
 import io.vavr.Function8;
 import io.vavr.Lazy;
-import io.vavr.Tuple0;
-import io.vavr.Tuple1;
-import io.vavr.Tuple2;
-import io.vavr.Tuple3;
-import io.vavr.Tuple4;
-import io.vavr.Tuple5;
-import io.vavr.Tuple6;
-import io.vavr.Tuple7;
-import io.vavr.Tuple8;
+import io.vavr.Tuple;
 import io.vavr.collection.CharSeq;
 import io.vavr.collection.Map;
 import io.vavr.collection.Multimap;
@@ -85,32 +77,8 @@ public class VavrDeserializers extends Deserializers.Base {
             return new EitherDeserializer(type);
         }
 
-        if (Tuple0.class.isAssignableFrom(raw)) {
-            return new Tuple0Deserializer(type);
-        }
-        if (Tuple1.class.isAssignableFrom(raw)) {
-            return new Tuple1Deserializer(type);
-        }
-        if (Tuple2.class.isAssignableFrom(raw)) {
-            return new Tuple2Deserializer(type);
-        }
-        if (Tuple3.class.isAssignableFrom(raw)) {
-            return new Tuple3Deserializer(type);
-        }
-        if (Tuple4.class.isAssignableFrom(raw)) {
-            return new Tuple4Deserializer(type);
-        }
-        if (Tuple5.class.isAssignableFrom(raw)) {
-            return new Tuple5Deserializer(type);
-        }
-        if (Tuple6.class.isAssignableFrom(raw)) {
-            return new Tuple6Deserializer(type);
-        }
-        if (Tuple7.class.isAssignableFrom(raw)) {
-            return new Tuple7Deserializer(type);
-        }
-        if (Tuple8.class.isAssignableFrom(raw)) {
-            return new Tuple8Deserializer(type);
+        if (Tuple.class.isAssignableFrom(raw)) {
+            return new TupleDeserializer(type);
         }
 
         if (Function0.class.isAssignableFrom(raw)) {
