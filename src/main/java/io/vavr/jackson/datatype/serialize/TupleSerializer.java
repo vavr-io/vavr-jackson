@@ -19,26 +19,25 @@
  */
 package io.vavr.jackson.datatype.serialize;
 
+import io.vavr.Tuple;
 import java.util.List;
 import tools.jackson.core.JsonGenerator;
 import tools.jackson.databind.JavaType;
 import tools.jackson.databind.SerializationContext;
 
-abstract class TupleSerializer<T> extends HListSerializer<T> {
+class TupleSerializer extends HListSerializer<Tuple> {
 
     TupleSerializer(JavaType type) {
         super(type);
     }
 
     @Override
-    public void serialize(T value, JsonGenerator gen, SerializationContext context) {
+    public void serialize(Tuple value, JsonGenerator gen, SerializationContext context) {
         gen.writeStartArray();
-        List<?> list = toList(value);
+        List<?> list = value.toSeq().toJavaList();
         for (int i = 0; i < list.size(); i++) {
             write(list.get(i), i, gen, context);
         }
         gen.writeEndArray();
     }
-
-    abstract List<?> toList(T value);
 }

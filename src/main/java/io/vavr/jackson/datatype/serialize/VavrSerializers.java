@@ -39,15 +39,7 @@ import io.vavr.Function6;
 import io.vavr.Function7;
 import io.vavr.Function8;
 import io.vavr.Lazy;
-import io.vavr.Tuple0;
-import io.vavr.Tuple1;
-import io.vavr.Tuple2;
-import io.vavr.Tuple3;
-import io.vavr.Tuple4;
-import io.vavr.Tuple5;
-import io.vavr.Tuple6;
-import io.vavr.Tuple7;
-import io.vavr.Tuple8;
+import io.vavr.Tuple;
 import io.vavr.collection.CharSeq;
 import io.vavr.collection.Map;
 import io.vavr.collection.Multimap;
@@ -84,32 +76,8 @@ public class VavrSerializers extends Serializers.Base {
             return new EitherSerializer(type);
         }
 
-        if (Tuple0.class.isAssignableFrom(raw)) {
-            return new Tuple0Serializer(type);
-        }
-        if (Tuple1.class.isAssignableFrom(raw)) {
-            return new Tuple1Serializer(type);
-        }
-        if (Tuple2.class.isAssignableFrom(raw)) {
-            return new Tuple2Serializer(type);
-        }
-        if (Tuple3.class.isAssignableFrom(raw)) {
-            return new Tuple3Serializer(type);
-        }
-        if (Tuple4.class.isAssignableFrom(raw)) {
-            return new Tuple4Serializer(type);
-        }
-        if (Tuple5.class.isAssignableFrom(raw)) {
-            return new Tuple5Serializer(type);
-        }
-        if (Tuple6.class.isAssignableFrom(raw)) {
-            return new Tuple6Serializer(type);
-        }
-        if (Tuple7.class.isAssignableFrom(raw)) {
-            return new Tuple7Serializer(type);
-        }
-        if (Tuple8.class.isAssignableFrom(raw)) {
-            return new Tuple8Serializer(type);
+        if (Tuple.class.isAssignableFrom(raw)) {
+            return new TupleSerializer(type);
         }
 
         if (Function0.class.isAssignableFrom(raw)) {
