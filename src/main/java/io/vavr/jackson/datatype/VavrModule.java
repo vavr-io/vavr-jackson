@@ -19,9 +19,28 @@
  */
 package io.vavr.jackson.datatype;
 
+import io.vavr.CheckedFunction0;
+import io.vavr.CheckedFunction1;
+import io.vavr.CheckedFunction2;
+import io.vavr.CheckedFunction3;
+import io.vavr.CheckedFunction4;
+import io.vavr.CheckedFunction5;
+import io.vavr.CheckedFunction6;
+import io.vavr.CheckedFunction7;
+import io.vavr.CheckedFunction8;
+import io.vavr.Function0;
+import io.vavr.Function1;
+import io.vavr.Function2;
+import io.vavr.Function3;
+import io.vavr.Function4;
+import io.vavr.Function5;
+import io.vavr.Function6;
+import io.vavr.Function7;
+import io.vavr.Function8;
 import io.vavr.jackson.datatype.deserialize.VavrDeserializers;
 import io.vavr.jackson.datatype.serialize.VavrSerializers;
 import java.io.Serial;
+import java.util.List;
 import tools.jackson.databind.module.SimpleModule;
 
 /**
@@ -47,6 +66,14 @@ public class VavrModule extends SimpleModule {
 
     @Serial
     private static final long serialVersionUID = 1L;
+
+    public static final List<Class<?>> FUNCTION_TYPES = List.of(
+        Function0.class, Function1.class, Function2.class, Function3.class,
+        Function4.class, Function5.class, Function6.class, Function7.class, Function8.class,
+        CheckedFunction0.class, CheckedFunction1.class, CheckedFunction2.class, CheckedFunction3.class,
+        CheckedFunction4.class, CheckedFunction5.class, CheckedFunction6.class, CheckedFunction7.class,
+        CheckedFunction8.class
+    );
 
     public static class Settings {
 

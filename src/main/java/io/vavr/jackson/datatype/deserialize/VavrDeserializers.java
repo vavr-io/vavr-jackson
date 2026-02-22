@@ -19,24 +19,6 @@
  */
 package io.vavr.jackson.datatype.deserialize;
 
-import io.vavr.CheckedFunction0;
-import io.vavr.CheckedFunction1;
-import io.vavr.CheckedFunction2;
-import io.vavr.CheckedFunction3;
-import io.vavr.CheckedFunction4;
-import io.vavr.CheckedFunction5;
-import io.vavr.CheckedFunction6;
-import io.vavr.CheckedFunction7;
-import io.vavr.CheckedFunction8;
-import io.vavr.Function0;
-import io.vavr.Function1;
-import io.vavr.Function2;
-import io.vavr.Function3;
-import io.vavr.Function4;
-import io.vavr.Function5;
-import io.vavr.Function6;
-import io.vavr.Function7;
-import io.vavr.Function8;
 import io.vavr.Lazy;
 import io.vavr.Tuple;
 import io.vavr.collection.CharSeq;
@@ -81,59 +63,7 @@ public class VavrDeserializers extends Deserializers.Base {
             return new TupleDeserializer(type);
         }
 
-        if (Function0.class.isAssignableFrom(raw)) {
-            return new SerializableDeserializer<>(type);
-        }
-        if (Function1.class.isAssignableFrom(raw)) {
-            return new SerializableDeserializer<>(type);
-        }
-        if (Function2.class.isAssignableFrom(raw)) {
-            return new SerializableDeserializer<>(type);
-        }
-        if (Function3.class.isAssignableFrom(raw)) {
-            return new SerializableDeserializer<>(type);
-        }
-        if (Function4.class.isAssignableFrom(raw)) {
-            return new SerializableDeserializer<>(type);
-        }
-        if (Function5.class.isAssignableFrom(raw)) {
-            return new SerializableDeserializer<>(type);
-        }
-        if (Function6.class.isAssignableFrom(raw)) {
-            return new SerializableDeserializer<>(type);
-        }
-        if (Function7.class.isAssignableFrom(raw)) {
-            return new SerializableDeserializer<>(type);
-        }
-        if (Function8.class.isAssignableFrom(raw)) {
-            return new SerializableDeserializer<>(type);
-        }
-
-        if (CheckedFunction0.class.isAssignableFrom(raw)) {
-            return new SerializableDeserializer<>(type);
-        }
-        if (CheckedFunction1.class.isAssignableFrom(raw)) {
-            return new SerializableDeserializer<>(type);
-        }
-        if (CheckedFunction2.class.isAssignableFrom(raw)) {
-            return new SerializableDeserializer<>(type);
-        }
-        if (CheckedFunction3.class.isAssignableFrom(raw)) {
-            return new SerializableDeserializer<>(type);
-        }
-        if (CheckedFunction4.class.isAssignableFrom(raw)) {
-            return new SerializableDeserializer<>(type);
-        }
-        if (CheckedFunction5.class.isAssignableFrom(raw)) {
-            return new SerializableDeserializer<>(type);
-        }
-        if (CheckedFunction6.class.isAssignableFrom(raw)) {
-            return new SerializableDeserializer<>(type);
-        }
-        if (CheckedFunction7.class.isAssignableFrom(raw)) {
-            return new SerializableDeserializer<>(type);
-        }
-        if (CheckedFunction8.class.isAssignableFrom(raw)) {
+        if (VavrModule.FUNCTION_TYPES.stream().anyMatch(t -> t.isAssignableFrom(raw))) {
             return new SerializableDeserializer<>(type);
         }
 
