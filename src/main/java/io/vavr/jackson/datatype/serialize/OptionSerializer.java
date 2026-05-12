@@ -111,6 +111,10 @@ class OptionSerializer extends HListSerializer<Option<?>> {
         if (referredType.isJavaLangObject()) {
             return false;
         }
+        // cannot use static typing, if polymorphic serialization is required
+        if (valueTypeSerializer != null) {
+            return false;
+        }
         // but if type is final, might as well fetch
         if (referredType.isFinal()) { // or should we allow annotation override? (only if requested...)
             return true;
