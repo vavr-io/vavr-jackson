@@ -70,7 +70,7 @@ class UnwrappingOptionSerializer extends StdSerializer<Option<?>> {
     @Override
     public void serialize(Option<?> value, JsonGenerator gen, SerializationContext context) {
             if (value.isDefined()) {
-                JavaType containedType = optionSerializer.getValueType().containedType(0);
+                JavaType containedType = optionSerializer.getValueType();
                 ValueSerializer<?> ser = containedType != null && containedType.hasGenericTypes()
                     ? context.findTypedValueSerializer(context.constructSpecializedType(containedType, value.get().getClass()), true)
                     : context.findTypedValueSerializer(value.get().getClass(), true);
@@ -97,6 +97,10 @@ class UnwrappingOptionSerializer extends StdSerializer<Option<?>> {
 
     @Override
     public ValueSerializer<?> createContextual(SerializationContext context, BeanProperty property) throws DatabindException {
-        return optionSerializer.createContextual(context, property);
+        ValueSerializer<?> contextualized = optionSerializer.createContextual(context, property);
+        if (contextualized instanceof OptionSerializer contextualizedOption) {
+            return new UnwrappingOptionSerializer(contextualizedOption, unwrapper);
+        }
+        return contextualized;
     }
 }
