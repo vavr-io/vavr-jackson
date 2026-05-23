@@ -55,17 +55,6 @@ public class PolymorphicPojoTest {
     }
 
     @Test
-    void shouldHandleArrayOfA() {
-        Array<A> src = Array.of(new A(), new A());
-        var json = MAPPER.writeValueAsString(new AArrayPojo().setValue(src));
-        Assertions.assertThat(json).isEqualTo("{\"value\":[{\"type\":\"a\"},{\"type\":\"a\"}]}");
-        AArrayPojo pojo = MAPPER.readValue(json, AArrayPojo.class);
-        Array<A> restored = pojo.getValue();
-        Assertions.assertThat(restored.get(0)).isInstanceOf(A.class);
-        Assertions.assertThat(restored.get(1)).isInstanceOf(A.class);
-    }
-
-    @Test
     void shouldHandleList() {
         List<I> src = List.of(new A(), new B());
         var json = MAPPER.writeValueAsString(new ListPojo().setValue(src));
@@ -74,17 +63,6 @@ public class PolymorphicPojoTest {
         List<I> restored = pojo.getValue();
         Assertions.assertThat(restored.get(0)).isInstanceOf(A.class);
         Assertions.assertThat(restored.get(1)).isInstanceOf(B.class);
-    }
-
-    @Test
-    void shouldHandleListOfA() {
-        List<A> src = List.of(new A(), new A());
-        var json = MAPPER.writeValueAsString(new AListPojo().setValue(src));
-        Assertions.assertThat(json).isEqualTo("{\"value\":[{\"type\":\"a\"},{\"type\":\"a\"}]}");
-        AListPojo pojo = MAPPER.readValue(json, AListPojo.class);
-        List<A> restored = pojo.getValue();
-        Assertions.assertThat(restored.get(0)).isInstanceOf(A.class);
-        Assertions.assertThat(restored.get(1)).isInstanceOf(A.class);
     }
 
     @Test
@@ -99,17 +77,6 @@ public class PolymorphicPojoTest {
     }
 
     @Test
-    void shouldHandleQueueOfA() {
-        Queue<A> src = Queue.of(new A(), new A());
-        var json = MAPPER.writeValueAsString(new AQueuePojo().setValue(src));
-        Assertions.assertThat(json).isEqualTo("{\"value\":[{\"type\":\"a\"},{\"type\":\"a\"}]}");
-        AQueuePojo pojo = MAPPER.readValue(json, AQueuePojo.class);
-        Queue<A> restored = pojo.getValue();
-        Assertions.assertThat(restored.get(0)).isInstanceOf(A.class);
-        Assertions.assertThat(restored.get(1)).isInstanceOf(A.class);
-    }
-
-    @Test
     void shouldHandleStream() {
         Stream<I> src = Stream.of(new A(), new B());
         var json = MAPPER.writeValueAsString(new StreamPojo().setValue(src));
@@ -118,17 +85,6 @@ public class PolymorphicPojoTest {
         Stream<I> restored = pojo.getValue();
         Assertions.assertThat(restored.get(0)).isInstanceOf(A.class);
         Assertions.assertThat(restored.get(1)).isInstanceOf(B.class);
-    }
-
-    @Test
-    void shouldHandleStreamOfA() {
-        Stream<A> src = Stream.of(new A(), new A());
-        var json = MAPPER.writeValueAsString(new AStreamPojo().setValue(src));
-        Assertions.assertThat(json).isEqualTo("{\"value\":[{\"type\":\"a\"},{\"type\":\"a\"}]}");
-        AStreamPojo pojo = MAPPER.readValue(json, AStreamPojo.class);
-        Stream<A> restored = pojo.getValue();
-        Assertions.assertThat(restored.get(0)).isInstanceOf(A.class);
-        Assertions.assertThat(restored.get(1)).isInstanceOf(A.class);
     }
 
     @Test
@@ -143,17 +99,6 @@ public class PolymorphicPojoTest {
     }
 
     @Test
-    void shouldHandleVectorOfA() {
-        Vector<A> src = Vector.of(new A(), new A());
-        var json = MAPPER.writeValueAsString(new AVectorPojo().setValue(src));
-        Assertions.assertThat(json).isEqualTo("{\"value\":[{\"type\":\"a\"},{\"type\":\"a\"}]}");
-        AVectorPojo pojo = MAPPER.readValue(json, AVectorPojo.class);
-        Vector<A> restored = pojo.getValue();
-        Assertions.assertThat(restored.get(0)).isInstanceOf(A.class);
-        Assertions.assertThat(restored.get(1)).isInstanceOf(A.class);
-    }
-
-    @Test
     void shouldHandleHashSet() {
         HashSet<I> src = HashSet.of(new B());
         var json = MAPPER.writeValueAsString(new HashSetPojo().setValue(src));
@@ -161,16 +106,6 @@ public class PolymorphicPojoTest {
         HashSetPojo pojo = MAPPER.readValue(json, HashSetPojo.class);
         HashSet<I> restored = pojo.getValue();
         Assertions.assertThat(restored.filter(e -> e instanceof B).length()).isEqualTo(1);
-    }
-
-    @Test
-    void shouldHandleHashSetOfA() {
-        HashSet<A> src = HashSet.of(new A());
-        var json = MAPPER.writeValueAsString(new AHashSetPojo().setValue(src));
-        Assertions.assertThat(json).isEqualTo("{\"value\":[{\"type\":\"a\"}]}");
-        AHashSetPojo pojo = MAPPER.readValue(json, AHashSetPojo.class);
-        HashSet<A> restored = pojo.getValue();
-        Assertions.assertThat(restored.filter(e -> e instanceof A).length()).isEqualTo(1);
     }
 
     @Test
@@ -184,16 +119,6 @@ public class PolymorphicPojoTest {
     }
 
     @Test
-    void shouldHandleLinkedHashSetOfA() {
-        LinkedHashSet<A> src = LinkedHashSet.of(new A());
-        var json = MAPPER.writeValueAsString(new ALinkedHashSetPojo().setValue(src));
-        Assertions.assertThat(json).isEqualTo("{\"value\":[{\"type\":\"a\"}]}");
-        ALinkedHashSetPojo pojo = MAPPER.readValue(json, ALinkedHashSetPojo.class);
-        LinkedHashSet<A> restored = pojo.getValue();
-        Assertions.assertThat(restored.filter(e -> e instanceof A).length()).isEqualTo(1);
-    }
-
-    @Test
     void shouldHandleTreeSet() {
         TreeSet<I> src = TreeSet.of(new B());
         var json = MAPPER.writeValueAsString(new TreeSetPojo().setValue(src));
@@ -204,16 +129,6 @@ public class PolymorphicPojoTest {
     }
 
     @Test
-    void shouldHandleTreeSetOfA() {
-        TreeSet<A> src = TreeSet.of(new A());
-        var json = MAPPER.writeValueAsString(new ATreeSetPojo().setValue(src));
-        Assertions.assertThat(json).isEqualTo("{\"value\":[{\"type\":\"a\"}]}");
-        ATreeSetPojo pojo = MAPPER.readValue(json, ATreeSetPojo.class);
-        TreeSet<A> restored = pojo.getValue();
-        Assertions.assertThat(restored.filter(e -> e instanceof A).length()).isEqualTo(1);
-    }
-
-    @Test
     void shouldHandlePriorityQueue() {
         PriorityQueue<I> src = PriorityQueue.of(new B());
         var json = MAPPER.writeValueAsString(new PriorityQueuePojo().setValue(src));
@@ -221,16 +136,6 @@ public class PolymorphicPojoTest {
         PriorityQueuePojo pojo = MAPPER.readValue(json, PriorityQueuePojo.class);
         PriorityQueue<I> restored = pojo.getValue();
         Assertions.assertThat(restored.filter(e -> e instanceof B).length()).isEqualTo(1);
-    }
-
-    @Test
-    void shouldHandlePriorityQueueOfA() {
-        PriorityQueue<A> src = PriorityQueue.of(new A());
-        var json = MAPPER.writeValueAsString(new APriorityQueuePojo().setValue(src));
-        Assertions.assertThat(json).isEqualTo("{\"value\":[{\"type\":\"a\"}]}");
-        PriorityQueuePojo pojo = MAPPER.readValue(json, PriorityQueuePojo.class);
-        PriorityQueue<I> restored = pojo.getValue();
-        Assertions.assertThat(restored.filter(e -> e instanceof A).length()).isEqualTo(1);
     }
 
     @Test
@@ -245,17 +150,6 @@ public class PolymorphicPojoTest {
     }
 
     @Test
-    void shouldHandleHashMapOfA() {
-        HashMap<String, A> src = HashMap.of("a", new A(), "a2", new A());
-        var json = MAPPER.writeValueAsString(new AHashMapPojo().setValue(src));
-        Assertions.assertThat(json).isEqualTo("{\"value\":{\"a\":{\"type\":\"a\"},\"a2\":{\"type\":\"a\"}}}");
-        AHashMapPojo pojo = MAPPER.readValue(json, AHashMapPojo.class);
-        HashMap<String, A> restored = pojo.getValue();
-        Assertions.assertThat(restored.get("a").get()).isInstanceOf(A.class);
-        Assertions.assertThat(restored.get("a2").get()).isInstanceOf(A.class);
-    }
-
-    @Test
     void shouldHandleLinkedHashMap() {
         LinkedHashMap<String, I> src = LinkedHashMap.of("a", new A(), "b", new B());
         var json = MAPPER.writeValueAsString(new LinkedHashMapPojo().setValue(src));
@@ -264,17 +158,6 @@ public class PolymorphicPojoTest {
         LinkedHashMap<String, I> restored = pojo.getValue();
         Assertions.assertThat(restored.get("a").get()).isInstanceOf(A.class);
         Assertions.assertThat(restored.get("b").get()).isInstanceOf(B.class);
-    }
-
-    @Test
-    void shouldHandleLinkedHashMapOfA() {
-        LinkedHashMap<String, A> src = LinkedHashMap.of("a", new A(), "a2", new A());
-        var json = MAPPER.writeValueAsString(new ALinkedHashMapPojo().setValue(src));
-        Assertions.assertThat(json).isEqualTo("{\"value\":{\"a\":{\"type\":\"a\"},\"a2\":{\"type\":\"a\"}}}");
-        ALinkedHashMapPojo pojo = MAPPER.readValue(json, ALinkedHashMapPojo.class);
-        LinkedHashMap<String, A> restored = pojo.getValue();
-        Assertions.assertThat(restored.get("a").get()).isInstanceOf(A.class);
-        Assertions.assertThat(restored.get("a2").get()).isInstanceOf(A.class);
     }
 
     @Test
@@ -289,17 +172,6 @@ public class PolymorphicPojoTest {
     }
 
     @Test
-    void shouldHandleTreeMapOfA() {
-        TreeMap<String, A> src = TreeMap.of("a", new A(), "a2", new A());
-        var json = MAPPER.writeValueAsString(new ATreeMapPojo().setValue(src));
-        Assertions.assertThat(json).isEqualTo("{\"value\":{\"a\":{\"type\":\"a\"},\"a2\":{\"type\":\"a\"}}}");
-        ATreeMapPojo pojo = MAPPER.readValue(json, ATreeMapPojo.class);
-        TreeMap<String, A> restored = pojo.getValue();
-        Assertions.assertThat(restored.get("a").get()).isInstanceOf(A.class);
-        Assertions.assertThat(restored.get("a2").get()).isInstanceOf(A.class);
-    }
-
-    @Test
     void shouldHandleHashMultimap() {
         HashMultimap<String, I> src = HashMultimap.withSeq().of("a", new A(), "b", new B());
         var json = MAPPER.writeValueAsString(new HashMultimapPojo().setValue(src));
@@ -308,17 +180,6 @@ public class PolymorphicPojoTest {
         HashMultimap<String, I> restored = pojo.getValue();
         Assertions.assertThat(restored.get("a").get().head()).isInstanceOf(A.class);
         Assertions.assertThat(restored.get("b").get().head()).isInstanceOf(B.class);
-    }
-
-    @Test
-    void shouldHandleHashMultimapOfA() {
-        HashMultimap<String, A> src = HashMultimap.withSeq().of("a", new A(), "a2", new A());
-        var json = MAPPER.writeValueAsString(new AHashMultimapPojo().setValue(src));
-        Assertions.assertThat(json).isEqualTo("{\"value\":{\"a\":[{\"type\":\"a\"}],\"a2\":[{\"type\":\"a\"}]}}");
-        AHashMultimapPojo pojo = MAPPER.readValue(json, AHashMultimapPojo.class);
-        HashMultimap<String, A> restored = pojo.getValue();
-        Assertions.assertThat(restored.get("a").get().head()).isInstanceOf(A.class);
-        Assertions.assertThat(restored.get("a2").get().head()).isInstanceOf(A.class);
     }
 
     @Test
@@ -333,17 +194,6 @@ public class PolymorphicPojoTest {
     }
 
     @Test
-    void shouldHandleLinkedHashMultimapOfA() {
-        LinkedHashMultimap<String, A> src = LinkedHashMultimap.withSeq().of("a", new A(), "a2", new A());
-        var json = MAPPER.writeValueAsString(new ALinkedHashMultimapPojo().setValue(src));
-        Assertions.assertThat(json).isEqualTo("{\"value\":{\"a\":[{\"type\":\"a\"}],\"a2\":[{\"type\":\"a\"}]}}");
-        ALinkedHashMultimapPojo pojo = MAPPER.readValue(json, ALinkedHashMultimapPojo.class);
-        LinkedHashMultimap<String, A> restored = pojo.getValue();
-        Assertions.assertThat(restored.get("a").get().head()).isInstanceOf(A.class);
-        Assertions.assertThat(restored.get("a2").get().head()).isInstanceOf(A.class);
-    }
-
-    @Test
     void shouldHandleTreeMultimap() {
         TreeMultimap<String, I> src = TreeMultimap.withSeq().of("a", new A(), "b", new B());
         var json = MAPPER.writeValueAsString(new TreeMultimapPojo().setValue(src));
@@ -355,33 +205,12 @@ public class PolymorphicPojoTest {
     }
 
     @Test
-    void shouldHandleTreeMultimapOfA() {
-        TreeMultimap<String, A> src = TreeMultimap.withSeq().of("a", new A(), "a2", new A());
-        var json = MAPPER.writeValueAsString(new ATreeMultimapPojo().setValue(src));
-        Assertions.assertThat(json).isEqualTo("{\"value\":{\"a\":[{\"type\":\"a\"}],\"a2\":[{\"type\":\"a\"}]}}");
-        ATreeMultimapPojo pojo = MAPPER.readValue(json, ATreeMultimapPojo.class);
-        TreeMultimap<String, A> restored = pojo.getValue();
-        Assertions.assertThat(restored.get("a").get().head()).isInstanceOf(A.class);
-        Assertions.assertThat(restored.get("a2").get().head()).isInstanceOf(A.class);
-    }
-
-    @Test
     void shouldHandleTuple1() {
         Tuple1<I> src = Tuple.of(new A());
         var json = MAPPER.writeValueAsString(new Tuple1Pojo().setValue(src));
         Assertions.assertThat(json).isEqualTo("{\"value\":[{\"type\":\"a\"}]}");
         Tuple1Pojo pojo = MAPPER.readValue(json, Tuple1Pojo.class);
         Tuple1<I> restored = pojo.getValue();
-        Assertions.assertThat(restored._1).isInstanceOf(A.class);
-    }
-
-    @Test
-    void shouldHandleTuple1OfA() {
-        Tuple1<A> src = Tuple.of(new A());
-        var json = MAPPER.writeValueAsString(new ATuple1Pojo().setValue(src));
-        Assertions.assertThat(json).isEqualTo("{\"value\":[{\"type\":\"a\"}]}");
-        ATuple1Pojo pojo = MAPPER.readValue(json, ATuple1Pojo.class);
-        Tuple1<A> restored = pojo.getValue();
         Assertions.assertThat(restored._1).isInstanceOf(A.class);
     }
 
@@ -397,35 +226,12 @@ public class PolymorphicPojoTest {
     }
 
     @Test
-    void shouldHandleTuple2OfImplTypes() {
-        Tuple2<A, B> src = Tuple.of(new A(), new B());
-        var json = MAPPER.writeValueAsString(new ImplTuple2Pojo().setValue(src));
-        Assertions.assertThat(json).isEqualTo("{\"value\":[{\"type\":\"a\"},{\"type\":\"b\"}]}");
-        ImplTuple2Pojo pojo = MAPPER.readValue(json, ImplTuple2Pojo.class);
-        Tuple2<A, B> restored = pojo.getValue();
-        Assertions.assertThat(restored._1).isInstanceOf(A.class);
-        Assertions.assertThat(restored._2).isInstanceOf(B.class);
-    }
-
-    @Test
     void shouldHandleTuple3() {
         Tuple3<I, I, I> src = Tuple.of(new A(), new B(), new A());
         var json = MAPPER.writeValueAsString(new Tuple3Pojo().setValue(src));
         Assertions.assertThat(json).isEqualTo("{\"value\":[{\"type\":\"a\"},{\"type\":\"b\"},{\"type\":\"a\"}]}");
         Tuple3Pojo pojo = MAPPER.readValue(json, Tuple3Pojo.class);
         Tuple3<I, I, I> restored = pojo.getValue();
-        Assertions.assertThat(restored._1).isInstanceOf(A.class);
-        Assertions.assertThat(restored._2).isInstanceOf(B.class);
-        Assertions.assertThat(restored._3).isInstanceOf(A.class);
-    }
-
-    @Test
-    void shouldHandleTuple3OfImplTypes() {
-        Tuple3<A, B, A> src = Tuple.of(new A(), new B(), new A());
-        var json = MAPPER.writeValueAsString(new ImplTuple3Pojo().setValue(src));
-        Assertions.assertThat(json).isEqualTo("{\"value\":[{\"type\":\"a\"},{\"type\":\"b\"},{\"type\":\"a\"}]}");
-        ImplTuple3Pojo pojo = MAPPER.readValue(json, ImplTuple3Pojo.class);
-        Tuple3<A, B, A> restored = pojo.getValue();
         Assertions.assertThat(restored._1).isInstanceOf(A.class);
         Assertions.assertThat(restored._2).isInstanceOf(B.class);
         Assertions.assertThat(restored._3).isInstanceOf(A.class);
@@ -445,39 +251,12 @@ public class PolymorphicPojoTest {
     }
 
     @Test
-    void shouldHandleTuple4OfImplTypes() {
-        Tuple4<A, B, A, B> src = Tuple.of(new A(), new B(), new A(), new B());
-        var json = MAPPER.writeValueAsString(new ImplTuple4Pojo().setValue(src));
-        Assertions.assertThat(json).isEqualTo("{\"value\":[{\"type\":\"a\"},{\"type\":\"b\"},{\"type\":\"a\"},{\"type\":\"b\"}]}");
-        ImplTuple4Pojo pojo = MAPPER.readValue(json, ImplTuple4Pojo.class);
-        Tuple4<A, B, A, B> restored = pojo.getValue();
-        Assertions.assertThat(restored._1).isInstanceOf(A.class);
-        Assertions.assertThat(restored._2).isInstanceOf(B.class);
-        Assertions.assertThat(restored._3).isInstanceOf(A.class);
-        Assertions.assertThat(restored._4).isInstanceOf(B.class);
-    }
-
-    @Test
     void shouldHandleTuple5() {
         Tuple5<I, I, I, I, I> src = Tuple.of(new A(), new B(), new A(), new B(), new A());
         var json = MAPPER.writeValueAsString(new Tuple5Pojo().setValue(src));
         Assertions.assertThat(json).isEqualTo("{\"value\":[{\"type\":\"a\"},{\"type\":\"b\"},{\"type\":\"a\"},{\"type\":\"b\"},{\"type\":\"a\"}]}");
         Tuple5Pojo pojo = MAPPER.readValue(json, Tuple5Pojo.class);
         Tuple5<I, I, I, I, I> restored = pojo.getValue();
-        Assertions.assertThat(restored._1).isInstanceOf(A.class);
-        Assertions.assertThat(restored._2).isInstanceOf(B.class);
-        Assertions.assertThat(restored._3).isInstanceOf(A.class);
-        Assertions.assertThat(restored._4).isInstanceOf(B.class);
-        Assertions.assertThat(restored._5).isInstanceOf(A.class);
-    }
-
-    @Test
-    void shouldHandleTuple5OfImplTypes() {
-        Tuple5<A, B, A, B, A> src = Tuple.of(new A(), new B(), new A(), new B(), new A());
-        var json = MAPPER.writeValueAsString(new ImplTuple5Pojo().setValue(src));
-        Assertions.assertThat(json).isEqualTo("{\"value\":[{\"type\":\"a\"},{\"type\":\"b\"},{\"type\":\"a\"},{\"type\":\"b\"},{\"type\":\"a\"}]}");
-        ImplTuple5Pojo pojo = MAPPER.readValue(json, ImplTuple5Pojo.class);
-        Tuple5<A, B, A, B, A> restored = pojo.getValue();
         Assertions.assertThat(restored._1).isInstanceOf(A.class);
         Assertions.assertThat(restored._2).isInstanceOf(B.class);
         Assertions.assertThat(restored._3).isInstanceOf(A.class);
@@ -501,43 +280,12 @@ public class PolymorphicPojoTest {
     }
 
     @Test
-    void shouldHandleTuple6OfImplTypes() {
-        Tuple6<A, B, A, B, A, B> src = Tuple.of(new A(), new B(), new A(), new B(), new A(), new B());
-        var json = MAPPER.writeValueAsString(new ImplTuple6Pojo().setValue(src));
-        Assertions.assertThat(json).isEqualTo("{\"value\":[{\"type\":\"a\"},{\"type\":\"b\"},{\"type\":\"a\"},{\"type\":\"b\"},{\"type\":\"a\"},{\"type\":\"b\"}]}");
-        ImplTuple6Pojo pojo = MAPPER.readValue(json, ImplTuple6Pojo.class);
-        Tuple6<A, B, A, B, A, B> restored = pojo.getValue();
-        Assertions.assertThat(restored._1).isInstanceOf(A.class);
-        Assertions.assertThat(restored._2).isInstanceOf(B.class);
-        Assertions.assertThat(restored._3).isInstanceOf(A.class);
-        Assertions.assertThat(restored._4).isInstanceOf(B.class);
-        Assertions.assertThat(restored._5).isInstanceOf(A.class);
-        Assertions.assertThat(restored._6).isInstanceOf(B.class);
-    }
-
-    @Test
     void shouldHandleTuple7() {
         Tuple7<I, I, I, I, I, I, I> src = Tuple.of(new A(), new B(), new A(), new B(), new A(), new B(), new A());
         var json = MAPPER.writeValueAsString(new Tuple7Pojo().setValue(src));
         Assertions.assertThat(json).isEqualTo("{\"value\":[{\"type\":\"a\"},{\"type\":\"b\"},{\"type\":\"a\"},{\"type\":\"b\"},{\"type\":\"a\"},{\"type\":\"b\"},{\"type\":\"a\"}]}");
         Tuple7Pojo pojo = MAPPER.readValue(json, Tuple7Pojo.class);
         Tuple7<I, I, I, I, I, I, I> restored = pojo.getValue();
-        Assertions.assertThat(restored._1).isInstanceOf(A.class);
-        Assertions.assertThat(restored._2).isInstanceOf(B.class);
-        Assertions.assertThat(restored._3).isInstanceOf(A.class);
-        Assertions.assertThat(restored._4).isInstanceOf(B.class);
-        Assertions.assertThat(restored._5).isInstanceOf(A.class);
-        Assertions.assertThat(restored._6).isInstanceOf(B.class);
-        Assertions.assertThat(restored._7).isInstanceOf(A.class);
-    }
-
-    @Test
-    void shouldHandleTuple7OfImplTypes() {
-        Tuple7<A, B, A, B, A, B, A> src = Tuple.of(new A(), new B(), new A(), new B(), new A(), new B(), new A());
-        var json = MAPPER.writeValueAsString(new ImplTuple7Pojo().setValue(src));
-        Assertions.assertThat(json).isEqualTo("{\"value\":[{\"type\":\"a\"},{\"type\":\"b\"},{\"type\":\"a\"},{\"type\":\"b\"},{\"type\":\"a\"},{\"type\":\"b\"},{\"type\":\"a\"}]}");
-        ImplTuple7Pojo pojo = MAPPER.readValue(json, ImplTuple7Pojo.class);
-        Tuple7<A, B, A, B, A, B, A> restored = pojo.getValue();
         Assertions.assertThat(restored._1).isInstanceOf(A.class);
         Assertions.assertThat(restored._2).isInstanceOf(B.class);
         Assertions.assertThat(restored._3).isInstanceOf(A.class);
@@ -565,23 +313,6 @@ public class PolymorphicPojoTest {
     }
 
     @Test
-    void shouldHandleTuple8OfImplTypes() {
-        Tuple8<A, B, A, B, A, B, A, B> src = Tuple.of(new A(), new B(), new A(), new B(), new A(), new B(), new A(), new B());
-        var json = MAPPER.writeValueAsString(new ImplTuple8Pojo().setValue(src));
-        Assertions.assertThat(json).isEqualTo("{\"value\":[{\"type\":\"a\"},{\"type\":\"b\"},{\"type\":\"a\"},{\"type\":\"b\"},{\"type\":\"a\"},{\"type\":\"b\"},{\"type\":\"a\"},{\"type\":\"b\"}]}");
-        ImplTuple8Pojo pojo = MAPPER.readValue(json, ImplTuple8Pojo.class);
-        Tuple8<A, B, A, B, A, B, A, B> restored = pojo.getValue();
-        Assertions.assertThat(restored._1).isInstanceOf(A.class);
-        Assertions.assertThat(restored._2).isInstanceOf(B.class);
-        Assertions.assertThat(restored._3).isInstanceOf(A.class);
-        Assertions.assertThat(restored._4).isInstanceOf(B.class);
-        Assertions.assertThat(restored._5).isInstanceOf(A.class);
-        Assertions.assertThat(restored._6).isInstanceOf(B.class);
-        Assertions.assertThat(restored._7).isInstanceOf(A.class);
-        Assertions.assertThat(restored._8).isInstanceOf(B.class);
-    }
-
-    @Test
     void shouldHandleLazy() {
         Lazy<I> src = Lazy.of(A::new);
         var json = MAPPER.writeValueAsString(new LazyPojo().setValue(src));
@@ -592,32 +323,12 @@ public class PolymorphicPojoTest {
     }
 
     @Test
-    void shouldHandleLazyOfA() {
-        Lazy<A> src = Lazy.of(A::new);
-        var json = MAPPER.writeValueAsString(new ALazyPojo().setValue(src));
-        Assertions.assertThat(json).isEqualTo("{\"value\":{\"type\":\"a\"}}");
-        ALazyPojo pojo = MAPPER.readValue(json, ALazyPojo.class);
-        Lazy<A> restored = pojo.getValue();
-        Assertions.assertThat(restored.get()).isInstanceOf(A.class);
-    }
-
-    @Test
     void shouldHandleOption() {
         Option<I> src = Option.some(new A());
         var json = MAPPER.writeValueAsString(new OptionPojo().setValue(src));
         Assertions.assertThat(json).isEqualTo("{\"value\":{\"type\":\"a\"}}");
         OptionPojo pojo = MAPPER.readValue(json, OptionPojo.class);
         Option<I> restored = pojo.getValue();
-        Assertions.assertThat(restored.get()).isInstanceOf(A.class);
-    }
-
-    @Test
-    void shouldHandleOptionOfA() {
-        Option<A> src = Option.some(new A());
-        var json = MAPPER.writeValueAsString(new AOptionPojo().setValue(src));
-        Assertions.assertThat(json).isEqualTo("{\"value\":{\"type\":\"a\"}}");
-        AOptionPojo pojo = MAPPER.readValue(json, AOptionPojo.class);
-        Option<A> restored = pojo.getValue();
         Assertions.assertThat(restored.get()).isInstanceOf(A.class);
     }
 
@@ -633,17 +344,6 @@ public class PolymorphicPojoTest {
     }
 
     @Test
-    void shouldHandleEitherABLeft() {
-        Either<A, B> src = Either.left(new A());
-        var json = MAPPER.writeValueAsString(new ABEitherPojo().setValue(src));
-        Assertions.assertThat(json).isEqualTo("{\"value\":[\"left\",{\"type\":\"a\"}]}");
-        ABEitherPojo pojo = MAPPER.readValue(json, ABEitherPojo.class);
-        Either<A, B> restored = pojo.getValue();
-        Assertions.assertThat(restored.isLeft()).isTrue();
-        Assertions.assertThat(restored.getLeft()).isInstanceOf(A.class);
-    }
-
-    @Test
     void shouldHandleEitherRight() {
         Either<I, I> src = Either.right(new A());
         var json = MAPPER.writeValueAsString(new EitherPojo().setValue(src));
@@ -652,17 +352,6 @@ public class PolymorphicPojoTest {
         Either<I, I> restored = pojo.getValue();
         Assertions.assertThat(restored.isRight()).isTrue();
         Assertions.assertThat(restored.get()).isInstanceOf(A.class);
-    }
-
-    @Test
-    void shouldHandleEitherABRight() {
-        Either<A, B> src = Either.right(new B());
-        var json = MAPPER.writeValueAsString(new ABEitherPojo().setValue(src));
-        Assertions.assertThat(json).isEqualTo("{\"value\":[\"right\",{\"type\":\"b\"}]}");
-        ABEitherPojo pojo = MAPPER.readValue(json, ABEitherPojo.class);
-        Either<A, B> restored = pojo.getValue();
-        Assertions.assertThat(restored.isRight()).isTrue();
-        Assertions.assertThat(restored.get()).isInstanceOf(B.class);
     }
 
     @JsonTypeInfo(
@@ -699,19 +388,6 @@ public class PolymorphicPojoTest {
         }
     }
 
-    public static class AArrayPojo {
-        private Array<A> v;
-
-        public Array<A> getValue() {
-            return v;
-        }
-
-        public AArrayPojo setValue(Array<A> v) {
-            this.v = v;
-            return this;
-        }
-    }
-
     public static class ListPojo {
         private List<I> v;
 
@@ -720,19 +396,6 @@ public class PolymorphicPojoTest {
         }
 
         public ListPojo setValue(List<I> v) {
-            this.v = v;
-            return this;
-        }
-    }
-
-    public static class AListPojo {
-        private List<A> v;
-
-        public List<A> getValue() {
-            return v;
-        }
-
-        public AListPojo setValue(List<A> v) {
             this.v = v;
             return this;
         }
@@ -751,19 +414,6 @@ public class PolymorphicPojoTest {
         }
     }
 
-    public static class AQueuePojo {
-        private Queue<A> v;
-
-        public Queue<A> getValue() {
-            return v;
-        }
-
-        public AQueuePojo setValue(Queue<A> v) {
-            this.v = v;
-            return this;
-        }
-    }
-
     public static class StreamPojo {
         private Stream<I> v;
 
@@ -772,20 +422,6 @@ public class PolymorphicPojoTest {
         }
 
         public StreamPojo setValue(Stream<I> v) {
-            this.v = v;
-            return this;
-        }
-    }
-
-    public static class AStreamPojo {
-        private Stream<A> v;
-
-
-        public Stream<A> getValue() {
-            return v;
-        }
-
-        public AStreamPojo setValue(Stream<A> v) {
             this.v = v;
             return this;
         }
@@ -804,19 +440,6 @@ public class PolymorphicPojoTest {
         }
     }
 
-    public static class AVectorPojo {
-        private Vector<A> v;
-
-        public Vector<A> getValue() {
-            return v;
-        }
-
-        public AVectorPojo setValue(Vector<A> v) {
-            this.v = v;
-            return this;
-        }
-    }
-
     public static class HashSetPojo {
         private HashSet<I> v;
 
@@ -825,19 +448,6 @@ public class PolymorphicPojoTest {
         }
 
         public HashSetPojo setValue(HashSet<I> v) {
-            this.v = v;
-            return this;
-        }
-    }
-
-    public static class AHashSetPojo {
-        private HashSet<A> v;
-
-        public HashSet<A> getValue() {
-            return v;
-        }
-
-        public AHashSetPojo setValue(HashSet<A> v) {
             this.v = v;
             return this;
         }
@@ -856,19 +466,6 @@ public class PolymorphicPojoTest {
         }
     }
 
-    public static class ALinkedHashSetPojo {
-        private LinkedHashSet<A> v;
-
-        public LinkedHashSet<A> getValue() {
-            return v;
-        }
-
-        public ALinkedHashSetPojo setValue(LinkedHashSet<A> v) {
-            this.v = v;
-            return this;
-        }
-    }
-
     public static class TreeSetPojo {
         private TreeSet<I> v;
 
@@ -877,19 +474,6 @@ public class PolymorphicPojoTest {
         }
 
         public TreeSetPojo setValue(TreeSet<I> v) {
-            this.v = v;
-            return this;
-        }
-    }
-
-    public static class ATreeSetPojo {
-        private TreeSet<A> v;
-
-        public TreeSet<A> getValue() {
-            return v;
-        }
-
-        public ATreeSetPojo setValue(TreeSet<A> v) {
             this.v = v;
             return this;
         }
@@ -908,19 +492,6 @@ public class PolymorphicPojoTest {
         }
     }
 
-    public static class APriorityQueuePojo {
-        private PriorityQueue<A> v;
-
-        public PriorityQueue<A> getValue() {
-            return v;
-        }
-
-        public APriorityQueuePojo setValue(PriorityQueue<A> v) {
-            this.v = v;
-            return this;
-        }
-    }
-
     public static class HashMapPojo {
         private HashMap<String, I> v;
 
@@ -929,19 +500,6 @@ public class PolymorphicPojoTest {
         }
 
         public HashMapPojo setValue(HashMap<String, I> v) {
-            this.v = v;
-            return this;
-        }
-    }
-
-    public static class AHashMapPojo {
-        private HashMap<String, A> v;
-
-        public HashMap<String, A> getValue() {
-            return v;
-        }
-
-        public AHashMapPojo setValue(HashMap<String, A> v) {
             this.v = v;
             return this;
         }
@@ -960,19 +518,6 @@ public class PolymorphicPojoTest {
         }
     }
 
-    public static class ALinkedHashMapPojo {
-        private LinkedHashMap<String, A> v;
-
-        public LinkedHashMap<String, A> getValue() {
-            return v;
-        }
-
-        public ALinkedHashMapPojo setValue(LinkedHashMap<String, A> v) {
-            this.v = v;
-            return this;
-        }
-    }
-
     public static class TreeMapPojo {
         private TreeMap<String, I> v;
 
@@ -981,19 +526,6 @@ public class PolymorphicPojoTest {
         }
 
         public TreeMapPojo setValue(TreeMap<String, I> v) {
-            this.v = v;
-            return this;
-        }
-    }
-
-    public static class ATreeMapPojo {
-        private TreeMap<String, A> v;
-
-        public TreeMap<String, A> getValue() {
-            return v;
-        }
-
-        public ATreeMapPojo setValue(TreeMap<String, A> v) {
             this.v = v;
             return this;
         }
@@ -1012,19 +544,6 @@ public class PolymorphicPojoTest {
         }
     }
 
-    public static class AHashMultimapPojo {
-        private HashMultimap<String, A> v;
-
-        public HashMultimap<String, A> getValue() {
-            return v;
-        }
-
-        public AHashMultimapPojo setValue(HashMultimap<String, A> v) {
-            this.v = v;
-            return this;
-        }
-    }
-
     public static class LinkedHashMultimapPojo {
         private LinkedHashMultimap<String, I> v;
 
@@ -1033,19 +552,6 @@ public class PolymorphicPojoTest {
         }
 
         public LinkedHashMultimapPojo setValue(LinkedHashMultimap<String, I> v) {
-            this.v = v;
-            return this;
-        }
-    }
-
-    public static class ALinkedHashMultimapPojo {
-        private LinkedHashMultimap<String, A> v;
-
-        public LinkedHashMultimap<String, A> getValue() {
-            return v;
-        }
-
-        public ALinkedHashMultimapPojo setValue(LinkedHashMultimap<String, A> v) {
             this.v = v;
             return this;
         }
@@ -1064,19 +570,6 @@ public class PolymorphicPojoTest {
         }
     }
 
-    public static class ATreeMultimapPojo {
-        private TreeMultimap<String, A> v;
-
-        public TreeMultimap<String, A> getValue() {
-            return v;
-        }
-
-        public ATreeMultimapPojo setValue(TreeMultimap<String, A> v) {
-            this.v = v;
-            return this;
-        }
-    }
-
     public static class Tuple1Pojo {
         private Tuple1<I> v;
 
@@ -1085,19 +578,6 @@ public class PolymorphicPojoTest {
         }
 
         public Tuple1Pojo setValue(Tuple1<I> v) {
-            this.v = v;
-            return this;
-        }
-    }
-
-    public static class ATuple1Pojo {
-        private Tuple1<A> v;
-
-        public Tuple1<A> getValue() {
-            return v;
-        }
-
-        public ATuple1Pojo setValue(Tuple1<A> v) {
             this.v = v;
             return this;
         }
@@ -1116,19 +596,6 @@ public class PolymorphicPojoTest {
         }
     }
 
-    public static class ImplTuple2Pojo {
-        private Tuple2<A, B> v;
-
-        public Tuple2<A, B> getValue() {
-            return v;
-        }
-
-        public ImplTuple2Pojo setValue(Tuple2<A, B> v) {
-            this.v = v;
-            return this;
-        }
-    }
-
     public static class Tuple3Pojo {
         private Tuple3<I, I, I> v;
 
@@ -1137,19 +604,6 @@ public class PolymorphicPojoTest {
         }
 
         public Tuple3Pojo setValue(Tuple3<I, I, I> v) {
-            this.v = v;
-            return this;
-        }
-    }
-
-    public static class ImplTuple3Pojo {
-        private Tuple3<A, B, A> v;
-
-        public Tuple3<A, B, A> getValue() {
-            return v;
-        }
-
-        public ImplTuple3Pojo setValue(Tuple3<A, B, A> v) {
             this.v = v;
             return this;
         }
@@ -1168,19 +622,6 @@ public class PolymorphicPojoTest {
         }
     }
 
-    public static class ImplTuple4Pojo {
-        private Tuple4<A, B, A, B> v;
-
-        public Tuple4<A, B, A, B> getValue() {
-            return v;
-        }
-
-        public ImplTuple4Pojo setValue(Tuple4<A, B, A, B> v) {
-            this.v = v;
-            return this;
-        }
-    }
-
     public static class Tuple5Pojo {
         private Tuple5<I, I, I, I, I> v;
 
@@ -1189,19 +630,6 @@ public class PolymorphicPojoTest {
         }
 
         public Tuple5Pojo setValue(Tuple5<I, I, I, I, I> v) {
-            this.v = v;
-            return this;
-        }
-    }
-
-    public static class ImplTuple5Pojo {
-        private Tuple5<A, B, A, B, A> v;
-
-        public Tuple5<A, B, A, B, A> getValue() {
-            return v;
-        }
-
-        public ImplTuple5Pojo setValue(Tuple5<A, B, A, B, A> v) {
             this.v = v;
             return this;
         }
@@ -1220,19 +648,6 @@ public class PolymorphicPojoTest {
         }
     }
 
-    public static class ImplTuple6Pojo {
-        private Tuple6<A, B, A, B, A, B> v;
-
-        public Tuple6<A, B, A, B, A, B> getValue() {
-            return v;
-        }
-
-        public ImplTuple6Pojo setValue(Tuple6<A, B, A, B, A, B> v) {
-            this.v = v;
-            return this;
-        }
-    }
-
     public static class Tuple7Pojo {
         private Tuple7<I, I, I, I, I, I, I> v;
 
@@ -1241,19 +656,6 @@ public class PolymorphicPojoTest {
         }
 
         public Tuple7Pojo setValue(Tuple7<I, I, I, I, I, I, I> v) {
-            this.v = v;
-            return this;
-        }
-    }
-
-    public static class ImplTuple7Pojo {
-        private Tuple7<A, B, A, B, A, B, A> v;
-
-        public Tuple7<A, B, A, B, A, B, A> getValue() {
-            return v;
-        }
-
-        public ImplTuple7Pojo setValue(Tuple7<A, B, A, B, A, B, A> v) {
             this.v = v;
             return this;
         }
@@ -1272,19 +674,6 @@ public class PolymorphicPojoTest {
         }
     }
 
-    public static class ImplTuple8Pojo {
-        private Tuple8<A, B, A, B, A, B, A, B> v;
-
-        public Tuple8<A, B, A, B, A, B, A, B> getValue() {
-            return v;
-        }
-
-        public ImplTuple8Pojo setValue(Tuple8<A, B, A, B, A, B, A, B> v) {
-            this.v = v;
-            return this;
-        }
-    }
-
     public static class LazyPojo {
         private Lazy<I> v;
 
@@ -1293,19 +682,6 @@ public class PolymorphicPojoTest {
         }
 
         public LazyPojo setValue(Lazy<I> v) {
-            this.v = v;
-            return this;
-        }
-    }
-
-    public static class ALazyPojo {
-        private Lazy<A> v;
-
-        public Lazy<A> getValue() {
-            return v;
-        }
-
-        public ALazyPojo setValue(Lazy<A> v) {
             this.v = v;
             return this;
         }
@@ -1324,19 +700,6 @@ public class PolymorphicPojoTest {
         }
     }
 
-    public static class AOptionPojo {
-        private Option<A> v;
-
-        public Option<A> getValue() {
-            return v;
-        }
-
-        public AOptionPojo setValue(Option<A> v) {
-            this.v = v;
-            return this;
-        }
-    }
-
     public static class EitherPojo {
         private Either<I, I> v;
 
@@ -1345,19 +708,6 @@ public class PolymorphicPojoTest {
         }
 
         public EitherPojo setValue(Either<I, I> v) {
-            this.v = v;
-            return this;
-        }
-    }
-
-    public static class ABEitherPojo {
-        private Either<A, B> v;
-
-        public Either<A, B> getValue() {
-            return v;
-        }
-
-        public ABEitherPojo setValue(Either<A, B> v) {
             this.v = v;
             return this;
         }

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import io.vavr.Lazy;
 import io.vavr.control.Option;
 import io.vavr.jackson.datatype.BaseTest;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import tools.jackson.core.JsonGenerator;
 import tools.jackson.core.JsonToken;
@@ -12,8 +13,6 @@ import tools.jackson.databind.SerializationContext;
 import tools.jackson.databind.annotation.JsonSerialize;
 import tools.jackson.databind.jsontype.TypeSerializer;
 import tools.jackson.databind.ser.std.StdSerializer;
-
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

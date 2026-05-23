@@ -64,7 +64,11 @@ class OptionSerializer extends HListSerializer<Option<?>> {
         if (plainMode) {
             if (value.isDefined()) {
                 if (valueSerializer != null) {
-                    valueSerializer.serialize(value.get(), gen, context);
+                    if (valueTypeSerializer != null) {
+                        valueSerializer.serializeWithType(value.get(), gen, context, valueTypeSerializer);
+                    } else {
+                        valueSerializer.serialize(value.get(), gen, context);
+                    }
                 } else {
                     write(value.get(), 0, gen, context);
                 }
@@ -94,14 +98,16 @@ class OptionSerializer extends HListSerializer<Option<?>> {
         if (vts != null) {
             vts = vts.forProperty(provider, property);
         }
-        ValueSerializer<?> ser = valueSerializer;
+        ValueSerializer<?> ser = findAnnotatedContentSerializer(provider, property);
         if (ser == null) {
-            // A few conditions needed to be able to fetch serializer here:
-            if (useStatic(provider, property, valueType)) {
-                ser = provider.findPrimaryPropertySerializer(valueType, property);
+            ser = valueSerializer;
+            if (ser == null) {
+                if (useStatic(provider, property, valueType)) {
+                    ser = provider.findPrimaryPropertySerializer(valueType, property);
+                }
+            } else {
+                ser = provider.handlePrimaryContextualization(ser, property);
             }
-        } else {
-            ser = provider.handlePrimaryContextualization(ser, property);
         }
         return withResolved(fullType, vts, ser);
     }
