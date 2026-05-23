@@ -127,6 +127,7 @@ public class VavrDeserializers extends Deserializers.Base {
 
     @Override
     public boolean hasDeserializerFor(DeserializationConfig config, Class<?> valueType) {
-        return true;
+        Package pkg = valueType.getPackage();
+        return pkg != null && pkg.getName().startsWith("io.vavr");
     }
 }
