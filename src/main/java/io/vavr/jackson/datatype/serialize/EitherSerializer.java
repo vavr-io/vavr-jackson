@@ -21,8 +21,10 @@ package io.vavr.jackson.datatype.serialize;
 
 import io.vavr.control.Either;
 import tools.jackson.core.JsonGenerator;
+import tools.jackson.core.JsonToken;
 import tools.jackson.databind.JavaType;
 import tools.jackson.databind.SerializationContext;
+import tools.jackson.databind.jsontype.TypeSerializer;
 
 class EitherSerializer extends HListSerializer<Either<?, ?>> {
 
@@ -33,6 +35,19 @@ class EitherSerializer extends HListSerializer<Either<?, ?>> {
     @Override
     public void serialize(Either<?, ?> value, JsonGenerator gen, SerializationContext context) {
         gen.writeStartArray();
+        serializeContents(value, gen, context);
+        gen.writeEndArray();
+    }
+
+    @Override
+    public void serializeWithType(Either<?, ?> value, JsonGenerator gen, SerializationContext context,
+                                  TypeSerializer typeSer) {
+        typeSer.writeTypePrefix(gen, context, typeSer.typeId(value, JsonToken.START_ARRAY));
+        serializeContents(value, gen, context);
+        typeSer.writeTypeSuffix(gen, context, typeSer.typeId(value, JsonToken.START_ARRAY));
+    }
+
+    private void serializeContents(Either<?, ?> value, JsonGenerator gen, SerializationContext context) {
         if (value.isLeft()) {
             gen.writeString("left");
             write(value.getLeft(), 0, gen, context);
@@ -40,7 +55,6 @@ class EitherSerializer extends HListSerializer<Either<?, ?>> {
             gen.writeString("right");
             write(value.get(), 1, gen, context);
         }
-        gen.writeEndArray();
     }
 
     @Override

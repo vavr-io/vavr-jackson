@@ -22,8 +22,10 @@ package io.vavr.jackson.datatype.serialize;
 import io.vavr.Tuple;
 import java.util.List;
 import tools.jackson.core.JsonGenerator;
+import tools.jackson.core.JsonToken;
 import tools.jackson.databind.JavaType;
 import tools.jackson.databind.SerializationContext;
+import tools.jackson.databind.jsontype.TypeSerializer;
 
 class TupleSerializer extends HListSerializer<Tuple> {
 
@@ -34,10 +36,22 @@ class TupleSerializer extends HListSerializer<Tuple> {
     @Override
     public void serialize(Tuple value, JsonGenerator gen, SerializationContext context) {
         gen.writeStartArray();
+        serializeContents(value, gen, context);
+        gen.writeEndArray();
+    }
+
+    @Override
+    public void serializeWithType(Tuple value, JsonGenerator gen, SerializationContext context,
+                                  TypeSerializer typeSer) {
+        typeSer.writeTypePrefix(gen, context, typeSer.typeId(value, JsonToken.START_ARRAY));
+        serializeContents(value, gen, context);
+        typeSer.writeTypeSuffix(gen, context, typeSer.typeId(value, JsonToken.START_ARRAY));
+    }
+
+    private void serializeContents(Tuple value, JsonGenerator gen, SerializationContext context) {
         List<?> list = value.toSeq().toJavaList();
         for (int i = 0; i < list.size(); i++) {
             write(list.get(i), i, gen, context);
         }
-        gen.writeEndArray();
     }
 }

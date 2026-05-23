@@ -20,11 +20,9 @@
 package io.vavr.jackson.datatype.serialize;
 
 import tools.jackson.core.JsonGenerator;
-import tools.jackson.core.JsonToken;
 import tools.jackson.databind.JavaType;
 import tools.jackson.databind.SerializationContext;
 import tools.jackson.databind.ValueSerializer;
-import tools.jackson.databind.jsontype.TypeSerializer;
 import tools.jackson.databind.ser.std.StdSerializer;
 
 abstract class HListSerializer<T> extends StdSerializer<T> {
@@ -56,11 +54,4 @@ abstract class HListSerializer<T> extends StdSerializer<T> {
         }
     }
 
-    @Override
-    public void serializeWithType(T value, JsonGenerator gen, SerializationContext context,
-                                  TypeSerializer typeSer) {
-        typeSer.writeTypePrefix(gen, context, typeSer.typeId(value, JsonToken.VALUE_STRING));
-        serialize(value, gen, context);
-        typeSer.writeTypeSuffix(gen, context, typeSer.typeId(value, JsonToken.VALUE_STRING));
-    }
 }
