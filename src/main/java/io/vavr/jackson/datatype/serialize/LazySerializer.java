@@ -62,6 +62,18 @@ class LazySerializer extends HListSerializer<Lazy<?>> {
     }
 
     @Override
+    public void serializeWithType(Lazy<?> value, JsonGenerator gen, SerializationContext context,
+                                  TypeSerializer typeSer) {
+        Object inner = value.get();
+        if (valueSerializer != null) {
+            valueSerializer.serializeWithType(inner, gen, context, typeSer);
+        } else {
+            context.findTypedValueSerializer(inner.getClass(), true)
+                .serializeWithType(inner, gen, context, typeSer);
+        }
+    }
+
+    @Override
     public ValueSerializer<?> createContextual(SerializationContext provider, BeanProperty property) throws DatabindException {
         TypeSerializer vts = valueTypeSerializer;
         if (vts != null) {

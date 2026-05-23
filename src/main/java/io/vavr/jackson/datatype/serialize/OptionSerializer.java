@@ -21,6 +21,7 @@ package io.vavr.jackson.datatype.serialize;
 
 import io.vavr.control.Option;
 import tools.jackson.core.JsonGenerator;
+import tools.jackson.core.JsonToken;
 import tools.jackson.databind.AnnotationIntrospector;
 import tools.jackson.databind.BeanProperty;
 import tools.jackson.databind.DatabindException;
@@ -84,6 +85,33 @@ class OptionSerializer extends HListSerializer<Option<?>> {
                 gen.writeString("undefined");
             }
             gen.writeEndArray();
+        }
+    }
+
+    @Override
+    public void serializeWithType(Option<?> value, JsonGenerator gen, SerializationContext context,
+                                  TypeSerializer typeSer) {
+        if (plainMode) {
+            if (value.isDefined()) {
+                Object inner = value.get();
+                if (valueSerializer != null) {
+                    valueSerializer.serializeWithType(inner, gen, context, typeSer);
+                } else {
+                    context.findTypedValueSerializer(inner.getClass(), true)
+                        .serializeWithType(inner, gen, context, typeSer);
+                }
+            } else {
+                gen.writeNull();
+            }
+        } else {
+            typeSer.writeTypePrefix(gen, context, typeSer.typeId(value, JsonToken.START_ARRAY));
+            if (value.isDefined()) {
+                gen.writeString("defined");
+                write(value.get(), 0, gen, context);
+            } else {
+                gen.writeString("undefined");
+            }
+            typeSer.writeTypeSuffix(gen, context, typeSer.typeId(value, JsonToken.START_ARRAY));
         }
     }
 
