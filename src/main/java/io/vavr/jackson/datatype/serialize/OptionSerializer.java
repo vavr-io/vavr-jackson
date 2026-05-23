@@ -148,7 +148,7 @@ class OptionSerializer extends HListSerializer<Option<?>> {
     }
 
     private OptionSerializer withResolved(JavaType refType, TypeSerializer typeSer, ValueSerializer<?> valueSer) {
-        if (refType == valueType && typeSer == valueTypeSerializer && valueSer == valueSerializer) {
+        if (refType == fullType && typeSer == valueTypeSerializer && valueSer == valueSerializer) {
             return this;
         }
         return new OptionSerializer(refType, valueType, typeSer, valueSer, plainMode);
