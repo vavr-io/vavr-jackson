@@ -19,6 +19,7 @@
  */
 package io.vavr.jackson.datatype.serialize;
 
+import tools.jackson.core.JacksonException;
 import tools.jackson.core.JsonGenerator;
 import tools.jackson.core.JsonToken;
 import tools.jackson.databind.BeanProperty;
@@ -62,7 +63,7 @@ abstract class VavrValueSerializer<T> extends StdSerializer<T> {
                 } else {
                     ser = context.findPrimaryPropertySerializer(obj.getClass(), beanProperty);
                 }
-            } catch (Exception ignore) {
+            } catch (JacksonException ignore) {
                 ser = context.findPrimaryPropertySerializer(obj.getClass(), beanProperty);
             }
             ser.serialize(obj, gen, context);
